@@ -4,7 +4,6 @@ using System.IO.Pipes;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using ApiViewer.Model;
 using Newtonsoft.Json;
 
@@ -14,16 +13,19 @@ namespace ApiViewer.Pipes
     {
         public async Task SubScribe(Action<ApiInfo> onMessage)
         {
-            var pipeClient =
-                new NamedPipeClientStream(
-                    ".",
-                    "Foo",
-                    PipeDirection.In, PipeOptions.None,
-                    TokenImpersonationLevel.Impersonation);
 
             do
             {
+                var pipeClient =
+                    new NamedPipeClientStream(
+                        ".",
+                        "Foo",
+                        PipeDirection.In, PipeOptions.None,
+                        TokenImpersonationLevel.Impersonation);
+
+                TraceLogger.Debug("MessageListener.SubScribe.Connect");
                 await pipeClient.ConnectAsync();
+                TraceLogger.Debug("MessageListener.SubScribe.Connected");
                 try
                 {
                     do
@@ -35,13 +37,13 @@ namespace ApiViewer.Pipes
                         }
                         catch (Exception e)
                         {
-                            // Log deserialize error here.
+                            TraceLogger.Error($"MessageListener.SubScribe.Deserialize:{e}");
                         }
                     } while (true);
                 }
                 catch (Exception e)
                 {
-                    //MessageBox.Show(e.ToString());
+                    TraceLogger.Error($"MessageListener.SubScribe.Read:{e}");
                 }
             } while (true);
         }

@@ -31,7 +31,6 @@ class Command:
             collectlog(api.response)
             pprint(response)
         except Exception as e:
-            pprint(api.request)
             collectlog(api.response)
             raise
         finally:

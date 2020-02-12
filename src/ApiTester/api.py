@@ -7,14 +7,14 @@ class Api:
         self.url = url
         self.access_token = access_token
         self.data = data
-        self.response = {}
+        self.response = None
 
     def get(self):
         headers={'Content-Type':'application/json',
                 'Authorization': 'Bearer {}'.format(self.access_token)}
         pprint(headers)
         response = requests.get(self.url, headers=headers, verify=False)
-        self.request = response
+        self.response = response
         if response.status_code == 200:
             return response.json()
         raise ApiException(response.status_code, response.content)

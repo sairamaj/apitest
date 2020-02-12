@@ -57,8 +57,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ApiInfo.cs" />
+    <Compile Include="Model\Request.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Pipes\FakeMessageListener.cs" />
+    <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ApiInfoViewModel.cs" />
     <Compile Include="Views\ApiInfoView.xaml.cs">

@@ -1,6 +1,8 @@
-from pipeserver import pipeserver
+from pipeserver import PipeServer
 from pprint import pprint
 import json
+
+pipeServer = PipeServer()
 
 def collectlog(response):
     pprint('_________________')
@@ -8,7 +10,7 @@ def collectlog(response):
     pprint('_________________')
     pprint(response.request.__dict__)
     pprint('_________________')
-    pipeserver(json.dumps({
+    pipeServer.send(json.dumps({
         "url" : response.request.url,
         "method" : response.request.method,
         "statuscode" : response.reason,

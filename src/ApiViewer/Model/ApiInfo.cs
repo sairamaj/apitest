@@ -10,6 +10,8 @@ namespace ApiViewer.Model
         public string Method { get; set; }
         public HttpStatusCode StatusCode { get; set; } 
         public int TimeTakenInMilliseconds { get; set; }
+        public Request Request { get; set; }
+        public Response Response { get; set; }
 
         public string RelativeUrl
         {
