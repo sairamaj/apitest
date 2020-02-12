@@ -1,0 +1,8 @@
+{
+    "url": "https://login.microsoftonline.com/a172c77d-91cf-47f0-a813-30aee710c0dc/oauth2/token",
+    "body": {
+        "grant_type": "client_credentials",
+        "client_id": "<userinput>",
+        "client_secret": "<userinput>"
+    }
+}
