@@ -5,12 +5,14 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ApiViewer.Model;
+using Newtonsoft.Json;
 
 namespace ApiViewer.Pipes
 {
     internal class MessageListener : IMessageListener
     {
-        public async Task SubScribe(Action<string> onMessage)
+        public async Task SubScribe(Action<ApiInfo> onMessage)
         {
             var pipeClient =
                 new NamedPipeClientStream(
@@ -27,7 +29,14 @@ namespace ApiViewer.Pipes
                     do
                     {
                         var data = await new StreamString(pipeClient).ReadStringAsync();
-                        onMessage(data);
+                        try
+                        {
+                            onMessage(JsonConvert.DeserializeObject<ApiInfo>(data));
+                        }
+                        catch (Exception e)
+                        {
+                            // Log deserialize error here.
+                        }
                     } while (true);
                 }
                 catch (Exception e)

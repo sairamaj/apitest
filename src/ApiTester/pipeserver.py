@@ -16,13 +16,13 @@ def pipeserver(message):
         None)
     try:
         print("waiting for client")
-        win32pipe.ConnectNamedPipe(pipe, None)
+        # win32pipe.ConnectNamedPipe(pipe, None)
         print("got client")
 
         some_data = struct.pack('I', len(message)) + str.encode(message,'utf-8')
         print(type(some_data))
         print(some_data)
-        win32file.WriteFile(pipe, some_data)
+        #  win32file.WriteFile(pipe, some_data)
     except Exception as e:
         print(f'not connected {e}')
     finally:

@@ -6,7 +6,7 @@ from transform import transform
 from command import Command
 from ui import *
 import argparse
-from pipeserver import pipeserver
+
 
 # Load file
 parser = argparse.ArgumentParser()
@@ -55,7 +55,6 @@ def runInteractive():
             except ValueError as v:
                 printError(str(v))
             except ApiException as ae:
-                pipeserver(str(ae))
                 printError(str(ae))
 
 # Run batch

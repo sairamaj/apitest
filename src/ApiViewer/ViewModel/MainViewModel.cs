@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using ApiViewer.Pipes;
+using Wpf.Util.Core;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiViewer.ViewModel
 {
     class MainViewModel : CoreViewModel
     {
+
         public MainViewModel(IMessageListener listener)
         {
-            this.Text = "initial text";
+            this.ApiInfoViewModels = new SafeObservableCollection<ApiInfoViewModel>();
             try
             {
                 listener.SubScribe(s =>
                 {
-                    this.Text += s;
-                    OnPropertyChanged(() => this.Text);
+                    // OnPropertyChanged(() => this.Text);
+                    this.ApiInfoViewModels.Add(new ApiInfoViewModel(s));
                 });
             }
             catch (Exception e)
@@ -23,6 +26,6 @@ namespace ApiViewer.ViewModel
                 MessageBox.Show(e.ToString());
             }
         }
-        public string Text { get; set; }
+        public ObservableCollection<ApiInfoViewModel> ApiInfoViewModels { get; set; }
     }
 }

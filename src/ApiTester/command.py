@@ -2,6 +2,8 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
+from logcollector import collectlog
+import json
 
 class Command:
     def __init__(self):
@@ -17,12 +19,21 @@ class Command:
     def accessToken(self, url, data):
         oauth = OAuth(url, data)
         response = oauth.getAccessToken()
+        collectlog(oauth.response)
         pprint(response)
         self.apiResponse.access_token = response["access_token"]
         pprint(self.apiResponse.access_token)
 
     def executeApi(self, url, data):
         api = Api(url, self.apiResponse.access_token, data)
-        response = api.get()
-        pprint(response)
+        try:
+            response = api.get()
+            collectlog(api.response)
+            pprint(response)
+        except Exception as e:
+            pprint(api.request)
+            collectlog(api.response)
+            raise
+        finally:
+            pass
 

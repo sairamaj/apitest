@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApiViewer"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:views="clr-namespace:ApiViewer.Views"
         mc:Ignorable="d"
         Title="Api Viewer" Height="450" Width="800">
     <Grid>
-        <TextBox Text="{Binding Text}" TextWrapping="Wrap" Height="400"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <views:ApiInfoView Grid.Row="0" Grid.Column="0" />
+        <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="Request details here" />
     </Grid>
 </mah:MetroWindow>
