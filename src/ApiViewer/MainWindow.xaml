@@ -10,13 +10,13 @@
         Title="Api Viewer" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="3"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <views:ApiInfoView Grid.Row="0" Grid.Column="0" />
         <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Request details here" />
+        <views:RequestResponseContainerView Grid.Row="0" Grid.Column="2"/>
     </Grid>
 </mah:MetroWindow>

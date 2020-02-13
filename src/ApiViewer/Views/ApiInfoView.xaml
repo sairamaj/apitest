@@ -15,23 +15,35 @@
 
     <Grid Margin="0,20,0,0">
         <StackPanel>
-            <ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0">
+            <ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0" SelectedItem="{Binding SelectedApiInfoViewModel}">
                 <ListView.View >
                     <GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
                         <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0"/>
-                                        <TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0"/>
-                                        <TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0"/>
-                                        <TextBlock  Text="{Binding ApiInfo.TimeTakenInMilliseconds}" Margin="3,0,0,0"/>
+                                        <TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
+                                        <TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="80"/>
+                                        <TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="40"/>
+                                        <TextBlock  Text="{Binding ApiInfo.TimeTakenInMilliseconds}" Margin="3,0,0,0" Width="40"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                     </GridView>
                 </ListView.View>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        <Setter Property="ListViewItem.Foreground" Value="Red" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ApiInfo.StatusCode}" Value="OK">
+                                <Setter Property="ListViewItem.Foreground" Value="Green" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </StackPanel>
     </Grid>

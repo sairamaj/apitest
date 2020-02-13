@@ -10,6 +10,7 @@ class PipeServer():
 
     def send(self, message):
         try:
+            # self.saveToFile(message)
             win32pipe.ConnectNamedPipe(self.pipe, None)
             some_data = struct.pack('I', len(message)) + str.encode(message,'utf-8')
             print(type(some_data))
@@ -33,5 +34,9 @@ class PipeServer():
     
     def close(self):
         win32file.CloseHandle(self.pipe)
+
+    def saveToFile(self, data):
+        with open(r'c:\temp\temp\send.json', 'w') as out_file:
+            out_file.write(data)
 
 

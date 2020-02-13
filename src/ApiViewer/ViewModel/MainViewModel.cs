@@ -9,6 +9,7 @@ namespace ApiViewer.ViewModel
 {
     class MainViewModel : CoreViewModel
     {
+        private ApiInfoViewModel _seleApiInfoViewModel;
 
         public MainViewModel(IMessageListener listener)
         {
@@ -27,5 +28,24 @@ namespace ApiViewer.ViewModel
             }
         }
         public ObservableCollection<ApiInfoViewModel> ApiInfoViewModels { get; set; }
+
+        public ApiInfoViewModel SelectedApiInfoViewModel
+        {
+            get => _seleApiInfoViewModel;
+            set
+            {
+                this._seleApiInfoViewModel = value;
+                this.CurrentRequestViewModel = new RequestViewModel(this._seleApiInfoViewModel.ApiInfo.Request);
+                this.CurrentResponseViewModel = new ResponseViewModel(this._seleApiInfoViewModel.ApiInfo.Response);
+
+                OnPropertyChanged(()=> this.CurrentRequestViewModel);
+                OnPropertyChanged(() => this.CurrentResponseViewModel);
+                //this.CurrentRequestViewModel.Update();
+                //this.CurrentResponseViewModel.Update();
+            }
+        }
+
+        public RequestViewModel CurrentRequestViewModel { get; set; }
+        public ResponseViewModel CurrentResponseViewModel { get; set; }
     }
 }

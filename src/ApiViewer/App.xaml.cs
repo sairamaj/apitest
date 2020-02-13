@@ -2,8 +2,11 @@
 using System.Diagnostics;
 using System.Windows;
 using ApiViewer.Pipes;
+using ApiViewer.Properties;
 using ApiViewer.ViewModel;
+using Autofac;
 using Wpf.Util.Core.Extensions;
+using Wpf.Util.Core.Registration;
 
 namespace ApiViewer
 {
@@ -23,9 +26,12 @@ namespace ApiViewer
 
             try
             {
+                var builder = new ContainerBuilder();
+                builder.RegisterType<MessageListener>().As<IMessageListener>();
+                var serviceLocator = ServiceLocatorFactory.Create(builder);
                 var win = new MainWindow()
                 {
-                    DataContext = new MainViewModel(new MessageListener())
+                    DataContext = new MainViewModel(serviceLocator.Resolve<IMessageListener>())
                 };
 
                 win.ShowDialog();

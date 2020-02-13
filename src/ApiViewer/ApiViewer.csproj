@@ -63,8 +63,19 @@
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ApiInfoViewModel.cs" />
+    <Compile Include="ViewModel\ResponseViewModel.cs" />
+    <Compile Include="ViewModel\RequestViewModel.cs" />
     <Compile Include="Views\ApiInfoView.xaml.cs">
       <DependentUpon>ApiInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequestResponseContainerView.xaml.cs">
+      <DependentUpon>RequestResponseContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequestView.xaml.cs">
+      <DependentUpon>RequestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResponseView.xaml.cs">
+      <DependentUpon>ResponseView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -81,6 +92,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ApiInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequestResponseContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResponseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,6 +147,9 @@
     <PackageReference Include="Wpf.Util.Core">
       <Version>1.0.0-alpha1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AvalonJsonSyntax.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
