@@ -8,12 +8,13 @@ import json
 class Command:
     def __init__(self):
         self.apiResponse = ApiResponse()
-        self.commands = {'accesstoken': self.accessToken, 'tips': self.executeApi}
+        self.commands = {'accesstoken': self.accessToken}
 
     def execute(self, command, url, data):
         executor = self.commands.get(command, None)
         if executor == None:
-            raise ValueError(f"{command} not found.")
+            # raise ValueError(f"{command} not found.")
+            executor = self.executeApi 
         executor(url, data)
 
     def accessToken(self, url, data):

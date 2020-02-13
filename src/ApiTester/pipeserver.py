@@ -10,7 +10,7 @@ class PipeServer():
 
     def send(self, message):
         try:
-            # self.saveToFile(message)
+            self.saveToFile(message)
             win32pipe.ConnectNamedPipe(self.pipe, None)
             some_data = struct.pack('I', len(message)) + str.encode(message,'utf-8')
             print(type(some_data))

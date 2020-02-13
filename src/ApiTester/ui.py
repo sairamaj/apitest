@@ -12,3 +12,6 @@ def printSuccess(str1):
 def printPrompt(str1):
     print(getattr(Fore, 'CYAN') + str1 + Fore.WHITE, end='')
     
+def getUserInput(prompt):
+    printPrompt(prompt)
+    return input()

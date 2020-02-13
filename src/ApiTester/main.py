@@ -4,7 +4,8 @@ from exceptions import ApiException
 from pprint import pprint
 from transform import transform
 from command import Command
-from ui import *
+from ui import printError
+from ui import printPrompt
 import argparse
 
 
@@ -14,6 +15,7 @@ parser.add_argument("--batch", help="Batch file name")
 parser.add_argument("--config", help="Config File")
 parser.add_argument("--client_id", help="Client id")
 parser.add_argument("--client_secret", help="Client secret")
+parser.add_argument("--claims", help="Claims temporary")
 args = parser.parse_args()
 
 if args.config == None:
@@ -30,6 +32,7 @@ def executeCommand(command):
     data = apiConfig.get("body", None)
     if data != None:
         data = transform(data, args.__dict__)
+    print('url ->', apiConfig["url"])
     cmd.execute(command, apiConfig["url"], data)
 
 def runBatch(fileName):

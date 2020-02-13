@@ -23,7 +23,7 @@ namespace ApiViewer.Pipes
                     {
                         Url = "http://localhost:3000/5001",
                         Method = "Get",
-                        StatusCode = HttpStatusCode.Created,
+                        StatusCode = HttpStatusCode.Created.ToString(),
                     });
 
                     Thread.Sleep(2000);

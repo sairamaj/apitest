@@ -2,8 +2,8 @@
     "accesstoken": {
         "url": "https://sairamaj-eval-test.apigee.net/oauth/client_credential/accesstoken?grant_type=client_credentials",
         "body": {
-            "client_id": "<userinput>",
-            "client_secret": "<userinput>"
+            "client_id": "$userinput",
+            "client_secret": "$userinput"
         }
     },
     "tips": {
