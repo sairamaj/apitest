@@ -30,7 +30,9 @@ cmd = Command()
 def executeCommand(command):
     apiConfig = config.get(command)
     data = apiConfig.get("body", None)
+    print('data ', data)
     if data != None:
+        print('going to transform')
         data = transform(data, args.__dict__)
     print('url ->', apiConfig["url"])
     cmd.execute(command, apiConfig["url"], data)

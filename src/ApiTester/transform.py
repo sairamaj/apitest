@@ -11,12 +11,18 @@ def transform(inputs, argItems):
     for k,v in inputs.items():
         inputs[k] = str(v)  
     
+
+    print('argItems -> ', argItems)    
+    print('inputs -> ', inputs)    
     for k,v in inputs.items():
-        if '$userinput' in v and k in argItems:
+        if '$userinput' in v and k in argItems and argItems[k] != None:
+            print('k-->', k)
+            print('k in argItems-->', k in argItems)
             t = Template(str(v))
             userinput = argItems[k]
             inputs[k] = t.substitute(userinput=userinput)
 
+    print('inputs 2-> ', inputs)    
     for k,v in inputs.items():
         if '$userinput' in v:
             t = Template(str(v))
