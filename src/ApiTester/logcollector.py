@@ -16,6 +16,7 @@ def collectlog(response):
         "statuscode" : response.reason,
         "timetaken" : response.elapsed.microseconds,
         "request": { 
+            "url" : response.request.url,
             "body" : response.request.body,
             "headers": dict(response.request.headers)
             },

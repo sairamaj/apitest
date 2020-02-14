@@ -5,6 +5,7 @@ namespace ApiViewer.Model
 {
     public class Request
     {
+        public string Url { get; set; }
         public string Body { get; set; }
         public IDictionary<string, string> Headers { get; set; }
         public string HeadersAsString
@@ -22,10 +23,7 @@ namespace ApiViewer.Model
 
         public string RequestData
         {
-            get
-            {
-                return $"Headers:\r\n{this.HeadersAsString}\r\nBody:\r\n{this.Body}";
-            }
+            get => $"Url:{this.Url}\r\n\r\nHeaders:\r\n{this.HeadersAsString}\r\nBody:\r\n{this.Body}";
             set
             {
 
