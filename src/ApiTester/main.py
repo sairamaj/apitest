@@ -15,8 +15,7 @@ parser.add_argument("--batch", help="Batch file name")
 parser.add_argument("--config", help="Config File")
 parser.add_argument("--client_id", help="Client id")
 parser.add_argument("--client_secret", help="Client secret")
-parser.add_argument("--claims", help="Claims temporary")
-args = parser.parse_args()
+args, unknown = parser.parse_known_args()
 
 if args.config == None:
     printError('Config file is required . [ex: main.py --config apigee.json] ')
@@ -25,6 +24,10 @@ if args.config == None:
 
 config = config.Config(args.config)
 
+
+# convert unknowns
+items = {x.split('=')[0][2:]: x.split('=')[-1] for x in unknown if x[:2] == '--'}
+commandParameters = dict(args.__dict__, **items)
 cmd = Command()
 
 def executeCommand(command):
@@ -33,7 +36,7 @@ def executeCommand(command):
     print('data ', data)
     if data != None:
         print('going to transform')
-        data = transform(data, args.__dict__)
+        data = transform(data, commandParameters)
     print('url ->', apiConfig["url"])
     cmd.execute(command, apiConfig["url"], data)
 
@@ -52,7 +55,7 @@ def runInteractive():
         printPrompt(">>")
         command = input("")
 
-        if command == "quit":
+        if command == "quit" or command =='q':
             quit = True
         else:
             try:

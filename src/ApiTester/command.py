@@ -19,11 +19,14 @@ class Command:
 
     def accessToken(self, url, data):
         oauth = OAuth(url, data)
-        response = oauth.getAccessToken()
-        collectlog(oauth.response)
-        pprint(response)
-        self.apiResponse.access_token = response["access_token"]
-        pprint(self.apiResponse.access_token)
+        try:
+            response = oauth.getAccessToken()
+            collectlog(oauth.response)
+            pprint(response)
+            self.apiResponse.access_token = response["access_token"]
+        except Exception as e:
+            collectlog(oauth.response)
+            raise
 
     def executeApi(self, url, data):
         api = Api(url, self.apiResponse.access_token, data)
