@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using ApiViewer.Pipes;
 using Wpf.Util.Core;
+using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiViewer.ViewModel
@@ -26,8 +28,14 @@ namespace ApiViewer.ViewModel
             {
                 MessageBox.Show(e.ToString());
             }
+
+            this.ClearCommand = new DelegateCommand(() =>
+            {
+                this.ApiInfoViewModels.Clear();
+            });
         }
         public ObservableCollection<ApiInfoViewModel> ApiInfoViewModels { get; set; }
+        public ICommand ClearCommand { get; set; }
 
         public ApiInfoViewModel SelectedApiInfoViewModel
         {

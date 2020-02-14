@@ -4,12 +4,14 @@ import json
 
 pipeServer = PipeServer()
 
-def collectlog(response):
+def debug(response):
     pprint('_________________')
     pprint(response.__dict__)
     pprint('________request.__dict___________')
     pprint(response.request.__dict__)
     pprint('_________________')
+
+def collectlog(response):
     pipeServer.send(json.dumps({
         "url" : response.request.url,
         "method" : response.request.method,

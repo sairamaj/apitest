@@ -15,6 +15,9 @@
 
     <Grid Margin="0,20,0,0">
         <StackPanel>
+            <StackPanel>
+                <Button Command="{Binding ClearCommand}" Content="Clear" Width="80" HorizontalAlignment="Right" Margin="0,0,3,0"/>
+            </StackPanel>
             <ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0" SelectedItem="{Binding SelectedApiInfoViewModel}">
                 <ListView.View >
                     <GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">

@@ -5,19 +5,20 @@ from api import Api
 from logcollector import collectlog
 import json
 
+
 class Command:
     def __init__(self):
         self.apiResponse = ApiResponse()
         self.commands = {'accesstoken': self.accessToken}
 
-    def execute(self, command, url, data):
+    def execute(self, command, url, data, headers):
         executor = self.commands.get(command, None)
         if executor == None:
             # raise ValueError(f"{command} not found.")
-            executor = self.executeApi 
-        executor(url, data)
+            executor = self.executeApi
+        executor(url, data, headers)
 
-    def accessToken(self, url, data):
+    def accessToken(self, url, data, headers):
         oauth = OAuth(url, data)
         try:
             response = oauth.getAccessToken()
@@ -28,8 +29,8 @@ class Command:
             collectlog(oauth.response)
             raise
 
-    def executeApi(self, url, data):
-        api = Api(url, self.apiResponse.access_token, data)
+    def executeApi(self, url, data, headers):
+        api = Api(url, self.apiResponse.access_token, data, headers)
         try:
             response = api.get()
             collectlog(api.response)
@@ -39,4 +40,3 @@ class Command:
             raise
         finally:
             pass
-

@@ -32,13 +32,13 @@ cmd = Command()
 
 def executeCommand(command):
     apiConfig = config.get(command)
-    data = apiConfig.get("body", None)
+    data = apiConfig.get('body', None)
     print('data ', data)
     if data != None:
         print('going to transform')
         data = transform(data, commandParameters)
-    print('url ->', apiConfig["url"])
-    cmd.execute(command, apiConfig["url"], data)
+    print('url ->', apiConfig['url'])
+    cmd.execute(command, apiConfig['url'], data, apiConfig.get('headers',None))
 
 def runBatch(fileName):
     print(f"executing {fileName}")

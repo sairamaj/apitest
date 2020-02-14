@@ -8,6 +8,10 @@
     },
     "tips": {
         "url": "http://sairamaj-eval-test.apigee.net/saitechtips",
+        "headers": {
+            "header1": "val1",
+            "header2": "val2"
+        },
         "requirements": {
             "accesstoken": "true"
         }
