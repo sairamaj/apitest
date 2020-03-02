@@ -27,7 +27,8 @@ def updateVariables(inputs, getFunc):
     return inputs
 
 def transform(inputs, argItems):
-
+    if inputs == None:
+        return None
     for k,v in inputs.items():
         inputs[k] = str(v)  
     inputs = updateVariables(inputs, lambda v: argItems.get(v,None))

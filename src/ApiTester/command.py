@@ -11,15 +11,18 @@ class Command:
         self.apiResponse = ApiResponse()
         self.commands = {'accesstoken': self.accessToken}
 
-    def execute(self, command, url, data, headers):
-        executor = self.commands.get(command, None)
+    def execute(self, apiInfo):
+        print('_________________')
+        print(f"\t{apiInfo.route}")
+        print('_________________')
+        executor = self.commands.get(apiInfo.api, None)
         if executor == None:
             # raise ValueError(f"{command} not found.")
             executor = self.executeApi
-        executor(url, data, headers)
+        executor(apiInfo)
 
-    def accessToken(self, url, data, headers):
-        oauth = OAuth(url, data)
+    def accessToken(self, apiInfo):
+        oauth = OAuth(apiInfo)
         try:
             response = oauth.getAccessToken()
             collectlog(oauth.response)
@@ -29,8 +32,8 @@ class Command:
             collectlog(oauth.response)
             raise
 
-    def executeApi(self, url, data, headers):
-        api = Api(url, self.apiResponse.access_token, data, headers)
+    def executeApi(self, apiInfo):
+        api = Api(apiInfo, self.apiResponse.access_token)
         try:
             response = api.get()
             collectlog(api.response)

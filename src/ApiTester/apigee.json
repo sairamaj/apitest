@@ -1,19 +1,25 @@
 {
     "accesstoken": {
-        "url": "https://sairamaj-eval-test.apigee.net/oauth/client_credential/accesstoken?grant_type=client_credentials",
-        "body": {
-            "client_id": "{{client_id}}",
-            "client_secret": "{{client_secret}}"
+        "baseurl": "https://sairamaj-eval-test.apigee.net/oauth/client_credential/accesstoken?grant_type=client_credentials",
+        "_": {
+            "path": "",
+            "body": {
+                "client_id": "{{client_id}}",
+                "client_secret": "{{client_secret}}"
+            }
         }
     },
     "tips": {
-        "url": "http://sairamaj-eval-test.apigee.net/saitechtips",
-        "headers": {
-            "header1": "val1",
-            "header2": "val2"
-        },
-        "requirements": {
-            "accesstoken": "true"
+        "baseurl": "http://sairamaj-eval-test.apigee.net",
+        "_": {
+            "path": "/saitechtips",
+            "headers": {
+                "header1": "val1",
+                "header2": "val2"
+            },
+            "requirements": {
+                "accesstoken": "true"
+            }
         }
     }
 }
