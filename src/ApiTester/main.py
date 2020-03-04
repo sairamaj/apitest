@@ -30,46 +30,10 @@ items = {x.split('=')[0][2:]: x.split('=')[-1] for x in unknown if x[:2] == '--'
 commandParameters = dict(args.__dict__, **items)
 cmd = Command()
 
-# def executeCommand(command):
-#     apiConfig = config.get(command)
-#     data = apiConfig.get('body', None)
-#     print('data ', data)
-#     if data != None:
-#         print('going to transform')
-#         data = transform(data, commandParameters)
-#     print('url ->', apiConfig['url'])
-#     cmd.execute(command, apiConfig['url'], data, apiConfig.get('headers',None))
-
-# def runBatch(fileName):
-#     print(f"executing {fileName}")
-#     with open(fileName, "r") as file:
-#         for line in file.readlines():
-#             command = line.rstrip("\n")
-#             executeCommand(command)
-
-# def runInteractive():
-#     # Go interactive mode
-#     quit = False
-#     while quit == False:
-#         pprint(config.apis())
-#         printPrompt(">>")
-#         command = input("")
-
-#         if command == "quit" or command =='q':
-#             quit = True
-#         else:
-#             try:
-#                 executeCommand(command)
-#             except ValueError as v:
-#                 printError(str(v))
-#             except ApiException as ae:
-#                 printError(str(ae))
-
+config = Config(args.config)
+session = Session(config.apis(), commandParameters)
 # Run batch
 if args.batch != None:
-    #runBatch(args.batch)
-    pass
+    session.executeBatch(args.batch)
 else:
-    config = Config(args.config)
-    session = Session(config.apis(), commandParameters)
     session.start()

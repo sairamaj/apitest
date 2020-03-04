@@ -1,11 +1,13 @@
 import sys
 from transform import transform
+from transform import transformString
 from config import Config
 from ui import printPrompt
 from command import Command
 from apiinfo import ApiInfo
 from ui import printError
 from exceptions import ApiException
+
 
 class Session:
     def __init__(self, apis, commandParameters):
@@ -24,19 +26,7 @@ class Session:
                 quit = True
             else:
                 print('execute:', command)
-                route, path = self.parseCommand(command)
-                apiInfos = self.apis.get(route, None)
-                if apiInfos == None:
-                    print(f"{route} not found")
-                else:
-                    print(apiInfos)
-                    foundApiInfo = apiInfos.get(path, None)
-                    if foundApiInfo == None:
-                        print('not found')
-                    else:
-                        print(
-                            f"--->found:{type(foundApiInfo)}: url:{foundApiInfo.baseUrl}:  path:{foundApiInfo.path}")
-                        self.executeCommand(foundApiInfo, self.commandParameters)
+                self.executeCommand(command)
 
     def display(self):
         for name, apiInfos in self.apis.items():
@@ -50,9 +40,25 @@ class Session:
             return parts[0], parts[1]
         return parts[0], "_"
 
-    def executeCommand(self, apiInfo, commandParameters):
+    def executeCommand(self, command):
+        route, path = self.parseCommand(command)
+        apiInfos = self.apis.get(route, None)
+        if apiInfos == None:
+            print(f"{route} not found")
+        else:
+            print(apiInfos)
+            foundApiInfo = apiInfos.get(path, None)
+            if foundApiInfo == None:
+                print('not found')
+            else:
+                print(
+                    f"--->found:{type(foundApiInfo)}: url:{foundApiInfo.baseUrl}:  path:{foundApiInfo.path}")
+                self.execute(foundApiInfo, self.commandParameters)
+
+    def execute(self, apiInfo, commandParameters):
         try:
             data = transform(apiInfo.body, commandParameters)
+            path = transformString('path', apiInfo.path, commandParameters)
             #cmd.execute(command, apiConfig['url'], data, apiConfig.get('headers',None))
             print(f"executing: {apiInfo.route}")
             print(f"path: {apiInfo.path}")
@@ -61,12 +67,19 @@ class Session:
             print(f"headers: {apiInfo.headers}")
 
             apiInfoWithData = ApiInfo(
-                 apiInfo.api, apiInfo.route, apiInfo.path, apiInfo.baseUrl, data, apiInfo.headers)
+                apiInfo.api, apiInfo.route, path, apiInfo.baseUrl, data, apiInfo.headers)
             self.commandExecutor.execute(apiInfoWithData)
         except ValueError as v:
             printError(str(v))
         except ApiException as ae:
             printError(str(ae))
+
+    def executeBatch(self, fileName):
+        with open(fileName, "r") as file:
+            for line in file.readlines():
+                command = line.rstrip("\n")
+                if len(command) > 0 and command.startswith("#") == False:
+                    self.executeCommand(command)
 
 
 if __name__ == "__main__":

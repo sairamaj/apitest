@@ -34,3 +34,14 @@ def transform(inputs, argItems):
     inputs = updateVariables(inputs, lambda v: argItems.get(v,None))
     inputs = updateVariables(inputs, getUserInput)  
     return inputs
+
+def transformString(name , item, argItems):
+    if item == None:
+        return None
+    inputs = {name:item}
+    print('-------')
+    print(inputs)
+    print('-------')
+    inputs = updateVariables(inputs, lambda v: argItems.get(v,None))
+    inputs = updateVariables(inputs, getUserInput)  
+    return inputs[name]
