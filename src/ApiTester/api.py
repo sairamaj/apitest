@@ -2,7 +2,6 @@ import requests
 from exceptions import ApiException
 from pprint import pprint
 
-
 class Api:
     def __init__(self, apiInfo, access_token):
         self.apiInfo = apiInfo
@@ -13,9 +12,7 @@ class Api:
         headers = {'Content-Type': 'application/json',
                    'Authorization': 'Bearer {}'.format(self.access_token)}
         headers = dict(headers, **self.apiInfo.headers)
-        pprint(headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
-        print(f"execuging --> {url}")
         response = requests.get(
             url, headers=headers, verify=False)
         self.response = response

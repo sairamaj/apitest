@@ -11,7 +11,7 @@ namespace ApiViewer.ViewModel
 {
     class MainViewModel : CoreViewModel
     {
-        private ApiInfoViewModel _seleApiInfoViewModel;
+        private ApiInfoViewModel _selectApiInfoViewModel;
 
         public MainViewModel(IMessageListener listener)
         {
@@ -39,12 +39,12 @@ namespace ApiViewer.ViewModel
 
         public ApiInfoViewModel SelectedApiInfoViewModel
         {
-            get => _seleApiInfoViewModel;
+            get => _selectApiInfoViewModel;
             set
             {
-                this._seleApiInfoViewModel = value;
-                this.CurrentRequestViewModel = new RequestViewModel(this._seleApiInfoViewModel.ApiInfo.Request);
-                this.CurrentResponseViewModel = new ResponseViewModel(this._seleApiInfoViewModel.ApiInfo.Response);
+                this._selectApiInfoViewModel = value;
+                this.CurrentRequestViewModel = new RequestViewModel(this._selectApiInfoViewModel.ApiInfo.Request);
+                this.CurrentResponseViewModel = new ResponseViewModel(this._selectApiInfoViewModel.ApiInfo.Response);
 
                 OnPropertyChanged(()=> this.CurrentRequestViewModel);
                 OnPropertyChanged(() => this.CurrentResponseViewModel);

@@ -12,9 +12,6 @@ class Command:
         self.commands = {'accesstoken': self.accessToken}
 
     def execute(self, apiInfo):
-        print('_________________')
-        print(f"\t{apiInfo.route}")
-        print('_________________')
         executor = self.commands.get(apiInfo.api, None)
         if executor == None:
             # raise ValueError(f"{command} not found.")

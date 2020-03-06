@@ -9,7 +9,6 @@ class Config:
 
     def get(self, name):
         val = self.config.get(name, None)
-        print(f"val is: ${val}")
         if val == None:
             raise ValueError(f"{name} not found")
         return val
