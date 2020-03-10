@@ -69,14 +69,16 @@ class Session:
             apiInfoWithData = ApiInfo(
                 apiInfo.api, apiInfo.route, path, apiInfo.baseUrl, data, apiInfo.headers)
             jsonData = ""
-            with open(r'C:\dev\sairamaj\apiconsolecoasp\console\resources\users.mypreferences.json', 'r') as in_file:
+            with open(parser.fileName, 'r') as in_file:
                 jsonData = json.load(in_file)
             self.commandExecutor.execute(apiInfoWithData, method = parser.method, json = jsonData)
         except ValueError as v:
             printError(str(v))
         except ApiException as ae:
             printError(str(ae))
-
+        except Exception as e:
+            printError(str(e))
+            
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:
             for line in file.readlines():
