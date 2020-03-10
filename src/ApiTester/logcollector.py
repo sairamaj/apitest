@@ -6,12 +6,24 @@ pipeServer = PipeServer()
 
 def debug(response):
     pprint('_________________')
+    pprint(response)
     pprint(response.__dict__)
     pprint('________request.__dict___________')
     pprint(response.request.__dict__)
     pprint('_________________')
 
 def collectlog(response):
+    debug(response)
+    print('_____body______')
+    print(response.request.body)
+    print('___________')
+
+    bodyString = response.request.body
+    print(f"Type:{type(bodyString)}")
+
+    if isinstance(bodyString, bytes):
+        bodyString = response.request.body.decode("utf-8")
+
     pipeServer.send(json.dumps({
         "url" : response.request.url,
         "method" : response.request.method,
@@ -19,7 +31,7 @@ def collectlog(response):
         "timetaken" : response.elapsed.microseconds,
         "request": { 
             "url" : response.request.url,
-            "body" : response.request.body,
+            "body" : bodyString,
             "headers": dict(response.request.headers)
             },
         "response" : {

@@ -1,4 +1,5 @@
 import sys
+import json
 from transform import transform
 from transform import transformString
 from config import Config
@@ -9,7 +10,7 @@ from command import Command
 from apiinfo import ApiInfo
 from ui import printError
 from exceptions import ApiException
-
+from inputparser import InputParser
 
 class Session:
     def __init__(self, apis, commandParameters):
@@ -23,12 +24,14 @@ class Session:
         while quit == False:
             printPrompt(">>")
             command = input("")
-            if command == "quit" or command == 'q':
+            parser = InputParser()
+            parser.parse(command)
+            if parser.route == "quit" or parser.route == 'q':
                 quit = True
-            if command.startswith('help'):
-                self.executeHelp(command)
+            if parser.route.startswith('help'):
+                self.executeHelp(parser)
             else:
-                self.executeCommand(command)
+                self.executeCommand(parser)
 
     def display(self):
         print()
@@ -47,32 +50,28 @@ class Session:
         print('help.routename.pathname route path.')
         print('-----------------------')
 
-    def parseCommand(self, command):
-        parts = command.split('.')
-        if len(parts) > 1:
-            return parts[0], parts[1]
-        return parts[0], "_"
-
-    def executeCommand(self, command):
-        route, path = self.parseCommand(command)
-        apiInfos = self.apis.get(route, None)
+    def executeCommand(self, parser):
+        apiInfos = self.apis.get(parser.route, None)
         if apiInfos == None:
-            print(f"{route} not found")
+            print(f"{parser.route} not found")
         else:
-            foundApiInfo = apiInfos.get(path, None)
+            foundApiInfo = apiInfos.get(parser.path, None)
             if foundApiInfo == None:
                 print('not found')
             else:
-                self.execute(foundApiInfo, self.commandParameters)
+                self.execute(foundApiInfo, parser, self.commandParameters)
 
-    def execute(self, apiInfo, commandParameters):
+    def execute(self, apiInfo, parser, commandParameters):
         try:
             data = transform(apiInfo.body, commandParameters)
             path = transformString('path', apiInfo.path, commandParameters)
 
             apiInfoWithData = ApiInfo(
                 apiInfo.api, apiInfo.route, path, apiInfo.baseUrl, data, apiInfo.headers)
-            self.commandExecutor.execute(apiInfoWithData)
+            jsonData = ""
+            with open(r'C:\dev\sairamaj\apiconsolecoasp\console\resources\users.mypreferences.json', 'r') as in_file:
+                jsonData = json.load(in_file)
+            self.commandExecutor.execute(apiInfoWithData, method = parser.method, json = jsonData)
         except ValueError as v:
             printError(str(v))
         except ApiException as ae:
@@ -86,33 +85,31 @@ class Session:
                     self.executeCommand(command)
 
     def executeHelp(self, command):
-        parts = command.split('.')
-        if len(parts) == 1:
-            self.display()
-            return
-        routeName = parts[1]
-        pathName = None
-        if len(parts) == 3:
-            pathName = parts[2]
+        self.display()
+        #     return
+        # routeName = parts[1]
+        # pathName = None
+        # if len(parts) == 3:
+        #     pathName = parts[2]
 
-        apiInfos = self.apis.get(routeName, None)    
-        if apiInfos == None:
-            print(f'{routeName} is not valid route')
-            return
-        if pathName == None:        # help for route
-            for path, apiInfo in apiInfos.items():
-                printPath(f"\t\t{path}")
-            return
-        foundApiInfo = apiInfos.get(pathName, None)
-        if foundApiInfo == None:
-            print(f'{routeName}.{pathName} is not found')
-            return
-        print(f"\t    api:{foundApiInfo.api}")
-        print(f"\t  route:{foundApiInfo.route}")
-        print(f"\t   path:{foundApiInfo.path}")
-        print(f"\tbaseUrl:{foundApiInfo.baseUrl}")
-        print(f"\t   body:{foundApiInfo.body}")
-        print(f"\theaders:{foundApiInfo.headers}")
+        # apiInfos = self.apis.get(routeName, None)    
+        # if apiInfos == None:
+        #     print(f'{routeName} is not valid route')
+        #     return
+        # if pathName == None:        # help for route
+        #     for path, apiInfo in apiInfos.items():
+        #         printPath(f"\t\t{path}")
+        #     return
+        # foundApiInfo = apiInfos.get(pathName, None)
+        # if foundApiInfo == None:
+        #     print(f'{routeName}.{pathName} is not found')
+        #     return
+        # print(f"\t    api:{foundApiInfo.api}")
+        # print(f"\t  route:{foundApiInfo.route}")
+        # print(f"\t   path:{foundApiInfo.path}")
+        # print(f"\tbaseUrl:{foundApiInfo.baseUrl}")
+        # print(f"\t   body:{foundApiInfo.body}")
+        # print(f"\theaders:{foundApiInfo.headers}")
         
 
 if __name__ == "__main__":
