@@ -1,4 +1,5 @@
 import sys
+import traceback
 import json
 from transform import transform
 from transform import transformString
@@ -65,12 +66,16 @@ class Session:
         try:
             data = transform(apiInfo.body, commandParameters)
             path = transformString('path', apiInfo.path, commandParameters)
+            baseUrl = transformString('baseUrl', apiInfo.baseUrl, commandParameters)
 
             apiInfoWithData = ApiInfo(
-                apiInfo.api, apiInfo.route, path, apiInfo.baseUrl, data, apiInfo.headers)
+                apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
             jsonData = ""
-            with open(parser.fileName, 'r') as in_file:
-                jsonData = json.load(in_file)
+            if parser.method.lower() == 'post':
+                if len(parser.fileName) == 0:
+                    raise Exception('post requires filename')
+                with open(parser.fileName, 'r') as in_file:
+                    jsonData = json.load(in_file)
             self.commandExecutor.execute(apiInfoWithData, method = parser.method, json = jsonData)
         except ValueError as v:
             printError(str(v))
@@ -78,7 +83,11 @@ class Session:
             printError(str(ae))
         except Exception as e:
             printError(str(e))
-            
+            print("Exception in user code:")
+            print ('-'*60)
+            traceback.print_exc(file=sys.stdout)
+            print ('-'*60)
+
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:
             for line in file.readlines():

@@ -8,3 +8,5 @@ class ApiInfo:
         self.headers = headers
         if self.headers == None:
             self.headers = {}   # create empty one.``
+        if self.body == None:
+            self.body = {}
