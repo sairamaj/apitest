@@ -16,6 +16,7 @@ class OAuth:
         headers = {}
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
+        print(f'>>>>>>>>>> {url}')
         response = requests.post(url, self.apiInfo.body, verify=False,headers=headers)
         self.response = response
         if response.status_code == 200:

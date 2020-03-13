@@ -13,6 +13,7 @@ from ui import printError
 from exceptions import ApiException
 from inputparser import InputParser
 
+
 class Session:
     def __init__(self, apis, commandParameters):
         self.apis = apis
@@ -66,8 +67,9 @@ class Session:
         try:
             data = transform(apiInfo.body, commandParameters)
             path = transformString('path', apiInfo.path, commandParameters)
-            baseUrl = transformString('baseUrl', apiInfo.baseUrl, commandParameters)
-
+            baseUrl = transformString(
+                'baseurl', apiInfo.baseUrl, commandParameters)
+            print(f'>>>>>>>>> {baseUrl}')
             apiInfoWithData = ApiInfo(
                 apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
             jsonData = ""
@@ -76,7 +78,8 @@ class Session:
                     raise Exception('post requires filename')
                 with open(parser.fileName, 'r') as in_file:
                     jsonData = json.load(in_file)
-            self.commandExecutor.execute(apiInfoWithData, method = parser.method, json = jsonData)
+            self.commandExecutor.execute(
+                apiInfoWithData, method=parser.method, json=jsonData)
         except ValueError as v:
             printError(str(v))
         except ApiException as ae:
@@ -84,16 +87,18 @@ class Session:
         except Exception as e:
             printError(str(e))
             print("Exception in user code:")
-            print ('-'*60)
+            print('-'*60)
             traceback.print_exc(file=sys.stdout)
-            print ('-'*60)
+            print('-'*60)
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
-                    self.executeCommand(command)
+                    parser = InputParser()
+                    parser.parse(command)
+                    self.executeCommand(parser)
 
     def executeHelp(self, command):
         self.display()
@@ -103,7 +108,7 @@ class Session:
         # if len(parts) == 3:
         #     pathName = parts[2]
 
-        # apiInfos = self.apis.get(routeName, None)    
+        # apiInfos = self.apis.get(routeName, None)
         # if apiInfos == None:
         #     print(f'{routeName} is not valid route')
         #     return
@@ -121,7 +126,7 @@ class Session:
         # print(f"\tbaseUrl:{foundApiInfo.baseUrl}")
         # print(f"\t   body:{foundApiInfo.body}")
         # print(f"\theaders:{foundApiInfo.headers}")
-        
+
 
 if __name__ == "__main__":
     config = Config(sys.argv[1])

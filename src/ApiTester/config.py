@@ -25,11 +25,15 @@ class Config:
             for route in self.config[item]:
                 if route in ['baseurl']:
                     baseUrl = self.config[item][route]
+                    print('loading baseurl' + baseUrl)
                 else:
+                    print('loading api')
                     path = self.config[item][route].get('path', None)
                     paths[route] = ApiInfo(item, route,  path,  baseUrl,
                         self.config[item][route].get('body', None), 
-                        self.config[item][route].get('headers', None),)
+                        self.config[item][route].get('headers', None))
+            print('----------->item' + item)
+            print(f"{type(paths)}")
             apiInfos[item] = paths
         return apiInfos
 
@@ -38,7 +42,12 @@ if __name__ == "__main__":
     config = Config(sys.argv[1])
     for name, apiInfos in config.apis().items():
         print('name', name)
-        for apiInfo in apiInfos:
-            print(f"\t{apiInfo.name}")
+        print('____________')
+        print(apiInfos)
+        print('____________')
+        print(apiInfos)
+        for _,apiInfo in apiInfos.items():
+            print(f"apinfo: {apiInfo}")
+            print(f"\t{apiInfo.api}")
             print(f"\t\t{apiInfo.body}")
             print(f"\t\t{apiInfo.headers}")
