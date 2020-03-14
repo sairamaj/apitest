@@ -1,0 +1,5 @@
+set username={{apigee_user_name}}
+set org_name={{apigee_org_name}}
+set password={{apigee_user_password}}
+accesstoken.password
+apis

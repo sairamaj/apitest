@@ -1,2 +1,3 @@
-accesstoken
+set password=ssSS1234~
+accesstoken.password
 apis

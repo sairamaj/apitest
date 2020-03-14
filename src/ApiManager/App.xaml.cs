@@ -1,5 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
+using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.ViewModels;
+using Autofac;
+using Wpf.Util.Core.Extensions;
+using Wpf.Util.Core.Registration;
 
 namespace ApiManager
 {
@@ -10,8 +17,33 @@ namespace ApiManager
 	{
 		private void App_OnStartup(object sender, StartupEventArgs e)
 		{
-			var win = new MainWindow { DataContext = new MainViewModel() };
-			win.ShowDialog();
+			this.DispatcherUnhandledException += (s, ex) =>
+			{
+				Trace.WriteLine(ex.Exception.GetExceptionDetails());
+				MessageBox.Show(ex.Exception.GetExceptionDetails());
+				System.Environment.Exit(-1);
+			};
+
+			try
+			{
+				var builder = new ContainerBuilder();
+				var settings = new Settings
+				{
+					PythonPath = @"c:\\python37\\python",
+					ApiTestPath = @"C:\sai\dev\apitest\src\ApiTester"
+				};
+
+				var apiExecutor = new ApiExecutor(settings);
+				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
+				var serviceLocator = ServiceLocatorFactory.Create(builder);
+
+				var win = new MainWindow { DataContext = new MainViewModel(serviceLocator.Resolve<IApiExecutor>()) };
+				win.ShowDialog();
+			}
+			catch (Exception exception)
+			{
+				MessageBox.Show(exception.GetExceptionDetails());
+			}
 		}
 	}
 }
