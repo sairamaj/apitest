@@ -12,28 +12,48 @@ from apiinfo import ApiInfo
 from ui import printError
 from exceptions import ApiException
 from inputparser import InputParser
+from properties import Properties
+from inputparser import parseCommand, SetCommandInputParser
+from executors import ExecutorRequest
 
 
 class Session:
-    def __init__(self, apis, commandParameters):
+    def __init__(self, apis, properties):
         self.apis = apis
-        self.commandParameters = commandParameters
-        self.commandExecutor = Command()
+        self.properties = properties
+        self.commandExecutor = Command(properties)
 
     def start(self):
         quit = False
         self.display()
         while quit == False:
             printPrompt(">>")
-            command = input("")
-            parser = InputParser()
-            parser.parse(command)
-            if parser.route == "quit" or parser.route == 'q':
-                quit = True
-            if parser.route.startswith('help'):
-                self.executeHelp(parser)
-            else:
-                self.executeCommand(parser)
+            try:
+                command = input("")
+                if self.executeCommandInput(command) == False:
+                    quit = True
+            except ValueError as v:
+                printError(str(v))
+            except ApiException as ae:
+                printError(str(ae))
+            except Exception as e:
+                printError(str(e))
+                print("Exception in user code:")
+                print('-'*60)
+                traceback.print_exc(file=sys.stdout)
+                print('-'*60)
+
+    def executeCommandInput(self, command):
+        parser = parseCommand(command)
+        if parser == None:
+            return False
+        if isinstance(parser, SetCommandInputParser):
+            self.commandExecutor.execute(ExecutorRequest(
+                parser.command, None, None, None, parser.name, parser.value))
+        else:
+            print('api.............')
+            self.executeCommand(parser)
+        return True
 
     def display(self):
         print()
@@ -61,71 +81,31 @@ class Session:
             if foundApiInfo == None:
                 print('not found')
             else:
-                self.execute(foundApiInfo, parser, self.commandParameters)
+                self.execute(foundApiInfo, parser, self.properties.properties)
 
-    def execute(self, apiInfo, parser, commandParameters):
-        try:
-            data = transform(apiInfo.body, commandParameters)
-            path = transformString('path', apiInfo.path, commandParameters)
-            baseUrl = transformString(
-                'baseurl', apiInfo.baseUrl, commandParameters)
-            print(f'>>>>>>>>> {baseUrl}')
-            apiInfoWithData = ApiInfo(
-                apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
-            jsonData = ""
-            if parser.method.lower() == 'post':
-                if len(parser.fileName) == 0:
-                    raise Exception('post requires filename')
-                with open(parser.fileName, 'r') as in_file:
-                    jsonData = json.load(in_file)
-            self.commandExecutor.execute(
-                apiInfoWithData, method=parser.method, json=jsonData)
-        except ValueError as v:
-            printError(str(v))
-        except ApiException as ae:
-            printError(str(ae))
-        except Exception as e:
-            printError(str(e))
-            print("Exception in user code:")
-            print('-'*60)
-            traceback.print_exc(file=sys.stdout)
-            print('-'*60)
+    def execute(self, apiInfo, parser, propertyDictionary):
+        data = transform(apiInfo.body, propertyDictionary)
+        path = transformString('path', apiInfo.path, propertyDictionary)
+        baseUrl = transformString(
+            'baseurl', apiInfo.baseUrl, propertyDictionary)
+        apiInfoWithData = ApiInfo(
+            apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
+        jsonData = ""
+        if parser.method.lower() == 'post':
+            if len(parser.fileName) == 0:
+                raise Exception('post requires filename')
+            with open(parser.fileName, 'r') as in_file:
+                jsonData = json.load(in_file)
+        executorRequest = ExecutorRequest(
+            parser.command, apiInfoWithData, jsonData, parser.method)
+        self.commandExecutor.execute(executorRequest)
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
-                    parser = InputParser()
-                    parser.parse(command)
-                    self.executeCommand(parser)
-
-    def executeHelp(self, command):
-        self.display()
-        #     return
-        # routeName = parts[1]
-        # pathName = None
-        # if len(parts) == 3:
-        #     pathName = parts[2]
-
-        # apiInfos = self.apis.get(routeName, None)
-        # if apiInfos == None:
-        #     print(f'{routeName} is not valid route')
-        #     return
-        # if pathName == None:        # help for route
-        #     for path, apiInfo in apiInfos.items():
-        #         printPath(f"\t\t{path}")
-        #     return
-        # foundApiInfo = apiInfos.get(pathName, None)
-        # if foundApiInfo == None:
-        #     print(f'{routeName}.{pathName} is not found')
-        #     return
-        # print(f"\t    api:{foundApiInfo.api}")
-        # print(f"\t  route:{foundApiInfo.route}")
-        # print(f"\t   path:{foundApiInfo.path}")
-        # print(f"\tbaseUrl:{foundApiInfo.baseUrl}")
-        # print(f"\t   body:{foundApiInfo.body}")
-        # print(f"\theaders:{foundApiInfo.headers}")
+                    self.executeCommandInput(command)
 
 
 if __name__ == "__main__":

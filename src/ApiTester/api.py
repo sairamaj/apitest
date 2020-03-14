@@ -12,7 +12,7 @@ class Api:
     def get(self):
         headers = {'Content-Type': 'application/json',
                    'Authorization': 'Bearer {}'.format(self.access_token)}
-        headers = dict(headers, **self.apiInfo.headers)
+        headers =  dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
         response = requests.get(
             url, headers=headers, verify=False)

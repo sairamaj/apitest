@@ -25,15 +25,11 @@ class Config:
             for route in self.config[item]:
                 if route in ['baseurl']:
                     baseUrl = self.config[item][route]
-                    print('loading baseurl' + baseUrl)
                 else:
-                    print('loading api')
                     path = self.config[item][route].get('path', None)
                     paths[route] = ApiInfo(item, route,  path,  baseUrl,
                         self.config[item][route].get('body', None), 
                         self.config[item][route].get('headers', None))
-            print('----------->item' + item)
-            print(f"{type(paths)}")
             apiInfos[item] = paths
         return apiInfos
 

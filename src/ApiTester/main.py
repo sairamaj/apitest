@@ -8,7 +8,7 @@ from ui import printError
 from ui import printPrompt
 from session import Session
 from config import Config
-
+from properties import Properties
 
 # Load file
 parser = argparse.ArgumentParser()
@@ -28,10 +28,9 @@ if args.config == None:
 # convert unknowns
 items = {x.split('=')[0][2:]: x.split('=')[-1] for x in unknown if x[:2] == '--'}
 commandParameters = dict(args.__dict__, **items)
-cmd = Command()
 
 config = Config(args.config)
-session = Session(config.apis(), commandParameters)
+session = Session(config.apis(), Properties(commandParameters))
 # Run batch
 if args.batch != None:
     session.executeBatch(args.batch)
