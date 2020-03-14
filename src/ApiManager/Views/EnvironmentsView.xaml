@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="ApiManager.Views.EnvironmentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ApiManager.Views"
+			 xmlns:viewModels="clr-namespace:ApiManager.ViewModels"
+			 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+		<TreeView ItemsSource="{Binding EnvironmentFolders}">
+			<TreeView.Resources>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModels:EnvironmentFolderViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModels:EnvironmentViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+			</TreeView.Resources>
+		</TreeView>
+	</Grid>
+</UserControl>

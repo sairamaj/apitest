@@ -1,0 +1,21 @@
+﻿<mah:MetroWindow x:Class="ApiManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+				 xmlns:views="clr-namespace:ApiManager.Views"
+				 mc:Ignorable="d"
+        Title="Api Manager" Height="450" Width="800">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition   Width="150"/>
+			<ColumnDefinition Width="4"/>
+			<ColumnDefinition  />
+		</Grid.ColumnDefinitions>
+
+		<views:EnvironmentsView Grid.Row="0" Grid.Column="0" />
+		<GridSplitter Grid.Row="0" Grid.Column="1" />
+		<views:RequestResponseView Grid.Row="0" Grid.Column="2" />
+	</Grid>
+</mah:MetroWindow>
