@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApiManager.Model;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace ApiManager.Repository
 {
@@ -11,14 +13,20 @@ namespace ApiManager.Repository
 	{
 		public IDictionary<string, IEnumerable<EnvironmentInfo>> GetEnvironments()
 		{
-			return new Dictionary<string, IEnumerable<EnvironmentInfo>>()
+			var envs = new Dictionary<string, IEnumerable<EnvironmentInfo>>();
+			foreach (var envFolder in
+				Directory.GetDirectories(
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Environments")))
 			{
-				{ 
-					"Apigee", new List<EnvironmentInfo>{
-					new EnvironmentInfo("SairamaJ","apigee.json")
+				var environments = new List<EnvironmentInfo>(); ;
+				foreach (var env in Directory.GetFiles(envFolder, "*.json"))
+				{
+					environments.Add(JsonConvert.DeserializeObject<EnvironmentInfo>(File.ReadAllText(env)));
 				}
-				}
-			};
+				envs[Path.GetFileNameWithoutExtension(envFolder)] = environments;
+			}
+
+			return envs;
 		}
 	}
 }

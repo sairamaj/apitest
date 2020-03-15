@@ -13,7 +13,7 @@ namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CommandTreeViewModel
 	{
-		public EnvironmentViewModel(string name, IApiExecutor executor) : base(null, name, name)
+		public EnvironmentViewModel(EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
 		{
 			this.IsExpanded = true;
 			this.DataContext = this;
@@ -26,9 +26,9 @@ namespace ApiManager.ViewModels
 					var result = await executor.StartAsync(
 						new TestData
 						{
-							ConfigName = "apigee.json",
-							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestFiles\list_apis.txt"),
-							VariablesFileName = Path.Combine(@"c:\temp\test.var")
+							ConfigName = env.Configuration,
+							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"TestFiles\{env.CommandFileName}"),
+							VariablesFileName = env.VariableFileName
 						}
 						);
 				}

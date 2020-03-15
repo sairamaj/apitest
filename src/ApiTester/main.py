@@ -37,7 +37,7 @@ if args.varfile != None:
 
 # add glonbal exception
 def my_except_hook(exctype, value, traceback):
-    print(f"Global exception: {exctype}")
+    print(f"Global exception: {str(value)}")
     input('press any key to quit.')
     sys.__excepthook__(exctype, value, traceback)
 sys.excepthook = my_except_hook

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using ApiManager.Model;
+using ApiManager.Pipes;
 using ApiManager.Repository;
 using Wpf.Util.Core;
-using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
-using System.Threading.Tasks;
-using ApiManager.Pipes;
-using System.Linq;
 
 namespace ApiManager.ViewModels
 {

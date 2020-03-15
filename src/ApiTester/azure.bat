@@ -1,0 +1,1 @@
+c:\python37\python main.py --config azure.json --var c:\temp\azure.var
