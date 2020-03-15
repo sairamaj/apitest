@@ -14,8 +14,7 @@ from properties import Properties
 parser = argparse.ArgumentParser()
 parser.add_argument("--batch", help="Batch file name")
 parser.add_argument("--config", help="Config File")
-parser.add_argument("--client_id", help="Client id")
-parser.add_argument("--client_secret", help="Client secret")
+parser.add_argument("--varfile", help="Variables file")
 args, unknown = parser.parse_known_args()
 
 if args.config == None:
@@ -23,14 +22,22 @@ if args.config == None:
     parser.print_help()
     exit(-1)
 
-#config = config.Config(args.config)
-
 # convert unknowns
 items = {x.split('=')[0][2:]: x.split('=')[-1] for x in unknown if x[:2] == '--'}
 commandParameters = dict(args.__dict__, **items)
-
+      
+# Load variables
+variables = {}
+if args.varfile != None:
+    with open(args.varfile, 'r') as in_file:
+        for line in in_file.readlines():
+            parts = line.split('=')
+            if len(parts) > 1 :
+                variables[parts[0]] = parts[1]
+                
+properties = Properties(dict(commandParameters,**variables))  
 config = Config(args.config)
-session = Session(config.apis(), Properties(commandParameters))
+session = Session(config.apis(), properties)
 # Run batch
 if args.batch != None:
     session.executeBatch(args.batch)
