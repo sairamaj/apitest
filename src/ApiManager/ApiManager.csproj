@@ -60,18 +60,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ApiInfo.cs" />
+    <Compile Include="Model\Response.cs" />
+    <Compile Include="Model\Request.cs" />
+    <Compile Include="Model\TestData.cs" />
     <Compile Include="Model\EnvironmentInfo.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Repository\ApiExecutor.cs" />
     <Compile Include="Repository\IApiExecutor.cs" />
+    <Compile Include="Repository\DataRepository.cs" />
+    <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentFolderViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RequestResponseView.xaml.cs">
-      <DependentUpon>RequestResponseView.xaml</DependentUpon>
+    <Compile Include="Views\RunDetailsView.xaml.cs">
+      <DependentUpon>RunDetailsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -89,7 +95,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RequestResponseView.xaml">
+    <Page Include="Views\RunDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,6 +157,9 @@
       <Version>2.9.8</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NewtonSoft.JSON">
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="Wpf.Util.Core">
       <Version>1.0.0-alpha1</Version>

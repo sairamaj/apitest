@@ -16,11 +16,11 @@ namespace ApiManager.Repository
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
 
-		public Task<string> StartAsync(EnvironmentInfo environment, string commandsFileName)
+		public Task<string> StartAsync(TestData testData)
 		{
 			var tcs = new TaskCompletionSource<string>();
 
-			var startInfo = new ProcessStartInfo(this._settings.PythonPath, CreateArguments(environment, commandsFileName));
+			var startInfo = new ProcessStartInfo(this._settings.PythonPath, CreateArguments(testData));
 			startInfo.WorkingDirectory = this._settings.ApiTestPath;
 			var process = new Process()
 			{
@@ -39,9 +39,15 @@ namespace ApiManager.Repository
 			return tcs.Task;
 		}
 
-		private string CreateArguments(EnvironmentInfo environment, string commandsFileName)
+		private string CreateArguments(TestData testData)
 		{
-			return $"main.py --config {environment.ConfigName} --batch {commandsFileName}";
+			var command = $"main.py --config {testData.ConfigName} --batch {testData.CommandsTextFileName}";
+			if (!string.IsNullOrWhiteSpace(testData.VariablesFileName))
+			{
+				command += $" --varfile {testData.VariablesFileName}";
+			}
+
+			return command;
 		}
 	}
 }

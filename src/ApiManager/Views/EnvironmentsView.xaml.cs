@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Wpf.Util.Core.Views;
 
 namespace ApiManager.Views
 {
@@ -23,6 +13,21 @@ namespace ApiManager.Views
 		public EnvironmentsView()
 		{
 			InitializeComponent();
+		}
+
+		/// <summary>
+		/// Task selection change event.
+		/// </summary>
+		public event EventHandler<CommandChangeEventArgs> SelectionChangedEvent;
+
+		/// <summary>
+		/// Command selected item changed method.
+		/// </summary>
+		/// <param name="sender">Sender object.</param>
+		/// <param name="e">Event arguments.</param>
+		private void SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			this.SelectionChangedEvent?.Invoke(this, new CommandChangeEventArgs(e.NewValue));
 		}
 	}
 }

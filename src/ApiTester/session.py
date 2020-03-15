@@ -106,7 +106,11 @@ class Session:
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
                     final_command = transform({"command": command}, self.properties.properties)
-                    self.executeCommandInput(final_command.get('command'))
+                    try:
+                        self.executeCommandInput(final_command.get('command'))
+                    except ApiException as ae:
+                        printError(str(ae))
+
 
 
 if __name__ == "__main__":

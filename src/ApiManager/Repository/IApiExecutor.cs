@@ -5,6 +5,6 @@ namespace ApiManager.Repository
 {
 	interface IApiExecutor
 	{
-		Task<string> StartAsync(EnvironmentInfo environment, string commandsFileName);
+		Task<string> StartAsync(TestData testData);
 	}
 }

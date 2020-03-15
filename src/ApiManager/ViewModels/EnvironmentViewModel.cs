@@ -1,17 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using ApiManager.Model;
+using ApiManager.Repository;
+using Wpf.Util.Core;
+using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CommandTreeViewModel
 	{
-		public EnvironmentViewModel(string name) : base(null, name, name)
+
+		public EnvironmentViewModel(string name, IApiExecutor executor) : base(null, name, name)
 		{
 			this.IsExpanded = true;
+			this.DataContext = this;
+			this.RequestResponses = new SafeObservableCollection<ApiInfo>();
+
+			this.RunCommand = new DelegateCommand(async () =>
+			{
+				try
+				{
+					var result = await executor.StartAsync(
+						new TestData
+						{
+							ConfigName = "apigee.json",
+							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestFiles\list_apis.txt"),
+							VariablesFileName = Path.Combine(@"c:\temp\test.var")
+						}
+						);
+					MessageBox.Show(result);
+				}
+				catch (System.Exception e)
+				{
+					MessageBox.Show(e.ToString());
+				}
+			});
+
+			this.RequestResponses.Add(new ApiInfo { Method = "GET" });
+			this.RequestResponses.Add(new ApiInfo { Method = "POST" });
+			this.RequestResponses.Add(new ApiInfo { Method = "GET" });
+
 		}
+
+		public ICommand RunCommand { get; set; }
+		public ObservableCollection<ApiInfo> RequestResponses { get; }
+
 	}
 }

@@ -31,9 +31,16 @@ variables = {}
 if args.varfile != None:
     with open(args.varfile, 'r') as in_file:
         for line in in_file.readlines():
-            parts = line.split('=')
+            parts = line.strip().split('=')
             if len(parts) > 1 :
                 variables[parts[0]] = parts[1]
+
+# add glonbal exception
+def my_except_hook(exctype, value, traceback):
+    print(f"Global exception: {exctype}")
+    input('press any key to quit.')
+    sys.__excepthook__(exctype, value, traceback)
+sys.excepthook = my_except_hook
 
 properties = Properties(dict(commandParameters,**variables))  
 config = Config(args.config)

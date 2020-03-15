@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApiManager.Model;
+using ApiManager.Repository;
 using Wpf.Util.Core;
 using Wpf.Util.Core.ViewModels;
 
@@ -11,16 +13,13 @@ namespace ApiManager.ViewModels
 {
 	class EnvironmentFolderViewModel : CommandTreeViewModel
 	{
-		public EnvironmentFolderViewModel(string name) : base(null, name, name)
+		public EnvironmentFolderViewModel(string name, IEnumerable<EnvironmentInfo> environments, IApiExecutor executor) : base(null, name, name)
 		{
-			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
-			this.Environments.Add(new EnvironmentViewModel("Env_1"));
-			this.Environments.Add(new EnvironmentViewModel("Env_2"));
-
+			this.Environments  = environments.Select(e => new EnvironmentViewModel(e.Name, executor));
 			this.IsExpanded = true;
 		}
 
-		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }
+		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 
 		protected override void LoadChildren()
 		{

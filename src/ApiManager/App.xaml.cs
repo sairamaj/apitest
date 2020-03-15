@@ -35,9 +35,13 @@ namespace ApiManager
 
 				var apiExecutor = new ApiExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
+				builder.RegisterType<DataRepository>().As<IDataRepository>();
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 
-				var win = new MainWindow { DataContext = new MainViewModel(serviceLocator.Resolve<IApiExecutor>()) };
+				var win = new MainWindow { DataContext = new MainViewModel(
+					serviceLocator.Resolve<IApiExecutor>() ,
+					serviceLocator.Resolve<IDataRepository>()
+				)};
 				win.ShowDialog();
 			}
 			catch (Exception exception)

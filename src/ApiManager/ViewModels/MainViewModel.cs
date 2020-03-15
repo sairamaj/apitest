@@ -8,38 +8,23 @@ using ApiManager.Repository;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
+using System.Threading.Tasks;
 
 namespace ApiManager.ViewModels
 {
 	class MainViewModel : CoreViewModel
 	{
-		public MainViewModel(IApiExecutor exeutor)
+		public MainViewModel(IApiExecutor executor, IDataRepository dataRepository)
 		{
 			this.EnvironmentFolders = new SafeObservableCollection<CommandTreeViewModel>();
-			this.EnvironmentFolders.Add(new EnvironmentFolderViewModel("Azure"));
-			this.EnvironmentFolders.Add(new EnvironmentFolderViewModel("Apigee"));
-			this.TestCommand = new DelegateCommand(async () =>
+
+			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
-				try
-				{
-					var env = new EnvironmentInfo
-					{
-						Name = "Apigee-Sairama",
-						ConfigName = "apigee.json"
-					};
-					var result = await exeutor.StartAsync(
-						env, 
-						Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestFiles\list_apis.txt"));
-					MessageBox.Show(result);
-				}
-				catch (System.Exception e)
-				{
-					MessageBox.Show(e.ToString());
-				}
-			});
+				this.EnvironmentFolders.Add(new EnvironmentFolderViewModel(envInfo.Key, envInfo.Value, executor));
+			}
 		}
 
 		public ObservableCollection<CommandTreeViewModel> EnvironmentFolders { get; set; }
-		public ICommand TestCommand { get; set; }
+
 	}
 }
