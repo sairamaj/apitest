@@ -34,10 +34,11 @@ if args.varfile != None:
             parts = line.split('=')
             if len(parts) > 1 :
                 variables[parts[0]] = parts[1]
-                
+
 properties = Properties(dict(commandParameters,**variables))  
 config = Config(args.config)
 session = Session(config.apis(), properties)
+
 # Run batch
 if args.batch != None:
     session.executeBatch(args.batch)

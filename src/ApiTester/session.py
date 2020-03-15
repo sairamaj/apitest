@@ -105,7 +105,8 @@ class Session:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
-                    self.executeCommandInput(command)
+                    final_command = transform({"command": command}, self.properties.properties)
+                    self.executeCommandInput(final_command.get('command'))
 
 
 if __name__ == "__main__":
