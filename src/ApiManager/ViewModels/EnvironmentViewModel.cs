@@ -44,9 +44,8 @@ namespace ApiManager.ViewModels
 				}
 			});
 
-			this.RequestResponses.Add(new ApiInfo { Method = "GET" });
-			this.RequestResponses.Add(new ApiInfo { Method = "POST" });
-			this.RequestResponses.Add(new ApiInfo { Method = "GET" });
+			this.RequestResponses.Add(new ApiInfo { Method = "GET" , Request = new Request { Body = "body1 here"}, Response = new Response {Content = "content1 here " } });
+			this.RequestResponses.Add(new ApiInfo { Method = "POST", Request = new Request { Body = "body2 here" }, Response = new Response { Content = "content2 here " } });
 
 		}
 

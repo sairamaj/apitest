@@ -76,6 +76,15 @@
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RequestResponseContainerView.xaml.cs">
+      <DependentUpon>RequestResponseContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequestView.xaml.cs">
+      <DependentUpon>RequestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResponseView.xaml.cs">
+      <DependentUpon>ResponseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RunDetailsView.xaml.cs">
       <DependentUpon>RunDetailsView.xaml</DependentUpon>
     </Compile>
@@ -92,6 +101,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\EnvironmentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequestResponseContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RequestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResponseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

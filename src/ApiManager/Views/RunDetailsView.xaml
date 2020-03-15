@@ -32,7 +32,7 @@
 													</StackPanel>
 												</StackPanel>
 											</Expander.Header>
-											<TextBlock Text="Requests here"/>
+											<local:RequestResponseContainerView  DataContext="{Binding}"/>
 										</Expander>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>
