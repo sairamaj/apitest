@@ -66,10 +66,14 @@
     <Compile Include="Model\TestData.cs" />
     <Compile Include="Model\EnvironmentInfo.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="Pipes\FakeMessageListener.cs" />
+    <Compile Include="Pipes\MessageListener.cs" />
+    <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Repository\ApiExecutor.cs" />
     <Compile Include="Repository\IApiExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
+    <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentFolderViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -188,6 +192,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="Views\AvalonJsonSyntax.xml" />
     <Content Include="TestFiles\list_apis.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

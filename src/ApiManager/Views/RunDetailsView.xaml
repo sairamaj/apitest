@@ -20,9 +20,13 @@
 							<GridViewColumn>
 								<GridViewColumn.CellTemplate>
 									<DataTemplate>
-										<Expander IsExpanded="False">
+										<Expander IsExpanded="False" Width="800">
 											<Expander.Header>
-												<StackPanel Orientation="Horizontal">
+												<StackPanel Orientation="Horizontal" Width="{Binding
+        RelativeSource={RelativeSource
+          Mode=FindAncestor,
+          AncestorType={x:Type Expander}},
+        Path=ActualWidth}">
 													<TextBlock  Text="{Binding Method}" Margin="3,0,0,0" Width="40"/>
 													<TextBlock  Text="{Binding RelativeUrl}" Margin="3,0,0,0" Width="140"/>
 													<TextBlock  Text="{Binding StatusCode}" Margin="3,0,0,0" Width="60"/>
@@ -32,7 +36,7 @@
 													</StackPanel>
 												</StackPanel>
 											</Expander.Header>
-											<local:RequestResponseContainerView  DataContext="{Binding}"/>
+											<local:RequestResponseContainerView  DataContext="{Binding}" Height="500"/>
 										</Expander>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>

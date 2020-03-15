@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using ApiManager.Model;
+using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ViewModels;
 using Autofac;
@@ -36,12 +37,16 @@ namespace ApiManager
 				var apiExecutor = new ApiExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();
+				builder.RegisterType<MessageListener>().As<IMessageListener>();
+				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 
 				var win = new MainWindow { DataContext = new MainViewModel(
 					serviceLocator.Resolve<IApiExecutor>() ,
-					serviceLocator.Resolve<IDataRepository>()
-				)};
+					serviceLocator.Resolve<IDataRepository>(),
+					serviceLocator.Resolve<IMessageListener>()
+				)
+				};
 				win.ShowDialog();
 			}
 			catch (Exception exception)
