@@ -15,7 +15,7 @@ def debug(response):
             pprint(response.request.__dict__)
     pprint('_________________')
 
-def collectlog(response):
+def collectlog(response, sessionName):
     debug(response)
 
     try:
@@ -26,6 +26,7 @@ def collectlog(response):
             bodyString = response.request.body.decode("utf-8")
 
         pipeServer.send(json.dumps({
+            "session" : sessionName,
             "url" : response.request.url,
             "method" : response.request.method,
             "statuscode" : response.reason,

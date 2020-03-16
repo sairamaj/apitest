@@ -13,7 +13,7 @@ namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CommandTreeViewModel
 	{
-		public EnvironmentViewModel(EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
+		public EnvironmentViewModel(string parentName, EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
 		{
 			this.IsExpanded = true;
 			this.DataContext = this;
@@ -28,7 +28,8 @@ namespace ApiManager.ViewModels
 						{
 							ConfigName = env.Configuration,
 							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"TestFiles\{env.CommandFileName}"),
-							VariablesFileName = env.VariableFileName
+							VariablesFileName = env.VariableFileName,
+							SessionName = parentName + "=" + env.Name,
 						}
 						);
 				}

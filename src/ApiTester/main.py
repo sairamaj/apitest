@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--batch", help="Batch file name")
 parser.add_argument("--config", help="Config File")
 parser.add_argument("--varfile", help="Variables file")
+parser.add_argument("--session", help="Session name")
 args, unknown = parser.parse_known_args()
 
 if args.config == None:
@@ -43,6 +44,8 @@ def my_except_hook(exctype, value, traceback):
 sys.excepthook = my_except_hook
 
 properties = Properties(dict(commandParameters,**variables))  
+if args.session != "" :
+    properties.session_name = args.session
 config = Config(args.config)
 session = Session(config.apis(), properties)
 

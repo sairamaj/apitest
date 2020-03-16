@@ -16,7 +16,6 @@ from properties import Properties
 from inputparser import parseCommand, SetCommandInputParser
 from executors import ExecutorRequest
 
-
 class Session:
     def __init__(self, apis, properties):
         self.apis = apis

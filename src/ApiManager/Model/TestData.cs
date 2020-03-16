@@ -7,5 +7,6 @@
 
 		public string CommandsTextFileName { get; set; }
 		public string VariablesFileName { get; set; }
+		public string SessionName { get; set; }
 	}
 }

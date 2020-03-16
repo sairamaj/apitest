@@ -44,6 +44,8 @@ namespace ApiManager.Repository
 				command += $" --varfile {testData.VariablesFileName}";
 			}
 
+			command += $" --session {testData.SessionName}";
+				
 			return command;
 		}
 	}

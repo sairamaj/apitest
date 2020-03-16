@@ -25,35 +25,35 @@ class ICommand(metaclass=ABCMeta):
 
 class AccessTokenExecutor(ICommand):
     def __init__(self, properties):
-        self.propeties = properties
+        self.properties = properties
 
     def execute(self, executorRequest):
         print(f"accesstoken: {executorRequest.apiInfo.baseUrl}")
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            collectlog(oauth.response)
+            collectlog(oauth.response, self.properties.session_name)
             pprint(response)
-            self.propeties.access_token = response["access_token"]
+            self.properties.access_token = response["access_token"]
         except Exception as e:
-            collectlog(oauth.response)
+            collectlog(oauth.response, self.properties.session_namee)
             raise
 
 class ApiExecutor(ICommand):
     def __init__(self, properties):
-        self.propeties = properties
+        self.properties = properties
 
     def execute(self, executorRequest):
-        api = Api(executorRequest.apiInfo, self.propeties.access_token)
+        api = Api(executorRequest.apiInfo, self.properties.access_token)
         try:
             if executorRequest.method == 'get':
                 response = api.get()
             else:
                 response = api.post(executorRequest.payLoad)
-            collectlog(api.response)
+            collectlog(api.response, self.properties.session_name)
             pprint(response)
         except Exception as e:
-            collectlog(api.response)
+            collectlog(api.response, self.properties.session_name)
             raise
         finally:
             pass

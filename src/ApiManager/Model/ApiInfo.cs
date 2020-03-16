@@ -8,6 +8,7 @@ namespace ApiManager.Model
 {
 	public class ApiInfo
 	{
+		public string Session { get; set; }
 		public string Url { get; set; }
 		public string Method { get; set; }
 		public string StatusCode { get; set; }

@@ -12,7 +12,7 @@ namespace ApiManager.ViewModels
 	class MainViewModel : CoreViewModel
 	{
 		public MainViewModel(
-			IApiExecutor executor, 
+			IApiExecutor executor,
 			IDataRepository dataRepository,
 			IMessageListener listener)
 		{
@@ -27,8 +27,23 @@ namespace ApiManager.ViewModels
 			{
 				listener.SubScribe(s =>
 				{
-					var envFolder = this.EnvironmentFolders.FirstOrDefault();
-					envFolder.AddApiInfo("", s);
+					if (s.Session == null)
+					{
+						return;
+					}
+					var parts = s.Session.Split('=');
+					if (parts.Length < 2)
+					{
+						return;
+					}
+
+					var envFolder = this.EnvironmentFolders.FirstOrDefault(eF => eF.Name == parts[0]);
+					if (envFolder == null)
+					{
+						return;
+					}
+
+					envFolder.AddApiInfo(parts[1], s);
 				});
 			}
 			catch (Exception e)

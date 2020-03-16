@@ -2,7 +2,6 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
-from logcollector import collectlog
 import json
 from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor
 from abc import ABCMeta, abstractstaticmethod

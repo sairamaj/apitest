@@ -19,7 +19,7 @@ namespace ApiManager.ViewModels
 			IEnumerable<EnvironmentInfo> environments, 
 			IApiExecutor executor) : base(null, name, name)
 		{
-			this.Environments  = environments.Select(e => new EnvironmentViewModel(e, executor)).ToList();
+			this.Environments  = environments.Select(e => new EnvironmentViewModel(name, e, executor)).ToList();
 			this.IsExpanded = true;
 		}
 
@@ -35,8 +35,7 @@ namespace ApiManager.ViewModels
 
 		public void AddApiInfo(string name, ApiInfo apiInfo)
 		{
-			//var env = this.Environments.FirstOrDefault(e => e.Name == name);
-			var env = this.Environments.FirstOrDefault();
+			var env = this.Environments.FirstOrDefault(e => e.Name == name);
 			if (env == null)
 			{
 				return;
