@@ -14,6 +14,8 @@
 			<ColumnDefinition Width="4"/>
 			<ColumnDefinition  Width="150"/>
 			<ColumnDefinition Width="4"/>
+			<ColumnDefinition Width="60" />
+			<ColumnDefinition Width="4"/>
 			<ColumnDefinition  />
 		</Grid.ColumnDefinitions>
 
@@ -30,6 +32,8 @@
 			<views:VariablesView  Grid.Row="2" Grid.Column="0"/>
 		</Grid>
 		<GridSplitter Grid.Row="0" Grid.Column="3" />
-		<views1:DetailViewContainer Grid.Row="0" Grid.Column="4" x:Name="DetailViewContainer"/>
+		<Button Content="Run" Width="50" Height="25" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" Command="{Binding RunCommand}" />
+		<GridSplitter Grid.Row="0" Grid.Column="5" />
+		<views:RunDetailsView Grid.Row="0" Grid.Column="6" DataContext="{Binding SelectedViewModel}"/>
 	</Grid>
 </mah:MetroWindow>

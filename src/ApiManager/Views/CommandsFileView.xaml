@@ -11,9 +11,10 @@
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
 	</UserControl.Resources>
-	<Grid>
+	<Grid >
 		<StackPanel>
-			<ListView ItemsSource="{Binding CommandFiles}" BorderThickness="0">
+			<TextBlock Text="Command Files:" FontWeight="Bold"/>
+			<ListView ItemsSource="{Binding CommandFiles}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedCommandFile}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 						<GridViewColumn  DisplayMemberBinding="{Binding}">

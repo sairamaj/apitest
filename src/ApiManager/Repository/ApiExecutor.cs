@@ -44,7 +44,10 @@ namespace ApiManager.Repository
 				command += $" --varfile {testData.VariablesFileName}";
 			}
 
-			command += $" --session {testData.SessionName}";
+			if (!string.IsNullOrWhiteSpace(testData.SessionName))
+			{
+				command += $" --session {testData.SessionName}";
+			}
 				
 			return command;
 		}
