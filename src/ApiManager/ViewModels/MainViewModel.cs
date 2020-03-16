@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -11,16 +12,16 @@ namespace ApiManager.ViewModels
 {
 	class MainViewModel : CoreViewModel
 	{
+		private EnvironmentViewModel _selectedEnvironmentViewModel;
 		public MainViewModel(
 			IApiExecutor executor,
 			IDataRepository dataRepository,
 			IMessageListener listener)
 		{
-			this.EnvironmentFolders = new SafeObservableCollection<EnvironmentFolderViewModel>();
-
+			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
 			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
-				this.EnvironmentFolders.Add(new EnvironmentFolderViewModel(envInfo.Key, envInfo.Value, executor));
+				this.Environments.Add(new EnvironmentViewModel(envInfo, executor));
 			}
 
 			try
@@ -37,22 +38,42 @@ namespace ApiManager.ViewModels
 						return;
 					}
 
-					var envFolder = this.EnvironmentFolders.FirstOrDefault(eF => eF.Name == parts[0]);
+					var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == parts[0]);
 					if (envFolder == null)
 					{
 						return;
 					}
 
-					envFolder.AddApiInfo(parts[1], s);
+					// envFolder.AddApiInfo(parts[1], s);
 				});
 			}
 			catch (Exception e)
 			{
 				MessageBox.Show(e.ToString());
 			}
+
+			this.SelectedViewModel = this.Environments.FirstOrDefault();
 		}
 
-		public ObservableCollection<EnvironmentFolderViewModel> EnvironmentFolders { get; set; }
+		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }
 
+		public EnvironmentViewModel SelectedViewModel
+		{
+			get
+			{
+				return _selectedEnvironmentViewModel;
+			}
+			set
+			{
+				this._selectedEnvironmentViewModel = value;
+				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles;
+				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles;
+				OnPropertyChanged(() => this.CommandFiles);
+				OnPropertyChanged(() => this.VariableFiles);
+			}
+		}
+
+		public IEnumerable<string> CommandFiles { get; set; }
+		public IEnumerable<string> VariableFiles { get; set; }
 	}
 }

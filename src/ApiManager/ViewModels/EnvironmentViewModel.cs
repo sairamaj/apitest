@@ -13,9 +13,10 @@ namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CommandTreeViewModel
 	{
-		public EnvironmentViewModel(string parentName, EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
+		public EnvironmentViewModel(EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
 		{
 			this.IsExpanded = true;
+			this.EnvironmentInfo = env;
 			this.DataContext = this;
 			this.RequestResponses = new SafeObservableCollection<ApiInfo>();
 
@@ -27,9 +28,8 @@ namespace ApiManager.ViewModels
 						new TestData
 						{
 							ConfigName = env.Configuration,
-							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@"TestFiles\{env.CommandFileName}"),
-							VariablesFileName = env.VariableFileName,
-							SessionName = parentName + "=" + env.Name,
+							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "foo"),
+							SessionName = env.Name,
 						}
 						);
 				}
@@ -39,6 +39,8 @@ namespace ApiManager.ViewModels
 				}
 			});
 		}
+
+		public EnvironmentInfo EnvironmentInfo { get; set; }
 
 		public ICommand RunCommand { get; set; }
 		public ObservableCollection<ApiInfo> RequestResponses { get; }

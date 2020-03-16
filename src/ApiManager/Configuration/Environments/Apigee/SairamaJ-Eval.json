@@ -1,6 +1,0 @@
-{
-	"name": "SaiRamaJ",
-	"configuration": "apigee.json",
-	"variableFileName": "c:\\temp\\apigee.var",
-	"commandFileName" :  "list_apis.txt"
-}

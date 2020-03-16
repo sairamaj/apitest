@@ -75,8 +75,10 @@
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
-    <Compile Include="ViewModels\EnvironmentFolderViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\CommandsFileView.xaml.cs">
+      <DependentUpon>CommandsFileView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
     </Compile>
@@ -92,6 +94,9 @@
     <Compile Include="Views\RunDetailsView.xaml.cs">
       <DependentUpon>RunDetailsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\VariablesView.xaml.cs">
+      <DependentUpon>VariablesView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +109,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\CommandsFileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EnvironmentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RunDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VariablesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,10 +156,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Configuration\Environments\Azure\VisualStudio.json">
+    <None Include="Configuration\Environments\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\Environments\Apigee\SairamaJ-Eval.json">
+    <None Include="Configuration\Environments\Azure\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -198,11 +211,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="TestFiles\azure.txt">
+    <None Include="Configuration\Environments\Apigee\apis.var">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Configuration\Environments\Azure\azure.var">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Configuration\Environments\Azure\azure.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Views\AvalonJsonSyntax.xml" />
-    <Content Include="TestFiles\list_apis.txt">
+    <Content Include="Configuration\Environments\Apigee\list_apis.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

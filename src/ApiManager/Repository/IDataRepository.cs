@@ -9,6 +9,6 @@ namespace ApiManager.Repository
 {
 	interface IDataRepository
 	{
-		IDictionary<string,IEnumerable<EnvironmentInfo>> GetEnvironments();
+		IEnumerable<EnvironmentInfo> GetEnvironments();
 	}
 }

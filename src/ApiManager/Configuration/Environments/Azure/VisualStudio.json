@@ -1,6 +1,0 @@
-{
-	"name": "VisualStudio",
-	"configuration": "azure.json",
-	"variableFileName": "c:\\temp\\azure.var",
-	"commandFileName": "azure.txt"
-}

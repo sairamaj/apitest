@@ -11,19 +11,19 @@ namespace ApiManager.Repository
 {
 	class DataRepository : IDataRepository
 	{
-		public IDictionary<string, IEnumerable<EnvironmentInfo>> GetEnvironments()
+		public IEnumerable<EnvironmentInfo> GetEnvironments()
 		{
-			var envs = new Dictionary<string, IEnumerable<EnvironmentInfo>>();
+			var envs = new List<EnvironmentInfo>();
 			foreach (var envFolder in
 				Directory.GetDirectories(
 					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Environments")))
 			{
-				var environments = new List<EnvironmentInfo>(); ;
-				foreach (var env in Directory.GetFiles(envFolder, "*.json"))
-				{
-					environments.Add(JsonConvert.DeserializeObject<EnvironmentInfo>(File.ReadAllText(env)));
-				}
-				envs[Path.GetFileNameWithoutExtension(envFolder)] = environments;
+				var environment = new EnvironmentInfo(Path.GetFileNameWithoutExtension(envFolder));
+				environment.CommandFiles = Directory.GetFiles(envFolder, "*.txt") 
+					.Select(Path.GetFileNameWithoutExtension).ToList();
+				environment.VariableFiles = Directory.GetFiles(envFolder, "*.var")
+						.Select(Path.GetFileNameWithoutExtension).ToList();
+				envs.Add(environment);
 			}
 
 			return envs;
