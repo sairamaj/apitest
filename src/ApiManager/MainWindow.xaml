@@ -34,6 +34,6 @@
 		<GridSplitter Grid.Row="0" Grid.Column="3" />
 		<Button Content="Run" Width="50" Height="25" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" Command="{Binding RunCommand}" />
 		<GridSplitter Grid.Row="0" Grid.Column="5" />
-		<views:RunDetailsView Grid.Row="0" Grid.Column="6" DataContext="{Binding SelectedViewModel}"/>
+		<views:RunDetailsView Grid.Row="0" Grid.Column="6" DataContext="{Binding CurrentRequestResponseViewModel}"/>
 	</Grid>
 </mah:MetroWindow>

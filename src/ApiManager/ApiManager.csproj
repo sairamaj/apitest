@@ -76,6 +76,7 @@
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RequestResponseContainerViewModel.cs" />
     <Compile Include="Views\CommandsFileView.xaml.cs">
       <DependentUpon>CommandsFileView.xaml</DependentUpon>
     </Compile>

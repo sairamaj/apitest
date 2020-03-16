@@ -66,8 +66,10 @@ namespace ApiManager.ViewModels
 				this._selectedEnvironmentViewModel = value;
 				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles;
 				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles;
+				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
 				OnPropertyChanged(() => this.CommandFiles);
 				OnPropertyChanged(() => this.VariableFiles);
+				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
 			}
 		}
 		public string SelectedCommandFile { get; set; }
@@ -76,7 +78,7 @@ namespace ApiManager.ViewModels
 		public IEnumerable<string> CommandFiles { get; set; }
 		public IEnumerable<string> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
-
+		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 		public async Task RunAsync()
 		{
 			if (this._selectedEnvironmentViewModel == null)
