@@ -19,10 +19,29 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+		
+		<Style x:Key="ClearButtonStyle">
+			<Setter Property="Control.Visibility" Value="Visible" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ApisCount}" Value="0" >
+					<Setter Property="Control.Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="InfoTextBoxStyle">
+			<Setter Property="Control.Visibility" Value="Hidden" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ApisCount}" Value="0" >
+					<Setter Property="Control.Visibility" Value="Visible" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
 	<Grid>
 		<Grid Margin="0,20,0,0">
 			<StackPanel>
+				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
+				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
 				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
 					<ListView.View >
 						<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">

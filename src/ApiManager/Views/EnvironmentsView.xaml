@@ -13,6 +13,7 @@
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
+		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
 	</UserControl.Resources>
 	<Grid Margin="0,20,0,0">
 		<StackPanel>
@@ -24,6 +25,7 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
+										<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditConfigFileCommand}"/>
 										<TextBlock  Text="{Binding Name}" Margin="3,0,0,0"/>
 									</StackPanel>
 								</DataTemplate>

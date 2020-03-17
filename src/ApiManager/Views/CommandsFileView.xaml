@@ -22,7 +22,7 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
-										<!--<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>-->
+										<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>
 										<TextBlock  Text="{Binding Name}" Margin="10,0,0,0" />
 									</StackPanel>
 								</DataTemplate>

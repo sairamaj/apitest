@@ -159,9 +159,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Configuration\Environments\Apigee\deployment.var">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Configuration\Environments\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -173,7 +170,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="images\edit.png" />
-    <Content Include="Configuration\Environments\Apigee\list_apis2.txt">
+    <Content Include="Configuration\Environments\Apigee\list_deployments.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settings.json">
@@ -224,13 +221,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Configuration\Environments\Apigee\apis.var">
+    <None Include="Configuration\Environments\Apigee\sairamaj_account.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\Environments\Azure\azure.var">
+    <None Include="Configuration\Environments\Azure\sairama_visualstudio_account.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Configuration\Environments\Azure\azure.txt">
+    <Content Include="Configuration\Environments\Azure\get_accesstoken.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Views\AvalonJsonSyntax.xml" />

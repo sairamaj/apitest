@@ -21,6 +21,7 @@ namespace ApiManager.Repository
 				var environment = new EnvironmentInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
 				environment.CommandFiles = Directory.GetFiles(envFolder, "*.txt").ToList();
 				environment.VariableFiles = Directory.GetFiles(envFolder, "*.var").ToList();
+				environment.Configuration = Path.Combine(envFolder, "config.json");
 				envs.Add(environment);
 			}
 

@@ -114,7 +114,7 @@ namespace ApiManager.ViewModels
 				var result = await this.apiExecutor.StartAsync(
 					new TestData
 					{
-						ConfigName = Path.Combine(envInfo.Path, "config.json"),
+						ConfigName = envInfo.Configuration,
 						CommandsTextFileName = this.SelectedCommandFile.FileName,
 						VariablesFileName = this.SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,

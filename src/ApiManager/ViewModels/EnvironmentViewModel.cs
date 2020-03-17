@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -19,25 +20,18 @@ namespace ApiManager.ViewModels
 			this.EnvironmentInfo = env;
 			this.DataContext = this;
 			this.RequestResponses = new SafeObservableCollection<ApiInfo>();
-
-			this.RunCommand = new DelegateCommand(async () =>
+			this.EditConfigFileCommand = new DelegateCommand(() =>
 			{
 				try
 				{
-					var result = await executor.StartAsync(
-						new TestData
-						{
-							ConfigName = env.Configuration,
-							CommandsTextFileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "foo"),
-							SessionName = env.Name,
-						}
-						);
+					Process.Start("notepad", this.EnvironmentInfo.Configuration);
 				}
-				catch (System.Exception e)
+				catch (Exception e)
 				{
-					MessageBox.Show(e.ToString());
+					MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			});
+
 		}
 
 		public EnvironmentInfo EnvironmentInfo { get; set; }
@@ -49,5 +43,7 @@ namespace ApiManager.ViewModels
 		{
 			this.RequestResponses.Add(apiInfo);
 		}
+		public ICommand EditConfigFileCommand { get; }
+
 	}
 }
