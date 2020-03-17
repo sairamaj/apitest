@@ -36,7 +36,7 @@ class AccessTokenExecutor(ICommand):
             pprint(response)
             self.properties.access_token = response["access_token"]
         except Exception as e:
-            collectlog(oauth.response, self.properties.session_namee)
+            collectlog(oauth.response, self.properties.session_name)
             raise
 
 class ApiExecutor(ICommand):

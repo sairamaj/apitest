@@ -40,9 +40,14 @@ if args.varfile != None:
 def my_except_hook(exctype, value, traceback):
     print(f"Global exception: {str(value)}")
     input('press any key to quit.')
+    print("Exception in user code:")
+    print('-'*60)
+    traceback.print_exc(file=sys.stdout)
+    print('-'*60)
+    input('press any key to quit.')
     sys.__excepthook__(exctype, value, traceback)
-sys.excepthook = my_except_hook
 
+sys.excepthook = my_except_hook
 properties = Properties(dict(commandParameters,**variables))  
 if args.session != "" :
     properties.session_name = args.session

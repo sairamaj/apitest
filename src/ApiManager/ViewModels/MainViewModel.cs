@@ -66,10 +66,14 @@ namespace ApiManager.ViewModels
 				this._selectedEnvironmentViewModel = value;
 				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles;
 				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles;
+				this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
+				this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
+
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
 				OnPropertyChanged(() => this.CommandFiles);
 				OnPropertyChanged(() => this.VariableFiles);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
+
 			}
 		}
 		public string SelectedCommandFile { get; set; }

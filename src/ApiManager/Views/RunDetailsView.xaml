@@ -10,8 +10,17 @@
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
+		<Style x:Key="ApiStyle" >
+			<Setter Property="Control.Foreground" Value="Red" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding StatusCode}" Value="OK" >
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
-    <Grid>
+	<Grid>
 		<Grid Margin="0,20,0,0">
 			<StackPanel>
 				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
@@ -20,7 +29,7 @@
 							<GridViewColumn>
 								<GridViewColumn.CellTemplate>
 									<DataTemplate>
-										<Expander IsExpanded="False" Width="800">
+										<Expander IsExpanded="False" Width="800" Style="{StaticResource ApiStyle}">
 											<Expander.Header>
 												<StackPanel Orientation="Horizontal" Width="{Binding
         RelativeSource={RelativeSource

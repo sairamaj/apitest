@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ViewModels;
 using Autofac;
+using Newtonsoft.Json;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
@@ -28,12 +30,8 @@ namespace ApiManager
 			try
 			{
 				var builder = new ContainerBuilder();
-				var settings = new Settings
-				{
-					PythonPath = @"c:\\python37\\python",
-					ApiTestPath = @"C:\sai\dev\apitest\src\ApiTester"
-				};
-
+				var settings = JsonConvert.DeserializeObject<Settings>(
+					File.ReadAllText( Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
 				var apiExecutor = new ApiExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();
@@ -52,6 +50,7 @@ namespace ApiManager
 			catch (Exception exception)
 			{
 				MessageBox.Show(exception.GetExceptionDetails());
+				System.Environment.Exit(-1);
 			}
 		}
 	}
