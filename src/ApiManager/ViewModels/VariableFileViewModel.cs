@@ -8,9 +8,9 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class CommandFileViewModel : CoreViewModel
+	class VariableFileViewModel : CoreViewModel
 	{
-		public CommandFileViewModel(string fileName)
+		public VariableFileViewModel(string fileName)
 		{
 			this.FileName = fileName;
 			this.Name = Path.GetFileNameWithoutExtension(fileName);
@@ -18,7 +18,7 @@ namespace ApiManager.ViewModels
 		   {
 			   try
 			   {
-				   Process.Start(fileName);
+				   Process.Start("notepad", fileName);
 			   }
 			   catch (Exception e)
 			   {

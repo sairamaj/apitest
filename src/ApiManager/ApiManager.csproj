@@ -74,6 +74,7 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="ViewModels\VariableFileViewModel.cs" />
     <Compile Include="ViewModels\CommandFileViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

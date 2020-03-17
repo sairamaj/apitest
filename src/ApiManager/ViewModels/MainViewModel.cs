@@ -51,6 +51,10 @@ namespace ApiManager.ViewModels
 			}
 
 			this.SelectedViewModel = this.Environments.FirstOrDefault();
+			//this.CommandFiles = this.SelectedViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
+			//this.VariableFiles = this.SelectedViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
+			//this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
+			//this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
 		}
 
 		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }
@@ -64,8 +68,8 @@ namespace ApiManager.ViewModels
 			set
 			{
 				this._selectedEnvironmentViewModel = value;
-				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c=> new CommandFileViewModel(c));
-				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles;
+				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
+				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
 				OnPropertyChanged(() => this.CommandFiles);
@@ -78,10 +82,10 @@ namespace ApiManager.ViewModels
 			}
 		}
 		public CommandFileViewModel SelectedCommandFile { get; set; }
-		public string SelectedVariableFile { get; set; }
+		public VariableFileViewModel SelectedVariableFile { get; set; }
 
 		public IEnumerable<CommandFileViewModel> CommandFiles { get; set; }
-		public IEnumerable<string> VariableFiles { get; set; }
+		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 		public async Task RunAsync()
@@ -110,9 +114,9 @@ namespace ApiManager.ViewModels
 				var result = await this.apiExecutor.StartAsync(
 					new TestData
 					{
-						ConfigName = Path.Combine(envInfo.Path,"config.json"),
+						ConfigName = Path.Combine(envInfo.Path, "config.json"),
 						CommandsTextFileName = this.SelectedCommandFile.FileName,
-						VariablesFileName= Path.Combine(envInfo.Path, this.SelectedVariableFile) + ".var",
+						VariablesFileName = this.SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,
 					}
 					);
