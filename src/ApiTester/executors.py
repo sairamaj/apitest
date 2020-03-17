@@ -65,6 +65,13 @@ class SetExecutor(ICommand):
         print(f"setexecutor: {executorRequest.parameterName} {executorRequest.parameterValue}")
         self.properties.properties = dict({executorRequest.parameterName:executorRequest.parameterValue}, **self.properties.properties )
 
+class ListPropertiesExecutor(ICommand):
+    def __init__(self, properties):
+        self.properties = properties
+    def execute(self, executorRequest):
+        for key,val in self.properties.properties.items():
+            print(f"{key}:{val}")
+            
 class HelpExecutor(ICommand):
     def __init__(self, properties):
         self.propeties = properties

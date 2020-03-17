@@ -3,7 +3,7 @@ from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
 import json
-from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor
+from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor
 from abc import ABCMeta, abstractstaticmethod
 
 
@@ -12,6 +12,7 @@ class Command:
         self.commands = {'accesstoken': AccessTokenExecutor(properties),
                          'api': ApiExecutor(properties),
                          'set': SetExecutor(properties),
+                         'list': ListPropertiesExecutor(properties),
                          "help": HelpExecutor(properties)}
 
     def execute(self, executorRequest):
