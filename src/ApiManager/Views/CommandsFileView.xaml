@@ -10,15 +10,23 @@
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
+		<ImageBrush x:Key="AddButtonImageBrush" ImageSource="../images/edit.png" />
 	</UserControl.Resources>
-	<Grid >
+	<Grid>
 		<StackPanel>
-			<TextBlock Text="Command Files:" FontWeight="Bold"/>
+			<TextBlock Text="Command Data Files:" FontWeight="Bold"/>
 			<ListView ItemsSource="{Binding CommandFiles}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedCommandFile}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
-						<GridViewColumn  DisplayMemberBinding="{Binding}">
-							<GridViewColumnHeader Tag="Name" Content="Name"/>
+						<GridViewColumn>
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<Button  Background="{StaticResource AddButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>
+										<TextBlock  Text="{Binding Name}" Margin="10,0,0,0" />
+									</StackPanel>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
 					</GridView>
 				</ListView.View>

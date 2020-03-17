@@ -74,6 +74,7 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="ViewModels\CommandFileViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RequestResponseContainerViewModel.cs" />
@@ -157,6 +158,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Configuration\Environments\Apigee\deployment.var">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Configuration\Environments\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -167,6 +171,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="images\edit.png" />
+    <Content Include="Configuration\Environments\Apigee\list_apis2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -19,8 +19,7 @@ namespace ApiManager.Repository
 					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Environments")))
 			{
 				var environment = new EnvironmentInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
-				environment.CommandFiles = Directory.GetFiles(envFolder, "*.txt") 
-					.Select(Path.GetFileNameWithoutExtension).ToList();
+				environment.CommandFiles = Directory.GetFiles(envFolder, "*.txt").ToList();
 				environment.VariableFiles = Directory.GetFiles(envFolder, "*.var")
 						.Select(Path.GetFileNameWithoutExtension).ToList();
 				envs.Add(environment);

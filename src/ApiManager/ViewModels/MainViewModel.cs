@@ -64,22 +64,23 @@ namespace ApiManager.ViewModels
 			set
 			{
 				this._selectedEnvironmentViewModel = value;
-				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles;
+				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c=> new CommandFileViewModel(c));
 				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles;
-				this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
-				this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
 
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
 				OnPropertyChanged(() => this.CommandFiles);
 				OnPropertyChanged(() => this.VariableFiles);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
-
+				this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
+				this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
+				OnPropertyChanged(() => this.SelectedCommandFile);
+				OnPropertyChanged(() => this.SelectedVariableFile);
 			}
 		}
-		public string SelectedCommandFile { get; set; }
+		public CommandFileViewModel SelectedCommandFile { get; set; }
 		public string SelectedVariableFile { get; set; }
 
-		public IEnumerable<string> CommandFiles { get; set; }
+		public IEnumerable<CommandFileViewModel> CommandFiles { get; set; }
 		public IEnumerable<string> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
@@ -110,7 +111,7 @@ namespace ApiManager.ViewModels
 					new TestData
 					{
 						ConfigName = Path.Combine(envInfo.Path,"config.json"),
-						CommandsTextFileName = Path.Combine(envInfo.Path, this.SelectedCommandFile) + ".txt",
+						CommandsTextFileName = this.SelectedCommandFile.FileName,
 						VariablesFileName= Path.Combine(envInfo.Path, this.SelectedVariableFile) + ".var",
 						SessionName = envInfo.Name,
 					}
