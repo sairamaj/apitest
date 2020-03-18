@@ -68,17 +68,14 @@ namespace ApiManager.ViewModels
 			set
 			{
 				this._selectedEnvironmentViewModel = value;
-				this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
-				this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
+				//this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
+				//this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
-				OnPropertyChanged(() => this.CommandFiles);
-				OnPropertyChanged(() => this.VariableFiles);
+				//OnPropertyChanged(() => this.CommandFiles);
+				//OnPropertyChanged(() => this.VariableFiles);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
-				this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
-				this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
-				OnPropertyChanged(() => this.SelectedCommandFile);
-				OnPropertyChanged(() => this.SelectedVariableFile);
+				var task = ChangeAsync();
 			}
 		}
 		public CommandFileViewModel SelectedCommandFile { get; set; }
@@ -125,6 +122,20 @@ namespace ApiManager.ViewModels
 			{
 				MessageBox.Show(e.ToString());
 			}
+		}
+
+		private async Task ChangeAsync()
+		{
+			await Task.Delay(100);
+			this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
+			this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
+			OnPropertyChanged(() => this.CommandFiles);
+			OnPropertyChanged(() => this.VariableFiles);
+
+			this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
+			this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
+			OnPropertyChanged(() => this.SelectedCommandFile);
+			OnPropertyChanged(() => this.SelectedVariableFile);
 		}
 	}
 }

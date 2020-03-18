@@ -14,7 +14,7 @@
 	</UserControl.Resources>
 	<Grid>
 		<StackPanel>
-			<TextBlock Text="Command Data Files:" FontWeight="Bold"/>
+			<TextBlock Text="API Commands Files:" FontWeight="Bold"/>
 			<ListView ItemsSource="{Binding CommandFiles}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedCommandFile}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">

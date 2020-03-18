@@ -46,6 +46,8 @@ class ApiCommandInputParser(InputParser):
         else:
             self.route = parts[0]
             self.path = "_"
+        if len(self.method.strip()) == 0 :
+            self.method = "get"
 
     def __str__(self):
         return f"command:{self.command} route:{self.route} path:{self.path} method:{self.method} filename:{self.filename}"

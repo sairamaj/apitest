@@ -1,0 +1,6 @@
+set username={{apigee_user}}
+set org_name={{apigee_org}}
+set password={{apigee_password}}
+accesstoken.password
+developers post C:\sai\dev\apitest\src\ApiManager\Configuration\Environments\Apigee\posts\create_developer.json
+developers 

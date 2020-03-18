@@ -1,0 +1,16 @@
+{
+	"email": "sai1@abc.com",
+	"firstName": "sairama1",
+	"lastName": "jamal2",
+	"userName": "saij1",
+	"attributes": [
+		{
+			"name": "name1",
+			"value": "val1"
+		},
+		{
+			"name": "name2",
+			"value": "val2"
+		}
+	]
+}

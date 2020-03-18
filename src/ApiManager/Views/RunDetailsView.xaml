@@ -17,6 +17,9 @@
 				<DataTrigger Binding="{Binding StatusCode}" Value="OK" >
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
+				<DataTrigger Binding="{Binding StatusCode}" Value="Created" >
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
 			</Style.Triggers>
 		</Style>
 		

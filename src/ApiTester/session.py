@@ -50,7 +50,6 @@ class Session:
             self.commandExecutor.execute(ExecutorRequest(
                 parser.command, None, None, None, parser.name, parser.value))
         else:
-            print('api.............')
             self.executeCommand(parser)
         return True
 
@@ -91,9 +90,9 @@ class Session:
             apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
         jsonData = ""
         if parser.method.lower() == 'post':
-            if len(parser.fileName) == 0:
+            if len(parser.filename) == 0:
                 raise Exception('post requires filename')
-            with open(parser.fileName, 'r') as in_file:
+            with open(parser.filename, 'r') as in_file:
                 jsonData = json.load(in_file)
         executorRequest = ExecutorRequest(
             parser.command, apiInfoWithData, jsonData, parser.method)
@@ -109,8 +108,6 @@ class Session:
                         self.executeCommandInput(final_command.get('command'))
                     except ApiException as ae:
                         printError(str(ae))
-
-
 
 if __name__ == "__main__":
     config = Config(sys.argv[1])

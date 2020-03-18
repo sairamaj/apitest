@@ -4,7 +4,7 @@ using ApiManager.Model;
 
 namespace ApiManager.Pipes
 {
-	internal interface IMessageListener
+	internal interface IMessageListener 
 	{
 		Task SubScribe(Action<ApiInfo> onMessage);
 	}

@@ -17,7 +17,6 @@
 	</UserControl.Resources>
 	<Grid Margin="0,20,0,0">
 		<StackPanel>
-			<TextBlock Text="Environments:" FontWeight="Bold"/>
 			<ListView ItemsSource="{Binding Environments}" BorderThickness="0" SelectedItem="{Binding SelectedViewModel}" Margin="10,0,0,0">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -10,6 +11,7 @@ namespace ApiManager.ViewModels
 {
 	class CommandFileViewModel : CoreViewModel
 	{
+		private IEnumerable<string> _apis;
 		public CommandFileViewModel(string fileName)
 		{
 			this.FileName = fileName;
@@ -30,5 +32,20 @@ namespace ApiManager.ViewModels
 		public string Name { get; }
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public IEnumerable<string> Apis
+		{
+			get
+			{
+				if (_apis == null)
+				{
+					if (File.Exists(this.FileName))
+					{
+						this._apis = File.ReadAllLines(this.FileName);
+					}
+				}
+
+				return this._apis;
+			}
+		}
 	}
 }

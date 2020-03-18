@@ -22,5 +22,4 @@ class Command:
                 executor = self.commands.get(executorRequest.command, None)    # then go to generic api
         else:
             executor = self.commands.get(executorRequest.command, None)
-
         executor.execute(executorRequest)
