@@ -1,3 +1,4 @@
+import os
 import sys
 import argparse
 from exceptions import ApiException
@@ -52,10 +53,12 @@ properties = Properties(dict(commandParameters,**variables))
 if args.session != "" :
     properties.session_name = args.session
 config = Config(args.config)
-session = Session(config.apis(), properties)
 
 # Run batch
 if args.batch != None:
+    workingDirectory = os.path.dirname(args.batch)
+    session = Session(config.apis(), workingDirectory,  properties)    
     session.executeBatch(args.batch)
 else:
+    session = Session(config.apis(), os.getcwd(),  properties)    
     session.start()

@@ -1,3 +1,4 @@
+import os
 import sys
 import traceback
 import json
@@ -17,8 +18,9 @@ from inputparser import parseCommand, SetCommandInputParser
 from executors import ExecutorRequest
 
 class Session:
-    def __init__(self, apis, properties):
+    def __init__(self, apis, workingDirectory, properties):
         self.apis = apis
+        self.workingDirectory = workingDirectory
         self.properties = properties
         self.commandExecutor = Command(properties)
 
@@ -92,7 +94,8 @@ class Session:
         if parser.method.lower() == 'post':
             if len(parser.filename) == 0:
                 raise Exception('post requires filename')
-            with open(parser.filename, 'r') as in_file:
+            fileNameWithPath = os.path.join(self.workingDirectory,parser.filename)
+            with open(fileNameWithPath, 'r') as in_file:
                 jsonData = json.load(in_file)
         executorRequest = ExecutorRequest(
             parser.command, apiInfoWithData, jsonData, parser.method)

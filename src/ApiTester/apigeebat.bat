@@ -1,1 +1,1 @@
-c:\python37\python main.py --config apigee.json --username=sairamaj@hotmail.com --org_name="sairamaj-eval" --batch apigee.txt  --varfile c:\temp\test.var
+c:\python37\python main.py --config apigee.json --username=sairamaj@hotmail.com --org_name="sairamaj-eval" --batch c:\apigee.txt  --varfile c:\temp\apigee.var
