@@ -42,3 +42,12 @@ def transformString(name , item, argItems):
     inputs = updateVariables(inputs, lambda v: argItems.get(v,None))
     inputs = updateVariables(inputs, getUserInput)  
     return inputs[name]
+
+if __name__ == "__main__":
+    val = "Basic base64 {{client_id}} {{client_secret}}"
+    inputs = {}
+    inputs["test"] = val
+    print(type(inputs))
+    argItems = {"client_id":"1", "client_secret":"2"}
+    outputs = transform(inputs, argItems)
+    print(outputs['test'])

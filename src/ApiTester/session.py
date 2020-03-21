@@ -86,8 +86,10 @@ class Session:
     def execute(self, apiInfo, parser, propertyDictionary):
         data = transform(apiInfo.body, propertyDictionary)
         path = transformString('path', apiInfo.path, propertyDictionary)
-        baseUrl = transformString(
-            'baseurl', apiInfo.baseUrl, propertyDictionary)
+        baseUrl = transformString('baseurl', apiInfo.baseUrl, propertyDictionary)
+        
+        transformedHeaders = transform(apiInfo.headers,propertyDictionary)
+
         apiInfoWithData = ApiInfo(
             apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
         jsonData = ""

@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import traceback
 from exceptions import ApiException
 from pprint import pprint
 from transform import transform
