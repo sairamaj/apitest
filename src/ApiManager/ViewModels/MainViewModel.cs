@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -126,7 +125,7 @@ namespace ApiManager.ViewModels
 
 		private async Task ChangeAsync()
 		{
-			await Task.Delay(100);
+			await Task.Delay(0);
 			this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
 			this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 			OnPropertyChanged(() => this.CommandFiles);

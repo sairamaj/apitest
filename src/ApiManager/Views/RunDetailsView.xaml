@@ -14,10 +14,10 @@
 			<Setter Property="Control.Foreground" Value="Red" />
 			<Setter Property="Control.FontWeight" Value="Bold" />
 			<Style.Triggers>
-				<DataTrigger Binding="{Binding StatusCode}" Value="OK" >
+				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="OK" >
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
-				<DataTrigger Binding="{Binding StatusCode}" Value="Created" >
+				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="Created" >
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
 			</Style.Triggers>
@@ -58,16 +58,17 @@
           Mode=FindAncestor,
           AncestorType={x:Type Expander}},
         Path=ActualWidth}">
-													<TextBlock  Text="{Binding Method}" Margin="3,0,0,0" Width="40"/>
-													<TextBlock  Text="{Binding RelativeUrl}" Margin="3,0,0,0" Width="140"/>
-													<TextBlock  Text="{Binding StatusCode}" Margin="3,0,0,0" Width="60"/>
+													<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
+													<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
+													<TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
 													<StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-														<TextBlock  Text="{Binding TimeTakenString}" HorizontalAlignment="Right"/>
+														<TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
 														<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
 													</StackPanel>
+													<Button Content="JwtToken" Margin="5,0,0,0" VerticalContentAlignment="Center" Command="{Binding ShowJwtTokenCommand}"/>
 												</StackPanel>
 											</Expander.Header>
-											<local:RequestResponseContainerView  DataContext="{Binding}" Height="500"/>
+											<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
 										</Expander>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>
