@@ -22,7 +22,7 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="ClearButtonStyle">
 			<Setter Property="Control.Visibility" Value="Visible" />
 			<Style.Triggers>
@@ -39,7 +39,36 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+
+		<Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<TextBlock>
+						    <ContentPresenter />
+						</TextBlock>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Foreground" Value="Blue" />
+			<Setter Property="FontSize" Value="13" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Margin" Value="15,0,0,0" />
+			<Setter Property="Cursor" Value="Hand" />
+
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="Foreground" Value="Red" />
+				</Trigger>
+				<DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
+					<Setter Property="Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
+
 	<Grid>
 		<Grid Margin="0,20,0,0">
 			<StackPanel>
@@ -65,7 +94,7 @@
 														<TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
 														<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
 													</StackPanel>
-													<Button Content="JwtToken" Margin="5,0,0,0" VerticalContentAlignment="Center" Command="{Binding ShowJwtTokenCommand}"/>
+													<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
 												</StackPanel>
 											</Expander.Header>
 											<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>

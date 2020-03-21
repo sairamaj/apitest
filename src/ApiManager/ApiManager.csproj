@@ -76,6 +76,7 @@
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ViewModels\JwtTokenViewModel.cs" />
     <Compile Include="ViewModels\VariableFileViewModel.cs" />
     <Compile Include="ViewModels\CommandFileViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
@@ -86,6 +87,9 @@
     </Compile>
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JwtTokenWindow.xaml.cs">
+      <DependentUpon>JwtTokenWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RequestResponseContainerView.xaml.cs">
       <DependentUpon>RequestResponseContainerView.xaml</DependentUpon>
@@ -119,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EnvironmentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JwtTokenWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

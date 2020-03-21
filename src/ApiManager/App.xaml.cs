@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
@@ -8,6 +11,7 @@ using ApiManager.Repository;
 using ApiManager.ViewModels;
 using Autofac;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
@@ -31,7 +35,7 @@ namespace ApiManager
 			{
 				var builder = new ContainerBuilder();
 				var settings = JsonConvert.DeserializeObject<Settings>(
-					File.ReadAllText( Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
+					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
 				var apiExecutor = new ApiExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();
@@ -39,8 +43,10 @@ namespace ApiManager
 				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 
-				var win = new MainWindow { DataContext = new MainViewModel(
-					serviceLocator.Resolve<IApiExecutor>() ,
+				var win = new MainWindow
+				{
+					DataContext = new MainViewModel(
+					serviceLocator.Resolve<IApiExecutor>(),
 					serviceLocator.Resolve<IDataRepository>(),
 					serviceLocator.Resolve<IMessageListener>()
 				)
@@ -53,5 +59,6 @@ namespace ApiManager
 				System.Environment.Exit(-1);
 			}
 		}
+
 	}
 }

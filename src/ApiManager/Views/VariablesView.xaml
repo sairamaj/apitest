@@ -15,7 +15,7 @@
 	</UserControl.Resources>
 	<Grid>
 		<StackPanel>
-			<TextBlock Text="Variable Files:" FontWeight="Bold"/>
+			<TextBlock Text="Environments:" FontWeight="Bold"/>
 			<ListView ItemsSource="{Binding VariableFiles}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedVariableFile}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">

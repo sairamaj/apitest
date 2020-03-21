@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ApiManager.Model
 {
 	public class ApiInfo
 	{
+		private string _jwtToken;
 		public string Session { get; set; }
 		public string Url { get; set; }
 		public string Method { get; set; }
@@ -37,6 +39,38 @@ namespace ApiManager.Model
 				return timeTakenMilliseconds.ToString();
 			}
 		}
-	}
 
+		public string JwtToken
+		{
+			get
+			{
+				if (this._jwtToken == null)
+				{
+					this._jwtToken = this.ExtractJwtCode();
+				}
+
+				return this._jwtToken;
+			}
+		}
+
+		private string ExtractJwtCode()
+		{
+			// Look in response first
+			if (!string.IsNullOrWhiteSpace(this.Response.Content))
+			{
+				// try to extract
+				try
+				{
+					var token = JsonConvert.DeserializeObject<JwtToken>(this.Response.Content);
+					return token.Access_Token;
+				}
+				catch (Exception)
+				{
+					// Ignore deserialization of content if it is not JSON.
+				}
+			}
+
+			return string.Empty;
+		}
+	}
 }
