@@ -3,7 +3,7 @@ import sys
 import json
 from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest, PipeExecutorRequest
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from transform import transform
 from transform import transformString
 
@@ -12,7 +12,7 @@ def parseCommand(command, workingDirectory, apis, propertyDictionary):
     commands = {'list': ListCommandInputParser(workingDirectory),
                 'set': SetCommandInputParser(workingDirectory),
                 'help': HelpCommandInputParser(workingDirectory),
-                'pipe': PipeRequestCommandInputParser(workingDirectory)}
+                '!management': ManagementCommandRequestInputParser(workingDirectory)}
 
     parts = command.split(' ')
     commandName = parts[0].lower()
@@ -125,12 +125,12 @@ class HelpCommandInputParser(InputParser):
     def parseCommand(self, command, apis, propertyDictionary):
         return HelpExecutorRequest(apis)
 
-class PipeRequestCommandInputParser(InputParser):
+class ManagementCommandRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
     def parseCommand(self, command, apis, propertyDictionary):
         parts = command.split(' ')
         if len(parts) < 2:
-            raise ValueError(f"pipe command requires requestName (ex: pipe commands)")
-        return PipeExecutorRequest(parts[1])
+            raise ValueError(f"!management command requires requestName (ex: pipe commands)")
+        return ManagementCommandExecutorRequest(apis, parts[1])

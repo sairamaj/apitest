@@ -31,7 +31,8 @@ class HelpExecutorRequest(ExecutorRequest):
         self.apis = apis
 
 
-class PipeExecutorRequest(ExecutorRequest):
-    def __init__(self, request):
-        self.command = "pipe"
+class ManagementCommandExecutorRequest(ExecutorRequest):
+    def __init__(self, apis, request):
+        self.command = "!management"
         self.request = request
+        self.apis = apis

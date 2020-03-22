@@ -39,6 +39,7 @@ namespace ApiManager.ViewModels
 			{
 				SubscribeApiInfo();
 				SubscribeLogs();
+				SubscribeManagement();
 			}
 			catch (Exception e)
 			{
@@ -46,10 +47,12 @@ namespace ApiManager.ViewModels
 			}
 
 			this.SelectedViewModel = this.Environments.FirstOrDefault();
+			this.LogViewModel = new LogViewModel();
 			//this.CommandFiles = this.SelectedViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
 			//this.VariableFiles = this.SelectedViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 			//this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
 			//this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
+			dataRepository.GetCommands(this.SelectedViewModel.EnvironmentInfo);
 		}
 
 		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }
@@ -80,6 +83,8 @@ namespace ApiManager.ViewModels
 		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
+
+		public LogViewModel LogViewModel { get; set; }
 		public async Task RunAsync()
 		{
 			if (this._selectedEnvironmentViewModel == null)
@@ -173,14 +178,30 @@ namespace ApiManager.ViewModels
 			{
 				try
 				{
-					MessageBox.Show(msg);
+					this.LogViewModel.Add(msg);
 				}
 				catch (Exception e)
 				{
+					MessageBox.Show(e.Message);
 					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
 				}
 			});
 		}
 
+		private void SubscribeManagement()
+		{
+			Subscribe("management", msg =>
+			{
+				try
+				{
+					this.LogViewModel.Add(msg);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show(e.Message);
+					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+				}
+			});
+		}
 	}
 }

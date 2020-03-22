@@ -6,11 +6,12 @@ from pprint import pprint
 from api import Api
 from logcollector import collectlog
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, PipeExecutorRequest
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from ui import printRoute
 from ui import printPath
+from pipeserver import PipeServer
 
-
+managementPipe = PipeServer('management')
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
         self.command = command
@@ -150,12 +151,19 @@ class HelpExecutor(ICommand):
         # print(f"\theaders:{foundApiInfo.headers}")
 
 
-class PipeCommandExecutor(ICommand):
+class ManagementCommandExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
 
     def execute(self, executorRequest):
-        if isinstance(executorRequest, PipeExecutorRequest) == False:
+        if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of PipeExecutorRequest")
-        print(f'pipe {executorRequest.request} will be executed here.')
+        commands = []
+        for name, apiInfos in executorRequest.apis.items():
+            for path, apiInfo in apiInfos.items():
+                commands.append(f"{name}.{path}")
+        print(f"apis : {type(executorRequest.apis)}")
+        data = json.dumps(commands)
+        print(f"{data}")
+        managementPipe.send(data)

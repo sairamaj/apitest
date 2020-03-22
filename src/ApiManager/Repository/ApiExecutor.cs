@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -103,6 +104,31 @@ namespace ApiManager.Repository
 			{
 				throw new ApplicationException($"Python installation is required.");
 			}
+		}
+
+		public Task<string> GetCommands(string configFile)
+		{
+			ValidateSettings(this._settings);
+			var tcs = new TaskCompletionSource<string>();
+
+			var command = $"main.py --config {configFile} --batch c:\\temp\\command.txt";
+			var startInfo = new ProcessStartInfo(this._settings.PythonPath, command);
+			startInfo.WorkingDirectory = this._settings.ApiTestPath;
+			var process = new Process()
+			{
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
+
+			process.Start();
+			process.Exited += (s, e) =>
+			{
+				// var output = process.StandardOutput.ReadToEnd();
+				var output = process.ExitCode.ToString();
+				tcs.SetResult(output);
+			};
+
+			return tcs.Task;
 		}
 	}
 }

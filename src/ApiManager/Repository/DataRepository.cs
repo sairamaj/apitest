@@ -11,6 +11,17 @@ namespace ApiManager.Repository
 {
 	class DataRepository : IDataRepository
 	{
+		IApiExecutor _executor;
+		public DataRepository(IApiExecutor executor)
+		{
+			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
+		}
+		public IEnumerable<string> GetCommands(EnvironmentInfo info)
+		{
+			this._executor.GetCommands(info.Configuration);
+			return null;
+		}
+
 		public IEnumerable<EnvironmentInfo> GetEnvironments()
 		{
 			var envs = new List<EnvironmentInfo>();
@@ -27,5 +38,7 @@ namespace ApiManager.Repository
 
 			return envs;
 		}
+
+
 	}
 }

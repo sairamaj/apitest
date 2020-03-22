@@ -3,7 +3,7 @@ from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
 import json
-from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, PipeCommandExecutor
+from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, ManagementCommandExecutor
 from abc import ABCMeta, abstractstaticmethod
 
 
@@ -14,7 +14,7 @@ class Command:
                          'set': SetExecutor(properties),
                          'list': ListPropertiesExecutor(properties),
                          "help": HelpExecutor(properties),
-                         "pipe": PipeCommandExecutor(properties)}
+                         "!management": ManagementCommandExecutor(properties)}
 
     def execute(self, executorRequest):
         if executorRequest.command == 'api':
