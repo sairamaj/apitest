@@ -43,7 +43,8 @@ if args.varfile != None:
 
 # add glonbal exception
 def my_except_hook(exctype, value, traceback):
-    loggerPipe.send(f"error: {str(value)}")
+    loggerPipe.send(f"error executing {args.batch}: {str(value)}")
+    loggerPipe.close()
     print(f"Global exception: {str(value)}")
     input('press any key to quit.')
     print("Exception in user code:")
@@ -62,9 +63,12 @@ config = Config(args.config)
 # Run batch
 if args.batch != None:
     loggerPipe.send(f"info: starting {args.batch}")
-    workingDirectory = os.path.dirname(args.batch)
-    session = Session(config.apis(), workingDirectory,  properties)    
-    session.executeBatch(args.batch)
+    try:
+        workingDirectory = os.path.dirname(args.batch)
+        session = Session(config.apis(), workingDirectory,  properties)    
+        session.executeBatch(args.batch)
+    finally:
+        loggerPipe.close()
 else:
     session = Session(config.apis(), os.getcwd(),  properties)    
     session.start()
