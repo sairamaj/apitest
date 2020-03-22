@@ -1,9 +1,5 @@
-import os
 import sys
 import traceback
-import json
-from transform import transform
-from transform import transformString
 from config import Config
 from ui import printPrompt
 from ui import printRoute
@@ -14,8 +10,8 @@ from ui import printError
 from exceptions import ApiException
 from inputparser import InputParser
 from properties import Properties
-from inputparser import parseCommand, SetCommandInputParser
-from executors import ExecutorRequest
+from inputparser import parseCommand
+from transform import transform
 
 class Session:
     def __init__(self, apis, workingDirectory, properties):
@@ -45,14 +41,10 @@ class Session:
                 print('-'*60)
 
     def executeCommandInput(self, command):
-        parser = parseCommand(command)
-        if parser == None:
+        request = parseCommand(command, self.workingDirectory, self.apis, self.properties.properties)
+        if request == None:
             return False
-        if isinstance(parser, SetCommandInputParser):
-            self.commandExecutor.execute(ExecutorRequest(
-                parser.command, None, None, None, parser.name, parser.value))
-        else:
-            self.executeCommand(parser)
+        self.commandExecutor.execute(request)
         return True
 
     def display(self):
@@ -71,37 +63,6 @@ class Session:
         print('help.routename for route help.')
         print('help.routename.pathname route path.')
         print('-----------------------')
-
-    def executeCommand(self, parser):
-        apiInfos = self.apis.get(parser.route, None)
-        if apiInfos == None:
-            print(f"{parser.route} not found")
-        else:
-            foundApiInfo = apiInfos.get(parser.path, None)
-            if foundApiInfo == None:
-                print('not found')
-            else:
-                self.execute(foundApiInfo, parser, self.properties.properties)
-
-    def execute(self, apiInfo, parser, propertyDictionary):
-        data = transform(apiInfo.body, propertyDictionary)
-        path = transformString('path', apiInfo.path, propertyDictionary)
-        baseUrl = transformString('baseurl', apiInfo.baseUrl, propertyDictionary)
-        
-        transformedHeaders = transform(apiInfo.headers,propertyDictionary)
-
-        apiInfoWithData = ApiInfo(
-            apiInfo.api, apiInfo.route, path, baseUrl, data, apiInfo.headers)
-        jsonData = ""
-        if parser.method.lower() == 'post':
-            if len(parser.filename) == 0:
-                raise Exception('post requires filename')
-            fileNameWithPath = os.path.join(self.workingDirectory,parser.filename)
-            with open(fileNameWithPath, 'r') as in_file:
-                jsonData = json.load(in_file)
-        executorRequest = ExecutorRequest(
-            parser.command, apiInfoWithData, jsonData, parser.method)
-        self.commandExecutor.execute(executorRequest)
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:

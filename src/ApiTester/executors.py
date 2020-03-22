@@ -6,6 +6,7 @@ from pprint import pprint
 from api import Api
 from logcollector import collectlog
 from abc import ABCMeta, abstractstaticmethod
+from executorRequest import ApiExecutorRequest, SetExecutorRequest
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName = None, parameterValue = None):
@@ -28,6 +29,8 @@ class AccessTokenExecutor(ICommand):
         self.properties = properties
 
     def execute(self, executorRequest):
+        if isinstance(executorRequest, ApiExecutorRequest) == False:
+            raise ValueError(f"{type(executorRequest)} is not of ApiExecutorRequest")
         print(f"accesstoken: {executorRequest.apiInfo.baseUrl}")
         oauth = OAuth(executorRequest.apiInfo)
         try:
@@ -44,6 +47,9 @@ class ApiExecutor(ICommand):
         self.properties = properties
 
     def execute(self, executorRequest):
+        if isinstance(executorRequest, ApiExecutorRequest) == False:
+            raise ValueError(f"{type(executorRequest)} is not of ApiExecutorRequest")
+
         api = Api(executorRequest.apiInfo, self.properties.access_token)
         try:
             if executorRequest.method == 'get':
@@ -61,8 +67,10 @@ class ApiExecutor(ICommand):
 class SetExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
+
     def execute(self, executorRequest):
-        print(f"setexecutor: {executorRequest.parameterName} {executorRequest.parameterValue}")
+        if isinstance(executorRequest, SetExecutorRequest) == False:
+            raise ValueError(f"{type(executorRequest)} is not of SetExecutorRequest")
         self.properties.properties = dict({executorRequest.parameterName:executorRequest.parameterValue}, **self.properties.properties )
 
 class ListPropertiesExecutor(ICommand):
