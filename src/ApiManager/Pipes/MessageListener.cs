@@ -19,7 +19,7 @@ namespace ApiManager.Pipes
 				var pipeClient =
 					new NamedPipeClientStream(
 						".",
-						"Foo",
+						"apiinfo",
 						PipeDirection.In, PipeOptions.None,
 						TokenImpersonationLevel.Impersonation);
 

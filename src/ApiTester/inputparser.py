@@ -3,22 +3,24 @@ import sys
 import json
 from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest, PipeExecutorRequest
 from transform import transform
 from transform import transformString
 
 
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
-    parts = command.split(' ')
+    commands = {'list': ListCommandInputParser(workingDirectory),
+                'set': SetCommandInputParser(workingDirectory),
+                'help': HelpCommandInputParser(workingDirectory),
+                'pipe': PipeRequestCommandInputParser(workingDirectory)}
 
+    parts = command.split(' ')
+    commandName = parts[0].lower()
     parser = None
-    if parts[0] == 'quit' or parts[0][0] == 'q':
+    if commandName == 'quit' or commandName == 'q':
         return None
-    if parts[0] == 'set':
-        parser = SetCommandInputParser(workingDirectory)
-    elif parts[0] == 'list':
-        parser = ListCommandInputParser(workingDirectory)
-    else:
+    parser = commands.get(commandName, None)
+    if parser == None:
         parser = ApiCommandInputParser(workingDirectory)
 
     return parser.parseCommand(command, apis, propertyDictionary)
@@ -116,7 +118,19 @@ class ListCommandInputParser(InputParser):
         return ListExecutorRequest()
 
 
-if __name__ == "__main__":
-    print(sys.argv[1:])
-    parser = parseCommand(' '.join(sys.argv[1:]))
-    print(str(parser))
+class HelpCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, propertyDictionary):
+        return HelpExecutorRequest(apis)
+
+class PipeRequestCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, propertyDictionary):
+        parts = command.split(' ')
+        if len(parts) < 2:
+            raise ValueError(f"pipe command requires requestName (ex: pipe commands)")
+        return PipeExecutorRequest(parts[1])

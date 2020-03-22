@@ -6,16 +6,20 @@ from pprint import pprint
 from api import Api
 from logcollector import collectlog
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, PipeExecutorRequest
+from ui import printRoute
+from ui import printPath
+
 
 class ExecutorRequest:
-    def __init__(self, command, apiInfo, payLoad, method, parameterName = None, parameterValue = None):
+    def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
         self.command = command
         self.apiInfo = apiInfo
         self.payLoad = payLoad
         self.method = method
         self.parameterName = parameterName
         self.parameterValue = parameterValue
+
 
 class ICommand(metaclass=ABCMeta):
     """The command interface, which all commands will implement"""
@@ -24,13 +28,15 @@ class ICommand(metaclass=ABCMeta):
     def execute(executorRequest):
         """The required execute method which all command obejcts will use"""
 
+
 class AccessTokenExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
-            raise ValueError(f"{type(executorRequest)} is not of ApiExecutorRequest")
+            raise ValueError(
+                f"{type(executorRequest)} is not of ApiExecutorRequest")
         print(f"accesstoken: {executorRequest.apiInfo.baseUrl}")
         oauth = OAuth(executorRequest.apiInfo)
         try:
@@ -42,13 +48,15 @@ class AccessTokenExecutor(ICommand):
             collectlog(oauth.response, self.properties.session_name)
             raise
 
+
 class ApiExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
-            raise ValueError(f"{type(executorRequest)} is not of ApiExecutorRequest")
+            raise ValueError(
+                f"{type(executorRequest)} is not of ApiExecutorRequest")
 
         api = Api(executorRequest.apiInfo, self.properties.access_token)
         try:
@@ -64,29 +72,55 @@ class ApiExecutor(ICommand):
         finally:
             pass
 
+
 class SetExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, SetExecutorRequest) == False:
-            raise ValueError(f"{type(executorRequest)} is not of SetExecutorRequest")
-        self.properties.properties = dict({executorRequest.parameterName:executorRequest.parameterValue}, **self.properties.properties )
+            raise ValueError(
+                f"{type(executorRequest)} is not of SetExecutorRequest")
+        self.properties.properties = dict(
+            {executorRequest.parameterName: executorRequest.parameterValue}, **self.properties.properties)
+
 
 class ListPropertiesExecutor(ICommand):
     def __init__(self, properties):
         self.properties = properties
+
     def execute(self, executorRequest):
-        for key,val in self.properties.properties.items():
-            print(f"{key}:{val}")
-            
+        for key, val in self.properties.properties.items():
+            print(f"{key.rjust(30)} : {val}")
+
+
 class HelpExecutor(ICommand):
     def __init__(self, properties):
         self.propeties = properties
 
+    def display(self, apis):
+        print()
+        print('---------------------------')
+        print('utility to execute api routes')
+        print('---------------------------')
+        for name, apiInfos in apis.items():
+            printRoute(f"\t{name}")
+            for path, apiInfo in apiInfos.items():
+                printPath(f"\t\t{path}")
+        print('-----------------------')
+        print('enter route.path format (ex: accesstoken.password) (if u see _ then you can type the route only. accesstoken')
+        print('quit/q for quit.')
+        print('help for help.')
+        print('help.routename for route help.')
+        print('help.routename.pathname route path.')
+        print('-----------------------')
+
     def execute(self, executorRequest):
-        pass
-        # self.display()
+        if isinstance(executorRequest, HelpExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of HelpExecutorRequest")
+
+        self.display(executorRequest.apis)
         # return
         # routeName = parser.route
         # pathName = parser.path
@@ -114,3 +148,14 @@ class HelpExecutor(ICommand):
         # print(f"\tbaseUrl:{foundApiInfo.baseUrl}")
         # print(f"\t   body:{foundApiInfo.body}")
         # print(f"\theaders:{foundApiInfo.headers}")
+
+
+class PipeCommandExecutor(ICommand):
+    def __init__(self, properties):
+        self.properties = properties
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, PipeExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of PipeExecutorRequest")
+        print(f'pipe {executorRequest.request} will be executed here.')

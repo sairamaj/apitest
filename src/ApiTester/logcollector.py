@@ -2,7 +2,7 @@ from pipeserver import PipeServer
 from pprint import pprint
 import json
 
-pipeServer = PipeServer()
+pipeServer = PipeServer('apiinfo')
 
 def debug(response):
     pprint('_________________')

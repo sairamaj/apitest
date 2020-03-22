@@ -5,7 +5,8 @@ import win32pipe, win32file, pywintypes
 from ui import printWarning
 
 class PipeServer():
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.connect()
 
     def send(self, message):
@@ -22,7 +23,7 @@ class PipeServer():
     def connect(self):
         try:
             self.pipe = win32pipe.CreateNamedPipe(
-            r'\\.\pipe\Foo',
+            rf'\\.\pipe\{self.name}',
             win32pipe.PIPE_ACCESS_OUTBOUND,
             win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_NOWAIT,
             1, 65536, 65536,
@@ -35,7 +36,8 @@ class PipeServer():
         win32file.CloseHandle(self.pipe)
 
     def saveToFile(self, data):
-        with open(r'c:\temp\temp\send.json', 'w') as out_file:
-            out_file.write(data)
+        pass
+        # with open(r'c:\temp\temp\send.json', 'w') as out_file:
+        #     out_file.write(data)
 
 
