@@ -13,7 +13,6 @@ namespace ApiManager.Pipes
 	{
 		public async Task SubScribe(Action<ApiInfo> onMessage)
 		{
-
 			do
 			{
 				var pipeClient =
@@ -34,6 +33,42 @@ namespace ApiManager.Pipes
 						try
 						{
 							onMessage(JsonConvert.DeserializeObject<ApiInfo>(data));
+						}
+						catch (Exception e)
+						{
+							TraceLogger.Error($"MessageListener.SubScribe.Deserialize:{e}");
+						}
+					} while (true);
+				}
+				catch (Exception e)
+				{
+					TraceLogger.Error($"MessageListener.SubScribe.Read:{e}");
+				}
+			} while (true);
+		}
+
+		public async Task SubScribe(string name, Action<string> onMessage)
+		{
+			do
+			{
+				var pipeClient =
+					new NamedPipeClientStream(
+						".",
+						name,
+						PipeDirection.In, PipeOptions.None,
+						TokenImpersonationLevel.Impersonation);
+
+				TraceLogger.Debug("MessageListener.SubScribe.Connect");
+				await pipeClient.ConnectAsync();
+				TraceLogger.Debug("MessageListener.SubScribe.Connected");
+				try
+				{
+					do
+					{
+						var data = await new StreamString(pipeClient).ReadStringAsync();
+						try
+						{
+							onMessage(data);
 						}
 						catch (Exception e)
 						{

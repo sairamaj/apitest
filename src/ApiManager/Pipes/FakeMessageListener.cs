@@ -38,5 +38,10 @@ namespace ApiManager.Pipes
 				} while (true);
 			});
 		}
+
+		public async Task SubScribe(string name, Action<string> onMessage)
+		{
+			await Task.Delay(0);
+		}
 	}
 }

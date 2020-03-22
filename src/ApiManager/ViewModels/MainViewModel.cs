@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using Newtonsoft.Json;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
@@ -17,13 +18,16 @@ namespace ApiManager.ViewModels
 	class MainViewModel : CoreViewModel
 	{
 		private EnvironmentViewModel _selectedEnvironmentViewModel;
-		private IApiExecutor apiExecutor;
+		private IMessageListener _listener;
+		private IApiExecutor _apiExecutor;
 		public MainViewModel(
 			IApiExecutor executor,
 			IDataRepository dataRepository,
 			IMessageListener listener)
 		{
-			this.apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
+			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
+			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
+
 			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			foreach (var envInfo in dataRepository.GetEnvironments())
@@ -33,16 +37,8 @@ namespace ApiManager.ViewModels
 
 			try
 			{
-				listener.SubScribe(s =>
-				{
-					var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == s.Session);
-					if (envFolder == null)
-					{
-						return;
-					}
-
-					envFolder.AddApiInfo(s);
-				});
+				SubscribeApiInfo();
+				SubscribeLogs();
 			}
 			catch (Exception e)
 			{
@@ -107,7 +103,7 @@ namespace ApiManager.ViewModels
 			try
 			{
 				var envInfo = this.SelectedViewModel.EnvironmentInfo;
-				var result = await this.apiExecutor.StartAsync(
+				var result = await this._apiExecutor.StartAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,
@@ -136,5 +132,55 @@ namespace ApiManager.ViewModels
 			OnPropertyChanged(() => this.SelectedCommandFile);
 			OnPropertyChanged(() => this.SelectedVariableFile);
 		}
+
+		private void Subscribe(string name, Action<string> onMessage)
+		{
+			try
+			{
+				this._listener.SubScribe(name, onMessage);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+			}
+		}
+
+		private void SubscribeApiInfo()
+		{
+			Subscribe("apiinfo", msg =>
+			{
+				try
+				{
+					var apiInfo = JsonConvert.DeserializeObject<ApiInfo>(msg);
+					var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == apiInfo.Session);
+					if (envFolder == null)
+					{
+						return;
+					}
+
+					envFolder.AddApiInfo(apiInfo);
+				}
+				catch (Exception e)
+				{
+					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+				}
+			});
+		}
+
+		private void SubscribeLogs()
+		{
+			Subscribe("log", msg =>
+			{
+				try
+				{
+					MessageBox.Show(msg);
+				}
+				catch (Exception e)
+				{
+					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+				}
+			});
+		}
+
 	}
 }

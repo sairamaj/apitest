@@ -11,6 +11,7 @@ from ui import printPrompt
 from session import Session
 from config import Config
 from properties import Properties
+from pipeserver import PipeServer
 
 # Load file
 parser = argparse.ArgumentParser()
@@ -19,6 +20,8 @@ parser.add_argument("--config", help="Config File")
 parser.add_argument("--varfile", help="Variables file")
 parser.add_argument("--session", help="Session name")
 args, unknown = parser.parse_known_args()
+
+loggerPipe = PipeServer('log')
 
 if args.config == None:
     printError('Config file is required . [ex: main.py --config apigee.json] ')
@@ -40,6 +43,7 @@ if args.varfile != None:
 
 # add glonbal exception
 def my_except_hook(exctype, value, traceback):
+    loggerPipe.send(f"error: {str(value)}")
     print(f"Global exception: {str(value)}")
     input('press any key to quit.')
     print("Exception in user code:")
@@ -57,6 +61,7 @@ config = Config(args.config)
 
 # Run batch
 if args.batch != None:
+    loggerPipe.send(f"info: starting {args.batch}")
     workingDirectory = os.path.dirname(args.batch)
     session = Session(config.apis(), workingDirectory,  properties)    
     session.executeBatch(args.batch)
