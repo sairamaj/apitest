@@ -30,6 +30,7 @@ namespace ApiManager.ViewModels
 
 			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
+			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
 				this.Environments.Add(new EnvironmentViewModel(envInfo, executor));
@@ -81,6 +82,7 @@ namespace ApiManager.ViewModels
 		public IEnumerable<CommandFileViewModel> CommandFiles { get; set; }
 		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
+		public ICommand OpenCommandPrompt { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
 		public LogViewModel LogViewModel { get; set; }
@@ -108,6 +110,45 @@ namespace ApiManager.ViewModels
 			{
 				var envInfo = this.SelectedViewModel.EnvironmentInfo;
 				var result = await this._apiExecutor.StartAsync(
+					new TestData
+					{
+						ConfigName = envInfo.Configuration,
+						CommandsTextFileName = this.SelectedCommandFile.FileName,
+						VariablesFileName = this.SelectedVariableFile.FileName,
+						SessionName = envInfo.Name,
+					}
+					);
+			}
+			catch (System.Exception e)
+			{
+				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+
+		private async Task OpenCommandPromptAsync()
+		{
+			if (this._selectedEnvironmentViewModel == null)
+			{
+				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (this.SelectedCommandFile == null)
+			{
+				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (this.SelectedVariableFile == null)
+			{
+				MessageBox.Show("Select Variable File", "Variable File", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			try
+			{
+				var envInfo = this.SelectedViewModel.EnvironmentInfo;
+				var result = await this._apiExecutor.OpenCommandPromptAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,

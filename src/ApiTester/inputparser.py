@@ -8,9 +8,9 @@ from transform import transform
 from transform import transformString
 
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
-    commands = {'list': ListCommandInputParser(workingDirectory),
-                'set': SetCommandInputParser(workingDirectory),
-                'help': HelpCommandInputParser(workingDirectory),
+    commands = {'!list': ListCommandInputParser(workingDirectory),
+                '!set': SetCommandInputParser(workingDirectory),
+                '!help': HelpCommandInputParser(workingDirectory),
                 '!management': ManagementCommandRequestInputParser(workingDirectory),
                 '!waitforuserinput': WaitForUserInputRequestInputParser(workingDirectory)
                 }

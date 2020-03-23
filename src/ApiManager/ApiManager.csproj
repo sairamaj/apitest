@@ -200,6 +200,8 @@
     <Content Include="Configuration\Environments\Apigee\list_deployments.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\commandprompt.png" />
+    <Resource Include="images\run.png" />
     <Content Include="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

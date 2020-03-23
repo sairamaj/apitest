@@ -7,6 +7,7 @@ namespace ApiManager.Repository
 	interface IApiExecutor
 	{
 		Task<string> StartAsync(TestData testData);
+		Task<string> OpenCommandPromptAsync(TestData testData);
 		Task<string> GetCommands(string configFile);
 	}
 }

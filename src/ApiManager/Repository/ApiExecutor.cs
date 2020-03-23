@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -46,14 +44,21 @@ namespace ApiManager.Repository
 		{
 		}
 
-		private string CreateArguments(TestData testData, bool isPython)
+		private string CreateArguments(TestData testData, bool isPython, bool isBatch = true)
 		{
 			var command = string.Empty;
 			if (isPython)
 			{
 				command += "main.py ";
 			}
-			command += $"main.py --config {testData.ConfigName} --batch {testData.CommandsTextFileName}";
+			
+			command += $"--config {testData.ConfigName}";
+
+			if (isBatch)
+			{
+				command += $" --batch {testData.CommandsTextFileName}";
+			}
+
 			if (!string.IsNullOrWhiteSpace(testData.VariablesFileName))
 			{
 				command += $" --varfile {testData.VariablesFileName}";
@@ -143,5 +148,36 @@ namespace ApiManager.Repository
 				throw new ApplicationException($"Found: Pyton Version: {parts[1]} But 3.7.x  is required.");
 			}
 		}
+
+		public async Task<string> OpenCommandPromptAsync(TestData testData)
+		{
+			return await this.ExecuteAsync(testData, false);
+		}
+
+		private Task<string> ExecuteAsync(TestData testData, bool isBatch)
+		{
+			ValidateSettings(this._settings);
+			Validate(testData);
+			var tcs = new TaskCompletionSource<string>();
+
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, CreateArguments(testData, this._settings.IsPythonExecutable, isBatch));
+			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
+			var process = new Process()
+			{
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
+
+			process.Start();
+			process.Exited += (s, e) =>
+			{
+				// var output = process.StandardOutput.ReadToEnd();
+				var output = process.ExitCode.ToString();
+				tcs.SetResult(output);
+			};
+
+			return tcs.Task;
+		}
+
 	}
 }

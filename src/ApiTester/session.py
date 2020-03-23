@@ -22,7 +22,7 @@ class Session:
 
     def start(self):
         quit = False
-        self.display()
+        self.executeCommandInput("!help")   # show help to start with
         while quit == False:
             printPrompt(">>")
             try:
@@ -46,23 +46,6 @@ class Session:
             return False
         self.commandExecutor.execute(request)
         return True
-
-    def display(self):
-        print()
-        print('---------------------------')
-        print('utility to execute api routes')
-        print('---------------------------')
-        for name, apiInfos in self.apis.items():
-            printRoute(f"\t{name}")
-            for path, apiInfo in apiInfos.items():
-                printPath(f"\t\t{path}")
-        print('-----------------------')
-        print('enter route.path format (ex: accesstoken.password) (if u see _ then you can type the route only. accesstoken')
-        print('quit/q for quit.')
-        print('help for help.')
-        print('help.routename for route help.')
-        print('help.routename.pathname route path.')
-        print('-----------------------')
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:

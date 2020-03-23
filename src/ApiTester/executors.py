@@ -111,9 +111,12 @@ class HelpExecutor(ICommand):
         print('-----------------------')
         print('enter route.path format (ex: accesstoken.password) (if u see _ then you can type the route only. accesstoken')
         print('quit/q for quit.')
-        print('help for help.')
-        print('help.routename for route help.')
-        print('help.routename.pathname route path.')
+        print('!help for help.')
+        print('!help.routename for route help.')
+        print('!help.routename.pathname route path.')
+        print('!set name=value (to set variable).')
+        print('!list (to list all variables).')
+        print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
 
     def execute(self, executorRequest):

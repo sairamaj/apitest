@@ -12,9 +12,9 @@ class Command:
     def __init__(self, properties):
         self.commands = {'accesstoken': AccessTokenExecutor(properties),
                          'api': ApiExecutor(properties),
-                         'set': SetExecutor(properties),
-                         'list': ListPropertiesExecutor(properties),
-                         "help": HelpExecutor(properties),
+                         '!set': SetExecutor(properties),
+                         '!list': ListPropertiesExecutor(properties),
+                         "!help": HelpExecutor(properties),
                          "!management": ManagementCommandExecutor(properties),
                          "!waitforuserinput": WaitForUserInputCommandExecutor(properties)
                          }
