@@ -39,7 +39,7 @@ namespace ApiManager.ViewModels
 			{
 				SubscribeApiInfo();
 				SubscribeLogs();
-				SubscribeManagement();
+				// SubscribeManagement();
 			}
 			catch (Exception e)
 			{
@@ -52,7 +52,6 @@ namespace ApiManager.ViewModels
 			//this.VariableFiles = this.SelectedViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 			//this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
 			//this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
-			dataRepository.GetCommands(this.SelectedViewModel.EnvironmentInfo);
 		}
 
 		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }

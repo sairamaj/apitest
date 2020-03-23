@@ -44,9 +44,9 @@ if args.varfile != None:
 # add glonbal exception
 def my_except_hook(exctype, value, traceback):
     loggerPipe.send(f"error executing {args.batch}: {str(value)}")
-    loggerPipe.close()
-    print(f"Global exception: {str(value)}")
+    printError(f"Global exception: {str(value)}")
     input('press any key to quit.')
+    loggerPipe.close()
     print("Exception in user code:")
     print('-'*60)
     traceback.print_exc(file=sys.stdout)

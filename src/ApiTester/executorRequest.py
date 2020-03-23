@@ -36,3 +36,8 @@ class ManagementCommandExecutorRequest(ExecutorRequest):
         self.command = "!management"
         self.request = request
         self.apis = apis
+
+class WaitForUserInputExecutorRequest(ExecutorRequest):
+    def __init__(self, prompt):
+        self.command = "!waitforuserinput"
+        self.prompt = prompt

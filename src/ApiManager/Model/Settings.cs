@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ApiManager.Model
+﻿namespace ApiManager.Model
 {
 	class Settings
 	{
-		public string PythonPath { get; set; }
-		public string ApiTestPath { get; set; }
+		public string ConsoleExecutableName { get; set; }
+		public string WorkingDirectory { get; set; }
+
+		public bool IsPythonExecutable
+		{
+			get
+			{
+				if (string.IsNullOrWhiteSpace(this.ConsoleExecutableName))
+				{
+					return false;
+				}
+
+				return this.ConsoleExecutableName.ToLower().Contains("python");
+			}
+		}
 	}
 }

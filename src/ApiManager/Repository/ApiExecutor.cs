@@ -23,8 +23,8 @@ namespace ApiManager.Repository
 			Validate(testData);
 			var tcs = new TaskCompletionSource<string>();
 
-			var startInfo = new ProcessStartInfo(this._settings.PythonPath, CreateArguments(testData));
-			startInfo.WorkingDirectory = this._settings.ApiTestPath;
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, CreateArguments(testData, this._settings.IsPythonExecutable));
+			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
 			var process = new Process()
 			{
 				StartInfo = startInfo,
@@ -46,9 +46,14 @@ namespace ApiManager.Repository
 		{
 		}
 
-		private string CreateArguments(TestData testData)
+		private string CreateArguments(TestData testData, bool isPython)
 		{
-			var command = $"main.py --config {testData.ConfigName} --batch {testData.CommandsTextFileName}";
+			var command = string.Empty;
+			if (isPython)
+			{
+				command += "main.py ";
+			}
+			command += $"main.py --config {testData.ConfigName} --batch {testData.CommandsTextFileName}";
 			if (!string.IsNullOrWhiteSpace(testData.VariablesFileName))
 			{
 				command += $" --varfile {testData.VariablesFileName}";
@@ -69,41 +74,17 @@ namespace ApiManager.Repository
 				return;
 			}
 
-			if (!Directory.Exists(settings.ApiTestPath))
+			if (!Directory.Exists(settings.WorkingDirectory))
 			{
-				throw new DirectoryNotFoundException($"{settings.ApiTestPath} not found. Make sure that path exists.");
+				throw new DirectoryNotFoundException($"{settings.WorkingDirectory} not found. Make sure that path exists.");
 			}
-			try
+			if (this._settings.IsPythonExecutable)
 			{
-				var startInfo = new ProcessStartInfo(this._settings.PythonPath, "--version");
-				startInfo.RedirectStandardOutput = true;
-				startInfo.UseShellExecute = false;
-				var process = new Process()
-				{
-					StartInfo = startInfo,
-					EnableRaisingEvents = true
-				};
-
-				var p = Process.Start(startInfo);
-				p.WaitForExit();
-				var versionMessage = p.StandardOutput.ReadToEnd();
-				var parts = versionMessage.Split(' ');
-				if (parts.Length < 2)
-				{
-					throw new ApplicationException($"Python --version did not return properly");
-				}
-
-				if (!parts[1].Trim().StartsWith("3.7"))
-				{
-					throw new ApplicationException($"Found: Pyton Version: {parts[1]} But 3.7.x  is required.");
-				}
-
-				this._isSettingsValidated = true;
+				// validate python version
+				this.ValidatePythonVersion();
 			}
-			catch (Win32Exception e)
-			{
-				throw new ApplicationException($"Python installation is required.");
-			}
+
+			this._isSettingsValidated = true;
 		}
 
 		public Task<string> GetCommands(string configFile)
@@ -112,8 +93,8 @@ namespace ApiManager.Repository
 			var tcs = new TaskCompletionSource<string>();
 
 			var command = $"main.py --config {configFile} --batch c:\\temp\\command.txt";
-			var startInfo = new ProcessStartInfo(this._settings.PythonPath, command);
-			startInfo.WorkingDirectory = this._settings.ApiTestPath;
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, command);
+			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
 			var process = new Process()
 			{
 				StartInfo = startInfo,
@@ -129,6 +110,32 @@ namespace ApiManager.Repository
 			};
 
 			return tcs.Task;
+		}
+
+		private void ValidatePythonVersion()
+		{
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, "--version");
+			startInfo.RedirectStandardOutput = true;
+			startInfo.UseShellExecute = false;
+			var process = new Process()
+			{
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
+
+			var p = Process.Start(startInfo);
+			p.WaitForExit();
+			var versionMessage = p.StandardOutput.ReadToEnd();
+			var parts = versionMessage.Split(' ');
+			if (parts.Length < 2)
+			{
+				throw new ApplicationException($"Python --version did not return properly");
+			}
+
+			if (!parts[1].Trim().StartsWith("3.7"))
+			{
+				throw new ApplicationException($"Found: Pyton Version: {parts[1]} But 3.7.x  is required.");
+			}
 		}
 	}
 }

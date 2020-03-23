@@ -12,7 +12,13 @@ def printSuccess(str1):
 def printWarning(str1):
     print(getattr(Fore, 'YELLOW') + str1 + Fore.WHITE)
 
+def printInfo(str1):
+    print(getattr(Fore, 'MAGENTA') + str1 + Fore.WHITE)
+
 def printPrompt(str1):
+    print(getattr(Fore, 'CYAN') + str1 + Fore.WHITE, end='')
+
+def printUserWaitPrompt(str1):
     print(getattr(Fore, 'CYAN') + str1 + Fore.WHITE, end='')
 
 def printRoute(str1):
@@ -24,3 +30,7 @@ def printPath(str1):
 def getUserInput(prompt):
     printPrompt(prompt)
     return input()
+
+def waitForUserInput(prompt):
+    printUserWaitPrompt(prompt)
+    return input()    

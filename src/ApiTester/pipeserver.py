@@ -2,7 +2,7 @@ import time
 import sys
 import struct
 import win32pipe, win32file, pywintypes
-from ui import printWarning
+from ui import printWarning , printInfo
 
 class PipeServer():
     def __init__(self, name):
@@ -16,11 +16,13 @@ class PipeServer():
             some_data = struct.pack('I', len(message)) + str.encode(message,'utf-8')
             win32file.WriteFile(self.pipe, some_data)
         except Exception as e:
+            printWarning(str(e))
             if e.winerror == 232:
                 self.close()
                 self.connect()
 
     def connect(self):
+        printInfo(f"pipserver.connecting: {self.name}")
         try:
             self.pipe = win32pipe.CreateNamedPipe(
             rf'\\.\pipe\{self.name}',
@@ -33,6 +35,7 @@ class PipeServer():
             printWarning(str(e))
 
     def close(self):
+        printInfo('pipeserver.close')
         win32file.CloseHandle(self.pipe)
 
     def saveToFile(self, data):

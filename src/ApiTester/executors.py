@@ -7,8 +7,8 @@ from api import Api
 from logcollector import collectlog
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
-from ui import printRoute
-from ui import printPath
+from executorRequest import WaitForUserInputExecutorRequest
+from ui import printRoute, printPath, waitForUserInput
 from pipeserver import PipeServer
 
 managementPipe = PipeServer('management')
@@ -158,7 +158,7 @@ class ManagementCommandExecutor(ICommand):
     def execute(self, executorRequest):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
-                f"{type(executorRequest)} is not of PipeExecutorRequest")
+                f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         commands = []
         for name, apiInfos in executorRequest.apis.items():
             for path, apiInfo in apiInfos.items():
@@ -167,3 +167,13 @@ class ManagementCommandExecutor(ICommand):
         data = json.dumps(commands)
         print(f"{data}")
         managementPipe.send(data)
+
+class WaitForUserInputCommandExecutor(ICommand):
+    def __init__(self, properties):
+        self.properties = properties
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, WaitForUserInputExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of WaitForUserInputExecutorRequest")
+        waitForUserInput(executorRequest.prompt)

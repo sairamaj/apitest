@@ -1,4 +1,4 @@
 {
-	"pythonPath": "c:\\python37\\python",
-	"apiTestPath": "..\\src\\apitester"
+	"consoleExecutableName": "c:\\python37\\python",
+	"workingDirectory": "..\\src\\apitester"
 }

@@ -4,6 +4,7 @@ from pprint import pprint
 from api import Api
 import json
 from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, ManagementCommandExecutor
+from executors import WaitForUserInputCommandExecutor
 from abc import ABCMeta, abstractstaticmethod
 
 
@@ -14,7 +15,9 @@ class Command:
                          'set': SetExecutor(properties),
                          'list': ListPropertiesExecutor(properties),
                          "help": HelpExecutor(properties),
-                         "!management": ManagementCommandExecutor(properties)}
+                         "!management": ManagementCommandExecutor(properties),
+                         "!waitforuserinput": WaitForUserInputCommandExecutor(properties)
+                         }
 
     def execute(self, executorRequest):
         if executorRequest.command == 'api':
