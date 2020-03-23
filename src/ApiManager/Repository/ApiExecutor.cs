@@ -78,6 +78,12 @@ namespace ApiManager.Repository
 			{
 				throw new DirectoryNotFoundException($"{settings.WorkingDirectory} not found. Make sure that path exists.");
 			}
+
+			if (!File.Exists(this._settings.ConsoleExecutableName))
+			{
+				throw new FileNotFoundException($"{this._settings.ConsoleExecutableName} does not exist");
+			}
+
 			if (this._settings.IsPythonExecutable)
 			{
 				// validate python version

@@ -94,7 +94,7 @@ namespace ApiManager.ViewModels
 
 			if (this.SelectedCommandFile == null)
 			{
-				MessageBox.Show("Select Command File", "Command File", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -119,7 +119,7 @@ namespace ApiManager.ViewModels
 			}
 			catch (System.Exception e)
 			{
-				MessageBox.Show(e.ToString());
+				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
