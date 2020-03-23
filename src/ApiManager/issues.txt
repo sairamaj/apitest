@@ -1,0 +1,6 @@
+﻿Problem
+	- API responses are not showing up
+Cause
+	- More than one instance of apitester.exe (console version) cannot be active at this time
+Fix
+	- If apitester.exe is active (check in the background) close the application

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,17 @@ namespace ApiManager.ViewModels
 			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
+			this.ShowIssuesCommand = new DelegateCommand(() =>
+			{
+				try
+				{
+					Process.Start("issues.txt");
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show($"{e.Message} - issues.txt", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			});
 			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
 				this.Environments.Add(new EnvironmentViewModel(envInfo, executor));
@@ -83,6 +95,7 @@ namespace ApiManager.ViewModels
 		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
+		public ICommand ShowIssuesCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
 		public LogViewModel LogViewModel { get; set; }

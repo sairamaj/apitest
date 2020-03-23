@@ -202,6 +202,9 @@
     </Content>
     <Resource Include="images\commandprompt.png" />
     <Resource Include="images\run.png" />
+    <Content Include="issues.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
