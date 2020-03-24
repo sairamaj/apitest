@@ -9,14 +9,14 @@ from abc import ABCMeta, abstractstaticmethod
 
 
 class Command:
-    def __init__(self, properties):
-        self.commands = {'accesstoken': AccessTokenExecutor(properties),
-                         'api': ApiExecutor(properties),
-                         '!set': SetExecutor(properties),
-                         '!list': ListPropertiesExecutor(properties),
-                         "!help": HelpExecutor(properties),
-                         "!management": ManagementCommandExecutor(properties),
-                         "!waitforuserinput": WaitForUserInputCommandExecutor(properties)
+    def __init__(self, property_bag):
+        self.commands = {'accesstoken': AccessTokenExecutor(property_bag),
+                         'api': ApiExecutor(property_bag),
+                         '!set': SetExecutor(property_bag),
+                         '!list': ListPropertiesExecutor(property_bag),
+                         "!help": HelpExecutor(property_bag),
+                         "!management": ManagementCommandExecutor(property_bag),
+                         "!waitforuserinput": WaitForUserInputCommandExecutor(property_bag)
                          }
 
     def execute(self, executorRequest):

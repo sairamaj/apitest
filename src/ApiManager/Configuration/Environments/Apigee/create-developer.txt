@@ -1,6 +1,0 @@
-set username={{apigee_user}}
-set org_name={{apigee_org}}
-set password={{apigee_password}}
-accesstoken.password
-developers post posts\create_developer.json
-developers 

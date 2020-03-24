@@ -1,4 +1,2 @@
 accesstoken.password
-#!waitforuserinput ExecutingApis
 apis
-!waitforuserinput Done

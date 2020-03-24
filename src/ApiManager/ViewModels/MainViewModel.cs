@@ -209,6 +209,14 @@ namespace ApiManager.ViewModels
 			{
 				try
 				{
+					if (!msg.StartsWith("api|"))
+					{
+						var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
+						this.LogViewModel.Add($"[Warning] does not start with api| {partialMessage}");
+						return;
+					}
+
+					msg = msg.Substring("api|".Length);
 					var apiInfo = JsonConvert.DeserializeObject<ApiInfo>(msg);
 					var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == apiInfo.Session);
 					if (envFolder == null)
@@ -220,7 +228,9 @@ namespace ApiManager.ViewModels
 				}
 				catch (Exception e)
 				{
+					var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
 					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+					this.LogViewModel.Add($"[Error] in deserializing {partialMessage} {e.Message}");
 				}
 			});
 		}

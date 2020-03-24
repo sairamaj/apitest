@@ -25,7 +25,7 @@ def collectlog(response, sessionName):
         if isinstance(bodyString, bytes):
             bodyString = response.request.body.decode("utf-8")
 
-        pipeServer.send(json.dumps({
+        pipeServer.send("api|" + json.dumps({
             "session" : sessionName,
             "url" : response.request.url,
             "method" : response.request.method,

@@ -31,8 +31,8 @@ class ICommand(metaclass=ABCMeta):
 
 
 class AccessTokenExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
@@ -42,62 +42,68 @@ class AccessTokenExecutor(ICommand):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            collectlog(oauth.response, self.properties.session_name)
+            print(f'setting the response in bag: {oauth.response}')
+            input("press any key")
+            self.property_bag.last_response = oauth.response
+            print(f'setting the response in bag: {self.property_bag.last_response}')
+            input("press any key")
+            collectlog(oauth.response, self.property_bag.session_name)
             pprint(response)
-            self.properties.access_token = response["access_token"]
+            self.property_bag.access_token = response["access_token"]
         except Exception as e:
-            collectlog(oauth.response, self.properties.session_name)
+            collectlog(oauth.response, self.property_bag.session_name)
             raise
 
 
 class ApiExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ApiExecutorRequest")
 
-        api = Api(executorRequest.apiInfo, self.properties.access_token)
+        api = Api(executorRequest.apiInfo, self.property_bag.access_token)
         try:
             if executorRequest.method == 'get':
                 response = api.get()
             else:
                 response = api.post(executorRequest.payLoad)
-            collectlog(api.response, self.properties.session_name)
+            collectlog(api.response, self.property_bag.session_name)
             pprint(response)
         except Exception as e:
-            collectlog(api.response, self.properties.session_name)
+            collectlog(api.response, self.property_bag.session_name)
             raise
         finally:
             pass
 
 
 class SetExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, SetExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of SetExecutorRequest")
-        self.properties.properties = dict(
-            {executorRequest.parameterName: executorRequest.parameterValue}, **self.properties.properties)
+        self.property_bag.properties = dict(
+            {executorRequest.parameterName: executorRequest.parameterValue}, **self.property_bag.properties)
 
 
 class ListPropertiesExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
-        for key, val in self.properties.properties.items():
+        for key, val in self.property_bag.properties.items():
             print(f"{key.rjust(30)} : {val}")
-
+        print(f"last_response: {self.property_bag.last_response}")
+        print(f"session: {self.property_bag.session_name}")
 
 class HelpExecutor(ICommand):
-    def __init__(self, properties):
-        self.propeties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def display(self, apis):
         print()
@@ -155,8 +161,8 @@ class HelpExecutor(ICommand):
 
 
 class ManagementCommandExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
@@ -172,8 +178,8 @@ class ManagementCommandExecutor(ICommand):
         managementPipe.send(data)
 
 class WaitForUserInputCommandExecutor(ICommand):
-    def __init__(self, properties):
-        self.properties = properties
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
 
     def execute(self, executorRequest):
         if isinstance(executorRequest, WaitForUserInputExecutorRequest) == False:

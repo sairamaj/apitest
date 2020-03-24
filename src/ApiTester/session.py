@@ -9,16 +9,16 @@ from apiinfo import ApiInfo
 from ui import printError
 from exceptions import ApiException
 from inputparser import InputParser
-from properties import Properties
+from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
 
 class Session:
-    def __init__(self, apis, workingDirectory, properties):
+    def __init__(self, apis, workingDirectory, property_bag):
         self.apis = apis
         self.workingDirectory = workingDirectory
-        self.properties = properties
-        self.commandExecutor = Command(properties)
+        self.property_bag = property_bag
+        self.commandExecutor = Command(property_bag)
 
     def start(self):
         quit = False
@@ -41,7 +41,7 @@ class Session:
                 print('-'*60)
 
     def executeCommandInput(self, command):
-        request = parseCommand(command, self.workingDirectory, self.apis, self.properties.properties)
+        request = parseCommand(command, self.workingDirectory, self.apis, self.property_bag.properties)
         if request == None:
             return False
         self.commandExecutor.execute(request)
@@ -52,13 +52,9 @@ class Session:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
-                    final_command = transform({"command": command}, self.properties.properties)
+                    final_command = transform({"command": command}, self.property_bag.properties)
                     try:
                         self.executeCommandInput(final_command.get('command'))
                     except ApiException as ae:
                         printError(str(ae))
 
-if __name__ == "__main__":
-    config = Config(sys.argv[1])
-    session = Session(config.apis())
-    session.start()
