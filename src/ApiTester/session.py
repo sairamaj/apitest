@@ -13,6 +13,7 @@ from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
 
+
 class Session:
     def __init__(self, apis, workingDirectory, property_bag):
         self.apis = apis
@@ -25,27 +26,30 @@ class Session:
         self.executeCommandInput("!help")   # show help to start with
         while quit == False:
             printPrompt(">>")
-            try:
-                command = input("")
-                if self.executeCommandInput(command) == False:
-                    quit = True
-            except ValueError as v:
-                printError(str(v))
-            except ApiException as ae:
-                printError(str(ae))
-            except Exception as e:
-                printError(str(e))
-                print("Exception in user code:")
-                print('-'*60)
-                traceback.print_exc(file=sys.stdout)
-                print('-'*60)
+            command = input("")
+            if self.executeCommandInput(command) == False:
+                quit = True
 
     def executeCommandInput(self, command):
-        request = parseCommand(command, self.workingDirectory, self.apis, self.property_bag.properties)
-        if request == None:
-            return False
-        self.commandExecutor.execute(request)
-        return True
+        try:
+            request = parseCommand(
+                command, self.workingDirectory, self.apis, self.property_bag.properties)
+            if request == None:
+                return False
+            self.commandExecutor.execute(request)
+            return True
+        except AssertionError as v:
+            printError(str(v))
+        except ValueError as v:
+            printError(str(v))
+        except ApiException as ae:
+            printError(str(ae))
+        except Exception as e:
+            printError(str(e))
+            print("Exception in user code:")
+            print('-'*60)
+            traceback.print_exc(file=sys.stdout)
+            print('-'*60)            
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:

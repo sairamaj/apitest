@@ -47,3 +47,9 @@ class ExtractVariableExecutorRequest(ExecutorRequest):
         self.command = "!extract"
         self.json_path = json_path
         self.variable_name = variable_name
+
+class AssertExecutorRequest(ExecutorRequest):
+    def __init__(self, variable_name, value):
+        self.command = "!assert"
+        self.variable_name = variable_name
+        self.value = value

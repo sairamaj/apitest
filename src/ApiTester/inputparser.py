@@ -3,19 +3,23 @@ import sys
 import json
 from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest 
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
+from executorRequest import AssertExecutorRequest
 from transform import transform
 from transform import transformString
 
+
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
-    commands = {'!list': ListCommandInputParser(workingDirectory),
-                '!set': SetCommandInputParser(workingDirectory),
-                '!help': HelpCommandInputParser(workingDirectory),
-                '!management': ManagementCommandRequestInputParser(workingDirectory),
-                '!waitforuserinput': WaitForUserInputRequestInputParser(workingDirectory),
-                '!extract': ExtractVariableRequestInputParser(workingDirectory)
-                }
+    commands = {
+        '!assert': AssertRequestInputParser(workingDirectory),
+        '!extract': ExtractVariableRequestInputParser(workingDirectory),
+        '!list': ListCommandInputParser(workingDirectory),
+        '!set': SetCommandInputParser(workingDirectory),
+        '!help': HelpCommandInputParser(workingDirectory),
+        '!management': ManagementCommandRequestInputParser(workingDirectory),
+        '!waitforuserinput': WaitForUserInputRequestInputParser(workingDirectory),
+    }
 
     parts = command.split(' ')
     commandName = parts[0].lower()
@@ -128,6 +132,7 @@ class HelpCommandInputParser(InputParser):
     def parseCommand(self, command, apis, propertyDictionary):
         return HelpExecutorRequest(apis)
 
+
 class ManagementCommandRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -135,8 +140,10 @@ class ManagementCommandRequestInputParser(InputParser):
     def parseCommand(self, command, apis, propertyDictionary):
         parts = command.split(' ')
         if len(parts) < 2:
-            raise ValueError(f"!management command requires requestName (ex: !management commands)")
+            raise ValueError(
+                f"!management command requires requestName (ex: !management commands)")
         return ManagementCommandExecutorRequest(apis, parts[1])
+
 
 class WaitForUserInputRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
@@ -146,10 +153,11 @@ class WaitForUserInputRequestInputParser(InputParser):
         parts = command.split(' ')
         prompt = ""
         if len(parts) > 1:
-            prompt = parts[1] 
+            prompt = parts[1]
         prompt += "(press any key to):"
-        return WaitForUserInputExecutorRequest(prompt)        
-    
+        return WaitForUserInputExecutorRequest(prompt)
+
+
 class ExtractVariableRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -157,5 +165,18 @@ class ExtractVariableRequestInputParser(InputParser):
     def parseCommand(self, command, apis, propertyDictionary):
         parts = command.split(' ')
         if len(parts) < 3:
-            raise ValueError("!extract requires jsonPath and variable name ( ex !extract user.name userName)")
-        return ExtractVariableExecutorRequest(parts[1], parts[2])        
+            raise ValueError(
+                "!extract requires jsonPath and variable name ( ex !extract user.name userName)")
+        return ExtractVariableExecutorRequest(parts[1], parts[2])
+
+
+class AssertRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, propertyDictionary):
+        parts = command.split(' ')
+        if len(parts) < 3:
+            raise ValueError(
+                "!assert requires variable and value ( ex !assert variable value)")
+        return AssertExecutorRequest(parts[1], parts[2])

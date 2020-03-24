@@ -8,11 +8,13 @@ from logcollector import collectlog
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
+from executorRequest import AssertExecutorRequest
 from ui import printRoute, printPath, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
 
 managementPipe = PipeServer('management')
+
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -27,7 +29,7 @@ class ExecutorRequest:
 class ICommand(metaclass=ABCMeta):
     """The command interface, which all commands will implement"""
 
-    def extractResponseContent(self,response):
+    def extractResponseContent(self, response):
         return response.__dict__['_content'].decode("utf-8")
 
     @abstractstaticmethod
@@ -47,7 +49,8 @@ class AccessTokenExecutor(ICommand):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            self.property_bag.last_response = self.extractResponseContent(oauth.response)
+            self.property_bag.last_response = self.extractResponseContent(
+                oauth.response)
             collectlog(oauth.response, self.property_bag.session_name)
             pprint(response)
             self.property_bag.access_token = response["access_token"]
@@ -108,6 +111,7 @@ class ListPropertiesExecutor(ICommand):
         for key, val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")
 
+
 class HelpExecutor(ICommand):
     def __init__(self, property_bag):
         self.property_bag = property_bag
@@ -127,9 +131,10 @@ class HelpExecutor(ICommand):
         print('!help for help.')
         print('!help.routename for route help.')
         print('!help.routename.pathname route path.')
+        print('!assert variable value')
+        print('!extract jsonpath variable (extracts data into variable given json path).')
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
-        print('!extract jsonpath variable (extracts data into variable given json path).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
 
@@ -185,6 +190,7 @@ class ManagementCommandExecutor(ICommand):
         print(f"{data}")
         managementPipe.send(data)
 
+
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):
         self.property_bag = property_bag
@@ -195,6 +201,7 @@ class WaitForUserInputCommandExecutor(ICommand):
                 f"{type(executorRequest)} is not of WaitForUserInputExecutorRequest")
         waitForUserInput(executorRequest.prompt)
 
+
 class ExtractVariableCommandExecutor(ICommand):
     def __init__(self, property_bag):
         self.property_bag = property_bag
@@ -204,28 +211,45 @@ class ExtractVariableCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of ExtractVariableExecutorRequest")
         if self.property_bag.last_response == None:
-            raise ValueError("no last_response avialble, please execute any api request to extract variables.")
+            raise ValueError(
+                "no last_response avialble, please execute any api request to extract variables.")
         jsonpath_expr = parse(executorRequest.json_path)
-        matches = jsonpath_expr.find(json.loads(self.property_bag.last_response))
-        print(f"extracting {executorRequest.json_path} to {executorRequest.variable_name}")
-        if len(matches) == 0 :
-            raise ValueError(f"no match found for {executorRequest.json_path}")
+        matches = jsonpath_expr.find(
+            json.loads(self.property_bag.last_response))
+        print(
+            f"extracting {executorRequest.json_path} to {executorRequest.variable_name}")
+        if len(matches) == 0:
+            raise ValueError(f"!extract no match found for {executorRequest.json_path}")
         for match in matches:
             print(match.value)
             print(len(match.value))
             print(type(match.value))
             if type(match.value) is str:
-                self.property_bag.add(executorRequest.variable_name,match.value)
+                self.property_bag.add(
+                    executorRequest.variable_name, match.value)
             if type(match.value) is list:
-                if len(match.value) >1: 
-                    raise ValueError(f"found multiple items found for{executorRequest.json_path} count: {len(match.value)}")
-                elif len(match.value) == 0: 
-                    raise ValueError(f"no value found for {executorRequest.json_path}")
+                if len(match.value) > 1:
+                    raise ValueError(
+                        f"!extract found multiple items found for{executorRequest.json_path} count: {len(match.value)}")
+                elif len(match.value) == 0:
+                    raise ValueError(
+                        f"!extract no value found for {executorRequest.json_path}")
                 else:
-                    self.property_bag.add(executorRequest.variable_name,match.value[0])
-
-            
-
-                
+                    self.property_bag.add(
+                        executorRequest.variable_name, match.value[0])
 
 
+class AssertCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, AssertExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of AssertExecutorRequest")
+        # check whether variable exists in property bag or not
+        actual = self.property_bag.get(executorRequest.variable_name)
+        if actual == None:
+            raise ValueError(f"!assert: variable {executorRequest.variable_name} not found")
+        print(f"asserting: {actual} ---> {executorRequest.value}")
+        assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
