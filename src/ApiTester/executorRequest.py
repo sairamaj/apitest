@@ -41,3 +41,9 @@ class WaitForUserInputExecutorRequest(ExecutorRequest):
     def __init__(self, prompt):
         self.command = "!waitforuserinput"
         self.prompt = prompt
+
+class ExtractVariableExecutorRequest(ExecutorRequest):
+    def __init__(self, json_path, variable_name):
+        self.command = "!extract"
+        self.json_path = json_path
+        self.variable_name = variable_name

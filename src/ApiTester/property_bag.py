@@ -11,6 +11,9 @@ class PropertyBag:
     def get(self, name):
         return self.properties.get(name, None)
 
+    def add(self, name, value):
+        self.properties[name] = value
+
     @property
     def access_token(self):
         return self._access_token

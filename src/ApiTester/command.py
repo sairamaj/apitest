@@ -4,7 +4,7 @@ from pprint import pprint
 from api import Api
 import json
 from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, ManagementCommandExecutor
-from executors import WaitForUserInputCommandExecutor
+from executors import WaitForUserInputCommandExecutor, ExtractVariableCommandExecutor
 from abc import ABCMeta, abstractstaticmethod
 
 
@@ -16,7 +16,8 @@ class Command:
                          '!list': ListPropertiesExecutor(property_bag),
                          "!help": HelpExecutor(property_bag),
                          "!management": ManagementCommandExecutor(property_bag),
-                         "!waitforuserinput": WaitForUserInputCommandExecutor(property_bag)
+                         "!waitforuserinput": WaitForUserInputCommandExecutor(property_bag),
+                         "!extract": ExtractVariableCommandExecutor(property_bag)
                          }
 
     def execute(self, executorRequest):
