@@ -3,9 +3,11 @@
 ### What it is?
 To test REST APIs with validations
 
-### Why another tool?
-There are plenty of tools for testing REST APIs (Powershell, PostMan, Insomnia). Each tool adds its own unique value while testing. What I was looking for
-is a REPL console tool(for quick test) and rich GUI tool (to view complete request and responses) along with some scenarios (multiple calls chained with validations)
+### Features
+* apis mapped to simple commands
+* commands can be executed in console in REPL mode.
+* responses viewed in GUI tool
+* scenarios can be created and run as group.
 
 ### Architecture
 * A __console__ version tool written in __python__ to submit 
