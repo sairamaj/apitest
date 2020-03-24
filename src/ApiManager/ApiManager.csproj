@@ -191,12 +191,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="images\edit.png" />
-    <Content Include="Configuration\Environments\Apigee\alist.txt">
+    <Content Include="Configuration\Environments\Apigee\extracts_sample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Configuration\Environments\Apigee\list - Copy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Configuration\Environments\Apigee\list.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

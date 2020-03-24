@@ -122,15 +122,15 @@ namespace ApiManager.ViewModels
 			try
 			{
 				var envInfo = this.SelectedViewModel.EnvironmentInfo;
-				var result = await this._apiExecutor.StartAsync(
+				var result = await _apiExecutor.StartAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,
-						CommandsTextFileName = this.SelectedCommandFile.FileName,
-						VariablesFileName = this.SelectedVariableFile.FileName,
+						CommandsTextFileName = SelectedCommandFile.FileName,
+						VariablesFileName = SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,
 					}
-					);
+					).ConfigureAwait(false);
 			}
 			catch (System.Exception e)
 			{
@@ -161,15 +161,15 @@ namespace ApiManager.ViewModels
 			try
 			{
 				var envInfo = this.SelectedViewModel.EnvironmentInfo;
-				var result = await this._apiExecutor.OpenCommandPromptAsync(
+				var result = await _apiExecutor.OpenCommandPromptAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,
-						CommandsTextFileName = this.SelectedCommandFile.FileName,
-						VariablesFileName = this.SelectedVariableFile.FileName,
+						CommandsTextFileName = SelectedCommandFile.FileName,
+						VariablesFileName = SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,
 					}
-					);
+					).ConfigureAwait(false);
 			}
 			catch (System.Exception e)
 			{

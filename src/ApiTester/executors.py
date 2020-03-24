@@ -4,7 +4,7 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
-from logcollector import collectlog
+from logcollector import collectlog, sendExtractInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
@@ -219,14 +219,15 @@ class ExtractVariableCommandExecutor(ICommand):
         print(
             f"extracting {executorRequest.json_path} to {executorRequest.variable_name}")
         if len(matches) == 0:
-            raise ValueError(f"!extract no match found for {executorRequest.json_path}")
+            raise ValueError(
+                f"!extract no match found for {executorRequest.json_path}")
         for match in matches:
+            variable_value = ""
             print(match.value)
             print(len(match.value))
             print(type(match.value))
             if type(match.value) is str:
-                self.property_bag.add(
-                    executorRequest.variable_name, match.value)
+                variable_value = match.value
             if type(match.value) is list:
                 if len(match.value) > 1:
                     raise ValueError(
@@ -235,8 +236,10 @@ class ExtractVariableCommandExecutor(ICommand):
                     raise ValueError(
                         f"!extract no value found for {executorRequest.json_path}")
                 else:
-                    self.property_bag.add(
-                        executorRequest.variable_name, match.value[0])
+                    variable_value = match.value[0]
+
+        self.property_bag.add(executorRequest.variable_name, variable_value)
+        sendExtractInfo(executorRequest.variable_name, variable_value)
 
 
 class AssertCommandExecutor(ICommand):
@@ -250,6 +253,7 @@ class AssertCommandExecutor(ICommand):
         # check whether variable exists in property bag or not
         actual = self.property_bag.get(executorRequest.variable_name)
         if actual == None:
-            raise ValueError(f"!assert: variable {executorRequest.variable_name} not found")
+            raise ValueError(
+                f"!assert: variable {executorRequest.variable_name} not found")
         print(f"asserting: {actual} ---> {executorRequest.value}")
         assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"

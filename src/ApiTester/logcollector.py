@@ -4,6 +4,7 @@ import json
 
 pipeServer = PipeServer('apiinfo')
 
+
 def debug(response):
     pprint('_________________')
     pprint(response)
@@ -14,6 +15,7 @@ def debug(response):
         if hasattr(response.request, '__dict__'):
             pprint(response.request.__dict__)
     pprint('_________________')
+
 
 def collectlog(response, sessionName):
     debug(response)
@@ -26,20 +28,29 @@ def collectlog(response, sessionName):
             bodyString = response.request.body.decode("utf-8")
 
         pipeServer.send("api|" + json.dumps({
-            "session" : sessionName,
-            "url" : response.request.url,
-            "method" : response.request.method,
-            "statuscode" : response.reason,
-            "timetaken" : response.elapsed.microseconds,
-            "request": { 
-                "url" : response.request.url,
-                "body" : bodyString,
+            "session": sessionName,
+            "url": response.request.url,
+            "method": response.request.method,
+            "statuscode": response.reason,
+            "timetaken": response.elapsed.microseconds,
+            "request": {
+                "url": response.request.url,
+                "body": bodyString,
                 "headers": dict(response.request.headers)
                 },
-            "response" : {
+            "response": {
                 "content": response.__dict__['_content'].decode("utf-8"),
                 "headers": dict(response.headers)
                 }
         }))
     except Exception as e:
         print('exception in collectlog. ignoring.')
+
+
+def sendExtractInfo(variable_name, value):
+    data = {"variable": variable_name, "value": value}
+
+    try:
+        pipeServer.send("extract|" + json.dumps(data))
+    except Exception as e:
+        print('exception in sendExtractInfo. ignoring.')
