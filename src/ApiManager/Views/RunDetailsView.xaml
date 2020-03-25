@@ -80,17 +80,22 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="ApiHeaderTemplate">
-			<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" Style="{StaticResource ApiStyle}">
-				<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22"/>
-				<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
-				<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
-				<TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
-				<StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-					<TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
-					<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
-				</StackPanel>
-				<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
-			</StackPanel>
+			<Expander Background="Red">
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}">
+						<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22"/>
+						<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
+						<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
+						<TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
+						<StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+							<TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
+							<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
+						</StackPanel>
+						<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
+					</StackPanel>
+				</Expander.Header>
+				<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
+			</Expander>
 		</DataTemplate>
 		<DataTemplate x:Key="ApiDataTemplate">
 			<!--<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>-->
@@ -117,24 +122,7 @@
 			<StackPanel Background="White">
 				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
 				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
-				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
-					<ListView.View>
-						<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
-							<GridViewColumn>
-								<GridViewColumn.CellTemplate>
-									<DataTemplate>
-										<Expander IsExpanded="True" Width="800" 
-												  HeaderTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}"
-												  Header="{Binding}" 
-												  ContentTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}" 
-												  Content="{Binding}"
-												  >
-										</Expander>
-									</DataTemplate>
-								</GridViewColumn.CellTemplate>
-							</GridViewColumn>
-						</GridView>
-					</ListView.View>
+				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0" ItemTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}">
 				</ListView>
 			</StackPanel>
 		</Grid>
