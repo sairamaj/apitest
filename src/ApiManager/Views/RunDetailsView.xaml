@@ -70,7 +70,7 @@
 			</Style.Triggers>
 		</Style>
 
-		<DataTemplate x:Key="ExtractTemplate">
+		<DataTemplate x:Key="ExtractHeaderTemplate">
 			<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" >
 				<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
 				<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
@@ -79,7 +79,7 @@
 			</StackPanel>
 		</DataTemplate>
 
-		<DataTemplate x:Key="ApiTemplate">
+		<DataTemplate x:Key="ApiHeaderTemplate">
 			<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" Style="{StaticResource ApiStyle}">
 				<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22"/>
 				<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
@@ -92,12 +92,23 @@
 				<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate x:Key="ApiDataTemplate">
+			<!--<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>-->
+			<TextBlock Text="Api data template "/>
+		</DataTemplate>
 
-		<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
-                                             ApiInfoTemplate="{StaticResource ApiTemplate}"
-                                             ExtractTemplate="{StaticResource ExtractTemplate}"
+		<DataTemplate x:Key="ExtractDataTemplate">
+			<TextBlock Text="Extract data here "/>
+		</DataTemplate>
+		<local:InfoDataHeaderTemplateSelector x:Key="InfoDataHeaderTemplateSelector" 
+                                             ApiInfoHeaderTemplate="{StaticResource ApiHeaderTemplate}"
+                                             ExtractHeaderTemplate="{StaticResource ExtractHeaderTemplate}"
                                         />
 
+		<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
+                                             ApiDataTemplate="{StaticResource ApiDataTemplate}"
+                                             ExtractDataTemplate="{StaticResource ExtractDataTemplate}"
+                                        />-->
 
 	</UserControl.Resources>
 
@@ -107,13 +118,17 @@
 				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
 				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
 				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
-					<ListView.View >
+					<ListView.View>
 						<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 							<GridViewColumn>
 								<GridViewColumn.CellTemplate>
 									<DataTemplate>
-										<Expander IsExpanded="False" Width="800" HeaderTemplateSelector="{StaticResource InfoDataTemplateSelector}" Header="{Binding}">
-											<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
+										<Expander IsExpanded="True" Width="800" 
+												  HeaderTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}"
+												  Header="{Binding}" 
+												  ContentTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}" 
+												  Content="{Binding}"
+												  >
 										</Expander>
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>

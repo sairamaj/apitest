@@ -94,6 +94,7 @@
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InfoDataTemplateSelector.cs" />
+    <Compile Include="Views\InfoDataHeaderTemplateSelector.cs" />
     <Compile Include="Views\JwtTokenWindow.xaml.cs">
       <DependentUpon>JwtTokenWindow.xaml</DependentUpon>
     </Compile>

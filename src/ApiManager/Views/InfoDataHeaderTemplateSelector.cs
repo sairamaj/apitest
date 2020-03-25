@@ -1,28 +1,29 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using ApiManager.Model;
 using ApiManager.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ApiManager.Views
 {
-	public class InfoDataTemplateSelector : DataTemplateSelector
+    class InfoDataHeaderTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate ApiDataTemplate { get; set; }
-        public DataTemplate ExtractDataTemplate { get; set; }
+        public DataTemplate ApiInfoHeaderTemplate { get; set; }
+        public DataTemplate ExtractHeaderTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var viewModel = item as InfoViewModel;
             if (viewModel == null)
             {
-                return ApiDataTemplate;
+                return ApiInfoHeaderTemplate;
             }
 
             switch (viewModel.Info.Type)
             {
                 case "Extract":
-                    return ExtractDataTemplate;
+                    return ExtractHeaderTemplate;
                 default:
-                    return ApiDataTemplate;
+                    return ApiInfoHeaderTemplate;
             }
         }
     }
