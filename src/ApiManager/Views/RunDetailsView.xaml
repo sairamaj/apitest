@@ -71,18 +71,33 @@
 		</Style>
 
 		<DataTemplate x:Key="ExtractHeaderTemplate">
-			<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" >
-				<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
-				<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
-				<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
-				<TextBlock  Text="{Binding ExtractVariableInfo.Value}" Margin="3,0,0,0" Foreground="Black" FontWeight="Bold"/>
-			</StackPanel>
+			<Expander >
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" >
+						<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
+						<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
+						<TextBlock  Text="{Binding ExtractVariableInfo.ShortValue}" Margin="3,0,0,0" Foreground="Black" FontWeight="Bold"/>
+					</StackPanel>
+				</Expander.Header>
+				<Grid Background="White">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="300"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="700"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ExtractVariableInfo.Variable}" FontWeight="Bold"/>
+					<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ExtractVariableInfo.Value}" TextWrapping="Wrap" Height="400" Foreground="Black" />
+				</Grid>
+			</Expander>
 		</DataTemplate>
 
 		<DataTemplate x:Key="ApiHeaderTemplate">
-			<Expander Background="Red">
+			<Expander Background="White">
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}">
+					<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}"  Background="White">
 						<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22"/>
 						<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
 						<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
@@ -122,8 +137,7 @@
 			<StackPanel Background="White">
 				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
 				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
-				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0" ItemTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}">
-				</ListView>
+				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0" ItemTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}" Background="White" />
 			</StackPanel>
 		</Grid>
 
