@@ -207,6 +207,8 @@
     </Content>
     <Resource Include="images\commandprompt.png" />
     <Resource Include="images\run.png" />
+    <Resource Include="images\api.png" />
+    <Resource Include="images\extract.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

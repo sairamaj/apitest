@@ -36,6 +36,8 @@ namespace ApiManager
 				var builder = new ContainerBuilder();
 				var settings = JsonConvert.DeserializeObject<Settings>(
 					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
+				settings.ConsoleExecutableName = Path.GetFullPath(settings.ConsoleExecutableName);
+				settings.WorkingDirectory= Path.GetFullPath(settings.WorkingDirectory);
 				var apiExecutor = new ApiExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();

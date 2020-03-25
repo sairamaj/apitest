@@ -43,7 +43,7 @@
 
 	</Window.Resources>
 	<DockPanel>
-		<Expander Grid.Row="1" Grid.Column="0" DockPanel.Dock="Bottom" Header="LogView" IsExpanded="True">
+		<Expander Grid.Row="1" Grid.Column="0" DockPanel.Dock="Bottom" Header="LogView" IsExpanded="False">
 			<views:LogView DataContext="{Binding LogViewModel}" Height="200"/>
 		</Expander>
 		<Grid>
