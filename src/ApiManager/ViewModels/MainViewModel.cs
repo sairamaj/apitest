@@ -209,22 +209,36 @@ namespace ApiManager.ViewModels
 			{
 				try
 				{
-					if (!msg.StartsWith("api|"))
+					if (msg.StartsWith("api|"))
 					{
-						var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
-						this.LogViewModel.Add($"[Warning] does not start with api| {partialMessage}");
+						msg = msg.Substring("api|".Length);
+						var apiInfo = JsonConvert.DeserializeObject<ApiInfo>(msg);
+						var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == apiInfo.Session);
+						if (envFolder == null)
+						{
+							return;
+						}
+
+						envFolder.AddApiInfo(apiInfo);
+						return;
+					}
+					else if (msg.StartsWith("extract|"))
+					{
+						msg = msg.Substring("extract|".Length);
+						var extractInfo = JsonConvert.DeserializeObject<ExtractVariableInfo>(msg);
+						var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == extractInfo.Session);
+						if (envFolder == null)
+						{
+							return;
+						}
+
+						envFolder.AddExtractVariableInfo(extractInfo);
 						return;
 					}
 
-					msg = msg.Substring("api|".Length);
-					var apiInfo = JsonConvert.DeserializeObject<ApiInfo>(msg);
-					var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == apiInfo.Session);
-					if (envFolder == null)
-					{
-						return;
-					}
-
-					envFolder.AddApiInfo(apiInfo);
+					var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
+					this.LogViewModel.Add($"[Warning] does not start with api| {partialMessage}");
+					return;
 				}
 				catch (Exception e)
 				{

@@ -1,21 +1,20 @@
-﻿using System;
+﻿using ApiManager.Model;
+using ApiManager.Views;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using ApiManager.Model;
-using ApiManager.Views;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Wpf.Util.Core.Command;
-using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class ApiInfoViewModel : CoreViewModel
+	class ApiInfoViewModel : InfoViewModel
 	{
-		public ApiInfoViewModel(ApiInfo apiInfo)
+		public ApiInfoViewModel(ApiInfo apiInfo) : base(apiInfo)
 		{
 			this.ApiInfo = apiInfo;
 			this.ShowJwtTokenCommand = new DelegateCommand(() =>

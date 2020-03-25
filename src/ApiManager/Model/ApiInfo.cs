@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace ApiManager.Model
 {
-	public class ApiInfo
+	public class ApiInfo : Info
 	{
 		private string _jwtToken;
-		public string Session { get; set; }
+
+		public ApiInfo()
+		{
+			this.Type = "Api";
+		}
+
 		public string Url { get; set; }
 		public string Method { get; set; }
 		public string StatusCode { get; set; }

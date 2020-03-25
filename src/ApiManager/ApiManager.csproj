@@ -61,6 +61,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ApiInfo.cs" />
+    <Compile Include="Model\ExtractVariableInfo.cs" />
+    <Compile Include="Model\Info.cs" />
     <Compile Include="Model\JwtToken.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\Request.cs" />
@@ -75,7 +77,9 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
     <Compile Include="ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\JwtTokenViewModel.cs" />
     <Compile Include="ViewModels\VariableFileViewModel.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InfoDataTemplateSelector.cs" />
     <Compile Include="Views\JwtTokenWindow.xaml.cs">
       <DependentUpon>JwtTokenWindow.xaml</DependentUpon>
     </Compile>

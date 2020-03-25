@@ -6,107 +6,119 @@
              xmlns:local="clr-namespace:ApiManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<UserControl.Resources>
-		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-			<Setter Property="Visibility" Value="Collapsed" />
-		</Style>
-		<Style x:Key="ApiStyle" >
-			<Setter Property="Control.Foreground" Value="Red" />
-			<Setter Property="Control.FontWeight" Value="Bold" />
-			<Style.Triggers>
-				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="OK" >
-					<Setter Property="Control.Foreground" Value="Green" />
-				</DataTrigger>
-				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="Created" >
-					<Setter Property="Control.Foreground" Value="Green" />
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
+    <UserControl.Resources>
+        <Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="ApiStyle" >
+            <Setter Property="Control.Foreground" Value="Red" />
+            <Setter Property="Control.FontWeight" Value="Bold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="OK" >
+                    <Setter Property="Control.Foreground" Value="Green" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="Created" >
+                    <Setter Property="Control.Foreground" Value="Green" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
-		<Style x:Key="ClearButtonStyle">
-			<Setter Property="Control.Visibility" Value="Visible" />
-			<Style.Triggers>
-				<DataTrigger Binding="{Binding ApisCount}" Value="0" >
-					<Setter Property="Control.Visibility" Value="Hidden" />
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
-		<Style x:Key="InfoTextBoxStyle">
-			<Setter Property="Control.Visibility" Value="Hidden" />
-			<Style.Triggers>
-				<DataTrigger Binding="{Binding ApisCount}" Value="0" >
-					<Setter Property="Control.Visibility" Value="Visible" />
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
+        <Style x:Key="ClearButtonStyle">
+            <Setter Property="Control.Visibility" Value="Visible" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ApisCount}" Value="0" >
+                    <Setter Property="Control.Visibility" Value="Hidden" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="InfoTextBoxStyle">
+            <Setter Property="Control.Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ApisCount}" Value="0" >
+                    <Setter Property="Control.Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
-		<Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<TextBlock>
+        <Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <TextBlock>
 						    <ContentPresenter />
-						</TextBlock>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-			<Setter Property="HorizontalContentAlignment" Value="Center"/>
-			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="Foreground" Value="Blue" />
-			<Setter Property="FontSize" Value="13" />
-			<Setter Property="FontWeight" Value="Bold" />
-			<Setter Property="Margin" Value="15,0,0,0" />
-			<Setter Property="Cursor" Value="Hand" />
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="Blue" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="15,0,0,0" />
+            <Setter Property="Cursor" Value="Hand" />
 
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="true">
-					<Setter Property="Foreground" Value="Red" />
-				</Trigger>
-				<DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
-					<Setter Property="Visibility" Value="Hidden" />
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
-	</UserControl.Resources>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+                <DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
-	<Grid>
-		<Grid Margin="0,20,0,0">
-			<StackPanel>
-				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
-				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
-				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
-					<ListView.View >
-						<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
-							<GridViewColumn>
-								<GridViewColumn.CellTemplate>
-									<DataTemplate>
-										<Expander IsExpanded="False" Width="800" Style="{StaticResource ApiStyle}">
-											<Expander.Header>
-												<StackPanel Orientation="Horizontal" Width="{Binding
-        RelativeSource={RelativeSource
-          Mode=FindAncestor,
-          AncestorType={x:Type Expander}},
-        Path=ActualWidth}">
-													<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
-													<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
-													<TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
-													<StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-														<TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
-														<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
-													</StackPanel>
-													<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
-												</StackPanel>
-											</Expander.Header>
-											<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
-										</Expander>
-									</DataTemplate>
-								</GridViewColumn.CellTemplate>
-							</GridViewColumn>
-						</GridView>
-					</ListView.View>
-				</ListView>
-			</StackPanel>
-		</Grid>
+        <DataTemplate x:Key="ExtractTemplate">
+            <StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" >
+                <TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="40"/>
+                <TextBlock Text="=" FontWeight="Bold"/>
+                <TextBlock  Text="{Binding ExtractVariableInfo.Value}" Margin="3,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
 
-	</Grid>
+        <DataTemplate x:Key="ApiTemplate">
+            <StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" Style="{StaticResource ApiStyle}">
+                <TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
+                <TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
+                <TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
+                <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+                    <TextBlock  Text="{Binding ApiInfo.TimeTakenString}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="(msec)" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
+                                             ApiInfoTemplate="{StaticResource ApiTemplate}"
+                                             ExtractTemplate="{StaticResource ExtractTemplate}"
+                                        />
+
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid Margin="0,20,0,0">
+            <StackPanel Background="White">
+                <TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
+                <Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
+                <ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0">
+                    <ListView.View >
+                        <GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Expander IsExpanded="False" Width="800" HeaderTemplateSelector="{StaticResource InfoDataTemplateSelector}" Header="{Binding}">
+                                            <local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
+                                        </Expander>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
 </UserControl>

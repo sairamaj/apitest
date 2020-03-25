@@ -19,7 +19,7 @@ namespace ApiManager.ViewModels
 			this.IsExpanded = true;
 			this.EnvironmentInfo = env;
 			this.DataContext = this;
-			this.RequestResponses = new SafeObservableCollection<ApiInfoViewModel>();
+			this.RequestResponses = new SafeObservableCollection<InfoViewModel>();
 			this.EditConfigFileCommand = new DelegateCommand(() =>
 			{
 				try
@@ -37,11 +37,16 @@ namespace ApiManager.ViewModels
 		public EnvironmentInfo EnvironmentInfo { get; set; }
 
 		public ICommand RunCommand { get; set; }
-		public ObservableCollection<ApiInfoViewModel> RequestResponses { get; }
+		public ObservableCollection<InfoViewModel> RequestResponses { get; }
 
 		public void AddApiInfo(ApiInfo apiInfo)
 		{
 			this.RequestResponses.Add(new ApiInfoViewModel(apiInfo));
+		}
+
+		public void AddExtractVariableInfo(ExtractVariableInfo info)
+		{
+			this.RequestResponses.Add(new ExtractVariableViewModel(info));
 		}
 		public ICommand EditConfigFileCommand { get; }
 

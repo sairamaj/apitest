@@ -239,7 +239,7 @@ class ExtractVariableCommandExecutor(ICommand):
                     variable_value = match.value[0]
 
         self.property_bag.add(executorRequest.variable_name, variable_value)
-        sendExtractInfo(executorRequest.variable_name, variable_value)
+        sendExtractInfo(self.property_bag.session_name, executorRequest.variable_name, variable_value)
 
 
 class AssertCommandExecutor(ICommand):

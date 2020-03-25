@@ -8,7 +8,7 @@ namespace ApiManager.ViewModels
 {
 	class RequestResponseContainerViewModel : CoreViewModel
 	{
-		public RequestResponseContainerViewModel(ObservableCollection<ApiInfoViewModel> apiInfos)
+		public RequestResponseContainerViewModel(ObservableCollection<InfoViewModel> apiInfos)
 		{
 			this.ApiInfos = apiInfos;
 			this.ClearCommand = new DelegateCommand(() =>
@@ -22,7 +22,7 @@ namespace ApiManager.ViewModels
 			};
 		}
 
-		public ObservableCollection<ApiInfoViewModel> ApiInfos { get; }
+		public ObservableCollection<InfoViewModel> ApiInfos { get; }
 		public int ApisCount { get { return this.ApiInfos.Count; } }
 		public ICommand ClearCommand { get; }
 
