@@ -1,15 +1,18 @@
 ﻿using ApiManager.Model;
+using ApiManager.Repository;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
     class InfoViewModel : CoreViewModel
     {
-        public InfoViewModel(Info info)
+        public InfoViewModel(IApiExecutor executor, Info info)
         {
-            Info = info;
+			Executor = executor;
+			Info = info;
         }
 
-        public Info Info { get; }
+		public IApiExecutor Executor { get; }
+		public Info Info { get; }
     }
 }

@@ -7,11 +7,12 @@ from api import Api
 from logcollector import collectlog, sendExtractInfo, sendAssertInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
-from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
-from executorRequest import AssertExecutorRequest
+from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
+from executorRequest import AssertExecutorRequest,ConvertJsonToHtmlExecutorRequest
 from ui import printRoute, printPath, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
+from json2html import *
 
 managementPipe = PipeServer('management')
 
@@ -137,6 +138,7 @@ class HelpExecutor(ICommand):
         print('!extract jsonpath variable (extracts data into variable given json path).')
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
+        print('!convert_json_html (Converts JSON file to HTML file).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
 
@@ -274,3 +276,20 @@ class AssertCommandExecutor(ICommand):
             raise
         
         sendAssertInfo(self.property_bag.session_name,variable_name, expected,actual, True, "success")
+
+class ConvertJsonToHtmlCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, ConvertJsonToHtmlExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of ConvertJsonToHtmlExecutorRequest")
+        out_html = json2html.convert(json = self.readAllText(executorRequest.json_filename))
+        with open(executorRequest.html_filename, 'w') as file:
+            file.write(out_html)
+        print(f"{executorRequest.html_filename} written successfully.")
+    
+    def readAllText(self, fileName):
+        with open(fileName, 'r') as file:
+            return file.read()

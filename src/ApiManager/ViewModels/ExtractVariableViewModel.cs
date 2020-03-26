@@ -1,10 +1,12 @@
 ﻿using ApiManager.Model;
+using ApiManager.Repository;
 
 namespace ApiManager.ViewModels
 {
 	class ExtractVariableViewModel : InfoViewModel
 	{
-		public ExtractVariableViewModel(ExtractVariableInfo extractVariableInfo) : base(extractVariableInfo)
+		public ExtractVariableViewModel(IApiExecutor executor, ExtractVariableInfo extractVariableInfo) 
+			: base(executor, extractVariableInfo)
 		{
 			this.ExtractVariableInfo = extractVariableInfo;
 		}			

@@ -14,8 +14,10 @@ namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CommandTreeViewModel
 	{
+		private IApiExecutor _executor;
 		public EnvironmentViewModel(EnvironmentInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
 		{
+			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this.IsExpanded = true;
 			this.EnvironmentInfo = env;
 			this.DataContext = this;
@@ -43,19 +45,19 @@ namespace ApiManager.ViewModels
 		{
 			if (info is ApiInfo)
 			{
-				this.RequestResponses.Add(new ApiInfoViewModel(info as ApiInfo));
+
+				this.RequestResponses.Add(new ApiInfoViewModel(this._executor, info as ApiInfo));
 			}
 			else if (info is ExtractVariableInfo)
 			{
-				this.RequestResponses.Add(new ExtractVariableViewModel(info as ExtractVariableInfo));
+				this.RequestResponses.Add(new ExtractVariableViewModel(this._executor, info as ExtractVariableInfo));
 			}
 			else if (info is AssertInfo)
 			{
-				this.RequestResponses.Add(new AssertInfoViewModel(info as AssertInfo));
+				this.RequestResponses.Add(new AssertInfoViewModel(this._executor, info as AssertInfo));
 			}
 		}
 
 		public ICommand EditConfigFileCommand { get; }
-
 	}
 }

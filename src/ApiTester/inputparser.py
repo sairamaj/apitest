@@ -5,7 +5,7 @@ from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
-from executorRequest import AssertExecutorRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from transform import transform
 from transform import transformString
 
@@ -18,6 +18,7 @@ def parseCommand(command, workingDirectory, apis, propertyDictionary):
         '!set': SetCommandInputParser(workingDirectory),
         '!help': HelpCommandInputParser(workingDirectory),
         '!management': ManagementCommandRequestInputParser(workingDirectory),
+        '!convert_json_html': ConvertJsonToHtmlRequestInputParser(workingDirectory),
         '!waitforuserinput': WaitForUserInputRequestInputParser(workingDirectory),
     }
 
@@ -180,3 +181,14 @@ class AssertRequestInputParser(InputParser):
             raise ValueError(
                 "!assert requires variable and value ( ex !assert variable value)")
         return AssertExecutorRequest(parts[1], parts[2])
+
+class ConvertJsonToHtmlRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, propertyDictionary):
+        parts = command.split(' ')
+        if len(parts) < 3:
+            raise ValueError(
+                "!convert_json_html requires inputfile and outputfile ( ex !convert_json_html inputJsonFileName outputJsonFileName)")
+        return ConvertJsonToHtmlExecutorRequest(parts[1], parts[2])

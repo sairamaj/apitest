@@ -1,10 +1,12 @@
 ﻿using ApiManager.Model;
+using ApiManager.Repository;
 
 namespace ApiManager.ViewModels
 {
 	class AssertInfoViewModel : InfoViewModel
 	{
-		public AssertInfoViewModel(AssertInfo assertInfo) : base(assertInfo)
+		public AssertInfoViewModel(IApiExecutor executor, AssertInfo assertInfo) 
+			: base(executor, assertInfo)
 		{
 			this.AssertInfo = assertInfo;
 		}

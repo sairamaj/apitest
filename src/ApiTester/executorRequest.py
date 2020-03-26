@@ -53,3 +53,9 @@ class AssertExecutorRequest(ExecutorRequest):
         self.command = "!assert"
         self.variable_name = variable_name
         self.value = value
+
+class ConvertJsonToHtmlExecutorRequest(ExecutorRequest):
+    def __init__(self, json_filename, html_filename):
+        self.command = "!convert_json_html"
+        self.json_filename = json_filename
+        self.html_filename = html_filename

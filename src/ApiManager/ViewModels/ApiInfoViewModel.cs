@@ -1,10 +1,12 @@
 ﻿using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +16,7 @@ namespace ApiManager.ViewModels
 {
 	class ApiInfoViewModel : InfoViewModel
 	{
-		public ApiInfoViewModel(ApiInfo apiInfo) : base(apiInfo)
+		public ApiInfoViewModel(IApiExecutor executor, ApiInfo apiInfo) : base(executor, apiInfo)
 		{
 			this.ApiInfo = apiInfo;
 			this.ShowJwtTokenCommand = new DelegateCommand(() =>
@@ -30,10 +32,18 @@ namespace ApiManager.ViewModels
 					MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			});
+
+			this.ViewAsHTMLCommand = new DelegateCommand(() =>
+		   {
+			   var fileName = @"c:\temp\test.json";
+			   File.WriteAllText(fileName, apiInfo.Response.Content);
+			   var output = executor.ConvertJsonToHtml(fileName);
+		   });
 		}
 
 		public ApiInfo ApiInfo { get; set; }
 		public ICommand ShowJwtTokenCommand { get; set; }
+		public ICommand ViewAsHTMLCommand { get; set; }
 
 
 		static string SerializeToken(String jwtToken)

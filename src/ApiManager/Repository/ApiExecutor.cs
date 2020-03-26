@@ -179,5 +179,33 @@ namespace ApiManager.Repository
 			return tcs.Task;
 		}
 
+		public Task<string> ConvertJsonToHtml(string jsonFile)
+		{
+			var  command = "main.py ";
+			command += $"--config c:\\temp\\config.json";
+			var batchFile = "c:\\temp\\test.bat";
+			var outFile = "c:\\temp\\test.html";
+			File.WriteAllText(batchFile, $"!convert_json_html {jsonFile} {outFile}");
+			command += $" --batch {batchFile}";
+			var tcs = new TaskCompletionSource<string>();
+
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, command);
+			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
+			var process = new Process()
+			{
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
+
+			process.Start();
+			process.Exited += (s, e) =>
+			{
+				// var output = process.StandardOutput.ReadToEnd();
+				var output = process.ExitCode.ToString();
+				tcs.SetResult(output);
+			};
+
+			return tcs.Task;
+		}
 	}
 }
