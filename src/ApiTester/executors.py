@@ -4,7 +4,7 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
-from logcollector import collectlog, sendExtractInfo
+from logcollector import collectlog, sendExtractInfo, sendAssertInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
@@ -255,13 +255,22 @@ class AssertCommandExecutor(ICommand):
         self.property_bag = property_bag
 
     def execute(self, executorRequest):
-        if isinstance(executorRequest, AssertExecutorRequest) == False:
-            raise ValueError(
-                f"{type(executorRequest)} is not of AssertExecutorRequest")
-        # check whether variable exists in property bag or not
-        actual = self.property_bag.get(executorRequest.variable_name)
-        if actual == None:
-            raise ValueError(
-                f"!assert: variable {executorRequest.variable_name} not found")
-        print(f"asserting: {actual} ---> {executorRequest.value}")
-        assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
+        variable_name = executorRequest.variable_name
+        expected = executorRequest.value
+        actual = ""
+        try:
+            if isinstance(executorRequest, AssertExecutorRequest) == False:
+                raise ValueError(
+                    f"{type(executorRequest)} is not of AssertExecutorRequest")
+            # check whether variable exists in property bag or not
+            actual = self.property_bag.get(executorRequest.variable_name)
+            if actual == None:
+                raise ValueError(
+                    f"!assert: variable {executorRequest.variable_name} not found")
+            print(f"asserting: {actual} ---> {executorRequest.value}")
+            assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
+        except Exception as e:
+            sendAssertInfo(self.property_bag.session_name,variable_name, expected,actual, False, str(e))
+            raise
+        
+        sendAssertInfo(self.property_bag.session_name,variable_name, expected,actual, True, "success")

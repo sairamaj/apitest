@@ -1,0 +1,5 @@
+!assert var1 foo
+!set var2=123
+!assert var2 345
+!assert var2 123
+#!waitforuserinput

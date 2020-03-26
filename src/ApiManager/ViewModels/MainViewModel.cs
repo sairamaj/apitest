@@ -21,6 +21,7 @@ namespace ApiManager.ViewModels
 		private EnvironmentViewModel _selectedEnvironmentViewModel;
 		private IMessageListener _listener;
 		private IApiExecutor _apiExecutor;
+		private PipeDataProcessor _dataProcessor;
 		public MainViewModel(
 			IApiExecutor executor,
 			IDataRepository dataRepository,
@@ -32,17 +33,12 @@ namespace ApiManager.ViewModels
 			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
-			this.ShowIssuesCommand = new DelegateCommand(() =>
+			_dataProcessor = new PipeDataProcessor(listener, error =>
 			{
-				try
-				{
-					Process.Start("issues.txt");
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show($"{e.Message} - issues.txt", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
+				this.LogViewModel.Add(error);
 			});
+			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
+
 			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
 				this.Environments.Add(new EnvironmentViewModel(envInfo, executor));
@@ -52,7 +48,6 @@ namespace ApiManager.ViewModels
 			{
 				SubscribeApiInfo();
 				SubscribeLogs();
-				// SubscribeManagement();
 			}
 			catch (Exception e)
 			{
@@ -205,49 +200,34 @@ namespace ApiManager.ViewModels
 
 		private void SubscribeApiInfo()
 		{
-			Subscribe("apiinfo", msg =>
+			_dataProcessor.Add("apiinfo", "api", msg =>
 			{
-				try
-				{
-					if (msg.StartsWith("api|"))
-					{
-						msg = msg.Substring("api|".Length);
-						var apiInfo = JsonConvert.DeserializeObject<ApiInfo>(msg);
-						var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == apiInfo.Session);
-						if (envFolder == null)
-						{
-							return;
-						}
+				ConsumePipeData<ApiInfo>(msg);
+			});
 
-						envFolder.AddApiInfo(apiInfo);
-						return;
-					}
-					else if (msg.StartsWith("extract|"))
-					{
-						msg = msg.Substring("extract|".Length);
-						var extractInfo = JsonConvert.DeserializeObject<ExtractVariableInfo>(msg);
-						var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == extractInfo.Session);
-						if (envFolder == null)
-						{
-							return;
-						}
+			_dataProcessor.Add("apiinfo", "extract", msg =>
+			{
+				ConsumePipeData<ExtractVariableInfo>(msg);
+			});
 
-						envFolder.AddExtractVariableInfo(extractInfo);
-						return;
-					}
-
-					var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
-					this.LogViewModel.Add($"[Warning] does not start with api| {partialMessage}");
-					return;
-				}
-				catch (Exception e)
-				{
-					var partialMessage = msg.Substring(0, msg.Length > 50 ? 50 : msg.Length);
-					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
-					this.LogViewModel.Add($"[Error] in deserializing {partialMessage} {e.Message}");
-				}
+			_dataProcessor.Add("apiinfo", "assert", msg =>
+			{
+				ConsumePipeData<AssertInfo>(msg);
 			});
 		}
+
+		private void ConsumePipeData<T>(string message) where  T : Info
+		{
+			var info = JsonConvert.DeserializeObject<T>(message);
+			var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == info.Session);
+			if (envFolder == null)
+			{
+				return;
+			}
+
+			envFolder.Add(info);
+		}
+
 
 		private void SubscribeLogs()
 		{
@@ -279,6 +259,18 @@ namespace ApiManager.ViewModels
 					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
 				}
 			});
+		}
+
+		private void ShowIssues()
+		{
+			try
+			{
+				Process.Start("issues.txt");
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show($"{e.Message} - issues.txt", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 		}
 	}
 }

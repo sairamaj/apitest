@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\ApiInfo.cs" />
+    <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />
     <Compile Include="Model\Info.cs" />
     <Compile Include="Model\JwtToken.cs" />
@@ -72,11 +73,13 @@
     <Compile Include="Pipes\FakeMessageListener.cs" />
     <Compile Include="Pipes\MessageListener.cs" />
     <Compile Include="Pipes\IMessageListener.cs" />
+    <Compile Include="Pipes\PipeDataProcessor.cs" />
     <Compile Include="Repository\ApiExecutor.cs" />
     <Compile Include="Repository\IApiExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
     <Compile Include="ViewModels\ApiInfoViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -200,6 +203,9 @@
     <Content Include="Configuration\Environments\Apigee\extracts_failed.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configuration\Environments\Apigee\assert_tests.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Environments\Apigee\extracts_sample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -213,6 +219,8 @@
     <Resource Include="images\run.png" />
     <Resource Include="images\api.png" />
     <Resource Include="images\extract.png" />
+    <Resource Include="images\assert_fail.png" />
+    <Resource Include="images\assert_success.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

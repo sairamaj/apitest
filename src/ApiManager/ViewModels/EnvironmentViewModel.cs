@@ -39,15 +39,22 @@ namespace ApiManager.ViewModels
 		public ICommand RunCommand { get; set; }
 		public ObservableCollection<InfoViewModel> RequestResponses { get; }
 
-		public void AddApiInfo(ApiInfo apiInfo)
+		public void Add(Info info)
 		{
-			this.RequestResponses.Add(new ApiInfoViewModel(apiInfo));
+			if (info is ApiInfo)
+			{
+				this.RequestResponses.Add(new ApiInfoViewModel(info as ApiInfo));
+			}
+			else if (info is ExtractVariableInfo)
+			{
+				this.RequestResponses.Add(new ExtractVariableViewModel(info as ExtractVariableInfo));
+			}
+			else if (info is AssertInfo)
+			{
+				this.RequestResponses.Add(new AssertInfoViewModel(info as AssertInfo));
+			}
 		}
 
-		public void AddExtractVariableInfo(ExtractVariableInfo info)
-		{
-			this.RequestResponses.Add(new ExtractVariableViewModel(info));
-		}
 		public ICommand EditConfigFileCommand { get; }
 
 	}

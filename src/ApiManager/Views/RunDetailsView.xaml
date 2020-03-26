@@ -9,6 +9,8 @@
 	<UserControl.Resources>
 		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
 		<ImageBrush x:Key="ExtractVariableButtonImageBrush" ImageSource="../images/extract.png" />
+		<ImageBrush x:Key="AssertSuccessButtonImageBrush" ImageSource="../images/assert_success.png" />
+		<ImageBrush x:Key="AssertFailButtonImageBrush" ImageSource="../images/assert_fail.png" />
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
@@ -79,6 +81,29 @@
 			</Style.Triggers>
 		</Style>
 
+		<DataTemplate x:Key="AssertHeaderTemplate">
+			<Expander >
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Style="{StaticResource ExtractVariableStyle}">
+						<Button  Background="{StaticResource AssertSuccessButtonImageBrush}" Width="22" Height="22"/>
+						<TextBlock  Text="{Binding AssertInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
+						<TextBlock  Text="{Binding AssertInfo.Expected}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
+						<TextBlock  Text="{Binding AssertInfo.Actual}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
+					</StackPanel>
+				</Expander.Header>
+				<Grid Background="White">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="100"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="700"/>
+					</Grid.ColumnDefinitions>
+					<TextBox Grid.Row="0" Grid.Column="0" Text="{Binding AssertInfo.Message}" TextWrapping="Wrap" Height="400" Foreground="Black" />
+				</Grid>
+			</Expander>
+		</DataTemplate>
+
 		<DataTemplate x:Key="ExtractHeaderTemplate">
 			<Expander >
 				<Expander.Header>
@@ -125,6 +150,9 @@
 		<local:InfoDataHeaderTemplateSelector x:Key="InfoDataHeaderTemplateSelector" 
                                              ApiInfoHeaderTemplate="{StaticResource ApiHeaderTemplate}"
                                              ExtractHeaderTemplate="{StaticResource ExtractHeaderTemplate}"
+											  AssertHeaderTemplate="{StaticResource AssertHeaderTemplate}"
+											  
+											  
                                         />
 
 		<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 

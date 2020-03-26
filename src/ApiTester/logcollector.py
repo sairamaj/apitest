@@ -59,5 +59,21 @@ def sendExtractInfo(sessionName, variable_name, value, success, message):
         info = "extract|" + json.dumps(data)
         print(info)
         pipeServer.send(info)
-    except Exception as e:
+    except:
         print('exception in sendExtractInfo. ignoring.')
+
+def sendAssertInfo(sessionName, variable_name, expected, actual, success, message):
+    data = {
+        "session": sessionName,
+        "variable": variable_name,
+        "expected": expected,
+        "actual": actual,
+        "success" : success,
+        "message": message}
+
+    try:
+        info = "assert|" + json.dumps(data)
+        print(info)
+        pipeServer.send(info)
+    except:
+        print('exception in sendAssertInfo. ignoring.')
