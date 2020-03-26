@@ -12,6 +12,15 @@
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
+		<Style x:Key="ExtractVariableStyle">
+			<Setter Property="Control.Background" Value="Red" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ExtractVariableInfo.Success}" Value="True" >
+					<Setter Property="Control.Background" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 		<Style x:Key="ApiStyle" >
 			<Setter Property="Control.Foreground" Value="Red" />
 			<Setter Property="Control.FontWeight" Value="Bold" />
@@ -73,7 +82,7 @@
 		<DataTemplate x:Key="ExtractHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Background="White" >
+					<StackPanel Orientation="Horizontal" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}},Path=ActualWidth}" Style="{StaticResource ExtractVariableStyle}">
 						<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
 						<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
 						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
@@ -89,7 +98,7 @@
 						<ColumnDefinition Width="700"/>
 					</Grid.ColumnDefinitions>
 					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ExtractVariableInfo.Variable}" FontWeight="Bold"/>
-					<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ExtractVariableInfo.Value}" TextWrapping="Wrap" Height="400" Foreground="Black" />
+					<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ExtractVariableInfo.ValueOrMessage}" TextWrapping="Wrap" Height="400" Foreground="Black" />
 				</Grid>
 			</Expander>
 		</DataTemplate>
@@ -112,14 +121,7 @@
 				<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
 			</Expander>
 		</DataTemplate>
-		<DataTemplate x:Key="ApiDataTemplate">
-			<!--<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>-->
-			<TextBlock Text="Api data template "/>
-		</DataTemplate>
 
-		<DataTemplate x:Key="ExtractDataTemplate">
-			<TextBlock Text="Extract data here "/>
-		</DataTemplate>
 		<local:InfoDataHeaderTemplateSelector x:Key="InfoDataHeaderTemplateSelector" 
                                              ApiInfoHeaderTemplate="{StaticResource ApiHeaderTemplate}"
                                              ExtractHeaderTemplate="{StaticResource ExtractHeaderTemplate}"

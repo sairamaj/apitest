@@ -74,6 +74,8 @@ class ApiExecutor(ICommand):
                 response = api.get()
             else:
                 response = api.post(executorRequest.payLoad)
+            self.property_bag.last_response = self.extractResponseContent(
+                api.response)
             collectlog(api.response, self.property_bag.session_name)
             pprint(response)
         except Exception as e:
@@ -207,39 +209,45 @@ class ExtractVariableCommandExecutor(ICommand):
         self.property_bag = property_bag
 
     def execute(self, executorRequest):
-        if isinstance(executorRequest, ExtractVariableExecutorRequest) == False:
-            raise ValueError(
-                f"{type(executorRequest)} is not of ExtractVariableExecutorRequest")
-        if self.property_bag.last_response == None:
-            raise ValueError(
-                "no last_response avialble, please execute any api request to extract variables.")
-        jsonpath_expr = parse(executorRequest.json_path)
-        matches = jsonpath_expr.find(
-            json.loads(self.property_bag.last_response))
-        print(
-            f"extracting {executorRequest.json_path} to {executorRequest.variable_name}")
-        if len(matches) == 0:
-            raise ValueError(
-                f"!extract no match found for {executorRequest.json_path}")
-        for match in matches:
-            variable_value = ""
-            print(match.value)
-            print(len(match.value))
-            print(type(match.value))
-            if type(match.value) is str:
-                variable_value = match.value
-            if type(match.value) is list:
-                if len(match.value) > 1:
-                    raise ValueError(
-                        f"!extract found multiple items found for{executorRequest.json_path} count: {len(match.value)}")
-                elif len(match.value) == 0:
-                    raise ValueError(
-                        f"!extract no value found for {executorRequest.json_path}")
-                else:
-                    variable_value = match.value[0]
+        variable_path = executorRequest.json_path
+        variable_name = executorRequest.variable_name
+        variable_value = ""
+        try:
+            if isinstance(executorRequest, ExtractVariableExecutorRequest) == False:
+                raise ValueError(
+                    f"{type(executorRequest)} is not of ExtractVariableExecutorRequest")
+            if self.property_bag.last_response == None:
+                raise ValueError(
+                    "no last_response avialble, please execute any api request to extract variables.")
+            jsonpath_expr = parse(variable_path)
+            matches = jsonpath_expr.find(
+                json.loads(self.property_bag.last_response))
+            print(
+                f"extracting {variable_path} to {variable_name}")
+            if len(matches) == 0:
+                raise ValueError(
+                    f"!extract no match found for {variable_path}")
+            for match in matches:
+                if type(match.value) is str:
+                    variable_value = match.value
+                if type(match.value) is list:
+                    if len(match.value) > 1:
+                        raise ValueError(
+                            f"!extract found multiple items found for{variable_path} count: {len(match.value)}")
+                    elif len(match.value) == 0:
+                        raise ValueError(
+                            f"!extract no value found for {variable_path}")
+                    else:
+                        variable_value = match.value[0]
+        except Exception as e:
+            success = False
+            message = str(e)
+            sendExtractInfo(self.property_bag.session_name,variable_name, "", False, str(e))
+            raise
 
-        self.property_bag.add(executorRequest.variable_name, variable_value)
-        sendExtractInfo(self.property_bag.session_name, executorRequest.variable_name, variable_value)
+        self.property_bag.add(variable_name, variable_value)
+        sendExtractInfo(self.property_bag.session_name,
+                        variable_name, variable_value, True, "")
 
 
 class AssertCommandExecutor(ICommand):

@@ -7,6 +7,8 @@
 			this.Type = "Extract";
 		}
 
+		public bool Success { get; set; }
+		public string Message { get; set; }
 		public string Variable { get; set; }
 		public string Value { get; set; }
 		public string ShortValue
@@ -25,6 +27,22 @@
 				}
 
 				return val;
+			}
+		}
+
+		public string ValueOrMessage
+		{
+			get
+			{
+				if (this.Success)
+				{
+					return this.Value;
+				}
+
+				return this.Message;
+			}
+			set
+			{
 			}
 		}
 	}

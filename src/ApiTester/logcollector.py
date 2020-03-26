@@ -37,21 +37,26 @@ def collectlog(response, sessionName):
                 "url": response.request.url,
                 "body": bodyString,
                 "headers": dict(response.request.headers)
-                },
+            },
             "response": {
                 "content": response.__dict__['_content'].decode("utf-8"),
                 "headers": dict(response.headers)
-                }
+            }
         }))
     except Exception as e:
         print('exception in collectlog. ignoring.')
 
 
-def sendExtractInfo(sessionName,variable_name, value):
-    data = {"session": sessionName,  "variable": variable_name, "value": value}
+def sendExtractInfo(sessionName, variable_name, value, success, message):
+    data = {
+        "session": sessionName,
+        "variable": variable_name,
+        "value": value,
+        "success": success,
+        "message": message}
 
     try:
-        info  ="extract|" + json.dumps(data)
+        info = "extract|" + json.dumps(data)
         print(info)
         pipeServer.send(info)
     except Exception as e:
