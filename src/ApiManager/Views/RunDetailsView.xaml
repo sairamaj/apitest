@@ -124,10 +124,13 @@
 				<Expander.Header>
 					<StackPanel Orientation="Horizontal" Style="{StaticResource AssertStyle}">
 						<Button  Background="{StaticResource AssertButtonImageBrush}" Width="22" Height="22"/>
-						<TextBlock  Text="{Binding AssertInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
-						<TextBlock  Text="{Binding AssertInfo.Expected}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
-						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
-						<TextBlock  Text="{Binding AssertInfo.Actual}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
+						<TextBlock  Text="{Binding AssertInfo.Variable}" Margin="3,0,0,0" Width="80" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock  Text="{Binding AssertInfo.Expected}" Margin="3,0,0,0" Width="80" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text="=" FontWeight="Bold" Foreground="Black" />
+						<TextBlock  Text="{Binding AssertInfo.Actual}" Margin="1,0,0,0" 
+									Width="80" Foreground="Black" TextAlignment="Left" FontWeight="Bold"/>
 					</StackPanel>
 				</Expander.Header>
 				<Grid Background="White">
@@ -147,9 +150,11 @@
 				<Expander.Header>
 					<StackPanel Orientation="Horizontal" Style="{StaticResource ExtractVariableStyle}">
 						<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
-						<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
-						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />
-						<TextBlock  Text="{Binding ExtractVariableInfo.ShortValue}" Margin="3,0,0,0" Foreground="Black" FontWeight="Bold"/>
+						<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text="=" FontWeight="Bold" Foreground="Black" />
+						<TextBlock  Text="{Binding ExtractVariableInfo.ShortValue}" Margin="3,0,0,0" 
+									Foreground="Black" FontWeight="Bold" TextAlignment="Left"/>
 					</StackPanel>
 				</Expander.Header>
 				<Grid Background="White">

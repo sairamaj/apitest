@@ -50,7 +50,7 @@ namespace ApiManager.Model
 					this._jwtToken = this.ExtractJwtCode();
 				}
 
-				return this._jwtToken;
+				return string.IsNullOrEmpty(this._jwtToken) ? string.Empty : this._jwtToken;
 			}
 		}
 

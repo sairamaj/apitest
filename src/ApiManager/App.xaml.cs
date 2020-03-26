@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
@@ -11,7 +8,6 @@ using ApiManager.Repository;
 using ApiManager.ViewModels;
 using Autofac;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
