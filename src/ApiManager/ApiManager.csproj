@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileHelper.cs" />
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />

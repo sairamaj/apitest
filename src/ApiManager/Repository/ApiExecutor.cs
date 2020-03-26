@@ -51,7 +51,7 @@ namespace ApiManager.Repository
 			{
 				command += "main.py ";
 			}
-			
+
 			command += $"--config {testData.ConfigName}";
 
 			if (isBatch)
@@ -179,14 +179,14 @@ namespace ApiManager.Repository
 			return tcs.Task;
 		}
 
-		public Task<string> ConvertJsonToHtml(string jsonFile)
+		public Task<string> ConvertJsonToHtml(string jsonFile, string htmlFile)
 		{
-			var  command = "main.py ";
-			command += $"--config c:\\temp\\config.json";
-			var batchFile = "c:\\temp\\test.bat";
-			var outFile = "c:\\temp\\test.html";
-			File.WriteAllText(batchFile, $"!convert_json_html {jsonFile} {outFile}");
-			command += $" --batch {batchFile}";
+			string tempConfigFile = FileHelper.WriteToTempFile("[]", ".json");
+			string tempBatchFile = string.Empty;
+			var command = "main.py ";
+			command += $"--config {tempConfigFile}";
+			tempBatchFile = FileHelper.WriteToTempFile($"!convert_json_html {jsonFile} {htmlFile}", ".bat");
+			command += $" --batch {tempBatchFile}";
 			var tcs = new TaskCompletionSource<string>();
 
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, command);
@@ -200,9 +200,11 @@ namespace ApiManager.Repository
 			process.Start();
 			process.Exited += (s, e) =>
 			{
-				// var output = process.StandardOutput.ReadToEnd();
-				var output = process.ExitCode.ToString();
+					// var output = process.StandardOutput.ReadToEnd();
+					var output = process.ExitCode.ToString();
 				tcs.SetResult(output);
+				FileHelper.DeleteIfExists(tempConfigFile);
+				FileHelper.DeleteIfExists(tempBatchFile);
 			};
 
 			return tcs.Task;

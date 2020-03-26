@@ -179,7 +179,7 @@
 							<TextBlock Text="(msec)" HorizontalAlignment="Left"/>
 						</StackPanel>
 						<Button Content="JwtToken" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowJwtTokenCommand}"/>
-						<Button Content="ViewAsHtml"  Style="{StaticResource ApplicationLinkButtonNoUnderLine2}" Command="{Binding ViewAsHTMLCommand}"/>
+						<Button Content="Html"  Style="{StaticResource ApplicationLinkButtonNoUnderLine2}" Command="{Binding ViewAsHTMLCommand}" Margin="5,0,0,0"/>
 					</StackPanel>
 				</Expander.Header>
 				<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>

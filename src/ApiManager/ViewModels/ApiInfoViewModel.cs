@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -33,11 +34,28 @@ namespace ApiManager.ViewModels
 				}
 			});
 
-			this.ViewAsHTMLCommand = new DelegateCommand(() =>
+			this.ViewAsHTMLCommand = new DelegateCommand(async () =>
 		   {
-			   var fileName = @"c:\temp\test.json";
-			   File.WriteAllText(fileName, apiInfo.Response.Content);
-			   var output = executor.ConvertJsonToHtml(fileName);
+			   string tempJsonFileName = string.Empty;
+			   string tempHtmlFileName = string.Empty;
+			   try
+			   {
+				   tempJsonFileName = FileHelper.WriteToTempFile(apiInfo.Response.Content, ".json");
+				   tempHtmlFileName = FileHelper.GetTempFileName(".html");
+				   await executor.ConvertJsonToHtml(tempJsonFileName, tempHtmlFileName);
+				   if (File.Exists(tempHtmlFileName))
+				   {
+					   Process.Start(tempHtmlFileName);
+				   }
+			   }
+			   catch (Exception e)
+			   {
+				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			   }
+			   finally
+			   {
+				   FileHelper.DeleteIfExists(tempJsonFileName);
+			   }
 		   });
 		}
 
