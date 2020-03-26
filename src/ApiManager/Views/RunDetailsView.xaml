@@ -9,9 +9,8 @@
 	<UserControl.Resources>
 		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
 		<ImageBrush x:Key="ExtractVariableButtonImageBrush" ImageSource="../images/extract.png" />
-		<ImageBrush x:Key="AssertSuccessButtonImageBrush" ImageSource="../images/assert_success.png" />
-		<ImageBrush x:Key="AssertFailButtonImageBrush" ImageSource="../images/assert_fail.png" />
-		
+		<ImageBrush x:Key="AssertButtonImageBrush" ImageSource="../images/assert.png" />
+
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
@@ -32,15 +31,6 @@
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding AssertInfo.Success}" Value="True" >
 					<Setter Property="Control.Background" Value="Green" />
-				</DataTrigger>
-			</Style.Triggers>
-		</Style>
-
-		<Style x:Key="AssertButtonStyle">
-			<Setter Property="Control.Background" Value="{StaticResource AssertFailButtonImageBrush}" />
-			<Style.Triggers>
-				<DataTrigger Binding="{Binding AssertInfo.Success}" Value="True" >
-					<Setter Property="Control.Background" Value="{StaticResource AssertSuccessButtonImageBrush}" />
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
@@ -108,7 +98,7 @@
 			<Expander >
 				<Expander.Header>
 					<StackPanel Orientation="Horizontal" Style="{StaticResource AssertStyle}">
-						<Button  Style="{StaticResource AssertButtonStyle}" Width="22" Height="22"/>
+						<Button  Background="{StaticResource AssertButtonImageBrush}" Width="22" Height="22"/>
 						<TextBlock  Text="{Binding AssertInfo.Variable}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
 						<TextBlock  Text="{Binding AssertInfo.Expected}" Margin="3,0,0,0" Width="80" Foreground="Black" HorizontalAlignment="Right" FontWeight="Bold"/>
 						<TextBlock Text=" = " FontWeight="Bold" Foreground="Black" />

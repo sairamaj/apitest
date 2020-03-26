@@ -221,6 +221,7 @@
     <Resource Include="images\extract.png" />
     <Resource Include="images\assert_fail.png" />
     <Resource Include="images\assert_success.png" />
+    <Resource Include="images\assert.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
