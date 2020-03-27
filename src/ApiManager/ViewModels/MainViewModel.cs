@@ -83,10 +83,10 @@ namespace ApiManager.ViewModels
 				var task = ChangeAsync();
 			}
 		}
-		public CommandFileViewModel SelectedCommandFile { get; set; }
+		public ScenarioViewModel SelectedCommandFile { get; set; }
 		public VariableFileViewModel SelectedVariableFile { get; set; }
 
-		public IEnumerable<CommandFileViewModel> CommandFiles { get; set; }
+		public IEnumerable<ScenarioViewModel> CommandFiles { get; set; }
 		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
 		public ICommand RunCommand { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
@@ -175,7 +175,7 @@ namespace ApiManager.ViewModels
 		private async Task ChangeAsync()
 		{
 			await Task.Delay(0);
-			this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
+			this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
 			this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 			OnPropertyChanged(() => this.CommandFiles);
 			OnPropertyChanged(() => this.VariableFiles);

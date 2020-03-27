@@ -13,7 +13,7 @@ namespace ApiManager.Model
 		public string Name { get; }
 		public string Path { get; }
 		public string Configuration { get; set; }
-		public IEnumerable<string> CommandFiles { get; set; }
+		public IEnumerable<Scenario> Scenarios { get; set; }
 		public IEnumerable<string> VariableFiles { get; set; }
 	}
 }

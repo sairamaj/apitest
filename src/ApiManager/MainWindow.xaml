@@ -65,7 +65,7 @@
 					<RowDefinition Height="4"/>
 					<RowDefinition />
 				</Grid.RowDefinitions>
-				<views:CommandsFileView Grid.Row="0" Grid.Column="0"/>
+				<views:ScenarioFileView Grid.Row="0" Grid.Column="0"/>
 				<GridSplitter  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
 				<views:VariablesView  Grid.Row="2" Grid.Column="0"/>
 			</Grid>

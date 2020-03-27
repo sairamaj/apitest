@@ -66,6 +66,7 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\AssertInfo.cs" />
+    <Compile Include="Model\ScenarioFileInfo.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />
     <Compile Include="Model\Info.cs" />
     <Compile Include="Model\JwtToken.cs" />
@@ -90,12 +91,12 @@
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\JwtTokenViewModel.cs" />
     <Compile Include="ViewModels\VariableFileViewModel.cs" />
-    <Compile Include="ViewModels\CommandFileViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RequestResponseContainerViewModel.cs" />
-    <Compile Include="Views\CommandsFileView.xaml.cs">
-      <DependentUpon>CommandsFileView.xaml</DependentUpon>
+    <Compile Include="Views\ScenarioFileView.xaml.cs">
+      <DependentUpon>ScenarioFileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EnvironmentsView.xaml.cs">
       <DependentUpon>EnvironmentsView.xaml</DependentUpon>
@@ -135,7 +136,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\CommandsFileView.xaml">
+    <Page Include="Views\ScenarioFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

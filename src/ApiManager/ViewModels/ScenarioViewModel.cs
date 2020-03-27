@@ -4,23 +4,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using ApiManager.Model;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class CommandFileViewModel : CoreViewModel
+	class ScenarioViewModel : CoreViewModel
 	{
 		private IEnumerable<string> _apis;
-		public CommandFileViewModel(string fileName)
+		public ScenarioViewModel(Scenario scenario)
 		{
-			this.FileName = fileName;
-			this.Name = Path.GetFileNameWithoutExtension(fileName);
+			this.FileName = scenario.FileName;
+			this.Name = scenario.Name;
 			this.EditCommandFileCommand = new DelegateCommand(() =>
 		   {
 			   try
 			   {
-				   Process.Start(fileName);
+				   Process.Start(scenario.FileName);
 			   }
 			   catch (Exception e)
 			   {
