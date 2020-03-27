@@ -11,10 +11,7 @@ namespace ApiManager.ViewModels
 		public RequestResponseContainerViewModel(ObservableCollection<InfoViewModel> apiInfos)
 		{
 			this.ApiInfos = apiInfos;
-			this.ClearCommand = new DelegateCommand(() =>
-		   {
-			   this.ApiInfos.Clear();
-		   });
+			this.ClearCommand = new DelegateCommand(this.Clear);
 
 			this.ApiInfos.CollectionChanged += (s, e) =>
 			{
@@ -25,6 +22,9 @@ namespace ApiManager.ViewModels
 		public ObservableCollection<InfoViewModel> ApiInfos { get; }
 		public int ApisCount { get { return this.ApiInfos.Count; } }
 		public ICommand ClearCommand { get; }
-
+		public void Clear()
+		{
+			this.ApiInfos.Clear();
+		}
 	}
 }

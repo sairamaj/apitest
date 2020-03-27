@@ -1,7 +1,7 @@
 ﻿using ApiManager.Views;
 using Wpf.Util.Core.ViewModels;
 
-namespace ApiManager
+namespace ApiManager.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

@@ -6,6 +6,7 @@ using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ViewModels;
+using ApiManager.Views;
 using Autofac;
 using Newtonsoft.Json;
 using Wpf.Util.Core.Extensions;

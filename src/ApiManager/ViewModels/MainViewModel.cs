@@ -94,6 +94,7 @@ namespace ApiManager.ViewModels
 		public IEnumerable<ScenarioViewModel> Scenarios { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public ICommand RunCommand { get; set; }
+		public bool IsClearBeforeRun { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
@@ -121,6 +122,11 @@ namespace ApiManager.ViewModels
 
 			try
 			{
+				if (this.IsClearBeforeRun)
+				{
+					this.CurrentRequestResponseViewModel?.Clear();
+				}
+
 				var envInfo = this.SelectedApiInfoViewModel.EnvironmentInfo;
 				var result = await _apiExecutor.StartAsync(
 					new TestData
