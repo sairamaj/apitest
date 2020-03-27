@@ -16,20 +16,20 @@ namespace ApiManager.Repository
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 		}
-		public IEnumerable<string> GetCommands(EnvironmentInfo info)
+		public IEnumerable<string> GetCommands(ApiInfo info)
 		{
 			this._executor.GetCommands(info.Configuration);
 			return null;
 		}
 
-		public IEnumerable<EnvironmentInfo> GetEnvironments()
+		public IEnumerable<ApiInfo> GetEnvironments()
 		{
-			var envs = new List<EnvironmentInfo>();
+			var envs = new List<ApiInfo>();
 			foreach (var envFolder in
 				Directory.GetDirectories(
 					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Environments")))
 			{
-				var environment = new EnvironmentInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
+				var environment = new ApiInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
 				environment.Scenarios = Directory.GetFiles(envFolder, "*.txt")
 					.Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
 				environment.VariableFiles = Directory.GetFiles(envFolder, "*.var").ToList();

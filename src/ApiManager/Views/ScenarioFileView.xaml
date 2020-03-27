@@ -15,7 +15,7 @@
 	<Grid>
 		<StackPanel>
 			<TextBlock Text="API Scanraios:" FontWeight="Bold"/>
-			<ListView ItemsSource="{Binding CommandFiles}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedCommandFile}">
+			<ListView ItemsSource="{Binding Scenarios}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedScneario}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 						<GridViewColumn>

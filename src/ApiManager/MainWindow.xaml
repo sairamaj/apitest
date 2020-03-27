@@ -57,7 +57,7 @@
 				<ColumnDefinition  />
 			</Grid.ColumnDefinitions>
 
-			<views:EnvironmentsView Grid.Row="0" Grid.Column="0" x:Name="EnvironmentView"/>
+			<views:ApiInfosView Grid.Row="0" Grid.Column="0" x:Name="EnvironmentView"/>
 			<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
 			<Grid Grid.Row="0" Grid.Column="2">
 				<Grid.RowDefinitions>
@@ -67,7 +67,7 @@
 				</Grid.RowDefinitions>
 				<views:ScenarioFileView Grid.Row="0" Grid.Column="0"/>
 				<GridSplitter  Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
-				<views:VariablesView  Grid.Row="2" Grid.Column="0"/>
+				<views:EnvironmentView  Grid.Row="2" Grid.Column="0"/>
 			</Grid>
 			<GridSplitter Grid.Row="0" Grid.Column="3" />
 			<StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="4" Margin="0,100,0,0">

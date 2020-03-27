@@ -64,7 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileHelper.cs" />
-    <Compile Include="Model\ApiInfo.cs" />
+    <Compile Include="Model\ApiRequest.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\ScenarioFileInfo.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\Request.cs" />
     <Compile Include="Model\TestData.cs" />
-    <Compile Include="Model\EnvironmentInfo.cs" />
+    <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Pipes\FakeMessageListener.cs" />
     <Compile Include="Pipes\MessageListener.cs" />
@@ -90,16 +90,16 @@
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\JwtTokenViewModel.cs" />
-    <Compile Include="ViewModels\VariableFileViewModel.cs" />
-    <Compile Include="ViewModels\ScenarioViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioViewModel.cs" />
+    <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RequestResponseContainerViewModel.cs" />
     <Compile Include="Views\ScenarioFileView.xaml.cs">
       <DependentUpon>ScenarioFileView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EnvironmentsView.xaml.cs">
-      <DependentUpon>EnvironmentsView.xaml</DependentUpon>
+    <Compile Include="Views\ApiInfosView.xaml.cs">
+      <DependentUpon>ApiInfosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\InfoDataTemplateSelector.cs" />
     <Compile Include="Views\InfoDataHeaderTemplateSelector.cs" />
@@ -121,8 +121,8 @@
     <Compile Include="Views\RunDetailsView.xaml.cs">
       <DependentUpon>RunDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VariablesView.xaml.cs">
-      <DependentUpon>VariablesView.xaml</DependentUpon>
+    <Compile Include="Views\EnvironmentView.xaml.cs">
+      <DependentUpon>EnvironmentView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -140,7 +140,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EnvironmentsView.xaml">
+    <Page Include="Views\ApiInfosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,7 +168,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VariablesView.xaml">
+    <Page Include="Views\EnvironmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

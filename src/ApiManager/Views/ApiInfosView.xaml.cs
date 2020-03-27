@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using Wpf.Util.Core.Views;
 
 namespace ApiManager.Views
@@ -8,9 +7,9 @@ namespace ApiManager.Views
 	/// <summary>
 	/// Interaction logic for EnvironmentsView.xaml
 	/// </summary>
-	public partial class EnvironmentsView : UserControl
+	public partial class ApiInfosView
 	{
-		public EnvironmentsView()
+		public ApiInfosView()
 		{
 			InitializeComponent();
 		}

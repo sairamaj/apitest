@@ -17,7 +17,7 @@ namespace ApiManager.ViewModels
 {
 	class ApiInfoViewModel : InfoViewModel
 	{
-		public ApiInfoViewModel(IApiExecutor executor, ApiInfo apiInfo) : base(executor, apiInfo)
+		public ApiInfoViewModel(IApiExecutor executor, ApiRequest apiInfo) : base(executor, apiInfo)
 		{
 			this.ApiInfo = apiInfo;
 			this.ShowJwtTokenCommand = new DelegateCommand(() =>
@@ -59,7 +59,7 @@ namespace ApiManager.ViewModels
 		   });
 		}
 
-		public ApiInfo ApiInfo { get; set; }
+		public ApiRequest ApiInfo { get; set; }
 		public ICommand ShowJwtTokenCommand { get; set; }
 		public ICommand ViewAsHTMLCommand { get; set; }
 

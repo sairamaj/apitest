@@ -11,7 +11,7 @@ namespace ApiManager.Pipes
 {
 	internal class MessageListener : IMessageListener
 	{
-		public async Task SubScribe(Action<ApiInfo> onMessage)
+		public async Task SubScribe(Action<ApiRequest> onMessage)
 		{
 			do
 			{
@@ -32,7 +32,7 @@ namespace ApiManager.Pipes
 						var data = await new StreamString(pipeClient).ReadStringAsync();
 						try
 						{
-							onMessage(JsonConvert.DeserializeObject<ApiInfo>(data));
+							onMessage(JsonConvert.DeserializeObject<ApiRequest>(data));
 						}
 						catch (Exception e)
 						{

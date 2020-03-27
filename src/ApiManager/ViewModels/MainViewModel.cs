@@ -18,7 +18,7 @@ namespace ApiManager.ViewModels
 {
 	class MainViewModel : CoreViewModel
 	{
-		private EnvironmentViewModel _selectedEnvironmentViewModel;
+		private ApiViewModel _selectedApiInfoViewModel;
 		private IMessageListener _listener;
 		private IApiExecutor _apiExecutor;
 		private PipeDataProcessor _dataProcessor;
@@ -30,7 +30,7 @@ namespace ApiManager.ViewModels
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
 
-			this.Environments = new SafeObservableCollection<EnvironmentViewModel>();
+			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			_dataProcessor = new PipeDataProcessor(listener, error =>
@@ -41,7 +41,7 @@ namespace ApiManager.ViewModels
 
 			foreach (var envInfo in dataRepository.GetEnvironments())
 			{
-				this.Environments.Add(new EnvironmentViewModel(envInfo, executor));
+				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, executor));
 			}
 
 			try
@@ -54,7 +54,7 @@ namespace ApiManager.ViewModels
 				MessageBox.Show(e.ToString());
 			}
 
-			this.SelectedViewModel = this.Environments.FirstOrDefault();
+			this.SelectedApiInfoViewModel= this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			//this.CommandFiles = this.SelectedViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
 			//this.VariableFiles = this.SelectedViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
@@ -62,32 +62,32 @@ namespace ApiManager.ViewModels
 			//this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
 		}
 
-		public ObservableCollection<EnvironmentViewModel> Environments { get; set; }
+		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
 
-		public EnvironmentViewModel SelectedViewModel
+		public ApiViewModel SelectedApiInfoViewModel
 		{
 			get
 			{
-				return _selectedEnvironmentViewModel;
+				return this._selectedApiInfoViewModel;
 			}
 			set
 			{
-				this._selectedEnvironmentViewModel = value;
+				this._selectedApiInfoViewModel = value;
 				//this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
 				//this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
 
-				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this._selectedEnvironmentViewModel.RequestResponses);
+				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this.SelectedApiInfoViewModel.RequestResponses);
 				//OnPropertyChanged(() => this.CommandFiles);
 				//OnPropertyChanged(() => this.VariableFiles);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
 				var task = ChangeAsync();
 			}
 		}
-		public ScenarioViewModel SelectedCommandFile { get; set; }
-		public VariableFileViewModel SelectedVariableFile { get; set; }
+		public ScenarioViewModel SelectedScneario { get; set; }
+		public EnvironmentViewModel SelectedVariableFile { get; set; }
 
-		public IEnumerable<ScenarioViewModel> CommandFiles { get; set; }
-		public IEnumerable<VariableFileViewModel> VariableFiles { get; set; }
+		public IEnumerable<ScenarioViewModel> Scenarios { get; set; }
+		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public ICommand RunCommand { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
@@ -96,13 +96,13 @@ namespace ApiManager.ViewModels
 		public LogViewModel LogViewModel { get; set; }
 		public async Task RunAsync()
 		{
-			if (this._selectedEnvironmentViewModel == null)
+			if (this.SelectedApiInfoViewModel == null)
 			{
-				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Api", "Api", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
-			if (this.SelectedCommandFile == null)
+			if (this.SelectedScneario == null)
 			{
 				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -116,12 +116,12 @@ namespace ApiManager.ViewModels
 
 			try
 			{
-				var envInfo = this.SelectedViewModel.EnvironmentInfo;
+				var envInfo = this.SelectedApiInfoViewModel.EnvironmentInfo;
 				var result = await _apiExecutor.StartAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,
-						CommandsTextFileName = SelectedCommandFile.FileName,
+						CommandsTextFileName = SelectedScneario.FileName,
 						VariablesFileName = SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,
 					}
@@ -135,13 +135,13 @@ namespace ApiManager.ViewModels
 
 		private async Task OpenCommandPromptAsync()
 		{
-			if (this._selectedEnvironmentViewModel == null)
+			if (this.SelectedApiInfoViewModel == null)
 			{
 				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
-			if (this.SelectedCommandFile == null)
+			if (this.SelectedScneario == null)
 			{
 				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -155,12 +155,12 @@ namespace ApiManager.ViewModels
 
 			try
 			{
-				var envInfo = this.SelectedViewModel.EnvironmentInfo;
+				var envInfo = this.SelectedApiInfoViewModel.EnvironmentInfo;
 				var result = await _apiExecutor.OpenCommandPromptAsync(
 					new TestData
 					{
 						ConfigName = envInfo.Configuration,
-						CommandsTextFileName = SelectedCommandFile.FileName,
+						CommandsTextFileName = this.SelectedScneario.FileName,
 						VariablesFileName = SelectedVariableFile.FileName,
 						SessionName = envInfo.Name,
 					}
@@ -175,14 +175,14 @@ namespace ApiManager.ViewModels
 		private async Task ChangeAsync()
 		{
 			await Task.Delay(0);
-			this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
-			this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
-			OnPropertyChanged(() => this.CommandFiles);
-			OnPropertyChanged(() => this.VariableFiles);
+			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.Environments = this.SelectedApiInfoViewModel.EnvironmentInfo.VariableFiles.Select(v => new EnvironmentViewModel(v));
+			OnPropertyChanged(() => this.Scenarios);
+			OnPropertyChanged(() => this.Environments);
 
-			this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
-			this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
-			OnPropertyChanged(() => this.SelectedCommandFile);
+			this.SelectedScneario = this.Scenarios.FirstOrDefault();
+			this.SelectedVariableFile = this.Environments.FirstOrDefault();
+			OnPropertyChanged(() => this.SelectedScneario);
 			OnPropertyChanged(() => this.SelectedVariableFile);
 		}
 
@@ -202,7 +202,7 @@ namespace ApiManager.ViewModels
 		{
 			_dataProcessor.Add("apiinfo", "api", msg =>
 			{
-				ConsumePipeData<ApiInfo>(msg);
+				ConsumePipeData<ApiRequest>(msg);
 			});
 
 			_dataProcessor.Add("apiinfo", "extract", msg =>
@@ -219,7 +219,7 @@ namespace ApiManager.ViewModels
 		private void ConsumePipeData<T>(string message) where  T : Info
 		{
 			var info = JsonConvert.DeserializeObject<T>(message);
-			var envFolder = this.Environments.FirstOrDefault(eF => eF.Name == info.Session);
+			var envFolder = this.ApiInfoViewModels.FirstOrDefault(eF => eF.Name == info.Session);
 			if (envFolder == null)
 			{
 				return;

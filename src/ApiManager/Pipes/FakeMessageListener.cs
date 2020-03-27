@@ -13,13 +13,13 @@ namespace ApiManager.Pipes
 {
 	internal class FakeMessageListener : IMessageListener
 	{
-		public async Task SubScribe(Action<ApiInfo> onMessage)
+		public async Task SubScribe(Action<ApiRequest> onMessage)
 		{
 			await new TaskFactory().StartNew(() =>
 			{
 				do
 				{
-					onMessage(new ApiInfo
+					onMessage(new ApiRequest
 					{
 						Url = "http://localhost:3000/5001",
 						Method = "Get",

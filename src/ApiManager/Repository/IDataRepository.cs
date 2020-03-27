@@ -5,7 +5,7 @@ namespace ApiManager.Repository
 {
 	interface IDataRepository
 	{
-		IEnumerable<EnvironmentInfo> GetEnvironments();
-		IEnumerable<string> GetCommands(EnvironmentInfo info);
+		IEnumerable<ApiInfo> GetEnvironments();
+		IEnumerable<string> GetCommands(ApiInfo info);
 	}
 }
