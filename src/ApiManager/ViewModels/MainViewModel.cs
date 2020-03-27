@@ -19,6 +19,7 @@ namespace ApiManager.ViewModels
 	class MainViewModel : CoreViewModel
 	{
 		private ApiViewModel _selectedApiInfoViewModel;
+		private ScenarioViewModel _selectedScneario;
 		private IMessageListener _listener;
 		private IApiExecutor _apiExecutor;
 		private PipeDataProcessor _dataProcessor;
@@ -56,10 +57,8 @@ namespace ApiManager.ViewModels
 
 			this.SelectedApiInfoViewModel= this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
-			//this.CommandFiles = this.SelectedViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
-			//this.VariableFiles = this.SelectedViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
-			//this.SelectedCommandFile = this.CommandFiles.FirstOrDefault();
-			//this.SelectedVariableFile = this.VariableFiles.FirstOrDefault();
+			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.SelectedScneario = this.Scenarios.FirstOrDefault();
 		}
 
 		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
@@ -73,18 +72,24 @@ namespace ApiManager.ViewModels
 			set
 			{
 				this._selectedApiInfoViewModel = value;
-				//this.CommandFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.CommandFiles.Select(c => new CommandFileViewModel(c));
-				//this.VariableFiles = this._selectedEnvironmentViewModel.EnvironmentInfo.VariableFiles.Select(v => new VariableFileViewModel(v));
-
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this.SelectedApiInfoViewModel.RequestResponses);
-				//OnPropertyChanged(() => this.CommandFiles);
-				//OnPropertyChanged(() => this.VariableFiles);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
-				var task = ChangeAsync();
+				this.Change();
 			}
 		}
-		public ScenarioViewModel SelectedScneario { get; set; }
-		public EnvironmentViewModel SelectedVariableFile { get; set; }
+		public ScenarioViewModel SelectedScneario
+		{
+			get
+			{
+				return this._selectedScneario;
+			}
+			set
+			{
+				this._selectedScneario = value;
+				OnPropertyChanged(() => this.SelectedScneario);
+			}
+		}
+		public EnvironmentViewModel SelectedEnvironment { get; set; }
 
 		public IEnumerable<ScenarioViewModel> Scenarios { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
@@ -108,7 +113,7 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			if (this.SelectedVariableFile == null)
+			if (this.SelectedEnvironment == null)
 			{
 				MessageBox.Show("Select Variable File", "Variable File", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -122,7 +127,7 @@ namespace ApiManager.ViewModels
 					{
 						ConfigName = envInfo.Configuration,
 						CommandsTextFileName = SelectedScneario.FileName,
-						VariablesFileName = SelectedVariableFile.FileName,
+						VariablesFileName = SelectedEnvironment.FileName,
 						SessionName = envInfo.Name,
 					}
 					).ConfigureAwait(false);
@@ -137,19 +142,19 @@ namespace ApiManager.ViewModels
 		{
 			if (this.SelectedApiInfoViewModel == null)
 			{
-				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Api", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
 			if (this.SelectedScneario == null)
 			{
-				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Scenario", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
-			if (this.SelectedVariableFile == null)
+			if (this.SelectedEnvironment == null)
 			{
-				MessageBox.Show("Select Variable File", "Variable File", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -161,7 +166,7 @@ namespace ApiManager.ViewModels
 					{
 						ConfigName = envInfo.Configuration,
 						CommandsTextFileName = this.SelectedScneario.FileName,
-						VariablesFileName = SelectedVariableFile.FileName,
+						VariablesFileName = this.SelectedEnvironment.FileName,
 						SessionName = envInfo.Name,
 					}
 					).ConfigureAwait(false);
@@ -172,18 +177,17 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		private async Task ChangeAsync()
+		private async void Change()
 		{
-			await Task.Delay(0);
 			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
 			this.Environments = this.SelectedApiInfoViewModel.EnvironmentInfo.VariableFiles.Select(v => new EnvironmentViewModel(v));
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
 			this.SelectedScneario = this.Scenarios.FirstOrDefault();
-			this.SelectedVariableFile = this.Environments.FirstOrDefault();
+			this.SelectedEnvironment = this.Environments.FirstOrDefault();
 			OnPropertyChanged(() => this.SelectedScneario);
-			OnPropertyChanged(() => this.SelectedVariableFile);
+			OnPropertyChanged(() => this.SelectedEnvironment);
 		}
 
 		private void Subscribe(string name, Action<string> onMessage)
