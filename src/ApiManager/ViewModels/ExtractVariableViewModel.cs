@@ -5,7 +5,7 @@ namespace ApiManager.ViewModels
 {
 	class ExtractVariableViewModel : InfoViewModel
 	{
-		public ExtractVariableViewModel(IApiExecutor executor, ExtractVariableInfo extractVariableInfo) 
+		public ExtractVariableViewModel(ICommandExecutor executor, ExtractVariableInfo extractVariableInfo) 
 			: base(executor, extractVariableInfo)
 		{
 			this.ExtractVariableInfo = extractVariableInfo;

@@ -66,7 +66,9 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="Model\ApiRequest.cs" />
     <Compile Include="Model\AssertInfo.cs" />
+    <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
+    <Compile Include="Model\ManagementCommandInfo.cs" />
     <Compile Include="Model\Scenario.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />
     <Compile Include="Model\Info.cs" />
@@ -80,8 +82,9 @@
     <Compile Include="Pipes\MessageListener.cs" />
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
-    <Compile Include="Repository\ApiExecutor.cs" />
-    <Compile Include="Repository\IApiExecutor.cs" />
+    <Compile Include="Repository\CommandExecutor.cs" />
+    <Compile Include="Repository\CommandFormatter.cs" />
+    <Compile Include="Repository\ICommandExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />

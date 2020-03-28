@@ -3,6 +3,7 @@ from pprint import pprint
 import json
 
 pipeServer = PipeServer('apiinfo')
+managementPipe = PipeServer('management')
 
 
 def debug(response):
@@ -62,13 +63,14 @@ def sendExtractInfo(sessionName, variable_name, value, success, message):
     except:
         print('exception in sendExtractInfo. ignoring.')
 
+
 def sendAssertInfo(sessionName, variable_name, expected, actual, success, message):
     data = {
         "session": sessionName,
         "variable": variable_name,
         "expected": expected,
         "actual": actual,
-        "success" : success,
+        "success": success,
         "message": message}
 
     try:
@@ -77,3 +79,17 @@ def sendAssertInfo(sessionName, variable_name, expected, actual, success, messag
         pipeServer.send(info)
     except:
         print('exception in sendAssertInfo. ignoring.')
+
+
+def sendManagementInfo(sessionName, name, info):
+    data = {
+        "session": sessionName,
+        name: info
+    }
+    try:
+        info = f"{name}|" + json.dumps(data)
+        print(info)
+        pipeServer.send(info)
+    except:
+        print('exception in sendManagementInfo. ignoring.')
+

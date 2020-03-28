@@ -12,15 +12,26 @@ namespace ApiManager.Repository
 {
 	class DataRepository : IDataRepository
 	{
-		IApiExecutor _executor;
-		public DataRepository(IApiExecutor executor)
+		ICommandExecutor _executor;
+		IDictionary<string, IEnumerable<string>> _apiCommands = new Dictionary<string, IEnumerable<string>>();
+		public DataRepository(ICommandExecutor executor)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 		}
-		public IEnumerable<string> GetCommands(ApiInfo info)
+		public async Task<IEnumerable<string>> GetCommands(ApiInfo info)
 		{
-			this._executor.GetCommands(info.Configuration);
-			return null;
+			if (this._apiCommands.TryGetValue(info.Name, out var commands))
+			{
+				return await Task.FromResult<IEnumerable<string>>(commands).ConfigureAwait(false);
+			}
+			
+			await this._executor.GetApiCommands(info).ConfigureAwait(false);
+			if (this._apiCommands.TryGetValue(info.Name, out var commands1))
+			{
+				return await Task.FromResult<IEnumerable<string>>(commands1).ConfigureAwait(false);
+			}
+
+			return new List<string>();
 		}
 
 		public IEnumerable<ApiInfo> GetApiConfigurations()
@@ -50,6 +61,15 @@ namespace ApiManager.Repository
 			}
 
 			return apis;
+		}
+
+		public void AddManagementInfo(Info info)
+		{
+			if (info is ManagementCommandInfo)
+			{
+				var commandInfo = info as ManagementCommandInfo;
+				_apiCommands[commandInfo.Session] = commandInfo.Commands.ToList();
+			}
 		}
 	}
 }

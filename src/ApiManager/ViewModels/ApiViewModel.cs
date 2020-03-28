@@ -14,19 +14,21 @@ namespace ApiManager.ViewModels
 {
 	class ApiViewModel : CommandTreeViewModel
 	{
-		private IApiExecutor _executor;
-		public ApiViewModel(ApiInfo env, IApiExecutor executor) : base(null, env.Name, env.Name)
+		private ICommandExecutor _executor;
+		public ApiViewModel(ApiInfo env, IDataRepository dataRepository, ICommandExecutor executor) : base(null, env.Name, env.Name)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this.IsExpanded = true;
 			this.EnvironmentInfo = env;
 			this.DataContext = this;
 			this.RequestResponses = new SafeObservableCollection<InfoViewModel>();
-			this.EditConfigFileCommand = new DelegateCommand(() =>
+			this.EditConfigFileCommand = new DelegateCommand(async () =>
 			{
 				try
 				{
-					Process.Start("notepad", this.EnvironmentInfo.Configuration);
+					var commands = await dataRepository.GetCommands(env).ConfigureAwait(false);
+					MessageBox.Show(string.Join("\r\n", commands));
+					//Process.Start("not.geepad", this.EnvironmentInfo.Configuration);
 				}
 				catch (Exception e)
 				{

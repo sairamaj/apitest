@@ -4,7 +4,7 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
-from logcollector import collectlog, sendExtractInfo, sendAssertInfo
+from logcollector import collectlog, sendExtractInfo, sendAssertInfo, sendManagementInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
@@ -13,9 +13,6 @@ from ui import printRoute, printPath, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
 from json2html import *
-
-managementPipe = PipeServer('management')
-
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -190,10 +187,7 @@ class ManagementCommandExecutor(ICommand):
             for path, apiInfo in apiInfos.items():
                 commands.append(f"{name}.{path}")
         print(f"apis : {type(executorRequest.apis)}")
-        data = json.dumps(commands)
-        print(f"{data}")
-        managementPipe.send(data)
-
+        sendManagementInfo(self.property_bag.session_name, "commands", commands)
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):

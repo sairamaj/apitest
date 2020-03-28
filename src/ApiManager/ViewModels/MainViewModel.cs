@@ -21,15 +21,18 @@ namespace ApiManager.ViewModels
 		private ApiViewModel _selectedApiInfoViewModel;
 		private ScenarioViewModel _selectedScneario;
 		private IMessageListener _listener;
-		private IApiExecutor _apiExecutor;
+		private ICommandExecutor _apiExecutor;
 		private PipeDataProcessor _dataProcessor;
+		private IDataRepository _dataRepository;
+
 		public MainViewModel(
-			IApiExecutor executor,
+			ICommandExecutor executor,
 			IDataRepository dataRepository,
 			IMessageListener listener)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
+			this._dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
@@ -42,7 +45,7 @@ namespace ApiManager.ViewModels
 
 			foreach (var envInfo in dataRepository.GetApiConfigurations())
 			{
-				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, executor));
+				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, dataRepository, executor));
 			}
 
 			try
@@ -224,6 +227,11 @@ namespace ApiManager.ViewModels
 			{
 				ConsumePipeData<AssertInfo>(msg);
 			});
+
+			_dataProcessor.Add("management", "commands", msg =>
+			{
+				ConsumeManagementPipeData<ManagementCommandInfo>(msg);
+			});
 		}
 
 		private void ConsumePipeData<T>(string message) where  T : Info
@@ -238,6 +246,12 @@ namespace ApiManager.ViewModels
 			envFolder.Add(info);
 		}
 
+		private void ConsumeManagementPipeData<T>(string message) where T : Info
+		{
+			var info = JsonConvert.DeserializeObject<T>(message);
+			Console.WriteLine(info);
+			this._dataRepository.AddManagementInfo(info);
+		}
 
 		private void SubscribeLogs()
 		{

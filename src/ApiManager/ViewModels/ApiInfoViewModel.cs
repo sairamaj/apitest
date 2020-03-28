@@ -17,7 +17,7 @@ namespace ApiManager.ViewModels
 {
 	class ApiInfoViewModel : InfoViewModel
 	{
-		public ApiInfoViewModel(IApiExecutor executor, ApiRequest apiInfo) : base(executor, apiInfo)
+		public ApiInfoViewModel(ICommandExecutor executor, ApiRequest apiInfo) : base(executor, apiInfo)
 		{
 			this.ApiInfo = apiInfo;
 			this.ShowJwtTokenCommand = new DelegateCommand(() =>

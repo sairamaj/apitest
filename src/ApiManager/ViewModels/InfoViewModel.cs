@@ -6,13 +6,13 @@ namespace ApiManager.ViewModels
 {
     class InfoViewModel : CoreViewModel
     {
-        public InfoViewModel(IApiExecutor executor, Info info)
+        public InfoViewModel(ICommandExecutor executor, Info info)
         {
 			Executor = executor;
 			Info = info;
         }
 
-		public IApiExecutor Executor { get; }
+		public ICommandExecutor Executor { get; }
 		public Info Info { get; }
     }
 }

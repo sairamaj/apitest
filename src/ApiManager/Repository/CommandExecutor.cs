@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using ApiManager.Model;
 
 namespace ApiManager.Repository
 {
-	class ApiExecutor : IApiExecutor
+	class CommandExecutor : ICommandExecutor
 	{
 		private Settings _settings;
 		private bool _isSettingsValidated;
-		public ApiExecutor(Settings settings)
+		public CommandExecutor(Settings settings)
 		{
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
@@ -98,29 +99,19 @@ namespace ApiManager.Repository
 			this._isSettingsValidated = true;
 		}
 
-		public Task<string> GetCommands(string configFile)
+		public async Task<string> GetApiCommands(ApiInfo info)
 		{
 			ValidateSettings(this._settings);
-			var tcs = new TaskCompletionSource<string>();
-
-			var command = $"main.py --config {configFile} --batch c:\\temp\\command.txt";
-			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, command);
-			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
-			var process = new Process()
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
 			{
-				StartInfo = startInfo,
-				EnableRaisingEvents = true
-			};
+				ConfigFileName = info.Configuration,
+				SessionName = info.Name,
+				Commands = new string[] { "!management commands" }
+			});
 
-			process.Start();
-			process.Exited += (s, e) =>
-			{
-				// var output = process.StandardOutput.ReadToEnd();
-				var output = process.ExitCode.ToString();
-				tcs.SetResult(output);
-			};
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
 
-			return tcs.Task;
+			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
 		private void ValidatePythonVersion()
@@ -200,11 +191,34 @@ namespace ApiManager.Repository
 			process.Start();
 			process.Exited += (s, e) =>
 			{
-					// var output = process.StandardOutput.ReadToEnd();
-					var output = process.ExitCode.ToString();
+				// var output = process.StandardOutput.ReadToEnd();
+				var output = process.ExitCode.ToString();
 				tcs.SetResult(output);
 				FileHelper.DeleteIfExists(tempConfigFile);
 				FileHelper.DeleteIfExists(tempBatchFile);
+			};
+
+			return tcs.Task;
+		}
+
+		private Task<int> StartProcess(string cmd, string args)
+		{
+			var tcs = new TaskCompletionSource<int>();
+
+			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, args);
+			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
+			var process = new Process()
+			{
+				StartInfo = startInfo,
+				EnableRaisingEvents = true
+			};
+
+			process.Start();
+			process.Exited += (s, e) =>
+			{
+				// var output = process.StandardOutput.ReadToEnd();
+				var output = process.ExitCode;
+				tcs.SetResult(output);
 			};
 
 			return tcs.Task;

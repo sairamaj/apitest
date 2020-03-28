@@ -35,8 +35,8 @@ namespace ApiManager
 					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
 				settings.ConsoleExecutableName = Path.GetFullPath(settings.ConsoleExecutableName);
 				settings.WorkingDirectory= Path.GetFullPath(settings.WorkingDirectory);
-				var apiExecutor = new ApiExecutor(settings);
-				builder.RegisterInstance(apiExecutor).As<IApiExecutor>();
+				var apiExecutor = new CommandExecutor(settings);
+				builder.RegisterInstance(apiExecutor).As<ICommandExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();
 				builder.RegisterType<MessageListener>().As<IMessageListener>();
 				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
@@ -45,7 +45,7 @@ namespace ApiManager
 				var win = new MainWindow
 				{
 					DataContext = new MainViewModel(
-					serviceLocator.Resolve<IApiExecutor>(),
+					serviceLocator.Resolve<ICommandExecutor>(),
 					serviceLocator.Resolve<IDataRepository>(),
 					serviceLocator.Resolve<IMessageListener>()
 				)

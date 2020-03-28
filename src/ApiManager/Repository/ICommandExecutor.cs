@@ -4,11 +4,11 @@ using ApiManager.Model;
 
 namespace ApiManager.Repository
 {
-	interface IApiExecutor
+	interface ICommandExecutor
 	{
 		Task<string> StartAsync(TestData testData);
 		Task<string> OpenCommandPromptAsync(TestData testData);
-		Task<string> GetCommands(string configFile);
+		Task<string> GetApiCommands(ApiInfo info);
 		Task<string> ConvertJsonToHtml(string jsonFile, string outHtmlFile);
 	}
 }

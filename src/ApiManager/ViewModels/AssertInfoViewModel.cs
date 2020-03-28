@@ -5,7 +5,7 @@ namespace ApiManager.ViewModels
 {
 	class AssertInfoViewModel : InfoViewModel
 	{
-		public AssertInfoViewModel(IApiExecutor executor, AssertInfo assertInfo) 
+		public AssertInfoViewModel(ICommandExecutor executor, AssertInfo assertInfo) 
 			: base(executor, assertInfo)
 		{
 			this.AssertInfo = assertInfo;
