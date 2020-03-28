@@ -5,20 +5,21 @@ using System.Windows;
 using System.Windows.Input;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
+using ApiEnvironment = ApiManager.Model.Environment;
 
 namespace ApiManager.ViewModels
 {
 	class EnvironmentViewModel : CoreViewModel
 	{
-		public EnvironmentViewModel(string fileName)
+		public EnvironmentViewModel(ApiEnvironment environment)
 		{
-			this.FileName = fileName;
-			this.Name = Path.GetFileNameWithoutExtension(fileName);
+			this.FileName = environment.FileName;
+			this.Name = Path.GetFileNameWithoutExtension(environment.Name);
 			this.EditCommandFileCommand = new DelegateCommand(() =>
 		   {
 			   try
 			   {
-				   Process.Start("notepad", fileName);
+				   Process.Start("notepad", this.FileName);
 			   }
 			   catch (Exception e)
 			   {

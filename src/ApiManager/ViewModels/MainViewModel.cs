@@ -40,7 +40,7 @@ namespace ApiManager.ViewModels
 			});
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 
-			foreach (var envInfo in dataRepository.GetEnvironments())
+			foreach (var envInfo in dataRepository.GetApiConfigurations())
 			{
 				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, executor));
 			}
@@ -186,7 +186,7 @@ namespace ApiManager.ViewModels
 		private async void Change()
 		{
 			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
-			this.Environments = this.SelectedApiInfoViewModel.EnvironmentInfo.VariableFiles.Select(v => new EnvironmentViewModel(v));
+			this.Environments = this.SelectedApiInfoViewModel.EnvironmentInfo.Environments.Select(v => new EnvironmentViewModel(v));
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ApiManager.Model;
 using System.IO;
 using Newtonsoft.Json;
+using ApiEnvironment = ApiManager.Model.Environment;
 
 namespace ApiManager.Repository
 {
@@ -22,24 +23,33 @@ namespace ApiManager.Repository
 			return null;
 		}
 
-		public IEnumerable<ApiInfo> GetEnvironments()
+		public IEnumerable<ApiInfo> GetApiConfigurations()
 		{
-			var envs = new List<ApiInfo>();
+			var apis = new List<ApiInfo>();
 			foreach (var envFolder in
 				Directory.GetDirectories(
-					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Environments")))
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Apis")))
 			{
-				var environment = new ApiInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
-				environment.Scenarios = Directory.GetFiles(envFolder, "*.txt")
-					.Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
-				environment.VariableFiles = Directory.GetFiles(envFolder, "*.var").ToList();
-				environment.Configuration = Path.Combine(envFolder, "config.json");
-				envs.Add(environment);
+				var api = new ApiInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
+				var scenariosPath = Path.Combine(envFolder, "scenarios");
+				if (Directory.Exists(scenariosPath))
+				{
+					api.Scenarios = Directory.GetFiles(scenariosPath, "*.txt")
+					  .Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
+				}
+
+				var environmentsPath = Path.Combine(envFolder, "environments");
+				if (Directory.Exists(environmentsPath))
+				{
+					api.Environments = Directory.GetFiles(environmentsPath, "*.var")
+					  .Select(f => new ApiEnvironment(Path.GetFileNameWithoutExtension(f), f)).ToList();
+				}
+
+				api.Configuration = Path.Combine(envFolder, "config.json");
+				apis.Add(api);
 			}
 
-			return envs;
+			return apis;
 		}
-
-
 	}
 }
