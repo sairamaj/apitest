@@ -58,7 +58,7 @@ namespace ApiManager.ViewModels
 				MessageBox.Show(e.ToString());
 			}
 
-			this.SelectedApiInfoViewModel= this.ApiInfoViewModels.FirstOrDefault();
+			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
 			this.SelectedScneario = this.Scenarios.FirstOrDefault();
@@ -189,7 +189,8 @@ namespace ApiManager.ViewModels
 		private async void Change()
 		{
 			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
-			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments.Select(v => new EnvironmentViewModel(v));
+			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
+				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
@@ -234,7 +235,7 @@ namespace ApiManager.ViewModels
 			});
 		}
 
-		private void ConsumePipeData<T>(string message) where  T : Info
+		private void ConsumePipeData<T>(string message) where T : Info
 		{
 			var info = JsonConvert.DeserializeObject<T>(message);
 			var envFolder = this.ApiInfoViewModels.FirstOrDefault(eF => eF.Name == info.Session);

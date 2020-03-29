@@ -13,6 +13,8 @@ from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
 from json2html import *
+from transform import getVariables
+from utils import readAllText
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -136,6 +138,8 @@ class HelpExecutor(ICommand):
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
+        print('!management commands (gets avarialble api commands ).')
+        print('!management variables (gets avarialble api variables ).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
 
@@ -182,12 +186,19 @@ class ManagementCommandExecutor(ICommand):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
-        commands = []
-        for name, apiInfos in executorRequest.apis.items():
-            for path, apiInfo in apiInfos.items():
-                commands.append(f"{name}.{path}")
-        print(f"apis : {type(executorRequest.apis)}")
-        sendManagementInfo(self.property_bag.session_name, "commands", commands)
+        if executorRequest.request == "commands":
+            commands = []
+            for name, apiInfos in executorRequest.apis.items():
+                for path, apiInfo in apiInfos.items():
+                    commands.append(f"{name}.{path}")
+            print(f"apis : {type(executorRequest.apis)}")
+            sendManagementInfo(self.property_bag.session_name, "commands", commands)
+        elif executorRequest.request == "variables":
+            variables = getVariables(readAllText(self.property_bag.config_filename))
+            sendManagementInfo(self.property_bag.session_name, "variables", variables)
+            print(variables)
+        else:
+            raise ValueError(f"invalid {executorRequest.request} management command (avaiable are commands and variables")
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):

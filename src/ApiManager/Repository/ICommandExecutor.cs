@@ -9,6 +9,7 @@ namespace ApiManager.Repository
 		Task<string> StartAsync(TestData testData);
 		Task<string> OpenCommandPromptAsync(TestData testData);
 		Task<string> GetApiCommands(ApiInfo info);
+		Task<string> GetApiVariables(ApiInfo info);
 		Task<string> ConvertJsonToHtml(string jsonFile, string outHtmlFile);
 	}
 }

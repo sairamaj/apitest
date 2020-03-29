@@ -114,6 +114,21 @@ namespace ApiManager.Repository
 			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
+		public async Task<string> GetApiVariables(ApiInfo info)
+		{
+			ValidateSettings(this._settings);
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
+			{
+				ConfigFileName = info.Configuration,
+				SessionName = info.Name,
+				Commands = new string[] { "!management variables" }
+			});
+
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
+
+			return ret.ToString(CultureInfo.InvariantCulture);
+		}
+
 		private void ValidatePythonVersion()
 		{
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, "--version");

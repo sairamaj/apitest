@@ -68,6 +68,7 @@
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
+    <Compile Include="Model\ManagementVariableInfo.cs" />
     <Compile Include="Model\ManagementCommandInfo.cs" />
     <Compile Include="Model\Scenario.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />

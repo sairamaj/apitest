@@ -37,3 +37,7 @@ class PropertyBag:
     @last_response.setter
     def last_response(self, value):
         self._last_response = value
+
+    @property
+    def config_filename(self):
+        return self.properties["config"]

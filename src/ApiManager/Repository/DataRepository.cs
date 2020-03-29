@@ -14,6 +14,7 @@ namespace ApiManager.Repository
 	{
 		ICommandExecutor _executor;
 		IDictionary<string, IEnumerable<string>> _apiCommands = new Dictionary<string, IEnumerable<string>>();
+		IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
 		public DataRepository(ICommandExecutor executor)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
@@ -29,6 +30,23 @@ namespace ApiManager.Repository
 			if (this._apiCommands.TryGetValue(info.Name, out var commands1))
 			{
 				return await Task.FromResult<IEnumerable<string>>(commands1).ConfigureAwait(false);
+			}
+
+			return new List<string>();
+		}
+
+
+		public async Task<IEnumerable<string>> GetVariables(ApiInfo info)
+		{
+			if (this._apiVariables.TryGetValue(info.Name, out var variables))
+			{
+				return await Task.FromResult<IEnumerable<string>>(variables).ConfigureAwait(false);
+			}
+
+			await this._executor.GetApiVariables(info).ConfigureAwait(false);
+			if (this._apiVariables.TryGetValue(info.Name, out var variables1))
+			{
+				return await Task.FromResult<IEnumerable<string>>(variables1).ConfigureAwait(false);
 			}
 
 			return new List<string>();
@@ -69,6 +87,11 @@ namespace ApiManager.Repository
 			{
 				var commandInfo = info as ManagementCommandInfo;
 				_apiCommands[commandInfo.Session] = commandInfo.Commands.ToList();
+			}
+			if (info is ManagementVariableInfo)
+			{
+				var variableInfo = info as ManagementVariableInfo;
+				this._apiVariables[variableInfo.Session] = variableInfo.Variables.ToList();
 			}
 		}
 	}

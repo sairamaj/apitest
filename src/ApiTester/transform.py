@@ -3,7 +3,7 @@ from string import Template
 from ui import getUserInput
 import re
 import pystache
-
+import sys
 
 def readAllText(fileName):
     with open(fileName, 'r') as file:
@@ -43,11 +43,10 @@ def transformString(name , item, argItems):
     inputs = updateVariables(inputs, getUserInput)  
     return inputs[name]
 
+def getVariables(data):
+    return re.findall(r"{(\w+)}", data)
+
 if __name__ == "__main__":
-    val = "Basic base64 {{client_id}} {{client_secret}}"
-    inputs = {}
-    inputs["test"] = val
-    print(type(inputs))
-    argItems = {"client_id":"1", "client_secret":"2"}
-    outputs = transform(inputs, argItems)
-    print(outputs['test'])
+    data = readAllText(sys.argv[1])
+    variables = getVariables(data)
+    print(variables)
