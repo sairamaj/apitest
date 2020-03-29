@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -122,6 +123,21 @@ namespace ApiManager.Repository
 				ConfigFileName = info.Configuration,
 				SessionName = info.Name,
 				Commands = new string[] { "!management variables" }
+			});
+
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
+
+			return ret.ToString(CultureInfo.InvariantCulture);
+		}
+
+		public async Task<string> GetHelpCommands()
+		{
+			ValidateSettings(this._settings);
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
+			{
+				ConfigFileName = FileHelper.WriteToTempFile("[]",".json"),
+				SessionName = "apimanger",
+				Commands = new string[] { "!management commands" }
 			});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);

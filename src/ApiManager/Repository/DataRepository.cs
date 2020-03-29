@@ -13,6 +13,8 @@ namespace ApiManager.Repository
 		ICommandExecutor _executor;
 		IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
 		IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
+		IEnumerable<HelpCommand> _helpCommands;
+
 		public DataRepository(ICommandExecutor executor)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
@@ -23,9 +25,9 @@ namespace ApiManager.Repository
 			{
 				return await Task.FromResult<ApiCommandInfo>(commands).ConfigureAwait(false);
 			}
-			
+
 			await this._executor.GetApiCommands(info).ConfigureAwait(false);
-			
+
 			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
 			// Better way is to coordinate between this and pipe line responser.
 			await Task.Delay(100).ConfigureAwait(false);
@@ -83,6 +85,26 @@ namespace ApiManager.Repository
 			return apis;
 		}
 
+		public async Task<IEnumerable<HelpCommand>> GetHelpCommands()
+		{
+			if (_helpCommands != null)
+			{
+				return this._helpCommands;
+			}
+
+			await this._executor.GetHelpCommands().ConfigureAwait(false);
+
+			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
+			// Better way is to coordinate between this and pipe line responser.
+			await Task.Delay(100).ConfigureAwait(false);
+			if (_helpCommands != null)
+			{
+				return this._helpCommands;
+			}
+
+			return new List<HelpCommand>();
+		}
+
 		public void AddManagementInfo(Info info)
 		{
 			if (info is ApiCommandInfo)
@@ -90,10 +112,14 @@ namespace ApiManager.Repository
 				var commandInfo = info as ApiCommandInfo;
 				_apiCommands[commandInfo.Session] = commandInfo;
 			}
-			if (info is ManagementVariableInfo)
+			else if (info is ManagementVariableInfo)
 			{
 				var variableInfo = info as ManagementVariableInfo;
 				this._apiVariables[variableInfo.Session] = variableInfo.Variables.ToList();
+			}
+			else if (info is HelpCommandInfo)
+			{
+				this._helpCommands = (info as HelpCommandInfo).Commands.ToList();
 			}
 		}
 	}

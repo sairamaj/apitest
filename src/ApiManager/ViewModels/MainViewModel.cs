@@ -60,7 +60,7 @@ namespace ApiManager.ViewModels
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
-			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			this.SelectedScneario = this.Scenarios.FirstOrDefault();
 		}
 
@@ -188,7 +188,7 @@ namespace ApiManager.ViewModels
 
 		private async void Change()
 		{
-			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Scenarios);
@@ -232,6 +232,11 @@ namespace ApiManager.ViewModels
 			_dataProcessor.Add("management", "apicommands", msg =>
 			{
 				ConsumeManagementPipeData<ApiCommandInfo>(msg);
+			});
+
+			_dataProcessor.Add("management", "commands", msg =>
+			{
+				ConsumeManagementPipeData<HelpCommandInfo>(msg);
 			});
 		}
 

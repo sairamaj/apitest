@@ -10,6 +10,7 @@ namespace ApiManager.Repository
 		Task<string> OpenCommandPromptAsync(TestData testData);
 		Task<string> GetApiCommands(ApiInfo info);
 		Task<string> GetApiVariables(ApiInfo info);
+		Task<string> GetHelpCommands();
 		Task<string> ConvertJsonToHtml(string jsonFile, string outHtmlFile);
 	}
 }

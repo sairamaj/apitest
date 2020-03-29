@@ -9,6 +9,7 @@ namespace ApiManager.Repository
 		IEnumerable<ApiInfo> GetApiConfigurations();
 		Task<ApiCommandInfo> GetCommands(ApiInfo info);
 		Task<IEnumerable<string>> GetVariables(ApiInfo info);
+		Task<IEnumerable<HelpCommand>> GetHelpCommands();
 		void AddManagementInfo(Info info);
 	}
 }

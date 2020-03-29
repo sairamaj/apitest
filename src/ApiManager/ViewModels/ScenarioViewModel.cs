@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.ScenarioEditing.Views;
 using Wpf.Util.Core.Command;
@@ -14,17 +17,20 @@ namespace ApiManager.ViewModels
 	class ScenarioViewModel : CoreViewModel
 	{
 		private IEnumerable<string> _apis;
-		public ScenarioViewModel(Scenario scenario)
+		public ScenarioViewModel(Scenario scenario, ApiInfo apiInfo, IDataRepository repository)
 		{
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
-			this.EditCommandFileCommand = new DelegateCommand(() =>
+			this.EditCommandFileCommand = new DelegateCommand(async () =>
 		   {
 		   try
 		   {
-				   var view = new ScenarioEditorView { DataContext = new ScenarioEditorViewModel(scenario) };
-				   view.ShowDialog();
-				   //Process.Start(scenario.FileName);
+				   //var helpCommands = await repository.GetHelpCommands().ConfigureAwait(true);
+				   //var apiCommands = await repository.GetCommands(apiInfo).ConfigureAwait(true);
+
+				   //var view = new ScenarioEditorView { DataContext = new ScenarioEditorViewModel(scenario, helpCommands, apiCommands) };
+				   //view.ShowDialog();
+				   Process.Start(scenario.FileName);
 			   }
 			   catch (Exception e)
 			   {

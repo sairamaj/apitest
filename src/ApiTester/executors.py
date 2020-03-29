@@ -15,6 +15,7 @@ from jsonpath_ng.ext import parse
 from json2html import *
 from transform import getVariables
 from utils import readAllText
+from commandinfo import getCommandsInfo
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -186,7 +187,9 @@ class ManagementCommandExecutor(ICommand):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
-        if executorRequest.request == "apicommands":
+        if executorRequest.request == "commands":
+            sendManagementInfo(self.property_bag.session_name, "commands", getCommandsInfo())            
+        elif executorRequest.request == "apicommands":
             commands = {}
             for name, apiInfos in executorRequest.apis.items():
                 subcommands = []
