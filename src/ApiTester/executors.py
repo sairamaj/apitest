@@ -138,7 +138,7 @@ class HelpExecutor(ICommand):
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
-        print('!management commands (gets avarialble api commands ).')
+        print('!management apicommands (gets avarialble api commands ).')
         print('!management variables (gets avarialble api variables ).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
@@ -186,7 +186,7 @@ class ManagementCommandExecutor(ICommand):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
-        if executorRequest.request == "commands":
+        if executorRequest.request == "apicommands":
             commands = {}
             for name, apiInfos in executorRequest.apis.items():
                 subcommands = []
@@ -194,7 +194,7 @@ class ManagementCommandExecutor(ICommand):
                     subcommands.append(path)
                 commands[name] = subcommands
             print(f"apis : {type(executorRequest.apis)}")
-            sendManagementInfo(self.property_bag.session_name, "commands", commands)
+            sendManagementInfo(self.property_bag.session_name, "apicommands", commands)
         elif executorRequest.request == "variables":
             variables = getVariables(readAllText(self.property_bag.config_filename))
             sendManagementInfo(self.property_bag.session_name, "variables", variables)

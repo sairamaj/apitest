@@ -8,11 +8,11 @@ namespace ApiManager.ViewModels
 {
 	class ApiConfigurationViewerViewModel : CoreViewModel
 	{
-		public ApiConfigurationViewerViewModel(ApiInfo apiInfo, ManagementCommandInfo commandInfo)
+		public ApiConfigurationViewerViewModel(ApiInfo apiInfo, ApiCommandInfo commandInfo)
 		{
 			this.ApiInfo = apiInfo;
 			this.ConfigurationData = File.ReadAllText(apiInfo.Configuration);
-			this.Commands = commandInfo.Commands
+			this.Commands = commandInfo.ApiCommands
 				.OrderBy(c => c.Key)
 				.Select(c =>new CommandInfoViewModel(c.Key, c.Value) );
 		}

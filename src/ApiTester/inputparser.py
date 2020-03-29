@@ -143,8 +143,12 @@ class ManagementCommandRequestInputParser(InputParser):
         if len(parts) < 2:
             raise ValueError(
                 f"!management command requires requestName (ex: !management commands)")
-        return ManagementCommandExecutorRequest(apis, parts[1])
-
+        # check supported management commands
+        supportedMgmtCommands = ['apicommands','variables']
+        mgmtRequest = parts[1]
+        if mgmtRequest in supportedMgmtCommands:
+            return ManagementCommandExecutorRequest(apis, mgmtRequest)
+        raise ValueError(f"!management {mgmtRequest} is not available, supported requests for management are: {supportedMgmtCommands}")
 
 class WaitForUserInputRequestInputParser(InputParser):
     def __init__(self, workingDirectory):

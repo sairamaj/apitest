@@ -229,9 +229,9 @@ namespace ApiManager.ViewModels
 				ConsumePipeData<AssertInfo>(msg);
 			});
 
-			_dataProcessor.Add("management", "commands", msg =>
+			_dataProcessor.Add("management", "apicommands", msg =>
 			{
-				ConsumeManagementPipeData<ManagementCommandInfo>(msg);
+				ConsumeManagementPipeData<ApiCommandInfo>(msg);
 			});
 		}
 

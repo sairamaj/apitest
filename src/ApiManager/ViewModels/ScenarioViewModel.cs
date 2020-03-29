@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.ScenarioEditing.ViewModels;
+using ApiManager.ScenarioEditing.Views;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
@@ -19,9 +20,11 @@ namespace ApiManager.ViewModels
 			this.Name = scenario.Name;
 			this.EditCommandFileCommand = new DelegateCommand(() =>
 		   {
-			   try
-			   {
-				   Process.Start(scenario.FileName);
+		   try
+		   {
+				   var view = new ScenarioEditorView { DataContext = new ScenarioEditorViewModel(scenario) };
+				   view.ShowDialog();
+				   //Process.Start(scenario.FileName);
 			   }
 			   catch (Exception e)
 			   {

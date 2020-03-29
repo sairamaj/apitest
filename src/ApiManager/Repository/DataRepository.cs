@@ -11,17 +11,17 @@ namespace ApiManager.Repository
 	class DataRepository : IDataRepository
 	{
 		ICommandExecutor _executor;
-		IDictionary<string, ManagementCommandInfo> _apiCommands = new Dictionary<string, ManagementCommandInfo>();
+		IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
 		IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
 		public DataRepository(ICommandExecutor executor)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 		}
-		public async Task<ManagementCommandInfo> GetCommands(ApiInfo info)
+		public async Task<ApiCommandInfo> GetCommands(ApiInfo info)
 		{
 			if (this._apiCommands.TryGetValue(info.Name, out var commands))
 			{
-				return await Task.FromResult<ManagementCommandInfo>(commands).ConfigureAwait(false);
+				return await Task.FromResult<ApiCommandInfo>(commands).ConfigureAwait(false);
 			}
 			
 			await this._executor.GetApiCommands(info).ConfigureAwait(false);
@@ -31,10 +31,10 @@ namespace ApiManager.Repository
 			await Task.Delay(100).ConfigureAwait(false);
 			if (this._apiCommands.TryGetValue(info.Name, out var commands1))
 			{
-				return await Task.FromResult<ManagementCommandInfo>(commands1).ConfigureAwait(false);
+				return await Task.FromResult<ApiCommandInfo>(commands1).ConfigureAwait(false);
 			}
 
-			return new ManagementCommandInfo();
+			return new ApiCommandInfo();
 		}
 
 
@@ -85,9 +85,9 @@ namespace ApiManager.Repository
 
 		public void AddManagementInfo(Info info)
 		{
-			if (info is ManagementCommandInfo)
+			if (info is ApiCommandInfo)
 			{
-				var commandInfo = info as ManagementCommandInfo;
+				var commandInfo = info as ApiCommandInfo;
 				_apiCommands[commandInfo.Session] = commandInfo;
 			}
 			if (info is ManagementVariableInfo)

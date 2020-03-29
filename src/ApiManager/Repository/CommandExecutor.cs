@@ -106,7 +106,7 @@ namespace ApiManager.Repository
 			{
 				ConfigFileName = info.Configuration,
 				SessionName = info.Name,
-				Commands = new string[] { "!management commands" }
+				Commands = new string[] { "!management apicommands" }
 			});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);

@@ -69,7 +69,7 @@
     <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
     <Compile Include="Model\ManagementVariableInfo.cs" />
-    <Compile Include="Model\ManagementCommandInfo.cs" />
+    <Compile Include="Model\ApiCommandInfo.cs" />
     <Compile Include="Model\Scenario.cs" />
     <Compile Include="Model\ExtractVariableInfo.cs" />
     <Compile Include="Model\Info.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\ScenarioEditorViewModel.cs" />
     <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
     <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
@@ -108,6 +109,9 @@
     </Compile>
     <Compile Include="Views\RunPanel.xaml.cs">
       <DependentUpon>RunPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\Views\ScenarioEditorView.xaml.cs">
+      <DependentUpon>ScenarioEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScenarioFileView.xaml.cs">
       <DependentUpon>ScenarioFileView.xaml</DependentUpon>
@@ -155,6 +159,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\RunPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\Views\ScenarioEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
