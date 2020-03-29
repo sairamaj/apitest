@@ -91,6 +91,8 @@
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
+    <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
+    <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
     <Compile Include="ViewModels\ApiInfoViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />

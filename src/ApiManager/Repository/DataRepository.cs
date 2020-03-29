@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ApiManager.Model;
-using System.IO;
-using Newtonsoft.Json;
 using ApiEnvironment = ApiManager.Model.Environment;
 
 namespace ApiManager.Repository
@@ -13,26 +11,30 @@ namespace ApiManager.Repository
 	class DataRepository : IDataRepository
 	{
 		ICommandExecutor _executor;
-		IDictionary<string, IEnumerable<string>> _apiCommands = new Dictionary<string, IEnumerable<string>>();
+		IDictionary<string, ManagementCommandInfo> _apiCommands = new Dictionary<string, ManagementCommandInfo>();
 		IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
 		public DataRepository(ICommandExecutor executor)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 		}
-		public async Task<IEnumerable<string>> GetCommands(ApiInfo info)
+		public async Task<ManagementCommandInfo> GetCommands(ApiInfo info)
 		{
 			if (this._apiCommands.TryGetValue(info.Name, out var commands))
 			{
-				return await Task.FromResult<IEnumerable<string>>(commands).ConfigureAwait(false);
+				return await Task.FromResult<ManagementCommandInfo>(commands).ConfigureAwait(false);
 			}
 			
 			await this._executor.GetApiCommands(info).ConfigureAwait(false);
+			
+			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
+			// Better way is to coordinate between this and pipe line responser.
+			await Task.Delay(100).ConfigureAwait(false);
 			if (this._apiCommands.TryGetValue(info.Name, out var commands1))
 			{
-				return await Task.FromResult<IEnumerable<string>>(commands1).ConfigureAwait(false);
+				return await Task.FromResult<ManagementCommandInfo>(commands1).ConfigureAwait(false);
 			}
 
-			return new List<string>();
+			return new ManagementCommandInfo();
 		}
 
 
@@ -86,7 +88,7 @@ namespace ApiManager.Repository
 			if (info is ManagementCommandInfo)
 			{
 				var commandInfo = info as ManagementCommandInfo;
-				_apiCommands[commandInfo.Session] = commandInfo.Commands.ToList();
+				_apiCommands[commandInfo.Session] = commandInfo;
 			}
 			if (info is ManagementVariableInfo)
 			{

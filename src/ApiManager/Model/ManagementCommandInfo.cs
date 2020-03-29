@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ApiManager.Model
 {
 	class ManagementCommandInfo : Info
 	{
-		public IEnumerable<string> Commands { get; set; }
+		public ManagementCommandInfo()
+		{
+			Commands = new Dictionary<string, IEnumerable<string>>();
+		}
+
+		public IDictionary<string, IEnumerable<string>> Commands { get; set; }
 	}
 }

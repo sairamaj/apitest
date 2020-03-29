@@ -28,7 +28,7 @@ namespace ApiManager.ViewModels
 			this.RequestResponses = new SafeObservableCollection<InfoViewModel>();
 			this.EditConfigFileCommand = new DelegateCommand(async () =>
 			{
-				await this.ShowConfigurationViewer();
+				await ShowConfigurationViewer().ConfigureAwait(false);
 			});
 		}
 
@@ -66,7 +66,7 @@ namespace ApiManager.ViewModels
 			}
 			catch (Exception e)
 			{
-				MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 	}

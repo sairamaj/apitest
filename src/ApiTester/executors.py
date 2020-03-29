@@ -187,10 +187,12 @@ class ManagementCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         if executorRequest.request == "commands":
-            commands = []
+            commands = {}
             for name, apiInfos in executorRequest.apis.items():
+                subcommands = []
                 for path, apiInfo in apiInfos.items():
-                    commands.append(f"{name}.{path}")
+                    subcommands.append(path)
+                commands[name] = subcommands
             print(f"apis : {type(executorRequest.apis)}")
             sendManagementInfo(self.property_bag.session_name, "commands", commands)
         elif executorRequest.request == "variables":
