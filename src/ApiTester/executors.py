@@ -9,7 +9,7 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from executorRequest import AssertExecutorRequest,ConvertJsonToHtmlExecutorRequest
-from ui import printRoute, printPath, waitForUserInput
+from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
 from json2html import *
@@ -43,7 +43,7 @@ class AccessTokenExecutor(ICommand):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ApiExecutorRequest")
-        print(f"accesstoken: {executorRequest.apiInfo.baseUrl}")
+        printInfo(f"executing: {executorRequest.apiInfo.baseUrl}")
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
@@ -65,7 +65,7 @@ class ApiExecutor(ICommand):
         if isinstance(executorRequest, ApiExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ApiExecutorRequest")
-
+        printInfo(f"executing: {executorRequest.apiInfo.baseUrl}")
         api = Api(executorRequest.apiInfo, self.property_bag.access_token)
         try:
             if executorRequest.method == 'get':

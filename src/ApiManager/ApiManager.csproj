@@ -88,6 +88,7 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
     <Compile Include="ViewModels\ApiInfoViewModel.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RequestResponseContainerViewModel.cs" />
+    <Compile Include="Views\ApiConfigurationViewer.xaml.cs">
+      <DependentUpon>ApiConfigurationViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RunPanel.xaml.cs">
       <DependentUpon>RunPanel.xaml</DependentUpon>
     </Compile>
@@ -131,6 +135,10 @@
     <Compile Include="Views\EnvironmentView.xaml.cs">
       <DependentUpon>EnvironmentView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ApiConfigurationViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

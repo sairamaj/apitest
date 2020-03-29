@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Windows;
 using System.Xml;
 
 namespace ApiManager.Views
 {
 	/// <summary>
-	/// Interaction logic for ResponseView.xaml
+	/// Interaction logic for ApiConfigurationViewer.xaml
 	/// </summary>
-	public partial class ResponseView 
+	public partial class ApiConfigurationViewer : Window
 	{
-		public ResponseView()
+		public ApiConfigurationViewer()
 		{
 			InitializeComponent();
 
@@ -20,6 +21,7 @@ namespace ApiManager.Views
 				var xshd_reader = new XmlTextReader(xshd_stream);
 				this.TextEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(xshd_reader, ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
 			}
+
 		}
 	}
 }

@@ -60,7 +60,7 @@ namespace ApiManager.ViewModels
 
 			this.SelectedApiInfoViewModel= this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
-			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
 			this.SelectedScneario = this.Scenarios.FirstOrDefault();
 		}
 
@@ -130,14 +130,14 @@ namespace ApiManager.ViewModels
 					this.CurrentRequestResponseViewModel?.Clear();
 				}
 
-				var envInfo = this.SelectedApiInfoViewModel.EnvironmentInfo;
+				var apiInfo = this.SelectedApiInfoViewModel.ApiInfo;
 				var result = await _apiExecutor.StartAsync(
 					new TestData
 					{
-						ConfigName = envInfo.Configuration,
+						ConfigName = apiInfo.Configuration,
 						CommandsTextFileName = SelectedScneario.FileName,
 						VariablesFileName = SelectedEnvironment.FileName,
-						SessionName = envInfo.Name,
+						SessionName = apiInfo.Name,
 					}
 					).ConfigureAwait(false);
 			}
@@ -169,14 +169,14 @@ namespace ApiManager.ViewModels
 
 			try
 			{
-				var envInfo = this.SelectedApiInfoViewModel.EnvironmentInfo;
+				var apiInfo = this.SelectedApiInfoViewModel.ApiInfo;
 				var result = await _apiExecutor.OpenCommandPromptAsync(
 					new TestData
 					{
-						ConfigName = envInfo.Configuration,
+						ConfigName = apiInfo.Configuration,
 						CommandsTextFileName = this.SelectedScneario.FileName,
 						VariablesFileName = this.SelectedEnvironment.FileName,
-						SessionName = envInfo.Name,
+						SessionName = apiInfo.Name,
 					}
 					).ConfigureAwait(false);
 			}
@@ -188,8 +188,8 @@ namespace ApiManager.ViewModels
 
 		private async void Change()
 		{
-			this.Scenarios = this.SelectedApiInfoViewModel.EnvironmentInfo.Scenarios.Select(c => new ScenarioViewModel(c));
-			this.Environments = this.SelectedApiInfoViewModel.EnvironmentInfo.Environments.Select(v => new EnvironmentViewModel(v));
+			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c));
+			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments.Select(v => new EnvironmentViewModel(v));
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
