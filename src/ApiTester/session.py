@@ -12,6 +12,7 @@ from inputparser import InputParser
 from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
+from logcollector import sendErrorInfo
 
 
 class Session:
@@ -31,6 +32,7 @@ class Session:
                 quit = True
 
     def executeCommandInput(self, command):
+        error = None
         try:
             request = parseCommand(
                 command, self.workingDirectory, self.apis, self.property_bag.properties)
@@ -39,26 +41,33 @@ class Session:
             self.commandExecutor.execute(request)
             return True
         except AssertionError as v:
+            error = v
             printError(str(v))
         except ValueError as v:
+            error = v
             printError(str(v))
         except ApiException as ae:
+            error = v
             printError(str(ae))
         except Exception as e:
+            error = v
             printError(str(e))
             print("Exception in user code:")
             print('-'*60)
             traceback.print_exc(file=sys.stdout)
-            print('-'*60)            
+            print('-'*60)
+
+        if error != None:
+            sendErrorInfo(self.property_bag.session_name, error)
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
-                    final_command = transform({"command": command}, self.property_bag.properties)
+                    final_command = transform(
+                        {"command": command}, self.property_bag.properties)
                     try:
                         self.executeCommandInput(final_command.get('command'))
                     except ApiException as ae:
                         printError(str(ae))
-

@@ -41,7 +41,6 @@ namespace ApiManager.ViewModels
 		{
 			if (info is ApiRequest)
 			{
-
 				this.RequestResponses.Add(new ApiInfoViewModel(this._executor, info as ApiRequest));
 			}
 			else if (info is ExtractVariableInfo)
@@ -51,6 +50,10 @@ namespace ApiManager.ViewModels
 			else if (info is AssertInfo)
 			{
 				this.RequestResponses.Add(new AssertInfoViewModel(this._executor, info as AssertInfo));
+			}
+			else if (info is ErrorInfo)
+			{
+				this.RequestResponses.Add(new ErrorInfoViewModel(info as ErrorInfo));
 			}
 		}
 

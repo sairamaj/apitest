@@ -56,7 +56,7 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="InfoTextBoxStyle">
 			<Setter Property="Control.Visibility" Value="Hidden" />
 			<Style.Triggers>
@@ -171,6 +171,23 @@
 			</Expander>
 		</DataTemplate>
 
+		<DataTemplate x:Key="ErrorHeaderTemplate">
+			<Expander >
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal" Background="Red" >
+						<TextBlock  Text="{Binding ErrorInfo.Error}" Margin="3,0,0,0" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+					</StackPanel>
+				</Expander.Header>
+				<Grid Background="White">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="700"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ErrorInfo.Error}" FontWeight="Bold"/>
+				</Grid>
+			</Expander>
+		</DataTemplate>
+
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<Expander Background="White">
 				<Expander.Header>
@@ -194,12 +211,11 @@
 		<local:InfoDataHeaderTemplateSelector x:Key="InfoDataHeaderTemplateSelector" 
                                              ApiInfoHeaderTemplate="{StaticResource ApiHeaderTemplate}"
                                              ExtractHeaderTemplate="{StaticResource ExtractHeaderTemplate}"
-											  AssertHeaderTemplate="{StaticResource AssertHeaderTemplate}"
-											  
-											  
+											 AssertHeaderTemplate="{StaticResource AssertHeaderTemplate}"
+											 ErrorHeaderTemplate="{StaticResource ErrorHeaderTemplate}"
                                         />
 
-		<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
+			<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
                                              ApiDataTemplate="{StaticResource ApiDataTemplate}"
                                              ExtractDataTemplate="{StaticResource ExtractDataTemplate}"
                                         />-->

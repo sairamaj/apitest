@@ -3,6 +3,7 @@ from pprint import pprint
 import json
 
 pipeServer = PipeServer('apiinfo')
+errorPipe = PipeServer('error')
 managementPipe = PipeServer('management')
 
 
@@ -93,3 +94,15 @@ def sendManagementInfo(sessionName, name, info):
     except:
         print('exception in sendManagementInfo. ignoring.')
 
+def sendErrorInfo(sessionName, error):
+    data = {
+        "session": sessionName,
+        "error": str(error)
+    }
+    try:
+        info = f"error|" + json.dumps(data)
+        print(info)
+        pipeServer.send(info)
+    except Exception as e:
+        print(f'exception in sendErrorInfo. ignoring. {str(e)}')
+    

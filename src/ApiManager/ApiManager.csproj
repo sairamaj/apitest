@@ -68,6 +68,7 @@
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
+    <Compile Include="Model\ErrorInfo.cs" />
     <Compile Include="Model\HelpCommand.cs" />
     <Compile Include="Model\HelpCommandInfo.cs" />
     <Compile Include="Model\ManagementVariableInfo.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioEditorViewModel.cs" />
+    <Compile Include="ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
     <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
@@ -237,6 +239,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="images\edit.png" />
+    <Content Include="Configuration\Apis\Apigee\scenarios\error_tests.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\extracts_failed.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

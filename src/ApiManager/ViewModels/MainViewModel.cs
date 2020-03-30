@@ -238,6 +238,10 @@ namespace ApiManager.ViewModels
 			{
 				ConsumeManagementPipeData<HelpCommandInfo>(msg);
 			});
+			_dataProcessor.Add("error", "error", msg =>
+			{
+				ConsumePipeData<ErrorInfo>(msg);
+			});
 		}
 
 		private void ConsumePipeData<T>(string message) where T : Info
