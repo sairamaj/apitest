@@ -228,7 +228,7 @@
     <None Include="Configuration\Apis\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\Apis\Apigee\posts\create_developer.json">
+    <None Include="Configuration\Apis\Apigee\scenarios\posts\create_developer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Configuration\Apis\Azure\config.json">

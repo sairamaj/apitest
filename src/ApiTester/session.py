@@ -47,10 +47,10 @@ class Session:
             error = v
             printError(str(v))
         except ApiException as ae:
-            error = v
+            # don't set error info for Api exception as notificaiton it is already taken care
             printError(str(ae))
         except Exception as e:
-            error = v
+            error = e
             printError(str(e))
             print("Exception in user code:")
             print('-'*60)
