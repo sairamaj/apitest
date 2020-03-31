@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import copy
 from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
@@ -76,6 +77,7 @@ class ApiCommandInputParser(InputParser):
             foundApiInfo = apiInfos.get(path, None)
             if foundApiInfo == None:
                 raise ValueError(f"{route}.{path} not found")
+            foundApiInfo = copy.deepcopy(foundApiInfo)      # we need fresh copy
 
         data = transform(foundApiInfo.body, propertyDictionary)
         path = transformString('path', foundApiInfo.path, propertyDictionary)

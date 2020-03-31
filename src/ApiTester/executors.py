@@ -94,8 +94,8 @@ class SetExecutor(ICommand):
         if isinstance(executorRequest, SetExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of SetExecutorRequest")
-        self.property_bag.properties = dict(
-            {executorRequest.parameterName: executorRequest.parameterValue}, **self.property_bag.properties)
+        self.property_bag.properties = dict(self.property_bag.properties,
+            **{executorRequest.parameterName: executorRequest.parameterValue})
 
 
 class ListPropertiesExecutor(ICommand):
@@ -109,7 +109,9 @@ class ListPropertiesExecutor(ICommand):
             else:
                 print(f"{key.rjust(30)} : {val}")
         additional = {}
-        additional['last_response'] = self.property_bag.last_response[:30]
+        if self.property_bag.last_response != None:
+            additional['last_response'] = self.property_bag.last_response[:30]
+        
         additional['session'] = self.property_bag.session_name
         for key, val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")

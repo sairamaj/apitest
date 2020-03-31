@@ -1,0 +1,7 @@
+# use defaults specified in environment
+accesstoken.password
+
+# Use different set to get access token
+!set username=sairamaj@gmail.com
+!set password=somenonexistingpassword
+accesstoken.password

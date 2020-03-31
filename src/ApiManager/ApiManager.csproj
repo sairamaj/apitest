@@ -251,6 +251,9 @@
     <Content Include="Configuration\Apis\Apigee\scenarios\extracts_sample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configuration\Apis\Apigee\scenarios\access_token_for_2_users.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\list.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
