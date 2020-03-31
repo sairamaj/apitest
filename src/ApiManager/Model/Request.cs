@@ -21,6 +21,20 @@ namespace ApiManager.Model
 			}
 		}
 
+		public string GetHeaderValue(string name)
+		{
+			if (this.Headers == null)
+			{
+				return null;
+			}
+
+			if (this.Headers.TryGetValue(name, out var val))
+			{
+				return val;
+			}
+
+			return null;
+		}
 		public string RequestData
 		{
 			get => $"Url:{this.Url}\r\n\r\nHeaders:\r\n{this.HeadersAsString}\r\nBody:\r\n{this.Body}";

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace ApiManager.Model
 {
@@ -56,6 +57,7 @@ namespace ApiManager.Model
 
 		private string ExtractJwtCode()
 		{
+			var accessToken = string.Empty;
 			// Look in response first
 			if (!string.IsNullOrWhiteSpace(this.Response.Content))
 			{
@@ -63,7 +65,7 @@ namespace ApiManager.Model
 				try
 				{
 					var token = JsonConvert.DeserializeObject<JwtToken>(this.Response.Content);
-					return token.Access_Token;
+					accessToken = token.Access_Token;
 				}
 				catch (Exception)
 				{
@@ -71,7 +73,16 @@ namespace ApiManager.Model
 				}
 			}
 
-			return string.Empty;
+			if (string.IsNullOrEmpty(accessToken))
+			{
+				// try from request headers
+				var authHeader = this.Request.GetHeaderValue("Authorization");
+				if (!string.IsNullOrEmpty(authHeader))
+				{
+					accessToken = authHeader.Split(' ').Last();
+				}
+			}
+			return accessToken;
 		}
 	}
 }
