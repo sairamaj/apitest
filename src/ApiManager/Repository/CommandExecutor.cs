@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ApiManager.Model;
 
@@ -23,6 +23,7 @@ namespace ApiManager.Repository
 			Validate(testData);
 			var tcs = new TaskCompletionSource<string>();
 
+			CheckForConsoleRunningAlready();
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, CreateArguments(testData, this._settings.IsPythonExecutable));
 			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
 			var process = new Process()
@@ -173,14 +174,19 @@ namespace ApiManager.Repository
 
 		public async Task<string> OpenCommandPromptAsync(TestData testData)
 		{
-			return await this.ExecuteAsync(testData, false);
+			return await this.ExecuteAsync(testData, false, true);
 		}
 
-		private Task<string> ExecuteAsync(TestData testData, bool isBatch)
+		private Task<string> ExecuteAsync(TestData testData, bool isBatch, bool isConsole = false)
 		{
 			ValidateSettings(this._settings);
 			Validate(testData);
 			var tcs = new TaskCompletionSource<string>();
+
+			if (!isConsole)
+			{
+				CheckForConsoleRunningAlready();
+			}
 
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, CreateArguments(testData, this._settings.IsPythonExecutable, isBatch));
 			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
@@ -211,6 +217,7 @@ namespace ApiManager.Repository
 			command += $" --batch {tempBatchFile}";
 			var tcs = new TaskCompletionSource<string>();
 
+			CheckForConsoleRunningAlready();
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, command);
 			startInfo.WorkingDirectory = this._settings.WorkingDirectory;
 			var process = new Process()
@@ -234,6 +241,7 @@ namespace ApiManager.Repository
 
 		private Task<int> StartProcess(string cmd, string args)
 		{
+			CheckForConsoleRunningAlready();
 			var tcs = new TaskCompletionSource<int>();
 
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, args);
@@ -253,6 +261,19 @@ namespace ApiManager.Repository
 			};
 
 			return tcs.Task;
+		}
+
+		private bool CheckForConsoleRunningAlready()
+		{
+			var consoleProgramName = Path.GetFileNameWithoutExtension(this._settings.ConsoleExecutableName);
+			var foundProcess = Process.GetProcesses().FirstOrDefault(p => p.ProcessName == consoleProgramName);
+			if (foundProcess != null)
+			{
+				throw new Exception(
+					$"Please close {foundProcess.ProcessName} as currently both console and GUI cannot be run at the same time.");
+				return true;
+			}
+			return false;
 		}
 	}
 }

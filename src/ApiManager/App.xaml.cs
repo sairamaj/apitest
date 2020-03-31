@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
@@ -34,7 +35,7 @@ namespace ApiManager
 				var settings = JsonConvert.DeserializeObject<Settings>(
 					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
 				settings.ConsoleExecutableName = Path.GetFullPath(settings.ConsoleExecutableName);
-				settings.WorkingDirectory= Path.GetFullPath(settings.WorkingDirectory);
+				settings.WorkingDirectory = Path.GetFullPath(settings.WorkingDirectory);
 				var apiExecutor = new CommandExecutor(settings);
 				builder.RegisterInstance(apiExecutor).As<ICommandExecutor>();
 				builder.RegisterType<DataRepository>().As<IDataRepository>();
@@ -47,10 +48,9 @@ namespace ApiManager
 					DataContext = new MainViewModel(
 					serviceLocator.Resolve<ICommandExecutor>(),
 					serviceLocator.Resolve<IDataRepository>(),
-					serviceLocator.Resolve<IMessageListener>()
-				)
+					serviceLocator.Resolve<IMessageListener>())
 				};
-				win.ShowDialog();
+				RunWithSingleInstance(() => win.ShowDialog());
 			}
 			catch (Exception exception)
 			{
@@ -59,5 +59,23 @@ namespace ApiManager
 			}
 		}
 
+		private void RunWithSingleInstance(Action action)
+		{
+			const string appGuid = "9570F800-8473-4E1E-8A09-471D0E133BEC";
+
+			using (Mutex mutex = new Mutex(false, "Global\\" + appGuid))
+			{
+				if (!mutex.WaitOne(0, false))
+				{
+					MessageBox.Show(
+						"Currently only one instance can be running. Please switch to the other instance.",
+						"Error", 
+						MessageBoxButton.OK, 
+						MessageBoxImage.Error);
+					System.Environment.Exit(-1);
+				}
+				action();
+			}
+		}
 	}
 }

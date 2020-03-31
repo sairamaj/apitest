@@ -39,7 +39,7 @@ namespace ApiManager.Repository
 			{
 				// Generate batch file with commands.
 				var commandsData = string.Join("\r\n", cmdInfo.Commands);
-				if (cmdInfo.IsDebug)
+				//if (cmdInfo.IsDebug)
 				{
 					commandsData += "\r\n!waitforuserinput";
 				}
