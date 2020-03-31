@@ -28,7 +28,7 @@ class Api:
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
         response = requests.post(
-            url, data=json.dumps(jsonData), headers=headers, verify=False)
+            url, data=json.dumps(jsonData, indent=4), headers=headers, verify=False)
         self.response = response
         if response.status_code == 200:
             return response.json()
