@@ -27,8 +27,6 @@ class Api:
                    'Authorization': 'Bearer {}'.format(self.access_token)}
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
-        print(f"---> jsonType: {type(json)}")
-        print(f"---- {json}")
         response = requests.post(
             url, data=json.dumps(jsonData), headers=headers, verify=False)
         self.response = response
