@@ -140,6 +140,7 @@ class HelpExecutor(ICommand):
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
         print('!management apicommands (gets avarialble api commands ).')
+        print('!management commands (gets avarialble commands ).')
         print('!management variables (gets avarialble api variables ).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')

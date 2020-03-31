@@ -56,14 +56,34 @@ requests and responses
 \Apis
    \Apigee
         config.json
-        create-developer.txt
-        list_api.txt
-        list_deployments.txt
-        sairamaj_account.var
+        \scenarios
+            create-developer.txt
+            list_api.txt
+            list_deployments.txt
+        \environments
+            sairamaj_account.var
    \Azure
         config.json
-        get_accesstoken.txt
-        sairam_visualstudio_accunt.var
+        \scenarios
+            get_accesstoken.txt
+        \enviornments
+            sairam_visualstudio_accunt.var
    \Custom
         ...
 ```
+## Avaialble commands
+
+  |    Command              |                Description                                              |                     
+  | ------------            | ------------------------------------------------------------------------------|
+  | Api commands            | Dynamically populated from config.json. See the API command sections          |
+  | __!assert__             | Checks expected and actual variable value matches                             |
+  | __!extract__            | Extracts from last response using JSON Path in to a variable                  |
+  | __!help__               | Displays the help                                                             |
+  | __!convert_json_html__  | Converts a JSON in to HTML                                                    |
+  | __!set__                | Sets a variable value in the session properties                               |
+  | __!list__               | Lists all existing variables in current session                               |
+  | __!management__         | Management commands                                                           |
+  |                         |      __apicommands__ Api commands for given API configuration                 |
+  |                         |      __variables__   Extracts defined variables in current API configuraiton  |
+  |                         |      __commands__    Gets all available commands                              |
+  | __!waitforuserinput__   | Waits for user input before proceeding to next command                        |
