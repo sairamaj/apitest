@@ -8,7 +8,7 @@ from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputEx
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from transform import transform
 from transform import transformString
-
+from utils import readAllText
 
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
     commands = {
@@ -93,7 +93,9 @@ class ApiCommandInputParser(InputParser):
                 raise Exception('post requires filename')
             fileNameWithPath = os.path.join(self.workingDirectory, filename)
             with open(fileNameWithPath, 'r') as in_file:
-                jsonData = json.load(in_file)
+                jsonData = transform(json.load(in_file),propertyDictionary)
+                print(f"--------> {jsonData}")
+                print(f"--------> {type(jsonData)}")
 
         return ApiExecutorRequest(apiInfoWithData, jsonData, method)
 
