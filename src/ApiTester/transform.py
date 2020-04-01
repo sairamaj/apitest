@@ -21,8 +21,9 @@ def updateVariables(inputs, getFunc):
             for variable in variables:
                 val = getFunc(variable)
                 if val != None:
-                    variableValues[variable] = val
-
+                    subItems = {'temp': val}
+                    updatedSubItems = updateVariables(subItems, getFunc)
+                    variableValues[variable] = updatedSubItems.get('temp')
             if len(variableValues) > 0:
                 inputs[k] = pystache.render(str(v), variableValues)
         if type(v) is dict:

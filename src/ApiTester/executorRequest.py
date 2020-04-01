@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractstaticmethod
-
+from utils import readAllText
 
 class ExecutorRequest(metaclass=ABCMeta):
     pass
@@ -17,7 +17,11 @@ class SetExecutorRequest(ExecutorRequest):
     def __init__(self, parameterName, parameterValue):
         self.command = "!set"
         self.parameterName = parameterName
-        self.parameterValue = parameterValue
+        if parameterValue.startswith('__file__:'):
+            filename = parameterValue[len('__file__:'):]
+            self.parameterValue = readAllText(filename)
+        else:
+            self.parameterValue = parameterValue
 
 
 class ListExecutorRequest(ExecutorRequest):

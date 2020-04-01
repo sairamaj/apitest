@@ -65,6 +65,8 @@ class Session:
             for line in file.readlines():
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
+                    if command == "!return":
+                        return  # stop the batch commands
                     final_command = transform(
                         {"command": command}, self.property_bag.properties)
                     try:
