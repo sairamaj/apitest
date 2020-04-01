@@ -112,7 +112,8 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			if (this.SelectedScneario == null)
+			var selectedScenario = GetSelectedScenario();
+			if (selectedScenario == null)
 			{
 				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
@@ -136,7 +137,7 @@ namespace ApiManager.ViewModels
 					new TestData
 					{
 						ConfigName = apiInfo.Configuration,
-						CommandsTextFileName = SelectedScneario.FileName,
+						CommandsTextFileName = selectedScenario.FileName,
 						VariablesFileName = SelectedEnvironment.FileName,
 						SessionName = apiInfo.Name,
 					}
@@ -146,6 +147,20 @@ namespace ApiManager.ViewModels
 			{
 				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		private ScenarioViewModel GetSelectedScenario()
+		{
+			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s => s.Children));
+			foreach(var scenario in allScenarioViewModels.OfType<ScenarioViewModel>())
+			{
+				if (scenario.IsSelected)
+				{
+					return scenario;
+				}
+			}
+
+			return null;
 		}
 
 		private async Task OpenCommandPromptAsync()
@@ -198,7 +213,6 @@ namespace ApiManager.ViewModels
 				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
 				.ToList();
 			this.Scenarios = scenarioViewModels.Union<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>()).ToList();
-
 			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Scenarios);

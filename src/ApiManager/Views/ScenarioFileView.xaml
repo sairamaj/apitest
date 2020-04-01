@@ -12,6 +12,11 @@
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
 		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
+
+		<Style TargetType="TreeViewItem">
+			<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+		</Style>
 	</UserControl.Resources>
 	<Grid>
 		<StackPanel>
