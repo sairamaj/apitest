@@ -96,6 +96,7 @@
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioEditorViewModel.cs" />
     <Compile Include="ViewModels\ErrorInfoViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioContainerViewModel.cs" />
     <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
     <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
@@ -228,7 +229,7 @@
     <None Include="Configuration\Apis\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\Apis\Apigee\scenarios\posts\create_developer.json">
+    <None Include="Configuration\Apis\Apigee\scenarios\_posts\create_developer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Configuration\Apis\Azure\config.json">
@@ -239,13 +240,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="images\edit.png" />
-    <Content Include="Configuration\Apis\Apigee\scenarios\error_tests.txt">
+    <Content Include="Configuration\Apis\Apigee\scenarios\error_tests\error_tests.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\extracts_failed.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\assert_tests.txt">
+    <Content Include="Configuration\Apis\Apigee\scenarios\assert_tests\assert_tests.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\extracts_sample.txt">

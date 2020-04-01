@@ -11,19 +11,25 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class ScenarioViewModel : CommandTreeViewModel
+	class ScenarioContainerViewModel : CommandTreeViewModel
 	{
 		private IEnumerable<string> _apis;
-		public ScenarioViewModel(Scenario scenario, ApiInfo apiInfo, IDataRepository repository)
-			: base(null, scenario.Name, scenario.Name)
+		private readonly ApiInfo _apiInfo;
+		private readonly IDataRepository _repository;
+
+		public ScenarioContainerViewModel(Scenario scenario, ApiInfo apiInfo, IDataRepository repository)
+			:base(null, scenario.Name, scenario.Name)
 		{
-			this.IsExpanded = true;
+			this.Scenario = scenario;
+			this._apiInfo = apiInfo;
+			this._repository = repository;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
+			this.IsExpanded = true;
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
 		   {
-			   try
-			   {
+		   try
+		   {
 				   //var helpCommands = await repository.GetHelpCommands().ConfigureAwait(true);
 				   //var apiCommands = await repository.GetCommands(apiInfo).ConfigureAwait(true);
 
@@ -36,6 +42,14 @@ namespace ApiManager.ViewModels
 				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			   }
 		   });
+		}
+
+		protected override void LoadChildren()
+		{
+			foreach (var child in this.Scenario.Children)
+			{
+				this.Children.Add(new ScenarioViewModel(child, this._apiInfo, this._repository));
+			}
 		}
 
 		public string Name { get; }
@@ -56,5 +70,7 @@ namespace ApiManager.ViewModels
 				return this._apis;
 			}
 		}
+
+		public Scenario Scenario { get; }
 	}
 }

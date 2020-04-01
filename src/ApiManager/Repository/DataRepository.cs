@@ -68,7 +68,20 @@ namespace ApiManager.Repository
 				if (Directory.Exists(scenariosPath))
 				{
 					api.Scenarios = Directory.GetFiles(scenariosPath, "*.txt")
+						.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
 					  .Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
+					var scenarioContainers = new List<Scenario>();
+					foreach (var subDir in Directory.GetDirectories(scenariosPath)
+						.Where(d=> !Path.GetFileName(d).StartsWith("_", StringComparison.OrdinalIgnoreCase)))
+					{
+						var subScenarios = Directory.GetFiles(subDir, "*.txt")
+							.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
+						  .Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
+						var containerScenario = new Scenario(Path.GetFileNameWithoutExtension(subDir), subDir, true);
+						subScenarios.ToList().ForEach(s => containerScenario.AddScenario(s));
+						scenarioContainers.Add(containerScenario);
+					}
+					api.Scenarios = api.Scenarios.Union(scenarioContainers).ToList();
 				}
 
 				var environmentsPath = Path.Combine(envFolder, "environments");

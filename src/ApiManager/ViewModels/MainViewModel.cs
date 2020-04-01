@@ -60,8 +60,9 @@ namespace ApiManager.ViewModels
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
-			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
-			this.SelectedScneario = this.Scenarios.FirstOrDefault();
+			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
+			//this.SelectedScneario = this.Scenarios.FirstOrDefault();
+			OnApiConfigSelectionChange();
 		}
 
 		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
@@ -77,7 +78,7 @@ namespace ApiManager.ViewModels
 				this._selectedApiInfoViewModel = value;
 				this.CurrentRequestResponseViewModel = new RequestResponseContainerViewModel(this.SelectedApiInfoViewModel.RequestResponses);
 				OnPropertyChanged(() => this.CurrentRequestResponseViewModel);
-				this.Change();
+				this.OnApiConfigSelectionChange();
 			}
 		}
 		public ScenarioViewModel SelectedScneario
@@ -94,7 +95,7 @@ namespace ApiManager.ViewModels
 		}
 		public EnvironmentViewModel SelectedEnvironment { get; set; }
 
-		public IEnumerable<ScenarioViewModel> Scenarios { get; set; }
+		public IEnumerable<CommandTreeViewModel> Scenarios { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public ICommand RunCommand { get; set; }
 		public bool IsClearBeforeRun { get; set; }
@@ -186,15 +187,24 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		private async void Change()
+		private async void OnApiConfigSelectionChange()
 		{
-			this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
+			var scenarioViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
+				.Where(s => !s.IsContainer)
+				.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
+				.ToList();
+			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
+				.Where(s => s.IsContainer)
+				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
+				.ToList();
+			this.Scenarios = scenarioViewModels.Union<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>()).ToList();
+
 			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
-			this.SelectedScneario = this.Scenarios.FirstOrDefault();
+			//this.SelectedScneario = this.Scenarios.FirstOrDefault();
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
 			OnPropertyChanged(() => this.SelectedScneario);
 			OnPropertyChanged(() => this.SelectedEnvironment);
