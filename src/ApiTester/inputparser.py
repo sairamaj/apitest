@@ -95,7 +95,10 @@ class ApiCommandInputParser(InputParser):
                 raise Exception('post requires filename')
             fileNameWithPath = os.path.join(self.workingDirectory, filename)
             with open(fileNameWithPath, 'r') as in_file:
-                jsonData = transform(json.load(in_file),propertyDictionary)
+                post_data = json.load(in_file)
+                tranform_items = {"temp": post_data}
+                tranformed_items = transform(tranform_items,propertyDictionary)
+                jsonData = tranformed_items["temp"]
                 print(f"--------> {jsonData}")
                 print(f"--------> {type(jsonData)}")
 
