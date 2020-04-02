@@ -188,6 +188,18 @@
 			</Expander>
 		</DataTemplate>
 
+		<DataTemplate x:Key="ApiExecuteHeaderTemplate">
+			<Expander >
+				<Expander.Header>
+					<StackPanel Orientation="Horizontal" Background="Cyan" >
+						<TextBlock  Text="{Binding ApiExecuteInfo.Scenario.Name}" Margin="3,0,0,0" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+					</StackPanel>
+				</Expander.Header>
+			</Expander>
+		</DataTemplate>
+
+
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<Expander Background="White">
 				<Expander.Header>
@@ -213,6 +225,7 @@
                                              ExtractHeaderTemplate="{StaticResource ExtractHeaderTemplate}"
 											 AssertHeaderTemplate="{StaticResource AssertHeaderTemplate}"
 											 ErrorHeaderTemplate="{StaticResource ErrorHeaderTemplate}"
+											  ApiExecuteHeaderTemplate="{StaticResource ApiExecuteHeaderTemplate}"
                                         />
 
 			<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 

@@ -55,6 +55,10 @@ namespace ApiManager.ViewModels
 			{
 				this.RequestResponses.Add(new ErrorInfoViewModel(info as ErrorInfo));
 			}
+			else if (info is ApiExecuteInfo apiExecute)
+			{
+				this.RequestResponses.Add(new ApiExecuteInfoViewModel(apiExecute));
+			}
 		}
 
 		public ICommand EditConfigFileCommand { get; }

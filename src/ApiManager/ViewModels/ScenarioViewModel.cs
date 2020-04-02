@@ -18,6 +18,7 @@ namespace ApiManager.ViewModels
 			: base(null, scenario.Name, scenario.Name)
 		{
 			this.IsExpanded = true;
+			this.Scenario = scenario;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
@@ -41,6 +42,7 @@ namespace ApiManager.ViewModels
 		public string Name { get; }
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public Scenario Scenario { get; }
 		public IEnumerable<string> Apis
 		{
 			get

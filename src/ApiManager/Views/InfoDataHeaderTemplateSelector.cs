@@ -11,7 +11,8 @@ namespace ApiManager.Views
         public DataTemplate ExtractHeaderTemplate { get; set; }
 		public DataTemplate AssertHeaderTemplate { get; set; }
 		public DataTemplate ErrorHeaderTemplate { get; set; }
-		
+		public DataTemplate ApiExecuteHeaderTemplate { get; set; }
+
 
 		public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -29,6 +30,9 @@ namespace ApiManager.Views
 					return AssertHeaderTemplate;
 				case "Error":
 					return ErrorHeaderTemplate;
+				case "ApiExecute":
+					return ApiExecuteHeaderTemplate;
+
 				default:
                     return ApiInfoHeaderTemplate;
             }

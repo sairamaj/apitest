@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileHelper.cs" />
+    <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
+    <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioEditorViewModel.cs" />
     <Compile Include="ViewModels\ErrorInfoViewModel.cs" />
