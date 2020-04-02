@@ -52,6 +52,14 @@ def transformString(name, item, argItems):
     inputs = updateVariables(inputs, getUserInput)
     return inputs[name]
 
+def transformValue(value, argItems):
+    # create temp dict
+    temp = {"key": value}
+    transform(temp, argItems)
+    # extract value
+    return temp['key']
+
+
 
 def getVariables(data):
     return re.findall(r"{(\w+)}", data)

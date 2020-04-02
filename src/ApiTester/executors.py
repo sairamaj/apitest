@@ -119,7 +119,7 @@ class ListPropertiesExecutor(ICommand):
             additional['last_response'] = self.property_bag.last_response[:30]
 
         additional['session'] = self.property_bag.session_name
-        for key, val in additional.items():
+        for key,val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")
 
 

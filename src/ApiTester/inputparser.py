@@ -8,7 +8,7 @@ from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutor
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from transform import transform
-from transform import transformString
+from transform import transformString, transformValue
 from utils import readAllText
 
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
@@ -126,6 +126,9 @@ class SetCommandInputParser(InputParser):
         value = ""
         if len(nameValueParts) > 1:
             value = nameValueParts[1]
+        # go through transformation
+        value = transformValue(value,propertyDictionary)
+
         return SetExecutorRequest(name, value)
 
 
