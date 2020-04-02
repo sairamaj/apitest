@@ -117,7 +117,7 @@ namespace ApiManager.ViewModels
 				if (selectedScenario is ScenarioViewModel scenarioViewModel)
 				{
 					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-						this.SelectedApiInfoViewModel.Name, SelectedEnvironment.Name, scenarioViewModel.Scenario));
+						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario));
 					await RunScenarioFileAsync(scenarioViewModel.FileName).ConfigureAwait(false);
 				}
 				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
@@ -125,7 +125,7 @@ namespace ApiManager.ViewModels
 					foreach (var scenario in scenaroContainer.Scenario.Children)
 					{
 						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name, SelectedEnvironment.Name, scenario));
+							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario));
 						await RunScenarioFileAsync(scenario.FileName).ConfigureAwait(false);
 					}
 				}

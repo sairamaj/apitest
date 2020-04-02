@@ -15,6 +15,7 @@ namespace ApiManager.ViewModels
 	{
 		public EnvironmentViewModel(ApiInfo apiInfo, ApiEnvironment environment, IDataRepository repository)
 		{
+			this.Environment = environment;
 			this.FileName = environment.FileName;
 			this.Name = Path.GetFileNameWithoutExtension(environment.Name);
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
@@ -36,5 +37,6 @@ namespace ApiManager.ViewModels
 		public string Name { get; }
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public ApiEnvironment Environment { get; }
 	}
 }

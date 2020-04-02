@@ -194,8 +194,19 @@
 					<StackPanel Orientation="Horizontal" Background="Cyan" >
 						<TextBlock  Text="{Binding ApiExecuteInfo.Scenario.Name}" Margin="3,0,0,0" 
 									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text="(" Margin="5,0,0,0" />
+						<TextBlock  Text="{Binding ApiExecuteInfo.Environment.Name}" 
+									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock Text=")"/>
 					</StackPanel>
 				</Expander.Header>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="600"/>
+					</Grid.ColumnDefinitions>
+					<TextBox Grid.Row="0" Grid.Column="0" Text="{Binding ApiExecuteInfo.ScenarioContent}" 
+							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" />
+				</Grid>
 			</Expander>
 		</DataTemplate>
 
@@ -228,7 +239,7 @@
 											  ApiExecuteHeaderTemplate="{StaticResource ApiExecuteHeaderTemplate}"
                                         />
 
-			<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
+		<!--<local:InfoDataTemplateSelector x:Key="InfoDataTemplateSelector" 
                                              ApiDataTemplate="{StaticResource ApiDataTemplate}"
                                              ExtractDataTemplate="{StaticResource ExtractDataTemplate}"
                                         />-->
