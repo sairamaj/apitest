@@ -3,6 +3,57 @@
 ### What it is?
 To test REST APIs with validations
 
+### Concept
+Every RestAPI has __request__ consists of __url__  with optional query string __headers__ (optional) and __body__(optional) and sent to __host__ and a __response__ is obtained. 
+
+A __request__ (url, headers, body) is given a short __command__
+
+All info (url,headers,body) are __parameterized__ with __variables__
+
+__variables__ are extracted from __response__ and __asserted__ with expected values.
+
+__information__ is shown in GUI window.
+
+### Example
+
+__request__
+```json
+{
+	"accesstoken": {
+		"baseurl": "https://login.apigee.com/oauth/token",
+		"password": {
+			"path": "",
+			"body": {
+				"grant_type": "password",
+				"username": "{{username}}",
+				"password": "{{password}}"
+			},
+			"headers": {
+				"Authorization": "Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0"
+			}
+		}
+    },
+    	"apis": {
+		"baseurl": "https://api.enterprise.apigee.com/v1/organizations/{{org_name}}",
+		"_": {
+			"path": "/apis"
+		}
+	},
+}
+```
+__available commands__ 
+```cmd
+ accesstoken.password
+ apis
+ ```
+__available variables__
+```cmd
+username
+password
+org_name
+```
+Now these commands can be executed in __console__ as __repl__ commands or grouped in to a __scenario__ and runas group commands
+
 ### Features
 * apis mapped to simple commands
 * commands can be executed in console in REPL mode.
@@ -86,4 +137,5 @@ requests and responses
   |                         |      __apicommands__ Api commands for given API configuration                 |
   |                         |      __variables__   Extracts defined variables in current API configuraiton  |
   |                         |      __commands__    Gets all available commands                              |
+  | __!return__             | Useful in batch commands to stop executing at this point                      |
   | __!waitforuserinput__   | Waits for user input before proceeding to next command                        |
