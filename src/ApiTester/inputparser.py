@@ -68,7 +68,10 @@ class ApiCommandInputParser(InputParser):
         else:
             route = parts[0]
             path = "_"
-
+        
+        supportedVerbs = ['get','post','patch']
+        if method.tolower() in ['get','post','patch'] == False:
+            raise ValueError(f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
 
         if apiInfos == None:
@@ -90,9 +93,9 @@ class ApiCommandInputParser(InputParser):
         apiInfoWithData = ApiInfo(
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
         jsonData = ""
-        if method.lower() == 'post':
+        if method.lower() == 'post' or method.lower() == 'patch':
             if len(filename) == 0:
-                raise Exception('post requires filename')
+                raise Exception(f'{method.lower()} requires filename')
             fileNameWithPath = os.path.join(self.workingDirectory, filename)
             with open(fileNameWithPath, 'r') as in_file:
                 post_data = json.load(in_file)

@@ -8,7 +8,7 @@ from logcollector import collectlog, sendExtractInfo, sendAssertInfo, sendManage
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
-from executorRequest import AssertExecutorRequest,ConvertJsonToHtmlExecutorRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
@@ -16,6 +16,7 @@ from json2html import *
 from transform import getVariables
 from utils import readAllText
 from commandinfo import getCommandsInfo
+
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -73,8 +74,13 @@ class ApiExecutor(ICommand):
         try:
             if executorRequest.method == 'get':
                 response = api.get()
-            else:
+            elif executorRequest.method == 'post':
                 response = api.post(executorRequest.payLoad)
+            elif executorRequest.method == 'patch':
+                response = api.patch(executorRequest.payLoad)
+            else:
+                raise ValueError(f"{executorRequest.method} not supported.")
+
             self.property_bag.last_response = self.extractResponseContent(
                 api.response)
             collectlog(api.response, self.property_bag.session_name)
@@ -95,7 +101,7 @@ class SetExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of SetExecutorRequest")
         self.property_bag.properties = dict(self.property_bag.properties,
-            **{executorRequest.parameterName: executorRequest.parameterValue})
+                                            **{executorRequest.parameterName: executorRequest.parameterValue})
 
 
 class ListPropertiesExecutor(ICommand):
@@ -111,7 +117,7 @@ class ListPropertiesExecutor(ICommand):
         additional = {}
         if self.property_bag.last_response != None:
             additional['last_response'] = self.property_bag.last_response[:30]
-        
+
         additional['session'] = self.property_bag.session_name
         for key, val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")
@@ -191,7 +197,8 @@ class ManagementCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         if executorRequest.request == "commands":
-            sendManagementInfo(self.property_bag.session_name, "commands", getCommandsInfo())            
+            sendManagementInfo(self.property_bag.session_name,
+                               "commands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
             commands = {}
             for name, apiInfos in executorRequest.apis.items():
@@ -200,13 +207,18 @@ class ManagementCommandExecutor(ICommand):
                     subcommands.append(path)
                 commands[name] = subcommands
             print(f"apis : {type(executorRequest.apis)}")
-            sendManagementInfo(self.property_bag.session_name, "apicommands", commands)
+            sendManagementInfo(self.property_bag.session_name,
+                               "apicommands", commands)
         elif executorRequest.request == "variables":
-            variables = getVariables(readAllText(self.property_bag.config_filename))
-            sendManagementInfo(self.property_bag.session_name, "variables", variables)
+            variables = getVariables(readAllText(
+                self.property_bag.config_filename))
+            sendManagementInfo(self.property_bag.session_name,
+                               "variables", variables)
             print(variables)
         else:
-            raise ValueError(f"invalid {executorRequest.request} management command (avaiable are commands and variables")
+            raise ValueError(
+                f"invalid {executorRequest.request} management command (avaiable are commands and variables")
+
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):
@@ -257,7 +269,8 @@ class ExtractVariableCommandExecutor(ICommand):
         except Exception as e:
             success = False
             message = str(e)
-            sendExtractInfo(self.property_bag.session_name,variable_name, "", False, str(e))
+            sendExtractInfo(self.property_bag.session_name,
+                            variable_name, "", False, str(e))
             raise
 
         self.property_bag.add(variable_name, variable_value)
@@ -285,10 +298,13 @@ class AssertCommandExecutor(ICommand):
             print(f"asserting: {actual} ---> {executorRequest.value}")
             assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
         except Exception as e:
-            sendAssertInfo(self.property_bag.session_name,variable_name, expected,actual, False, str(e))
+            sendAssertInfo(self.property_bag.session_name,
+                           variable_name, expected, actual, False, str(e))
             raise
-        
-        sendAssertInfo(self.property_bag.session_name,variable_name, expected,actual, True, "success")
+
+        sendAssertInfo(self.property_bag.session_name,
+                       variable_name, expected, actual, True, "success")
+
 
 class ConvertJsonToHtmlCommandExecutor(ICommand):
     def __init__(self, property_bag):
@@ -298,11 +314,12 @@ class ConvertJsonToHtmlCommandExecutor(ICommand):
         if isinstance(executorRequest, ConvertJsonToHtmlExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ConvertJsonToHtmlExecutorRequest")
-        out_html = json2html.convert(json = self.readAllText(executorRequest.json_filename))
+        out_html = json2html.convert(
+            json=self.readAllText(executorRequest.json_filename))
         with open(executorRequest.html_filename, 'w') as file:
             file.write(out_html)
         print(f"{executorRequest.html_filename} written successfully.")
-    
+
     def readAllText(self, fileName):
         with open(fileName, 'r') as file:
             return file.read()
