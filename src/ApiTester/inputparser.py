@@ -120,6 +120,7 @@ class SetCommandInputParser(InputParser):
             raise ValueError("set require name=value format")
         nameValueParts = parts[1].split('=')
         name = nameValueParts[0]
+        value = ""
         if len(nameValueParts) > 1:
             value = nameValueParts[1]
         return SetExecutorRequest(name, value)

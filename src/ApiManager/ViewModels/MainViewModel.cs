@@ -19,7 +19,6 @@ namespace ApiManager.ViewModels
 	class MainViewModel : CoreViewModel
 	{
 		private ApiViewModel _selectedApiInfoViewModel;
-		private ScenarioViewModel _selectedScneario;
 		private IMessageListener _listener;
 		private ICommandExecutor _apiExecutor;
 		private PipeDataProcessor _dataProcessor;
@@ -81,18 +80,6 @@ namespace ApiManager.ViewModels
 				this.OnApiConfigSelectionChange();
 			}
 		}
-		public ScenarioViewModel SelectedScneario
-		{
-			get
-			{
-				return this._selectedScneario;
-			}
-			set
-			{
-				this._selectedScneario = value;
-				OnPropertyChanged(() => this.SelectedScneario);
-			}
-		}
 		public EnvironmentViewModel SelectedEnvironment { get; set; }
 
 		public IEnumerable<CommandTreeViewModel> Scenarios { get; set; }
@@ -112,13 +99,6 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			var selectedScenario = GetSelectedScenario();
-			if (selectedScenario == null)
-			{
-				MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
 			if (this.SelectedEnvironment == null)
 			{
 				MessageBox.Show("Select Variable File", "Variable File", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -127,21 +107,29 @@ namespace ApiManager.ViewModels
 
 			try
 			{
+				var selectedScenario = GetSelectedScenario();
+
 				if (this.IsClearBeforeRun)
 				{
 					this.CurrentRequestResponseViewModel?.Clear();
 				}
 
-				var apiInfo = this.SelectedApiInfoViewModel.ApiInfo;
-				var result = await _apiExecutor.StartAsync(
-					new TestData
+				if (selectedScenario is ScenarioViewModel)
+				{
+					await RunScenarioFileAsync((selectedScenario as ScenarioViewModel).FileName).ConfigureAwait(false);
+				}
+				else if (selectedScenario is ScenarioContainerViewModel)
+				{
+					var scenaroContainer = selectedScenario as ScenarioContainerViewModel;
+					foreach (var scenario in scenaroContainer.Scenario.Children)
 					{
-						ConfigName = apiInfo.Configuration,
-						CommandsTextFileName = selectedScenario.FileName,
-						VariablesFileName = SelectedEnvironment.FileName,
-						SessionName = apiInfo.Name,
+						await RunScenarioFileAsync(scenario.FileName).ConfigureAwait(false);
 					}
-					).ConfigureAwait(false);
+				}
+				else
+				{
+					MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
 			}
 			catch (System.Exception e)
 			{
@@ -149,10 +137,23 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		private ScenarioViewModel GetSelectedScenario()
+		private async Task RunScenarioFileAsync(string scenarioFileName)
+		{
+			var apiInfo = this.SelectedApiInfoViewModel.ApiInfo;
+			var result = await _apiExecutor.StartAsync(
+				new TestData
+				{
+					ConfigName = apiInfo.Configuration,
+					CommandsTextFileName = scenarioFileName,
+					VariablesFileName = SelectedEnvironment.FileName,
+					SessionName = apiInfo.Name,
+				}
+				).ConfigureAwait(false);
+		}
+		private CommandTreeViewModel GetSelectedScenario()
 		{
 			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s => s.Children));
-			foreach(var scenario in allScenarioViewModels.OfType<ScenarioViewModel>())
+			foreach (var scenario in allScenarioViewModels.OfType<CommandTreeViewModel>())
 			{
 				if (scenario.IsSelected)
 				{
@@ -171,12 +172,6 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			if (this.SelectedScneario == null)
-			{
-				MessageBox.Show("Select Scenario", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
 			if (this.SelectedEnvironment == null)
 			{
 				MessageBox.Show("Select Environment", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -190,7 +185,6 @@ namespace ApiManager.ViewModels
 					new TestData
 					{
 						ConfigName = apiInfo.Configuration,
-						CommandsTextFileName = this.SelectedScneario.FileName,
 						VariablesFileName = this.SelectedEnvironment.FileName,
 						SessionName = apiInfo.Name,
 					}
@@ -218,9 +212,7 @@ namespace ApiManager.ViewModels
 			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
-			//this.SelectedScneario = this.Scenarios.FirstOrDefault();
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
-			OnPropertyChanged(() => this.SelectedScneario);
 			OnPropertyChanged(() => this.SelectedEnvironment);
 		}
 
