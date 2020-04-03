@@ -24,15 +24,18 @@ namespace ApiManager.ViewModels
 		private ICommandExecutor _apiExecutor;
 		private PipeDataProcessor _dataProcessor;
 		private IDataRepository _dataRepository;
+		private ISettings _settings;
 
 		public MainViewModel(
 			ICommandExecutor executor,
 			IDataRepository dataRepository,
-			IMessageListener listener)
+			IMessageListener listener,
+			ISettings settings)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
 			this._dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
@@ -119,7 +122,7 @@ namespace ApiManager.ViewModels
 				{
 					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
 						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario));
-					await new Executor(this._apiExecutor)
+					await new Executor(this._apiExecutor, this._settings)
 						.RunScenarioAsync(
 						this.SelectedApiInfoViewModel.ApiInfo, 
 						this.SelectedEnvironment.Environment, 
@@ -131,7 +134,7 @@ namespace ApiManager.ViewModels
 					{
 						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
 							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario));
-						await new Executor(this._apiExecutor)
+						await new Executor(this._apiExecutor, this._settings)
 							.RunScenarioAsync(
 							this.SelectedApiInfoViewModel.ApiInfo, 
 							this.SelectedEnvironment.Environment, 

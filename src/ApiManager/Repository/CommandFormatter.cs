@@ -6,9 +6,9 @@ namespace ApiManager.Repository
 {
 	class CommandFormatter
 	{
-		private Settings _settings;
+		private ISettings _settings;
 
-		public CommandFormatter(Settings settings)
+		public CommandFormatter(ISettings settings)
 		{
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}

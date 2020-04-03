@@ -10,14 +10,16 @@ namespace ApiManager.Repository
 {
 	class DataRepository : IDataRepository
 	{
-		ICommandExecutor _executor;
-		IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
-		IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
-		IEnumerable<HelpCommand> _helpCommands;
+		private ICommandExecutor _executor;
+		private ISettings _settings;
+		private IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
+		private IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
+		private IEnumerable<HelpCommand> _helpCommands;
 
-		public DataRepository(ICommandExecutor executor)
+		public DataRepository(ICommandExecutor executor, ISettings settings)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
+			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
 		public async Task<ApiCommandInfo> GetCommands(ApiInfo info)
 		{
@@ -61,7 +63,7 @@ namespace ApiManager.Repository
 			var apis = new List<ApiInfo>();
 			foreach (var envFolder in
 				Directory.GetDirectories(
-					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Configuration\Apis")))
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this._settings.ConfigurationPath)))
 			{
 				var api = new ApiInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
 				var scenariosPath = Path.Combine(envFolder, "scenarios");

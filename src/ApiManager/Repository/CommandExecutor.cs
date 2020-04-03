@@ -10,9 +10,9 @@ namespace ApiManager.Repository
 {
 	class CommandExecutor : ICommandExecutor
 	{
-		private Settings _settings;
+		private ISettings _settings;
 		private bool _isSettingsValidated;
-		public CommandExecutor(Settings settings)
+		public CommandExecutor(ISettings settings)
 		{
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
@@ -75,7 +75,7 @@ namespace ApiManager.Repository
 			return command;
 		}
 
-		private void ValidateSettings(Settings settings)
+		private void ValidateSettings(ISettings settings)
 		{
 			if (this._isSettingsValidated)
 			{

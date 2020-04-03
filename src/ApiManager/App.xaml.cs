@@ -34,11 +34,11 @@ namespace ApiManager
 				var builder = new ContainerBuilder();
 				var settings = JsonConvert.DeserializeObject<Settings>(
 					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
-				settings.ConsoleExecutableName = Path.GetFullPath(settings.ConsoleExecutableName);
-				settings.WorkingDirectory = Path.GetFullPath(settings.WorkingDirectory);
-				var apiExecutor = new CommandExecutor(settings);
-				builder.RegisterInstance(apiExecutor).As<ICommandExecutor>();
-				builder.RegisterType<DataRepository>().As<IDataRepository>();
+				settings.MakeAbsolultePaths();
+
+				builder.RegisterInstance(settings).As<ISettings>();
+				builder.RegisterType<CommandExecutor>().As<ICommandExecutor>().SingleInstance();
+				builder.RegisterType<DataRepository>().As<IDataRepository>().SingleInstance();
 				builder.RegisterType<MessageListener>().As<IMessageListener>();
 				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
@@ -48,7 +48,8 @@ namespace ApiManager
 					DataContext = new MainViewModel(
 					serviceLocator.Resolve<ICommandExecutor>(),
 					serviceLocator.Resolve<IDataRepository>(),
-					serviceLocator.Resolve<IMessageListener>())
+					serviceLocator.Resolve<IMessageListener>(),
+					serviceLocator.Resolve<ISettings>())
 				};
 				RunWithSingleInstance(() => win.ShowDialog());
 			}

@@ -93,6 +93,7 @@
     <Compile Include="Repository\ICommandExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
+    <Compile Include="Repository\ISettings.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />

@@ -1,4 +1,5 @@
 {
 	"consoleExecutableName": "c:\\python37\\python.exe",
-	"workingDirectory": "..\\src\\apitester"
+	"workingDirectory": "..\\src\\apitester",
+	"configurationPath": ".\\Configuration\\Apis"
 }
