@@ -63,3 +63,8 @@ class ConvertJsonToHtmlExecutorRequest(ExecutorRequest):
         self.command = "!convert_json_html"
         self.json_filename = json_filename
         self.html_filename = html_filename
+
+class JavaScriptExecutorRequest(ExecutorRequest):
+    def __init__(self, js_file):
+        self.command = "!js"
+        self.js_file = js_file

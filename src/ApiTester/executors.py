@@ -5,10 +5,11 @@ from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api
 from logcollector import collectlog, sendExtractInfo, sendAssertInfo, sendManagementInfo
+from logcollector import sendJsExecuteInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
-from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
@@ -16,6 +17,7 @@ from json2html import *
 from transform import getVariables
 from utils import readAllText
 from commandinfo import getCommandsInfo
+from js_executor import JsExecutor
 
 
 class ExecutorRequest:
@@ -119,7 +121,7 @@ class ListPropertiesExecutor(ICommand):
             additional['last_response'] = self.property_bag.last_response[:30]
 
         additional['session'] = self.property_bag.session_name
-        for key,val in additional.items():
+        for key, val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")
 
 
@@ -144,6 +146,7 @@ class HelpExecutor(ICommand):
         print('!help.routename.pathname route path.')
         print('!assert variable value')
         print('!extract jsonpath variable (extracts data into variable given json path).')
+        print('!js jsfilename (executes java script file).')
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
@@ -323,3 +326,23 @@ class ConvertJsonToHtmlCommandExecutor(ICommand):
     def readAllText(self, fileName):
         with open(fileName, 'r') as file:
             return file.read()
+
+
+class JavaScirptCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, JavaScriptExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of JavaScriptExecutorRequest")
+        print(f"Executing: {executorRequest.js_file}")
+        js = JsExecutor(executorRequest.js_file)
+        try:
+            js.execute_postprocess(
+                'this is request', self.property_bag.last_response)
+            sendJsExecuteInfo(self.property_bag.session_name,
+                              executorRequest.js_file, None)
+        except Exception as e:
+            sendJsExecuteInfo(self.property_bag.session_name,
+                              executorRequest.js_file, str(e))

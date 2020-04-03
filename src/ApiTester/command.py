@@ -5,6 +5,7 @@ from api import Api
 import json
 from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, ManagementCommandExecutor
 from executors import WaitForUserInputCommandExecutor, ExtractVariableCommandExecutor, AssertCommandExecutor
+from executors import JavaScirptCommandExecutor
 from executors import ConvertJsonToHtmlCommandExecutor
 from abc import ABCMeta, abstractstaticmethod
 
@@ -19,6 +20,7 @@ class Command:
                          "!management": ManagementCommandExecutor(property_bag),
                          "!waitforuserinput": WaitForUserInputCommandExecutor(property_bag),
                          "!extract": ExtractVariableCommandExecutor(property_bag),
+                         "!js": JavaScirptCommandExecutor(property_bag),
                          "!assert": AssertCommandExecutor(property_bag),
                          "!convert_json_html" : ConvertJsonToHtmlCommandExecutor(property_bag)
                          }

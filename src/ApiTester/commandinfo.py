@@ -13,6 +13,7 @@ def getCommands():
     commands = []
     commands.append(CommandInfo("!assert", "asserts a variable with expected value"))
     commands.append(CommandInfo("!extract", "extracts to a variable using jsonpath from last response"))
+    commands.append(CommandInfo("!js", "executes javascript file"))
     commands.append(CommandInfo("!set", "sets a variable to value"))
     commands.append(CommandInfo("!list", "lists all variables"))
     commands.append(CommandInfo("!convert_json_html", "converts json to html"))

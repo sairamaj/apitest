@@ -7,3 +7,4 @@ def readAllText(fileName):
 def writeAllText(fileName, content):
     with open(fileName, 'w') as file:
         file.write(content)
+

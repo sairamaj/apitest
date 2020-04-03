@@ -6,15 +6,17 @@ from apiinfo import ApiInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
-from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
 from utils import readAllText
+from resource_provider import ResourceProvider
 
 def parseCommand(command, workingDirectory, apis, propertyDictionary):
     commands = {
         '!assert': AssertRequestInputParser(workingDirectory),
         '!extract': ExtractVariableRequestInputParser(workingDirectory),
+        '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
         '!set': SetCommandInputParser(workingDirectory),
         '!help': HelpCommandInputParser(workingDirectory),
@@ -210,3 +212,18 @@ class ConvertJsonToHtmlRequestInputParser(InputParser):
             raise ValueError(
                 "!convert_json_html requires inputfile and outputfile ( ex !convert_json_html inputJsonFileName outputJsonFileName)")
         return ConvertJsonToHtmlExecutorRequest(parts[1], parts[2])
+
+class JavaScriptRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, propertyDictionary):
+        parts = command.split(' ')
+        if len(parts) < 2:
+            raise ValueError(
+                "!js requires javascript file name (ex: !js validateuser.js) ")
+        js_file = ResourceProvider(self.workingDirectory).js_filepath(parts[1])
+        if os.path.exists(js_file) == False:
+            raise ValueError(f"{js_file} does not exists.")
+
+        return JavaScriptExecutorRequest(js_file)

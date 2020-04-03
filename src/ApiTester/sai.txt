@@ -2,3 +2,4 @@ accesstoken.password
 !list
 !extract access_token access_token
 !list
+!js validate.js

@@ -105,4 +105,16 @@ def sendErrorInfo(sessionName, error):
         pipeServer.send(info)
     except Exception as e:
         print(f'exception in sendErrorInfo. ignoring. {str(e)}')
-    
+
+def sendJsExecuteInfo(sessionName, script_file_name, error):
+    data = {
+        "session": sessionName,
+        "scriptfilename": script_file_name,
+        "error" : error
+    }
+    try:
+        info = f"js|" + json.dumps(data)
+        print(info)
+        pipeServer.send(info)
+    except Exception as e:
+        print(f'exception in sendErrorInfo. ignoring. {str(e)}')
