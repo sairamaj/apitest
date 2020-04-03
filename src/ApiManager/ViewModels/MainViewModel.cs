@@ -26,6 +26,7 @@ namespace ApiManager.ViewModels
 		private PipeDataProcessor _dataProcessor;
 		private IDataRepository _dataRepository;
 		private ISettings _settings;
+		private EnvironmentViewModel _selectedEnvironment;
 
 		public MainViewModel(
 			ICommandExecutor executor,
@@ -87,7 +88,19 @@ namespace ApiManager.ViewModels
 				this.OnApiConfigSelectionChange();
 			}
 		}
-		public EnvironmentViewModel SelectedEnvironment { get; set; }
+
+		public EnvironmentViewModel SelectedEnvironment
+		{
+			get
+			{
+				return this._selectedEnvironment;
+			}
+			set
+			{
+				this._selectedEnvironment = value;
+				this.VariableContainerViewModel.UpdateEnvironmentVariables(this._selectedEnvironment.Environment);
+			}
+		}
 
 		public IEnumerable<CommandTreeViewModel> Scenarios { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
@@ -223,7 +236,6 @@ namespace ApiManager.ViewModels
 			OnPropertyChanged(() => this.SelectedEnvironment);
 
 			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
-			this.VariableContainerViewModel.UpdateEnvironmentVariables(this.SelectedEnvironment?.Environment);
 		}
 
 		private void Subscribe(string name, Action<string> onMessage)

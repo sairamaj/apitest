@@ -12,10 +12,10 @@
 		<Expander Header="System">
 			<views:VariableView DataContext="{Binding SystemVariables}" />
 		</Expander>
-		<Expander Header="Api">
+		<Expander Header="{Binding ApiNameTitle}">
 			<views:VariableView DataContext="{Binding ApiVariables}" />
 		</Expander>
-		<Expander Header="Environment">
+		<Expander Header="{Binding EnvironmentNameTitle}" >
 			<views:VariableView DataContext="{Binding EnvironmentVariables}" />
 		</Expander>
 	</StackPanel>

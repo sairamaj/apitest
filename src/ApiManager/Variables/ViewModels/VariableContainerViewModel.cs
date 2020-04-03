@@ -4,10 +4,11 @@ using System.Linq;
 using ApiManager.Model;
 using ApiManager.Repository;
 using Wpf.Util.Core;
+using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Variables.ViewModels
 {
-	class VariableContainerViewModel
+	class VariableContainerViewModel : CoreViewModel
 	{
 		private readonly IVariableManager _variableManager;
 
@@ -24,6 +25,22 @@ namespace ApiManager.Variables.ViewModels
 		public IEnumerable<VariableViewModel> SystemVariables { get; }
 		public ObservableCollection<VariableViewModel> ApiVariables { get; }
 		public ObservableCollection<VariableViewModel> EnvironmentVariables { get; }
+		public string CurrentEnvironmentName { get; set; }
+		public string CurrentApiName { get; set; }
+		public string EnvironmentNameTitle
+		{
+			get
+			{
+				return $"Environment({this.CurrentEnvironmentName})";
+			}
+		}
+		public string ApiNameTitle
+		{
+			get
+			{
+				return $"Api({this.CurrentApiName})";
+			}
+		}
 
 		public void UpdateApiVariables(ApiInfo apiInfo)
 		{
@@ -32,6 +49,9 @@ namespace ApiManager.Variables.ViewModels
 			{
 				this.ApiVariables.Add(new VariableViewModel(kv.Key, kv.Value));
 			}
+
+			this.CurrentApiName = apiInfo.Name;
+			OnPropertyChanged(() => this.ApiNameTitle);
 		}
 
 		public void UpdateEnvironmentVariables(Environment environment)
@@ -41,6 +61,9 @@ namespace ApiManager.Variables.ViewModels
 			{
 				this.EnvironmentVariables.Add(new VariableViewModel(kv.Key, kv.Value));
 			}
+
+			this.CurrentEnvironmentName = environment.Name;
+			OnPropertyChanged(() => this.EnvironmentNameTitle);
 		}
 	}
 }
