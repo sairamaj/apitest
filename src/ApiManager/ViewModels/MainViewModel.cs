@@ -9,6 +9,7 @@ using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.Variables.ViewModels;
 using Newtonsoft.Json;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
@@ -30,7 +31,8 @@ namespace ApiManager.ViewModels
 			ICommandExecutor executor,
 			IDataRepository dataRepository,
 			IMessageListener listener,
-			ISettings settings)
+			ISettings settings,
+			IVariableManager variableManager)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
@@ -61,6 +63,7 @@ namespace ApiManager.ViewModels
 				MessageBox.Show(e.ToString());
 			}
 
+			this.VariableContainerViewModel = new VariableContainerViewModel(variableManager);
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
@@ -95,6 +98,8 @@ namespace ApiManager.ViewModels
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
 		public LogViewModel LogViewModel { get; set; }
+		public VariableContainerViewModel VariableContainerViewModel { get; }
+
 		public async Task RunAsync()
 		{
 			if (this.SelectedApiInfoViewModel == null)
@@ -124,8 +129,8 @@ namespace ApiManager.ViewModels
 						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario));
 					await new Executor(this._apiExecutor, this._settings)
 						.RunScenarioAsync(
-						this.SelectedApiInfoViewModel.ApiInfo, 
-						this.SelectedEnvironment.Environment, 
+						this.SelectedApiInfoViewModel.ApiInfo,
+						this.SelectedEnvironment.Environment,
 						scenarioViewModel.Scenario).ConfigureAwait(false);
 				}
 				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
@@ -136,8 +141,8 @@ namespace ApiManager.ViewModels
 							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario));
 						await new Executor(this._apiExecutor, this._settings)
 							.RunScenarioAsync(
-							this.SelectedApiInfoViewModel.ApiInfo, 
-							this.SelectedEnvironment.Environment, 
+							this.SelectedApiInfoViewModel.ApiInfo,
+							this.SelectedEnvironment.Environment,
 							scenario).ConfigureAwait(false);
 					}
 				}
@@ -216,6 +221,9 @@ namespace ApiManager.ViewModels
 
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
 			OnPropertyChanged(() => this.SelectedEnvironment);
+
+			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
+			this.VariableContainerViewModel.UpdateEnvironmentVariables(this.SelectedEnvironment?.Environment);
 		}
 
 		private void Subscribe(string name, Action<string> onMessage)

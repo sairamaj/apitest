@@ -94,7 +94,11 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="Repository\ISettings.cs" />
+    <Compile Include="Repository\VariableManager.cs" />
+    <Compile Include="Repository\IVariableManager.cs" />
     <Compile Include="TraceLogger.cs" />
+    <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
+    <Compile Include="Variables\ViewModels\VariableViewModel.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
@@ -151,10 +155,10 @@
     <Compile Include="Views\EnvironmentView.xaml.cs">
       <DependentUpon>EnvironmentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VariableContainerView.xaml.cs">
+    <Compile Include="Variables\Views\VariableContainerView.xaml.cs">
       <DependentUpon>VariableContainerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VariableView.xaml.cs">
+    <Compile Include="Variables\Views\VariableView.xaml.cs">
       <DependentUpon>VariableView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ApiConfigurationViewer.xaml">
@@ -217,11 +221,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VariableContainerView.xaml">
+    <Page Include="Variables\Views\VariableContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VariableView.xaml">
+    <Page Include="Variables\Views\VariableView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,7 +7,8 @@
 				 xmlns:views="clr-namespace:ApiManager.Views"
 				 mc:Ignorable="d"
 				 xmlns:views1="clr-namespace:Wpf.Util.Core.Views;assembly=Wpf.Util.Core"
-        Title="Api Manager" Height="850" Width="1200">
+				 xmlns:views2="clr-namespace:ApiManager.VariableView.Views"
+				 Title="Api Manager" Height="850" Width="1200">
 
 	<Window.Resources>
 
@@ -46,7 +47,7 @@
 			<GridSplitter Grid.Row="0" Grid.Column="5" />
 			<views:RunDetailsView Grid.Row="0" Grid.Column="6" DataContext="{Binding CurrentRequestResponseViewModel}"/>
 			<GridSplitter Grid.Row="0" Grid.Column="7" />
-			<views:VariableContainerView Grid.Row="0" Grid.Column="8" />
+			<views2:VariableContainerView Grid.Row="0" Grid.Column="8" DataContext="{Binding VariableContainerViewModel}"/>
 		</Grid>
 
 	</DockPanel>
