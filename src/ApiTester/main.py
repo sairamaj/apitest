@@ -12,6 +12,7 @@ from session import Session
 from config import Config
 from property_bag import PropertyBag
 from pipeserver import PipeServer
+from transform import transformValue
 
 def main():
     # Load file
@@ -40,7 +41,8 @@ def main():
             for line in in_file.readlines():
                 parts = line.strip().split('=')
                 if len(parts) > 1 :
-                    variables[parts[0]] = parts[1]
+                    if parts[0].startswith('#') == False:
+                        variables[parts[0]] =transformValue(parts[1], variables)
 
     # add glonbal exception
     def my_except_hook(exctype, value, traceback):
