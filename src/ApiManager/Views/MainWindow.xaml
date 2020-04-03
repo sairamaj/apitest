@@ -25,6 +25,8 @@
 				<ColumnDefinition Width="60" />
 				<ColumnDefinition Width="4"/>
 				<ColumnDefinition  />
+				<ColumnDefinition Width="4"/>
+				<ColumnDefinition  Width="200"/>
 			</Grid.ColumnDefinitions>
 
 			<views:ApiInfosView Grid.Row="0" Grid.Column="0" x:Name="EnvironmentView"/>
@@ -43,6 +45,8 @@
 			<views:RunPanel Grid.Row="0" Grid.Column="4" Margin="0,100,0,0" />
 			<GridSplitter Grid.Row="0" Grid.Column="5" />
 			<views:RunDetailsView Grid.Row="0" Grid.Column="6" DataContext="{Binding CurrentRequestResponseViewModel}"/>
+			<GridSplitter Grid.Row="0" Grid.Column="7" />
+			<views:VariableContainerView Grid.Row="0" Grid.Column="8" />
 		</Grid>
 
 	</DockPanel>
