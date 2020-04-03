@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
+using Environment = ApiManager.Model.Environment;
 
 namespace ApiManager.ViewModels
 {
@@ -118,7 +119,11 @@ namespace ApiManager.ViewModels
 				{
 					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
 						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario));
-					await RunScenarioFileAsync(scenarioViewModel.FileName).ConfigureAwait(false);
+					await new Executor(this._apiExecutor)
+						.RunScenarioAsync(
+						this.SelectedApiInfoViewModel.ApiInfo, 
+						this.SelectedEnvironment.Environment, 
+						scenarioViewModel.Scenario).ConfigureAwait(false);
 				}
 				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 				{
@@ -126,7 +131,11 @@ namespace ApiManager.ViewModels
 					{
 						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
 							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario));
-						await RunScenarioFileAsync(scenario.FileName).ConfigureAwait(false);
+						await new Executor(this._apiExecutor)
+							.RunScenarioAsync(
+							this.SelectedApiInfoViewModel.ApiInfo, 
+							this.SelectedEnvironment.Environment, 
+							scenario).ConfigureAwait(false);
 					}
 				}
 				else
@@ -140,19 +149,6 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		private async Task RunScenarioFileAsync(string scenarioFileName)
-		{
-			var apiInfo = this.SelectedApiInfoViewModel.ApiInfo;
-			var result = await _apiExecutor.StartAsync(
-				new TestData
-				{
-					ConfigName = apiInfo.Configuration,
-					CommandsTextFileName = scenarioFileName,
-					VariablesFileName = SelectedEnvironment.FileName,
-					SessionName = apiInfo.Name,
-				}
-				).ConfigureAwait(false);
-		}
 		private CommandTreeViewModel GetSelectedScenario()
 		{
 			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s => s.Children));

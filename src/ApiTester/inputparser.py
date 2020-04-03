@@ -70,7 +70,7 @@ class ApiCommandInputParser(InputParser):
             path = "_"
         
         supportedVerbs = ['get','post','patch']
-        if method.tolower() in ['get','post','patch'] == False:
+        if method.lower() in ['get','post','patch'] == False:
             raise ValueError(f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
 
