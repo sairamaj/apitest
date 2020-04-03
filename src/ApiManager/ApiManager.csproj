@@ -73,6 +73,7 @@
     <Compile Include="Model\ErrorInfo.cs" />
     <Compile Include="Model\HelpCommand.cs" />
     <Compile Include="Model\HelpCommandInfo.cs" />
+    <Compile Include="Model\JsScriptInfo.cs" />
     <Compile Include="Model\ManagementVariableInfo.cs" />
     <Compile Include="Model\ApiCommandInfo.cs" />
     <Compile Include="Model\Scenario.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
     <Compile Include="Variables\ViewModels\VariableViewModel.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
+    <Compile Include="ViewModels\JsExecuteViewModel.cs" />
     <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioEditorViewModel.cs" />
@@ -257,6 +259,9 @@
     <None Include="Configuration\Apis\Apigee\scenarios\_posts\create_developer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Configuration\Apis\Apigee\scenarios\js_tests\list.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Apis\Apigee\variables.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -302,7 +307,11 @@
     <Resource Include="images\assert_fail.png" />
     <Resource Include="images\assert_success.png" />
     <Resource Include="images\assert.png" />
+    <Resource Include="images\js.png" />
     <Content Include="issues.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Scripts\validate_api.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settings.json">

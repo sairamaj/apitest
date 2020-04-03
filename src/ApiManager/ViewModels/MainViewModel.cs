@@ -280,6 +280,10 @@ namespace ApiManager.ViewModels
 			{
 				ConsumePipeData<ErrorInfo>(msg);
 			});
+			_dataProcessor.Add("js", "js", msg =>
+			{
+				ConsumePipeData<JsScriptInfo>(msg);
+			});
 		}
 
 		private void ConsumePipeData<T>(string message) where T : Info

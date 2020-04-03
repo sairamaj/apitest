@@ -59,6 +59,10 @@ namespace ApiManager.ViewModels
 			{
 				this.RequestResponses.Add(new ApiExecuteInfoViewModel(apiExecute));
 			}
+			else if (info is JsScriptInfo jsScript)
+			{
+				this.RequestResponses.Add(new JsExecuteViewModel(jsScript));
+			}
 		}
 
 		public ICommand EditConfigFileCommand { get; }
