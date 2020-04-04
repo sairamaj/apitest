@@ -335,10 +335,12 @@ class JavaScirptCommandExecutor(ICommand):
         print(f"Executing: {executorRequest.js_file}")
         js = JsExecutor(executorRequest.js_file)
         try:
-            js.execute_postprocess(
-                'this is request', self.property_bag.last_response)
+            script_response = js.execute_postprocess(
+                'this is request', self.property_bag.last_response, executorRequest.script_args)
+            if script_response == None:
+                script_response = "success"
             sendJsExecuteInfo(self.property_bag.session_name,
-                              executorRequest.js_file, "successful", False)
+                              executorRequest.js_file, script_response, False)
         except Exception as e:
             sendJsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, str(e), True)

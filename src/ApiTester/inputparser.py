@@ -60,7 +60,7 @@ class ApiCommandInputParser(InputParser):
         route = ''
         path = ''
         if len(parts) > 1:
-            method = parts[1]
+            method = parts[1].lower()
             if len(parts) > 2:
                 filename = parts[2]
         parts = parts[0].split('.')
@@ -72,7 +72,7 @@ class ApiCommandInputParser(InputParser):
             path = "_"
         
         supportedVerbs = ['get','post','patch']
-        if method.lower() in ['get','post','patch'] == False:
+        if method in ['get','post','patch'] == False:
             raise ValueError(f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
 
@@ -95,17 +95,16 @@ class ApiCommandInputParser(InputParser):
         apiInfoWithData = ApiInfo(
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
         jsonData = ""
-        if method.lower() == 'post' or method.lower() == 'patch':
+        if method == 'post' or method == 'patch':
             if len(filename) == 0:
-                raise Exception(f'{method.lower()} requires filename')
-            fileNameWithPath = os.path.join(self.workingDirectory, filename)
-            with open(fileNameWithPath, 'r') as in_file:
-                post_data = json.load(in_file)
-                tranform_items = {"temp": post_data}
-                tranformed_items = transform(tranform_items,property_bag.properties)
-                jsonData = tranformed_items["temp"]
-                print(f"--------> {jsonData}")
-                print(f"--------> {type(jsonData)}")
+                raise Exception(f'{method} requires filename')
+            fileNameWithPath = ResourceProvider(property_bag.resource_path).api_filepath_for_http_verb(filename, method)
+            post_data = json.loads(readAllText(fileNameWithPath))
+            tranform_items = {"temp": post_data}
+            tranformed_items = transform(tranform_items,property_bag.properties)
+            jsonData = tranformed_items["temp"]
+            print(f"--------> {jsonData}")
+            print(f"--------> {type(jsonData)}")
 
         return ApiExecutorRequest(apiInfoWithData, jsonData, method)
 
@@ -225,5 +224,9 @@ class JavaScriptRequestInputParser(InputParser):
         js_file = ResourceProvider(property_bag.resource_path).js_filepath(parts[1])
         if os.path.exists(js_file) == False:
             raise ValueError(f"{js_file} does not exists.")
-
-        return JavaScriptExecutorRequest(js_file)
+        script_args = {}
+        for tag_value_pair in parts[2:]:
+            arg_parts = tag_value_pair.split('=')
+            if len(arg_parts) > 1:
+                script_args[arg_parts[0]] = arg_parts[1]
+        return JavaScriptExecutorRequest(js_file, script_args)
