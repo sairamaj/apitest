@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ApiManager.Views
 {
 	/// <summary>
-	/// Interaction logic for RunPanel.xaml
+	/// Interaction logic for CommandView.xaml
 	/// </summary>
-	public partial class RunPanel : UserControl
+	public partial class CommandView : UserControl
 	{
-		public RunPanel()
+		public CommandView()
 		{
 			InitializeComponent();
 		}

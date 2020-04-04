@@ -9,13 +9,13 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
 	<StackPanel Orientation="Vertical">
-		<Expander Header="System">
+		<Expander Header="System" IsExpanded="True" >
 			<views:VariableView DataContext="{Binding SystemVariables}" />
 		</Expander>
-		<Expander Header="{Binding ApiNameTitle}">
+		<Expander Header="{Binding ApiNameTitle}" IsExpanded="True" >
 			<views:VariableView DataContext="{Binding ApiVariables}" />
 		</Expander>
-		<Expander Header="{Binding EnvironmentNameTitle}" >
+		<Expander Header="{Binding EnvironmentNameTitle}" IsExpanded="True" >
 			<views:VariableView DataContext="{Binding EnvironmentVariables}" />
 		</Expander>
 	</StackPanel>

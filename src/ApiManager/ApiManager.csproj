@@ -122,8 +122,8 @@
     <Compile Include="Views\ApiConfigurationViewer.xaml.cs">
       <DependentUpon>ApiConfigurationViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RunPanel.xaml.cs">
-      <DependentUpon>RunPanel.xaml</DependentUpon>
+    <Compile Include="Views\CommandView.xaml.cs">
+      <DependentUpon>CommandView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\Views\ScenarioEditorView.xaml.cs">
       <DependentUpon>ScenarioEditorView.xaml</DependentUpon>
@@ -167,6 +167,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CommandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -179,10 +183,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\RunPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ScenarioEditing\Views\ScenarioEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
