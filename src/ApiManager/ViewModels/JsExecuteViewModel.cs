@@ -8,7 +8,11 @@ namespace ApiManager.ViewModels
 		public JsExecuteViewModel(JsScriptInfo jsScriptInfo) : base(null, jsScriptInfo)
 		{
 			this.JsScriptInfo = jsScriptInfo;
-			this.ScriptFileContent = File.ReadAllText(jsScriptInfo.ScriptFileName);
+			if (File.Exists(jsScriptInfo.ScriptFileName))
+			{
+				this.ScriptFileContent = File.ReadAllText(jsScriptInfo.ScriptFileName);
+			}
+
 			this.ScriptInfo = $"{Path.GetFileName(jsScriptInfo.ScriptFileName)} ({jsScriptInfo.Message})";
 		}
 

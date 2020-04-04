@@ -58,6 +58,12 @@ class AssertExecutorRequest(ExecutorRequest):
         self.variable_name = variable_name
         self.value = value
 
+class AssertsExecutorWithJsRequest(ExecutorRequest):
+    def __init__(self, js_file, assert_records):
+        self.command = "!asserts_with_js"
+        self.js_file = js_file
+        self.assert_records = assert_records
+
 class ConvertJsonToHtmlExecutorRequest(ExecutorRequest):
     def __init__(self, json_filename, html_filename):
         self.command = "!convert_json_html"

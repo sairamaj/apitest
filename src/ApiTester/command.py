@@ -5,10 +5,8 @@ from api import Api
 import json
 from executors import AccessTokenExecutor, ApiExecutor, HelpExecutor, SetExecutor, ListPropertiesExecutor, ManagementCommandExecutor
 from executors import WaitForUserInputCommandExecutor, ExtractVariableCommandExecutor, AssertCommandExecutor
-from executors import JavaScirptCommandExecutor
-from executors import ConvertJsonToHtmlCommandExecutor
+from executors import JavaScirptCommandExecutor, AssertsJsRequestCommandExecutor, ConvertJsonToHtmlCommandExecutor
 from abc import ABCMeta, abstractstaticmethod
-
 
 class Command:
     def __init__(self, property_bag):
@@ -22,6 +20,7 @@ class Command:
                          "!extract": ExtractVariableCommandExecutor(property_bag),
                          "!js": JavaScirptCommandExecutor(property_bag),
                          "!assert": AssertCommandExecutor(property_bag),
+                         "!asserts_with_js": AssertsJsRequestCommandExecutor(property_bag),
                          "!convert_json_html" : ConvertJsonToHtmlCommandExecutor(property_bag)
                          }
 

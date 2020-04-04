@@ -7,14 +7,17 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
+from executorRequest import AssertsExecutorWithJsRequest
 from transform import transform
 from transform import transformString, transformValue
-from utils import readAllText
+from utils import readAllText, read_key_value_pairs
 from resource_provider import ResourceProvider
+
 
 def parseCommand(command, workingDirectory, apis, property_bag):
     commands = {
         '!assert': AssertRequestInputParser(workingDirectory),
+        '!asserts_with_js': AssertsWithJsRequestInputParser(workingDirectory),
         '!extract': ExtractVariableRequestInputParser(workingDirectory),
         '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
@@ -70,10 +73,11 @@ class ApiCommandInputParser(InputParser):
         else:
             route = parts[0]
             path = "_"
-        
-        supportedVerbs = ['get','post','patch']
-        if method in ['get','post','patch'] == False:
-            raise ValueError(f"{method} not supported, supported are {supportedVerbs}")
+
+        supportedVerbs = ['get', 'post', 'patch']
+        if method in ['get', 'post', 'patch'] == False:
+            raise ValueError(
+                f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
 
         if apiInfos == None:
@@ -82,10 +86,12 @@ class ApiCommandInputParser(InputParser):
             foundApiInfo = apiInfos.get(path, None)
             if foundApiInfo == None:
                 raise ValueError(f"{route}.{path} not found")
-            foundApiInfo = copy.deepcopy(foundApiInfo)      # we need fresh copy
+            foundApiInfo = copy.deepcopy(
+                foundApiInfo)      # we need fresh copy
 
         data = transform(foundApiInfo.body, property_bag.properties)
-        path = transformString('path', foundApiInfo.path, property_bag.properties)
+        path = transformString('path', foundApiInfo.path,
+                               property_bag.properties)
         baseUrl = transformString(
             'baseurl', foundApiInfo.baseUrl, property_bag.properties)
 
@@ -98,10 +104,12 @@ class ApiCommandInputParser(InputParser):
         if method == 'post' or method == 'patch':
             if len(filename) == 0:
                 raise Exception(f'{method} requires filename')
-            fileNameWithPath = ResourceProvider(property_bag.resource_path).api_filepath_for_http_verb(filename, method)
+            fileNameWithPath = ResourceProvider(
+                property_bag.resource_path).api_filepath_for_http_verb(filename, method)
             post_data = json.loads(readAllText(fileNameWithPath))
             tranform_items = {"temp": post_data}
-            tranformed_items = transform(tranform_items,property_bag.properties)
+            tranformed_items = transform(
+                tranform_items, property_bag.properties)
             jsonData = tranformed_items["temp"]
             print(f"--------> {jsonData}")
             print(f"--------> {type(jsonData)}")
@@ -128,7 +136,7 @@ class SetCommandInputParser(InputParser):
         if len(nameValueParts) > 1:
             value = nameValueParts[1]
         # go through transformation
-        value = transformValue(value,property_bag.properties)
+        value = transformValue(value, property_bag.properties)
 
         return SetExecutorRequest(name, value)
 
@@ -159,11 +167,13 @@ class ManagementCommandRequestInputParser(InputParser):
             raise ValueError(
                 f"!management command requires requestName (ex: !management commands)")
         # check supported management commands
-        supportedMgmtCommands = ['commands', 'apicommands','variables']
+        supportedMgmtCommands = ['commands', 'apicommands', 'variables']
         mgmtRequest = parts[1]
         if mgmtRequest in supportedMgmtCommands:
             return ManagementCommandExecutorRequest(apis, mgmtRequest)
-        raise ValueError(f"!management {mgmtRequest} is not available, supported requests for management are: {supportedMgmtCommands}")
+        raise ValueError(
+            f"!management {mgmtRequest} is not available, supported requests for management are: {supportedMgmtCommands}")
+
 
 class WaitForUserInputRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
@@ -201,6 +211,29 @@ class AssertRequestInputParser(InputParser):
                 "!assert requires variable and value ( ex !assert variable value)")
         return AssertExecutorRequest(parts[1], parts[2])
 
+
+class AssertsWithJsRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        parts = command.split(' ')
+        if len(parts) < 2:
+            raise ValueError(
+                "!asserts_with_js assertfile [optional delimiter]( ex !asserts_with_js input.asserts |)")
+        assert_file = ResourceProvider(
+            property_bag.resource_path).asserts_filepath(parts[1])
+        if os.path.exists(assert_file) == False:
+            raise ValueError(f"{assert_file} does not exists.")
+
+        delimiter = '|'
+        if len(parts) > 2:
+            delimiter = parts[2]
+        js_file = ResourceProvider(
+            property_bag.resource_path).js_filepath('asserts_json.js')
+        return AssertsExecutorWithJsRequest(js_file, read_key_value_pairs(assert_file, delimiter))
+
+
 class ConvertJsonToHtmlRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -212,6 +245,7 @@ class ConvertJsonToHtmlRequestInputParser(InputParser):
                 "!convert_json_html requires inputfile and outputfile ( ex !convert_json_html inputJsonFileName outputJsonFileName)")
         return ConvertJsonToHtmlExecutorRequest(parts[1], parts[2])
 
+
 class JavaScriptRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -221,7 +255,8 @@ class JavaScriptRequestInputParser(InputParser):
         if len(parts) < 2:
             raise ValueError(
                 "!js requires javascript file name (ex: !js validateuser.js) ")
-        js_file = ResourceProvider(property_bag.resource_path).js_filepath(parts[1])
+        js_file = ResourceProvider(
+            property_bag.resource_path).js_filepath(parts[1])
         if os.path.exists(js_file) == False:
             raise ValueError(f"{js_file} does not exists.")
         script_args = {}

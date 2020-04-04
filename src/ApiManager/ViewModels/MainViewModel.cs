@@ -295,7 +295,8 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			envFolder.Add(info);
+			envFolder.Add
+				(info);
 		}
 
 		private void ConsumeManagementPipeData<T>(string message) where T : Info

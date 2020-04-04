@@ -9,7 +9,7 @@ from logcollector import sendJsExecuteInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
-from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest, AssertsExecutorWithJsRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
@@ -141,6 +141,7 @@ class HelpExecutor(ICommand):
         print('!help.routename for route help.')
         print('!help.routename.pathname route path.')
         print('!assert variable value')
+        print('!asserts_with_js assert_file [optional delimiter]')
         print('!extract jsonpath variable (extracts data into variable given json path).')
         print('!js jsfilename (executes java script file).')
         print('!set name=value (to set variable).')
@@ -282,13 +283,14 @@ class AssertCommandExecutor(ICommand):
         self.property_bag = property_bag
 
     def execute(self, executorRequest):
+        if isinstance(executorRequest, AssertExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of AssertExecutorRequest")
+
         variable_name = executorRequest.variable_name
         expected = executorRequest.value
         actual = ""
         try:
-            if isinstance(executorRequest, AssertExecutorRequest) == False:
-                raise ValueError(
-                    f"{type(executorRequest)} is not of AssertExecutorRequest")
             # check whether variable exists in property bag or not
             actual = self.property_bag.get(executorRequest.variable_name)
             if actual == None:
@@ -304,6 +306,27 @@ class AssertCommandExecutor(ICommand):
         sendAssertInfo(self.property_bag.session_name,
                        variable_name, expected, actual, True, "success")
 
+class AssertsJsRequestCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, AssertsExecutorWithJsRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of AssertsExecutorWithJsRequest")
+        print(f"Executing: {executorRequest.js_file}")
+        js = JsExecutor(executorRequest.js_file)
+        try:
+            script_response = js.execute_postprocess_with_asserts(
+                self.property_bag.last_response, executorRequest.assert_records)
+            if script_response == None:
+                script_response = "success"
+            sendJsExecuteInfo(self.property_bag.session_name,
+                              executorRequest.js_file, script_response, False)
+        except Exception as e:
+            sendJsExecuteInfo(self.property_bag.session_name,
+                              executorRequest.js_file, str(e), True)
+        
 
 class ConvertJsonToHtmlCommandExecutor(ICommand):
     def __init__(self, property_bag):

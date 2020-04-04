@@ -12,6 +12,7 @@ class CommandInfo:
 def getCommands():
     commands = []
     commands.append(CommandInfo("!assert", "asserts a variable with expected value"))
+    commands.append(CommandInfo("!asserts_with_js", "asserts file records using java script file."))
     commands.append(CommandInfo("!extract", "extracts to a variable using jsonpath from last response"))
     commands.append(CommandInfo("!js", "executes javascript file"))
     commands.append(CommandInfo("!set", "sets a variable to value"))
