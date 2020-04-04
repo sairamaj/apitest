@@ -116,11 +116,7 @@ class ListPropertiesExecutor(ICommand):
                 print(f"{key.rjust(30)} : {val[:30]}")
             else:
                 print(f"{key.rjust(30)} : {val}")
-        additional = {}
-        if self.property_bag.last_response != None:
-            additional['last_response'] = self.property_bag.last_response[:30]
-
-        additional['session'] = self.property_bag.session_name
+        additional = self.property_bag.additional_properties()
         for key, val in additional.items():
             print(f"{key.rjust(30)} : {str(val)}")
 
@@ -342,7 +338,7 @@ class JavaScirptCommandExecutor(ICommand):
             js.execute_postprocess(
                 'this is request', self.property_bag.last_response)
             sendJsExecuteInfo(self.property_bag.session_name,
-                              executorRequest.js_file, None)
+                              executorRequest.js_file, "successful", False)
         except Exception as e:
             sendJsExecuteInfo(self.property_bag.session_name,
-                              executorRequest.js_file, str(e))
+                              executorRequest.js_file, str(e), True)

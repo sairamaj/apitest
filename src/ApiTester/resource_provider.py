@@ -1,9 +1,8 @@
 import os
 
 class ResourceProvider:
-    def __init__(self,workingDirectory):
-        self.workingDirectory = workingDirectory
-        self.resources_path = os.path.join(self.workingDirectory, 'resources')
+    def __init__(self, resources_path):
+        self.resources_path = resources_path
         self.scripts_path = os.path.join(self.resources_path, 'scripts')
     
     def js_filepath(self,name):

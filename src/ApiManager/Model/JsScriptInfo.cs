@@ -8,6 +8,7 @@
 		}
 
 		public string ScriptFileName { get; set; }
-		public string Error { get; set; }
+		public string Message { get; set; }
+		public bool IsError { get; set; }
 	}
 }

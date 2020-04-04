@@ -72,6 +72,12 @@ namespace ApiManager.Repository
 				command += $" --session {testData.SessionName}";
 			}
 
+			if (!string.IsNullOrEmpty(this._settings.ResourcesPath))
+			{
+				// Execute batch file name.
+				command += $" --resource_path {this._settings.ResourcesPath}";
+			}
+
 			return command;
 		}
 

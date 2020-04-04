@@ -35,6 +35,13 @@ namespace ApiManager.Repository
 				// Execute batch file name.
 				command += $" --batch {cmdInfo.BatchFileName}";
 			}
+
+			if (!string.IsNullOrEmpty(this._settings.ResourcesPath))
+			{
+				// Execute batch file name.
+				command += $" --resource_path {this._settings.ResourcesPath}";
+			}
+
 			else if (cmdInfo.Commands.Any())
 			{
 				// Generate batch file with commands.

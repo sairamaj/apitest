@@ -308,10 +308,13 @@
     <Resource Include="images\assert_success.png" />
     <Resource Include="images\assert.png" />
     <Resource Include="images\js.png" />
+    <Content Include="Configuration\Resources\Scripts\validate_api_fail.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Scripts\validate_api.js">
+    <Content Include="Configuration\Resources\Scripts\validate_api.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settings.json">

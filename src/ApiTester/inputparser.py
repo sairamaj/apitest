@@ -12,7 +12,7 @@ from transform import transformString, transformValue
 from utils import readAllText
 from resource_provider import ResourceProvider
 
-def parseCommand(command, workingDirectory, apis, propertyDictionary):
+def parseCommand(command, workingDirectory, apis, property_bag):
     commands = {
         '!assert': AssertRequestInputParser(workingDirectory),
         '!extract': ExtractVariableRequestInputParser(workingDirectory),
@@ -34,7 +34,7 @@ def parseCommand(command, workingDirectory, apis, propertyDictionary):
     if parser == None:
         parser = ApiCommandInputParser(workingDirectory)
 
-    return parser.parseCommand(command, apis, propertyDictionary)
+    return parser.parseCommand(command, apis, property_bag)
 
 
 class InputParser:
@@ -50,7 +50,7 @@ class ApiCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         # ex:
         #   users
@@ -84,13 +84,13 @@ class ApiCommandInputParser(InputParser):
                 raise ValueError(f"{route}.{path} not found")
             foundApiInfo = copy.deepcopy(foundApiInfo)      # we need fresh copy
 
-        data = transform(foundApiInfo.body, propertyDictionary)
-        path = transformString('path', foundApiInfo.path, propertyDictionary)
+        data = transform(foundApiInfo.body, property_bag.properties)
+        path = transformString('path', foundApiInfo.path, property_bag.properties)
         baseUrl = transformString(
-            'baseurl', foundApiInfo.baseUrl, propertyDictionary)
+            'baseurl', foundApiInfo.baseUrl, property_bag.properties)
 
         transformedHeaders = transform(
-            foundApiInfo.headers, propertyDictionary)
+            foundApiInfo.headers, property_bag.properties)
 
         apiInfoWithData = ApiInfo(
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
@@ -102,7 +102,7 @@ class ApiCommandInputParser(InputParser):
             with open(fileNameWithPath, 'r') as in_file:
                 post_data = json.load(in_file)
                 tranform_items = {"temp": post_data}
-                tranformed_items = transform(tranform_items,propertyDictionary)
+                tranformed_items = transform(tranform_items,property_bag.properties)
                 jsonData = tranformed_items["temp"]
                 print(f"--------> {jsonData}")
                 print(f"--------> {type(jsonData)}")
@@ -117,7 +117,7 @@ class SetCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         # ex:
         #   set param=value
@@ -129,7 +129,7 @@ class SetCommandInputParser(InputParser):
         if len(nameValueParts) > 1:
             value = nameValueParts[1]
         # go through transformation
-        value = transformValue(value,propertyDictionary)
+        value = transformValue(value,property_bag.properties)
 
         return SetExecutorRequest(name, value)
 
@@ -138,7 +138,7 @@ class ListCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         return ListExecutorRequest()
 
 
@@ -146,7 +146,7 @@ class HelpCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         return HelpExecutorRequest(apis)
 
 
@@ -154,7 +154,7 @@ class ManagementCommandRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         if len(parts) < 2:
             raise ValueError(
@@ -170,7 +170,7 @@ class WaitForUserInputRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         prompt = ""
         if len(parts) > 1:
@@ -183,7 +183,7 @@ class ExtractVariableRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         if len(parts) < 3:
             raise ValueError(
@@ -195,7 +195,7 @@ class AssertRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         if len(parts) < 3:
             raise ValueError(
@@ -206,7 +206,7 @@ class ConvertJsonToHtmlRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         if len(parts) < 3:
             raise ValueError(
@@ -217,12 +217,12 @@ class JavaScriptRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
 
-    def parseCommand(self, command, apis, propertyDictionary):
+    def parseCommand(self, command, apis, property_bag):
         parts = command.split(' ')
         if len(parts) < 2:
             raise ValueError(
                 "!js requires javascript file name (ex: !js validateuser.js) ")
-        js_file = ResourceProvider(self.workingDirectory).js_filepath(parts[1])
+        js_file = ResourceProvider(property_bag.resource_path).js_filepath(parts[1])
         if os.path.exists(js_file) == False:
             raise ValueError(f"{js_file} does not exists.")
 

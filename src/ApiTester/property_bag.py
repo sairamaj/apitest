@@ -7,6 +7,7 @@ class PropertyBag:
         self.access_token = ""
         self.session_name = "unknown"
         self.last_response = None
+        self.resources_path = None
 
     def get(self, name):
         return self.properties.get(name, None)
@@ -41,3 +42,21 @@ class PropertyBag:
     @property
     def config_filename(self):
         return self.properties["config"]
+
+    @property
+    def resources_path(self):
+        return self._resources_path
+
+    @resources_path.setter
+    def resources_path(self, value):
+        self._resources_path = value
+
+    def additional_properties(self):
+        additional = {}
+        if self.last_response != None:
+            additional['last_response'] = self.last_response[:30]
+        additional['session'] = self.session_name
+        additional['resource_path'] = self.resource_path
+        return additional
+
+            

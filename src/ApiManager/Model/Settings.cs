@@ -8,6 +8,7 @@ namespace ApiManager.Model
 		public string ConsoleExecutableName { get; set; }
 		public string WorkingDirectory { get; set; }
 		public string ConfigurationPath { get; set; }
+		public string ResourcesPath { get; set; }
 
 		public bool IsPythonExecutable
 		{
@@ -27,6 +28,7 @@ namespace ApiManager.Model
 			this.ConsoleExecutableName = Path.GetFullPath(this.ConsoleExecutableName);
 			this.WorkingDirectory = Path.GetFullPath(this.WorkingDirectory);
 			this.ConfigurationPath = Path.GetFullPath(this.ConfigurationPath);
+			this.ResourcesPath = Path.GetFullPath(this.ResourcesPath);
 		}
 	}
 }

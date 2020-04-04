@@ -35,7 +35,7 @@ class Session:
         error = None
         try:
             request = parseCommand(
-                command, self.workingDirectory, self.apis, self.property_bag.properties)
+                command, self.workingDirectory, self.apis, self.property_bag)
             if request == None:
                 return False
             self.commandExecutor.execute(request)

@@ -106,11 +106,12 @@ def sendErrorInfo(sessionName, error):
     except Exception as e:
         print(f'exception in sendErrorInfo. ignoring. {str(e)}')
 
-def sendJsExecuteInfo(sessionName, script_file_name, error):
+def sendJsExecuteInfo(sessionName, script_file_name, message, iserror):
     data = {
         "session": sessionName,
         "scriptfilename": script_file_name,
-        "error" : error
+        "message" : message,
+        "iserror" : iserror
     }
     try:
         info = f"js|" + json.dumps(data)

@@ -36,6 +36,17 @@
 			</Style.Triggers>
 		</Style>
 
+
+		<Style x:Key="JsScriptStyle" >
+			<Setter Property="Control.Foreground" Value="Green" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding JsScriptInfo.IsError}" Value="True" >
+					<Setter Property="Control.Foreground" Value="Red" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
 		<Style x:Key="ApiStyle" >
 			<Setter Property="Control.Foreground" Value="Red" />
 			<Setter Property="Control.FontWeight" Value="Bold" />
@@ -215,17 +226,22 @@
 		<DataTemplate x:Key="JsScrptHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Background="Purple" >
+					<StackPanel Orientation="Horizontal" Style="{StaticResource JsScriptStyle}" Background="White" >
 						<Button  Background="{StaticResource JsButtonImageBrush}" Width="22" Height="22"/>
-						<TextBlock  Text="{Binding JsScriptInfo.ScriptFileName}" Margin="3,0,0,0" 
-									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
+						<TextBlock  Text="{Binding ScriptInfo}" Margin="3,0,0,0" TextAlignment="Right"/>
 					</StackPanel>
 				</Expander.Header>
 				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="600"/>
 					</Grid.ColumnDefinitions>
-					<TextBox Grid.Row="0" Grid.Column="0" Text="{Binding ScriptFileContent}" 
+					<TextBox Grid.Row="0" Grid.Column="0" Text="{Binding JsScriptInfo.ScriptFileName}" 
+							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" FontWeight="Bold"/>
+					<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ScriptFileContent}" 
 							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" />
 				</Grid>
 			</Expander>

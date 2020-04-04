@@ -9,9 +9,11 @@ namespace ApiManager.ViewModels
 		{
 			this.JsScriptInfo = jsScriptInfo;
 			this.ScriptFileContent = File.ReadAllText(jsScriptInfo.ScriptFileName);
+			this.ScriptInfo = $"{Path.GetFileName(jsScriptInfo.ScriptFileName)} ({jsScriptInfo.Message})";
 		}
 
 		public JsScriptInfo JsScriptInfo{ get; }
 		public string ScriptFileContent { get; set; }
+		public string ScriptInfo { get; set; }
 	}
 }
