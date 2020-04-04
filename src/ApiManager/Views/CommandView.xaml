@@ -41,12 +41,14 @@
 	</UserControl.Resources>
 
 	<Border BorderBrush="Gray" Background="LightGray" BorderThickness="1" DockPanel.Dock="Top">
-	<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-		<CheckBox IsChecked="{Binding IsClearBeforeRun}" Content="Clear Before Run" FontWeight="Bold"/>
-		<Button  Background="{StaticResource RunButtonImageBrush}" Width="30" Height="30" Command="{Binding RunCommand}" Margin="20,0,0,0"/>
-		<Button  Background="{StaticResource CommandPromptButtonImageBrush}" Width="30" Height="30" Command="{Binding OpenCommandPrompt}" Margin="10,0,0,0"/>
-		<!--<Button Content="Issues" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowIssuesCommand}"  Margin="20,0,0,0" HorizontalAlignment="Center"/>-->
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+			<CheckBox IsChecked="{Binding IsClearBeforeRun}" Content="Clear Before Run" FontWeight="Bold"/>
+			<Button  Background="{StaticResource RunButtonImageBrush}" Width="25" Height="25" Command="{Binding RunCommand}" Margin="20,0,0,0"/>
+			<TextBlock Text="Ctrl+R" VerticalAlignment="Bottom" />
+			<Button  Background="{StaticResource CommandPromptButtonImageBrush}" Width="25" Height="25" Command="{Binding OpenCommandPrompt}" Margin="20,0,0,0"/>
+			<TextBlock Text="Ctrl+O" VerticalAlignment="Bottom" />
+			<!--<Button Content="Issues" Style="{StaticResource ApplicationLinkButtonNoUnderLine}" Command="{Binding ShowIssuesCommand}"  Margin="20,0,0,0" HorizontalAlignment="Center"/>-->
 
-	</StackPanel>
+		</StackPanel>
 	</Border>
 </UserControl>

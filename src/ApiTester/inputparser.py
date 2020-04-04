@@ -229,9 +229,11 @@ class AssertsWithJsRequestInputParser(InputParser):
         delimiter = '|'
         if len(parts) > 2:
             delimiter = parts[2]
+        assert_records = transform(read_key_value_pairs(assert_file, delimiter),property_bag.properties)
+
         js_file = ResourceProvider(
             property_bag.resource_path).js_filepath('asserts_json.js')
-        return AssertsExecutorWithJsRequest(js_file, read_key_value_pairs(assert_file, delimiter))
+        return AssertsExecutorWithJsRequest(js_file, assert_records)
 
 
 class ConvertJsonToHtmlRequestInputParser(InputParser):

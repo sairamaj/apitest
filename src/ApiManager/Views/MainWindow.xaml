@@ -8,11 +8,19 @@
 				 mc:Ignorable="d"
 				 xmlns:views1="clr-namespace:Wpf.Util.Core.Views;assembly=Wpf.Util.Core"
 				 xmlns:views2="clr-namespace:ApiManager.VariableView.Views"
+				 xmlns:command="clr-namespace:Wpf.Util.Core.Command;assembly=Wpf.Util.Core"
 				 Title="Api Manager" Height="850" Width="1200">
 
 	<Window.Resources>
-
+		<command:CommandReference x:Key="RunCommandReference" Command="{Binding RunCommand}" />
+		<command:CommandReference x:Key="OpenCommandReference" Command="{Binding OpenCommandPrompt}" />
 	</Window.Resources>
+
+	<Window.InputBindings>
+		<KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource RunCommandReference}" />
+		<KeyBinding Key="o" Modifiers="Ctrl" Command="{StaticResource OpenCommandReference}" />
+	</Window.InputBindings>
+	
 	<DockPanel>
 		<Expander DockPanel.Dock="Bottom" Header="LogView" IsExpanded="False">
 			<views:LogView DataContext="{Binding LogViewModel}" Height="200"/>
@@ -32,6 +40,7 @@
 					<ColumnDefinition  Width="200"/>
 					<ColumnDefinition Width="4"/>
 					<ColumnDefinition/>
+					<ColumnDefinition Width="4"/>
 					<ColumnDefinition  Width="200"/>
 				</Grid.ColumnDefinitions>
 				<views:ApiInfosView Grid.Row="0" Grid.Column="0" x:Name="EnvironmentView"/>
