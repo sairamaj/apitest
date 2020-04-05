@@ -38,7 +38,7 @@ namespace ApiManager
 
 				builder.RegisterInstance(settings).As<ISettings>();
 				builder.RegisterType<CommandExecutor>().As<ICommandExecutor>().SingleInstance();
-				builder.RegisterType<VariableManager>().As<IVariableManager>().SingleInstance();
+				builder.RegisterType<ResourceManager>().As<IResourceManager>().SingleInstance();
 				builder.RegisterType<DataRepository>().As<IDataRepository>().SingleInstance();
 				builder.RegisterType<MessageListener>().As<IMessageListener>();
 				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
@@ -51,7 +51,7 @@ namespace ApiManager
 					serviceLocator.Resolve<IDataRepository>(),
 					serviceLocator.Resolve<IMessageListener>(),
 					serviceLocator.Resolve<ISettings>(),
-					serviceLocator.Resolve<IVariableManager>())
+					serviceLocator.Resolve<IResourceManager>())
 				};
 				RunWithSingleInstance(() => win.ShowDialog());
 			}

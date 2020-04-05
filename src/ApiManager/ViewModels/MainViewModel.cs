@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using ApiManager.Asserts.ViewModels;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
@@ -33,7 +34,7 @@ namespace ApiManager.ViewModels
 			IDataRepository dataRepository,
 			IMessageListener listener,
 			ISettings settings,
-			IVariableManager variableManager)
+			IResourceManager resourceManager)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
@@ -64,7 +65,9 @@ namespace ApiManager.ViewModels
 				MessageBox.Show(e.ToString());
 			}
 
-			this.VariableContainerViewModel = new VariableContainerViewModel(variableManager);
+			this.VariableContainerViewModel = new VariableContainerViewModel(resourceManager);
+			this.AssertContainerViewModel = new AssertContainerViewModel(resourceManager);
+			
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
@@ -112,6 +115,7 @@ namespace ApiManager.ViewModels
 
 		public LogViewModel LogViewModel { get; set; }
 		public VariableContainerViewModel VariableContainerViewModel { get; }
+		public AssertContainerViewModel AssertContainerViewModel { get; }
 
 		public async Task RunAsync()
 		{

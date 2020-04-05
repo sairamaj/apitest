@@ -58,7 +58,7 @@
 				<GridSplitter Grid.Row="0" Grid.Column="3" />
 				<views:RunDetailsView Grid.Row="0" Grid.Column="4" DataContext="{Binding CurrentRequestResponseViewModel}"/>
 				<GridSplitter Grid.Row="0" Grid.Column="5" />
-				<views2:VariableContainerView Grid.Row="0" Grid.Column="6" DataContext="{Binding VariableContainerViewModel}"/>
+				<views:ResourceView Grid.Row="0" Grid.Column="6"/>
 			</Grid>
 		</Grid>
 

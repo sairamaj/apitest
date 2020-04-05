@@ -10,12 +10,12 @@ namespace ApiManager.Variables.ViewModels
 {
 	class VariableContainerViewModel : CoreViewModel
 	{
-		private readonly IVariableManager _variableManager;
+		private readonly IResourceManager _resourceManager;
 
-		public VariableContainerViewModel(IVariableManager variableManager)
+		public VariableContainerViewModel(IResourceManager resourceManager)
 		{
-			this._variableManager = variableManager ?? throw new System.ArgumentNullException(nameof(variableManager));
-			this.SystemVariables = variableManager.GetSystemVariables()
+			this._resourceManager = resourceManager ?? throw new System.ArgumentNullException(nameof(resourceManager));
+			this.SystemVariables = resourceManager.GetSystemVariables()
 				.Select(kv => new VariableViewModel(kv.Key, kv.Value))
 				.ToList();
 			this.ApiVariables = new SafeObservableCollection<VariableViewModel>();
@@ -45,7 +45,7 @@ namespace ApiManager.Variables.ViewModels
 		public void UpdateApiVariables(ApiInfo apiInfo)
 		{
 			this.ApiVariables.Clear();
-			foreach (var kv in this._variableManager.Get(apiInfo))
+			foreach (var kv in this._resourceManager.Get(apiInfo))
 			{
 				this.ApiVariables.Add(new VariableViewModel(kv.Key, kv.Value));
 			}
@@ -57,7 +57,7 @@ namespace ApiManager.Variables.ViewModels
 		public void UpdateEnvironmentVariables(Environment environment)
 		{
 			this.EnvironmentVariables.Clear();
-			foreach (var kv in this._variableManager.Get(environment))
+			foreach (var kv in this._resourceManager.Get(environment))
 			{
 				this.EnvironmentVariables.Add(new VariableViewModel(kv.Key, kv.Value));
 			}

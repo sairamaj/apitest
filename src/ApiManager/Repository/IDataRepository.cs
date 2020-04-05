@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ApiManager.Asserts.Model;
 using ApiManager.Model;
 
 namespace ApiManager.Repository

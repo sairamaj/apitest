@@ -63,7 +63,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Asserts\Model\AssertData.cs" />
+    <Compile Include="Asserts\ViewModels\AssertContainerViewModel.cs" />
+    <Compile Include="Asserts\ViewModels\AssertViewModel.cs" />
+    <Compile Include="Asserts\Views\AssertContainerView.xaml.cs">
+      <DependentUpon>AssertContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Asserts\Views\AssertsView.xaml.cs">
+      <DependentUpon>AssertsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Executor.cs" />
+    <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
@@ -95,8 +105,11 @@
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
     <Compile Include="Repository\ISettings.cs" />
-    <Compile Include="Repository\VariableManager.cs" />
-    <Compile Include="Repository\IVariableManager.cs" />
+    <Compile Include="Repository\ResourceManager.cs" />
+    <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="Scripts\Views\ScriptsContainerView.xaml.cs">
+      <DependentUpon>ScriptsContainerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TraceLogger.cs" />
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
     <Compile Include="Variables\ViewModels\VariableViewModel.cs" />
@@ -127,6 +140,9 @@
     </Compile>
     <Compile Include="ScenarioEditing\Views\ScenarioEditorView.xaml.cs">
       <DependentUpon>ScenarioEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResourceView.xaml.cs">
+      <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScenarioFileView.xaml.cs">
       <DependentUpon>ScenarioFileView.xaml</DependentUpon>
@@ -163,6 +179,18 @@
     <Compile Include="Variables\Views\VariableView.xaml.cs">
       <DependentUpon>VariableView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Asserts\Views\AssertContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scripts\Views\ScriptsContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ApiConfigurationViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +212,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ScenarioEditing\Views\ScenarioEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ResourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -366,7 +398,9 @@
       <Version>1.0.0-alpha1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\ViewModels\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Configuration\Apis\Apigee\environments\sairamaj_account.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

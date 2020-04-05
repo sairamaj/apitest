@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using ApiManager.Asserts.Model;
 using ApiManager.Model;
 
 namespace ApiManager.Repository
 {
-	internal class VariableManager : IVariableManager
+	internal class ResourceManager : IResourceManager
 	{
 		private readonly ISettings _settings;
 
-		public VariableManager(ISettings settings)
+		public ResourceManager(ISettings settings)
 		{
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 		}
@@ -63,6 +65,18 @@ namespace ApiManager.Repository
 			}
 
 			return variables;
+		}
+
+		public IEnumerable<AssertData> GetAssertData()
+		{
+			var assertsDirectory = Path.Combine(this._settings.ResourcesPath, "Asserts");
+			if (Directory.Exists(assertsDirectory))
+			{
+				return Directory.GetFiles(assertsDirectory)
+					.Select(f => new AssertData(Path.GetFileNameWithoutExtension(f), f));
+			}
+
+			return new List<AssertData>();
 		}
 	}
 }
