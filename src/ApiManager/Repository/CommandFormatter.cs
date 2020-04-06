@@ -42,7 +42,7 @@ namespace ApiManager.Repository
 				command += $" --resource_path {this._settings.ResourcesPath}";
 			}
 
-			else if (cmdInfo.Commands.Any())
+			if (cmdInfo.Commands.Any())
 			{
 				// Generate batch file with commands.
 				var commandsData = string.Join("\r\n", cmdInfo.Commands);

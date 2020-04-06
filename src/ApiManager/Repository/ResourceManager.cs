@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ApiManager.Asserts.Model;
 using ApiManager.Model;
+using ApiManager.Scripts.Models;
 
 namespace ApiManager.Repository
 {
@@ -78,5 +79,18 @@ namespace ApiManager.Repository
 
 			return new List<AssertData>();
 		}
+
+		public IEnumerable<ScriptData> GetScriptsData()
+		{
+			var assertsDirectory = Path.Combine(this._settings.ResourcesPath, "Scripts");
+			if (Directory.Exists(assertsDirectory))
+			{
+				return Directory.GetFiles(assertsDirectory)
+					.Select(f => new ScriptData(Path.GetFileNameWithoutExtension(f), f));
+			}
+
+			return new List<ScriptData>();
+		}
+
 	}
 }

@@ -17,7 +17,7 @@
 			<views1:AssertContainerView DataContext="{Binding AssertContainerViewModel}"/>
 		</Expander>
 		<Expander Header="Scripts">
-			<views11:ScriptsContainerView/>
+			<views11:ScriptsContainerView DataContext="{Binding ScriptContainerViewModel}"/>
 		</Expander>
 	</StackPanel>
 </UserControl>

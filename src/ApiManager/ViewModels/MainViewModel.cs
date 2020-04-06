@@ -10,6 +10,7 @@ using ApiManager.Asserts.ViewModels;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.Scripts.ViewModels;
 using ApiManager.Variables.ViewModels;
 using Newtonsoft.Json;
 using Wpf.Util.Core;
@@ -67,7 +68,8 @@ namespace ApiManager.ViewModels
 
 			this.VariableContainerViewModel = new VariableContainerViewModel(resourceManager);
 			this.AssertContainerViewModel = new AssertContainerViewModel(resourceManager);
-			
+			this.ScriptContainerViewModel = new ScriptContainerViewModel(resourceManager);
+
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
@@ -116,6 +118,7 @@ namespace ApiManager.ViewModels
 		public LogViewModel LogViewModel { get; set; }
 		public VariableContainerViewModel VariableContainerViewModel { get; }
 		public AssertContainerViewModel AssertContainerViewModel { get; }
+		public ScriptContainerViewModel ScriptContainerViewModel { get; }
 
 		public async Task RunAsync()
 		{

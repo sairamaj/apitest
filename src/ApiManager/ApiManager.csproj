@@ -107,8 +107,14 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="Scripts\Model\ScriptData.cs" />
+    <Compile Include="Scripts\ViewModels\ScriptContainerViewModel.cs" />
+    <Compile Include="Scripts\ViewModels\ScriptViewModel.cs" />
     <Compile Include="Scripts\Views\ScriptsContainerView.xaml.cs">
       <DependentUpon>ScriptsContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scripts\Views\ScriptView.xaml.cs">
+      <DependentUpon>ScriptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TraceLogger.cs" />
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
@@ -188,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scripts\Views\ScriptsContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scripts\Views\ScriptView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,6 +350,9 @@
     <Resource Include="images\assert_success.png" />
     <Resource Include="images\assert.png" />
     <Resource Include="images\js.png" />
+    <Content Include="Configuration\Resources\Scripts\assert_json.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Resources\Scripts\validate_api_fail.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -398,9 +411,7 @@
       <Version>1.0.0-alpha1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Configuration\Apis\Apigee\environments\sairamaj_account.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

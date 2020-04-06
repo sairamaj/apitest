@@ -114,7 +114,7 @@ namespace ApiManager.Repository
 			{
 				ConfigFileName = info.Configuration,
 				SessionName = info.Name,
-				Commands = new string[] { "!management apicommands" }
+				Commands = new string[] { "!management apicommands" },
 			});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
@@ -129,8 +129,9 @@ namespace ApiManager.Repository
 			{
 				ConfigFileName = info.Configuration,
 				SessionName = info.Name,
-				Commands = new string[] { "!management variables" }
-			});
+				Commands = new string[] { "!management variables" },
+				BatchFileName = FileHelper.WriteToTempFile("[]", ".json")
+		});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
 
