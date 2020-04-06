@@ -286,12 +286,24 @@
 
 	<Grid>
 		<Grid Margin="0,20,0,0">
-			<StackPanel Background="White">
-				<TextBlock Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
-				<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
-				<ListView ItemsSource="{Binding ApiInfos}" BorderThickness="0" ItemTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}" Background="White" />
-			</StackPanel>
+			<Grid Background="White">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="30"/>
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Row="0" Grid.Column="0" Text="Api Responses will be shown here." FontWeight="Bold" HorizontalAlignment="Left" Style="{StaticResource InfoTextBoxStyle}" />
+				<Button Grid.Row="0" Grid.Column="0" Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
+				<Grid Grid.Row="1" Grid.Column="0">
+					<ListView 
+					ItemsSource="{Binding ApiInfos}"
+					BorderThickness="0" 
+					ItemTemplateSelector="{StaticResource InfoDataHeaderTemplateSelector}" 
+					Background="White" 
+					ScrollViewer.VerticalScrollBarVisibility="Auto"
+					ScrollViewer.CanContentScroll="False"							
+					/>
+				</Grid>
+			</Grid>
 		</Grid>
-
 	</Grid>
 </UserControl>
