@@ -41,8 +41,7 @@ class Session:
             self.commandExecutor.execute(request)
             return True
         except AssertionError as v:
-            error = v
-            printError(str(v))
+            printError(str(v)) # don't set error info for Api exception as notificaiton it is already taken care
         except ValueError as v:
             error = v
             printError(str(v))

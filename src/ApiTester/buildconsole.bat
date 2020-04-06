@@ -1,0 +1,1 @@
+pyinstaller apitester.py --add-data=..\..\..\..\..\..\..\Python37\Lib\site-packages\js2py;js2py --add-data=..\..\..\..\..\..\..\Python37\Lib\site-packages\pyjsparser;pyjsparser

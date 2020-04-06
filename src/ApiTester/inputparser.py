@@ -208,7 +208,7 @@ class AssertRequestInputParser(InputParser):
         parts = command.split(' ')
         if len(parts) < 3:
             raise ValueError(
-                "!assert requires variable and value ( ex !assert variable value)")
+                "!assert requires json_path and value_to_match ( ex !assert json_path value_to_match)")
         return AssertExecutorRequest(parts[1], parts[2])
 
 

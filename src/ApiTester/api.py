@@ -18,11 +18,12 @@ class Api:
         response = requests.get(
             url, headers=headers, verify=False)
         self.response = response
+        respone_json = ""
+        if len(response.content) > 0 :
+                respone_json = response.json()
         if response.status_code == 200:
-            if len(response.content) > 0 :
-                return response.json()
-            return ""
-        raise ApiException(response.status_code, response.content)
+            return respone_json
+        raise ApiException(response.status_code, response)
 
     def post(self, jsonData):
         headers = {'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ class Api:
             if len(response.content) > 0 :
                 return response.json()
             return ""
-        raise ApiException(response.status_code, response.content)
+        raise ApiException(response.status_code, response.content.json())
 
     def patch(self, jsonData):
         headers = {'Content-Type': 'application/json',

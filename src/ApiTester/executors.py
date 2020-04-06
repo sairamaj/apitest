@@ -3,7 +3,7 @@ import json
 from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
-from api import Api
+from api import Api, ApiException
 from logcollector import collectlog, sendExtractInfo, sendAssertInfo, sendManagementInfo
 from logcollector import sendJsExecuteInfo
 from abc import ABCMeta, abstractstaticmethod
@@ -18,6 +18,7 @@ from transform import getVariables
 from utils import readAllText
 from commandinfo import getCommandsInfo
 from js_executor import JsExecutor
+from jpath_extractor import JPathExtractor
 
 
 class ExecutorRequest:
@@ -87,7 +88,13 @@ class ApiExecutor(ICommand):
                 api.response)
             collectlog(api.response, self.property_bag.session_name)
             pprint(response)
+        except ApiException as ae:
+            self.property_bag.last_response = self.extractResponseContent(
+                api.response)
+            collectlog(api.response, self.property_bag.session_name)
         except Exception as e:
+            self.property_bag.last_response = self.extractResponseContent(
+                api.response)
             collectlog(api.response, self.property_bag.session_name)
             raise
         finally:
@@ -246,26 +253,7 @@ class ExtractVariableCommandExecutor(ICommand):
             if self.property_bag.last_response == None:
                 raise ValueError(
                     "no last_response avialble, please execute any api request to extract variables.")
-            jsonpath_expr = parse(variable_path)
-            matches = jsonpath_expr.find(
-                json.loads(self.property_bag.last_response))
-            print(
-                f"extracting {variable_path} to {variable_name}")
-            if len(matches) == 0:
-                raise ValueError(
-                    f"!extract no match found for {variable_path}")
-            for match in matches:
-                if type(match.value) is str:
-                    variable_value = match.value
-                if type(match.value) is list:
-                    if len(match.value) > 1:
-                        raise ValueError(
-                            f"!extract found multiple items found for{variable_path} count: {len(match.value)}")
-                    elif len(match.value) == 0:
-                        raise ValueError(
-                            f"!extract no value found for {variable_path}")
-                    else:
-                        variable_value = match.value[0]
+            variable_value = JPathExtractor(json.loads(self.property_bag.last_response)).extract(variable_path)
         except Exception as e:
             success = False
             message = str(e)
@@ -287,24 +275,24 @@ class AssertCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of AssertExecutorRequest")
 
-        variable_name = executorRequest.variable_name
+        json_path = executorRequest.json_path
         expected = executorRequest.value
         actual = ""
         try:
             # check whether variable exists in property bag or not
-            actual = self.property_bag.get(executorRequest.variable_name)
+            actual = JPathExtractor(json.loads(self.property_bag.last_response)).extract(json_path)
             if actual == None:
                 raise ValueError(
                     f"!assert: variable {executorRequest.variable_name} not found")
             print(f"asserting: {actual} ---> {executorRequest.value}")
             assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
-        except Exception as e:
+        except AssertionError as e:
             sendAssertInfo(self.property_bag.session_name,
-                           variable_name, expected, actual, False, str(e))
+                           json_path, expected, actual, False, str(e))
             raise
 
         sendAssertInfo(self.property_bag.session_name,
-                       variable_name, expected, actual, True, "success")
+                       json_path, expected, actual, True, "success")
 
 class AssertsJsRequestCommandExecutor(ICommand):
     def __init__(self, property_bag):
