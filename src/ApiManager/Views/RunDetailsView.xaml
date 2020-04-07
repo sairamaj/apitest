@@ -32,7 +32,7 @@
 			<Setter Property="Control.FontWeight" Value="Bold" />
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding ExtractVariableInfo.Success}" Value="True" >
-					<Setter Property="Control.Background" Value="Green" />
+					<Setter Property="Control.Background" Value="LightGreen" />
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
@@ -42,14 +42,14 @@
 			<Setter Property="Control.FontWeight" Value="Bold" />
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding AssertInfo.Success}" Value="True" >
-					<Setter Property="Control.Background" Value="Green" />
+					<Setter Property="Control.Background" Value="LightGreen" />
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
 
 
 		<Style x:Key="JsScriptStyle" >
-			<Setter Property="Control.Foreground" Value="Green" />
+			<Setter Property="Control.Foreground" Value="LightGreen" />
 			<Setter Property="Control.FontWeight" Value="Bold" />
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding JsScriptInfo.IsError}" Value="True" >
@@ -214,7 +214,7 @@
 		<DataTemplate x:Key="ApiExecuteHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Background="Cyan" >
+					<StackPanel Orientation="Horizontal" Background="LightCyan" >
 						<Button  Style="{StaticResource ScenarioStatusStyle}" Width="22" Height="22"/>
 						<TextBlock  Text="{Binding ApiExecuteInfo.Scenario.Name}" Margin="3,0,0,0" 
 									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>

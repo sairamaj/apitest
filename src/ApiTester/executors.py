@@ -147,7 +147,7 @@ class HelpExecutor(ICommand):
         print('!help for help.')
         print('!help.routename for route help.')
         print('!help.routename.pathname route path.')
-        print('!assert variable value')
+        print('!assert json_path expected_value')
         print('!asserts_with_js assert_file [optional delimiter]')
         print('!extract jsonpath variable (extracts data into variable given json path).')
         print('!js jsfilename (executes java script file).')

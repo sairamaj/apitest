@@ -4,13 +4,15 @@
 To test REST APIs with validations
 
 ### Concept
-Every RestAPI has __request__ consists of __url__  with optional query string __headers__ (optional) and __body__(optional) and sent to __host__ and a __response__ is obtained. 
+Every RestAPI has __request__ consists of __url__  with optional query string, __headers__ (optional) and __body__(optional) and sent to __host__ to get a __response__ with __headers__. 
 
 A __request__ (url, headers, body) is given a short __command__
 
 All info (url,headers,body) are __parameterized__ with __variables__
 
-__variables__ are extracted from __response__ and __asserted__ with expected values.
+__variables__ are extracted from __response__ which can be used in next requests
+ 
+ using __jsonpaths__  __assertions__  are made with expected values to validate response.
 
 __information__ is shown in GUI window.
 
@@ -72,36 +74,18 @@ requests and responses
   ![apitester](doc/images/apitester.png)
 
 ### Terminology
-* __api__ 
-    * api information where all routes are mapped to simple commands
-        * example( apigee)
-```json
-                "accesstoken": {
-                    "baseurl": "https://login.microsoftonline.com/{{tenant_id}}",
-                    "_": {
-                        "path": "/oauth2/token",
-                        "body": {
-                            "grant_type": "client_credentials",
-                            "client_id": "{{client_id}}",
-                            "client_secret": "{{client_secret}}"
-                        }
-                    }
-                }
-            }
-```
-* __scenario__
-    * group of commands where each command correspond to api call
-        * example (list_developers.txt)
-            * \# this file creates acces token and executes apis and gets list of developers
-            * accesstoken.password
-            * apis
-            * developers          
-* __environment__
-    * list of variables which defines the environment
-        * example (sairamaj_accunt.var)
-            * org_name=sairamaj-eval
-            * username=sairamaj@hotmail.com
-            * password=pwdhere
+|  definition   |                       description                                     |
+|---------------|-----------------------------------------------------------------------|
+|  __api__      |  Represented by JSON file contains all api routes,headers, paths      |
+| __apicommand__|  Short command representing all the details of particular route       |
+| __command__   |  Console Management command (starts with !)                           |
+| __extract__   |  Extraction to a variable with json path from last response           |
+| __assert__    |  Asserting a value from response with expected value                  |
+| __script__    |  JavaScript to process the response                                   | 
+| __resource__  |  Assert,Script, Post data files in resource directory                 |
+
+Full details of terms can be viewed [here](.\doc\terminology_details.MD)
+
 ### Structure
 ```cmd
 \Apis
@@ -121,13 +105,20 @@ requests and responses
             sairam_visualstudio_accunt.var
    \Custom
         ...
+\Resources
+   \Asserts
+   \Scripts
+   \Post
+   \Patch
+   \Delete
 ```
 ## Avaialble commands
 
   |    Command              |                Description                                              |                     
   | ------------            | ------------------------------------------------------------------------------|
   | Api commands            | Dynamically populated from config.json. See the API command sections          |
-  | __!assert__             | Checks expected and actual variable value matches                             |
+  | __!assert__             | Asserts a value from response using JSON path with expected value             |
+  | __!assert_with_js__     | Asserts a with values from file against response using JSON path              |
   | __!extract__            | Extracts from last response using JSON Path in to a variable                  |
   | __!help__               | Displays the help                                                             |
   | __!convert_json_html__  | Converts a JSON in to HTML                                                    |
