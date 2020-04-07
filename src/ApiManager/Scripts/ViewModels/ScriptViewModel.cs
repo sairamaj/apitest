@@ -12,7 +12,7 @@ namespace ApiManager.Scripts.ViewModels
 		public ScriptViewModel(ScriptData scriptData)
 		{
 			this.ScriptData = scriptData;
-			Action showDetailsAction = () => Process.Start("notepad.exe", scriptData.FileName);
+			Action showDetailsAction = () => JavaScriptUiHelper.ShowJavaScriptWindow(scriptData.FileName);
 			this.EditCommandFileCommand = new DelegateCommand(showDetailsAction);
 		}
 

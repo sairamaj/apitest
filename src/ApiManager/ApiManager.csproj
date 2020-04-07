@@ -107,10 +107,14 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="Scripts\JavaScriptUiHelper.cs" />
     <Compile Include="Scripts\Model\ScriptData.cs" />
     <Compile Include="Scripts\ViewModels\JavaScriptViewModel.cs" />
     <Compile Include="Scripts\ViewModels\ScriptContainerViewModel.cs" />
     <Compile Include="Scripts\ViewModels\ScriptViewModel.cs" />
+    <Compile Include="Scripts\Views\JavaScriptWindow.xaml.cs">
+      <DependentUpon>JavaScriptWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\Views\ScriptsContainerView.xaml.cs">
       <DependentUpon>ScriptsContainerView.xaml</DependentUpon>
     </Compile>
@@ -194,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scripts\Views\JavaScriptWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
