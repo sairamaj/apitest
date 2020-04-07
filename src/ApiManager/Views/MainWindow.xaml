@@ -20,7 +20,7 @@
 		<KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource RunCommandReference}" />
 		<KeyBinding Key="o" Modifiers="Ctrl" Command="{StaticResource OpenCommandReference}" />
 	</Window.InputBindings>
-	
+
 	<DockPanel>
 		<Expander DockPanel.Dock="Bottom" Header="LogView" IsExpanded="False">
 			<views:LogView DataContext="{Binding LogViewModel}" Height="200"/>

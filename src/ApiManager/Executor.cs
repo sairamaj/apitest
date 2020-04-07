@@ -28,7 +28,7 @@ namespace ApiManager
 					ConfigName = api.Configuration,
 					CommandsTextFileName = scenario.FileName,
 					VariablesFileName = variableFileName,
-					SessionName = api.Name,
+					SessionName = $"{api.Name}|{scenario.Name}",
 				}).ConfigureAwait(false);
 		}
 

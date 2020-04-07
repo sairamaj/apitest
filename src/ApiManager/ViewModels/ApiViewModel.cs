@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Linq;
 using ApiManager.Model;
 using ApiManager.Repository;
 using ApiManager.Views;
@@ -39,6 +40,7 @@ namespace ApiManager.ViewModels
 
 		public void Add(Info info)
 		{
+			var isError = false;
 			if (info is ApiRequest)
 			{
 				this.RequestResponses.Add(new ApiInfoViewModel(this._executor, info as ApiRequest));
@@ -47,13 +49,15 @@ namespace ApiManager.ViewModels
 			{
 				this.RequestResponses.Add(new ExtractVariableViewModel(this._executor, info as ExtractVariableInfo));
 			}
-			else if (info is AssertInfo)
+			else if (info is AssertInfo assertInfo)
 			{
-				this.RequestResponses.Add(new AssertInfoViewModel(this._executor, info as AssertInfo));
+				this.RequestResponses.Add(new AssertInfoViewModel(this._executor, assertInfo));
+				isError = !assertInfo.Success;
 			}
 			else if (info is ErrorInfo)
 			{
 				this.RequestResponses.Add(new ErrorInfoViewModel(info as ErrorInfo));
+				isError = true;
 			}
 			else if (info is ApiExecuteInfo apiExecute)
 			{
@@ -62,6 +66,13 @@ namespace ApiManager.ViewModels
 			else if (info is JsScriptInfo jsScript)
 			{
 				this.RequestResponses.Add(new JsExecuteViewModel(jsScript));
+				isError = jsScript.IsError;
+			}
+
+			if (isError)
+			{
+				var apiInfoViewModel = this.RequestResponses.OfType<ApiExecuteInfoViewModel>().FirstOrDefault();
+				apiInfoViewModel?.SetStatusToFail();
 			}
 		}
 

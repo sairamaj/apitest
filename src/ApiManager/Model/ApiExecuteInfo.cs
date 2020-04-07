@@ -11,10 +11,12 @@ namespace ApiManager.Model
 			this.Environment = environment;
 			this.Scenario = scenario;
 			this.ScenarioContent = File.ReadAllText(scenario.FileName);
+			this.Success = true;
 		}
 
 		public Environment Environment { get; }
 		public Scenario Scenario { get; }
 		public string ScenarioContent { get; set; }
+		public bool Success { get; set; }
 	}
 }

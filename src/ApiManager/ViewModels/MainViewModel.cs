@@ -296,14 +296,18 @@ namespace ApiManager.ViewModels
 		private void ConsumePipeData<T>(string message) where T : Info
 		{
 			var info = JsonConvert.DeserializeObject<T>(message);
-			var envFolder = this.ApiInfoViewModels.FirstOrDefault(eF => eF.Name == info.Session);
+			if (info.Session == null)
+			{
+				return;
+			}
+			var apiName = info.Session.Split('|').First();
+			var envFolder = this.ApiInfoViewModels.FirstOrDefault(eF => eF.Name == apiName);
 			if (envFolder == null)
 			{
 				return;
 			}
 
-			envFolder.Add
-				(info);
+			envFolder.Add(info);
 		}
 
 		private void ConsumeManagementPipeData<T>(string message) where T : Info

@@ -356,6 +356,8 @@
     <Content Include="Configuration\Resources\Scripts\validate_api_fail.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\failed.png" />
+    <Resource Include="images\success.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

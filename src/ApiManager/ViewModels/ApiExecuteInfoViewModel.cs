@@ -10,5 +10,10 @@ namespace ApiManager.ViewModels
 		}
 
 		public ApiExecuteInfo ApiExecuteInfo { get; }
+		public void SetStatusToFail()
+		{
+			this.ApiExecuteInfo.Success = false;
+			OnPropertyChanged(() => this.ApiExecuteInfo);
+		}
 	}
 }
