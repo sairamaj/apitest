@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ApiManager.Views"
-             mc:Ignorable="d" 
+			 xmlns:views="clr-namespace:ApiManager.Scripts.Views"
+			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
 		<ImageBrush x:Key="ScenarioSuccessImageBrush" ImageSource="../images/success.png" />
@@ -253,8 +254,9 @@
 					</Grid.ColumnDefinitions>
 					<TextBox Grid.Row="0" Grid.Column="0" Text="{Binding JsScriptInfo.ScriptFileName}" 
 							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" FontWeight="Bold"/>
-					<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ScriptFileContent}" 
-							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" />
+					<views:JavaScriptView DataContext="{Binding Script}" Grid.Row="1" Grid.Column="0" />
+					<!--<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding ScriptFileContent}" 
+							 TextWrapping="Wrap" Height="400" Foreground="Black" IsReadOnly="True" />-->
 				</Grid>
 			</Expander>
 		</DataTemplate>

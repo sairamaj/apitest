@@ -108,6 +108,7 @@
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
     <Compile Include="Scripts\Model\ScriptData.cs" />
+    <Compile Include="Scripts\ViewModels\JavaScriptViewModel.cs" />
     <Compile Include="Scripts\ViewModels\ScriptContainerViewModel.cs" />
     <Compile Include="Scripts\ViewModels\ScriptViewModel.cs" />
     <Compile Include="Scripts\Views\ScriptsContainerView.xaml.cs">
@@ -146,6 +147,9 @@
     </Compile>
     <Compile Include="ScenarioEditing\Views\ScenarioEditorView.xaml.cs">
       <DependentUpon>ScenarioEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scripts\Views\JavaScriptView.xaml.cs">
+      <DependentUpon>JavaScriptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
@@ -206,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CommandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scripts\Views\JavaScriptView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

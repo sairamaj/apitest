@@ -12,6 +12,8 @@
 		<Style x:Key="DataHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
 			<Setter Property="Visibility" Value="Collapsed" />
 		</Style>
+
+
 	</UserControl.Resources>
 
 	<ListView ItemsSource="{Binding}" BorderThickness="0">
