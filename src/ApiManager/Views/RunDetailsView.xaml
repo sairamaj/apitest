@@ -145,8 +145,8 @@
 		<DataTemplate x:Key="AssertHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Style="{StaticResource AssertStyle}">
-						<Button  Background="{StaticResource AssertButtonImageBrush}" Width="22" Height="22"/>
+					<StackPanel Orientation="Horizontal" Style="{StaticResource AssertStyle}" Margin="30,0,0,0">
+						<Button  Background="{StaticResource AssertButtonImageBrush}" Width="22" Height="22" />
 						<TextBlock  Text="{Binding AssertInfo.Variable}" Margin="3,0,0,0" Width="80" 
 									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
 						<TextBlock  Text="{Binding AssertInfo.Expected}" Margin="3,0,0,0" Width="80" 
@@ -171,8 +171,8 @@
 		<DataTemplate x:Key="ExtractHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Style="{StaticResource ExtractVariableStyle}">
-						<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22"/>
+					<StackPanel Orientation="Horizontal" Style="{StaticResource ExtractVariableStyle}" Margin="30,0,0,0">
+						<Button  Background="{StaticResource ExtractVariableButtonImageBrush}" Width="22" Height="22" />
 						<TextBlock  Text="{Binding ExtractVariableInfo.Variable}" Margin="3,0,0,0" Width="80" 
 									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
 						<TextBlock Text="=" FontWeight="Bold" Foreground="Black" />
@@ -197,8 +197,8 @@
 		<DataTemplate x:Key="ErrorHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Background="Red" >
-						<TextBlock  Text="{Binding ErrorInfo.Error}" Margin="3,0,0,0" 
+					<StackPanel Orientation="Horizontal" Background="Red" Margin="30,0,0,0"  >
+						<TextBlock  Text="{Binding ErrorInfo.Error}" 
 									Foreground="Black" TextAlignment="Right" FontWeight="Bold"/>
 					</StackPanel>
 				</Expander.Header>
@@ -238,8 +238,8 @@
 		<DataTemplate x:Key="JsScrptHeaderTemplate">
 			<Expander >
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Style="{StaticResource JsScriptStyle}" Background="White" >
-						<Button  Background="{StaticResource JsButtonImageBrush}" Width="22" Height="22"/>
+					<StackPanel Orientation="Horizontal" Style="{StaticResource JsScriptStyle}" Background="White" Margin="30,0,0,0">
+						<Button  Background="{StaticResource JsButtonImageBrush}" Width="22" Height="22" />
 						<TextBlock  Text="{Binding ScriptInfo}" Margin="3,0,0,0" TextAlignment="Right"/>
 					</StackPanel>
 				</Expander.Header>
@@ -263,8 +263,8 @@
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<Expander Background="White">
 				<Expander.Header>
-					<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}"  Background="White">
-						<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22"/>
+					<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}"  Background="White" Margin="30,0,0,0">
+						<Button  Background="{StaticResource ApiButtonImageBrush}" Width="22" Height="22" />
 						<TextBlock  Text="{Binding ApiInfo.Method}" Margin="3,0,0,0" Width="40"/>
 						<TextBlock  Text="{Binding ApiInfo.RelativeUrl}" Margin="3,0,0,0" Width="140"/>
 						<TextBlock  Text="{Binding ApiInfo.StatusCode}" Margin="3,0,0,0" Width="60"/>
