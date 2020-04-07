@@ -146,7 +146,7 @@ namespace ApiManager.ViewModels
 				if (selectedScenario is ScenarioViewModel scenarioViewModel)
 				{
 					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario));
+						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario), null);
 					await new Executor(this._apiExecutor, this._settings)
 						.RunScenarioAsync(
 						this.SelectedApiInfoViewModel.ApiInfo,
@@ -158,7 +158,7 @@ namespace ApiManager.ViewModels
 					foreach (var scenario in scenaroContainer.Scenario.Children)
 					{
 						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario));
+							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario), null);
 						await new Executor(this._apiExecutor, this._settings)
 							.RunScenarioAsync(
 							this.SelectedApiInfoViewModel.ApiInfo,
@@ -301,13 +301,14 @@ namespace ApiManager.ViewModels
 				return;
 			}
 			var apiName = info.Session.Split('|').First();
+			var scenarioName = info.Session.Split('|').Last();
 			var envFolder = this.ApiInfoViewModels.FirstOrDefault(eF => eF.Name == apiName);
 			if (envFolder == null)
 			{
 				return;
 			}
 
-			envFolder.Add(info);
+			envFolder.Add(info, scenarioName);
 		}
 
 		private void ConsumeManagementPipeData<T>(string message) where T : Info

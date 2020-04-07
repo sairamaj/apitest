@@ -38,7 +38,7 @@ namespace ApiManager.ViewModels
 		public ICommand RunCommand { get; set; }
 		public ObservableCollection<InfoViewModel> RequestResponses { get; }
 
-		public void Add(Info info)
+		public void Add(Info info, string scenarioName)
 		{
 			var isError = false;
 			if (info is ApiRequest)
@@ -71,7 +71,8 @@ namespace ApiManager.ViewModels
 
 			if (isError)
 			{
-				var apiInfoViewModel = this.RequestResponses.OfType<ApiExecuteInfoViewModel>().FirstOrDefault();
+				var apiInfoViewModel = this.RequestResponses.OfType<ApiExecuteInfoViewModel>()
+					.FirstOrDefault(api => api.ApiExecuteInfo.Scenario.Name == scenarioName);
 				apiInfoViewModel?.SetStatusToFail();
 			}
 		}
