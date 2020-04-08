@@ -69,21 +69,7 @@ namespace ApiManager.Repository
 				var scenariosPath = Path.Combine(envFolder, "scenarios");
 				if (Directory.Exists(scenariosPath))
 				{
-					api.Scenarios = Directory.GetFiles(scenariosPath, "*.txt")
-						.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
-					  .Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
-					var scenarioContainers = new List<Scenario>();
-					foreach (var subDir in Directory.GetDirectories(scenariosPath)
-						.Where(d=> !Path.GetFileName(d).StartsWith("_", StringComparison.OrdinalIgnoreCase)))
-					{
-						var subScenarios = Directory.GetFiles(subDir, "*.txt")
-							.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
-						  .Select(f => new Scenario(Path.GetFileNameWithoutExtension(f), f)).ToList();
-						var containerScenario = new Scenario(Path.GetFileNameWithoutExtension(subDir), subDir, true);
-						subScenarios.ToList().ForEach(s => containerScenario.AddScenario(s));
-						scenarioContainers.Add(containerScenario);
-					}
-					api.Scenarios = api.Scenarios.Union(scenarioContainers).ToList();
+					api.Scenarios = GetScenarios(scenariosPath);
 				}
 
 				var environmentsPath = Path.Combine(envFolder, "environments");
@@ -141,10 +127,39 @@ namespace ApiManager.Repository
 		public Scenario CopyScenario(Scenario scenario)
 		{
 			var scenarioName = $"{scenario.Name}_copy.txt";
-			var scenarioFileName = Path.Combine(Path.GetDirectoryName(scenario.FileName), scenarioName);
-			var newScenario = new Scenario(scenarioName, scenarioFileName);
+			var scenarioFileName = Path.Combine(scenario.FileName, scenarioName);
+			var newScenario = new Scenario(scenarioFileName);
 			File.Copy(scenario.FileName, scenarioFileName);
 			return newScenario;
+		}
+
+		private IEnumerable<Scenario> GetScenarios(string path)
+		{
+			var scenarios = new List<Scenario>();
+			foreach (var subDir in Directory.GetDirectories(path)
+			  .Where(d => !Path.GetFileName(d).StartsWith("_", StringComparison.OrdinalIgnoreCase)))
+			{
+				var containerScenario = new Scenario(subDir, true);
+				AddScenarios(containerScenario, subDir);
+				scenarios.Add(containerScenario);
+			}
+
+			return scenarios;
+		}
+
+		private void AddScenarios(Scenario container, string path)
+		{
+			var scenarios = Directory.GetFiles(path, "*.txt")
+				.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
+			  .Select(f => new Scenario(f)).ToList();
+			scenarios.ToList().ForEach(s => container.AddScenario(s));
+
+			foreach (var subDir in Directory.GetDirectories(path))
+			{
+				var subContainer = new Scenario(subDir, true);
+				AddScenarios(subContainer, subDir);
+				container.AddScenario(subContainer);
+			}
 		}
 	}
 }

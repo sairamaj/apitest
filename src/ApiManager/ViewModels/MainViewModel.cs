@@ -173,7 +173,16 @@ namespace ApiManager.ViewModels
 
 		private CommandTreeViewModel GetSelectedScenario()
 		{
-			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s => s.Children));
+			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s =>
+			{
+				var children = s.Children.OfType<TreeViewItemViewModel>();
+				foreach (var child in s.Children)
+				{
+					children = children.Union(child.Children);
+				}
+
+				return children;
+			}));
 			foreach (var scenario in allScenarioViewModels.OfType<CommandTreeViewModel>())
 			{
 				if (scenario.IsSelected)
@@ -219,15 +228,11 @@ namespace ApiManager.ViewModels
 
 		private async void OnApiConfigSelectionChange()
 		{
-			var scenarioViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
-				.Where(s => !s.IsContainer)
-				.Select(c => new ScenarioViewModel(c, (s)=> { }, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
-				.ToList();
 			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
 				.Where(s => s.IsContainer)
 				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
 				.ToList();
-			this.Scenarios = scenarioViewModels.Union<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>()).ToList();
+			this.Scenarios = scenarioContainerViewModels.OfType<CommandTreeViewModel>().ToList();
 			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Scenarios);

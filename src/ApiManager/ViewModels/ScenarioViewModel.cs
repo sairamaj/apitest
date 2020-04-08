@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
@@ -15,6 +16,7 @@ namespace ApiManager.ViewModels
 	{
 		private IEnumerable<string> _apis;
 		private IDataRepository _repository;
+		private ApiInfo _apiInfo;
 		private Action<Scenario> _onEvent;
 		public ScenarioViewModel(
 			Scenario scenario, 
@@ -25,7 +27,8 @@ namespace ApiManager.ViewModels
 		{
 			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
 			this._onEvent = onEvent ?? throw new ArgumentNullException(nameof(onEvent));
-			this.IsExpanded = true;
+			this._apiInfo = apiInfo;
+
 			this.Scenario = scenario;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
@@ -47,7 +50,7 @@ namespace ApiManager.ViewModels
 		   });
 
 			this.CopyCommand = new DelegateCommand(() => this.CopyScenario());
-
+			this.IsExpanded = true;
 		}
 
 		public string Name { get; }
@@ -68,6 +71,14 @@ namespace ApiManager.ViewModels
 				}
 
 				return this._apis;
+			}
+		}
+
+		protected override void LoadChildren()
+		{
+			foreach (var container in this.Scenario.Children.Where(s => s.IsContainer))
+			{
+				this.Children.Add(new ScenarioContainerViewModel(container, this._apiInfo, this._repository));
 			}
 		}
 

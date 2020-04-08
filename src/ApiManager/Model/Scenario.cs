@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ApiManager.Model
 {
 	class Scenario
 	{
 		private List<Scenario> _children = new List<Scenario>();
-		public Scenario(string name, string fileName, bool isContainer = false)
+		public Scenario(string fileName, bool isContainer = false)
 		{
-			this.Name = name ?? throw new ArgumentNullException(nameof(name));
-			this.FileName= fileName ?? throw new ArgumentNullException(nameof(fileName));
+			this.FileName = fileName ?? throw new ArgumentNullException(nameof(fileName));
+			this.Name = Path.GetFileNameWithoutExtension(fileName);
 			this.IsContainer = isContainer;
 			this._children = new List<Scenario>();
 		}
+
 		public string Name { get;  }
 		public string FileName { get; }
 		public bool IsContainer { get; }

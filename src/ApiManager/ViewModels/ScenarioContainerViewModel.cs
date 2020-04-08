@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
@@ -73,12 +74,18 @@ namespace ApiManager.ViewModels
 		private void Load()
 		{
 			this.Children.Clear();
-			foreach (var child in this.Scenario.Children)
+			foreach (var child in this.Scenario.Children.Where(s => !s.IsContainer))
 			{
 				this.Children.Add(new ScenarioViewModel(child,  (newScenario)=>
 				{
 					this.Children.Add(new ScenarioViewModel(newScenario, (s) => { }, this._apiInfo, this._repository));
 				}, this._apiInfo, this._repository));
+			}
+
+			// Add containers.
+			foreach (var child in this.Scenario.Children.Where(s => s.IsContainer))
+			{
+				this.Children.Add(new ScenarioContainerViewModel(child, this._apiInfo, this._repository));
 			}
 		}
 	}
