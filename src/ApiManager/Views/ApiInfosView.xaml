@@ -15,7 +15,7 @@
 		</Style>
 		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
 	</UserControl.Resources>
-	<Grid Margin="0,20,0,0">
+	<Grid>
 		<StackPanel>
 			<TextBlock Text="Apis" FontWeight="Bold"/>
 			<ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0" SelectedItem="{Binding SelectedApiInfoViewModel}" Margin="10,5,0,0">

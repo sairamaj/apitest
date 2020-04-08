@@ -304,7 +304,7 @@
 	</UserControl.Resources>
 
 	<Grid>
-		<Grid Margin="0,20,0,0">
+		<Grid>
 			<Grid Background="White">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="30"/>

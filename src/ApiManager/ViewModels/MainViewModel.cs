@@ -124,7 +124,7 @@ namespace ApiManager.ViewModels
 
 			if (this.SelectedEnvironment == null)
 			{
-				MessageBox.Show("Select Variable File", "Variable File", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Select Environment ", "Environment", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
