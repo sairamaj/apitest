@@ -17,7 +17,8 @@
 	</UserControl.Resources>
 	<Grid Margin="0,20,0,0">
 		<StackPanel>
-			<ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0" SelectedItem="{Binding SelectedApiInfoViewModel}" Margin="10,0,0,0">
+			<TextBlock Text="Apis" FontWeight="Bold"/>
+			<ListView ItemsSource="{Binding ApiInfoViewModels}" BorderThickness="0" SelectedItem="{Binding SelectedApiInfoViewModel}" Margin="10,5,0,0">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 						<GridViewColumn>

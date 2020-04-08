@@ -33,6 +33,7 @@ def collectlog(response, sessionName):
             "session": sessionName,
             "url": response.request.url,
             "method": response.request.method,
+            "httpcode" : response.status_code,
             "statuscode": response.reason,
             "timetaken": response.elapsed.microseconds,
             "request": {

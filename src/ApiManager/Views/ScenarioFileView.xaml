@@ -16,26 +16,12 @@
 		</Style>
 	</UserControl.Resources>
 	<Grid>
-		<StackPanel>
-			<TextBlock Text="API Scanraios:" FontWeight="Bold"/>
-			<!--<ListView ItemsSource="{Binding Scenarios}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedScneario}">
-				<ListView.View >
-					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
-						<GridViewColumn>
-							<GridViewColumn.CellTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>
-										<TextBlock  Text="{Binding Name}" Margin="10,0,0,0" />
-									</StackPanel>
-								</DataTemplate>
-							</GridViewColumn.CellTemplate>
-						</GridViewColumn>
-					</GridView>
-				</ListView.View>
-			</ListView>-->
-
-			<TreeView ItemsSource="{Binding Scenarios}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+			<TextBlock Text="Scenarios" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
+		<TreeView ItemsSource="{Binding Scenarios}" Grid.Row="1" Grid.Column="0">
 				<TreeView.Resources>
 					<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
 						<StackPanel Orientation="Horizontal">
@@ -50,6 +36,5 @@
 					</HierarchicalDataTemplate>
 				</TreeView.Resources>
 			</TreeView>
-		</StackPanel>
 	</Grid>
 </UserControl>

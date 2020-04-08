@@ -15,6 +15,7 @@ namespace ApiManager.Model
 
 		public string Url { get; set; }
 		public string Method { get; set; }
+		public int HttpCode { get; set; }
 		public string StatusCode { get; set; }
 		public long TimeTaken { get; set; }
 		public Request Request { get; set; }
