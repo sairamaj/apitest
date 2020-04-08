@@ -221,7 +221,7 @@ namespace ApiManager.ViewModels
 		{
 			var scenarioViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
 				.Where(s => !s.IsContainer)
-				.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
+				.Select(c => new ScenarioViewModel(c, (s)=> { }, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
 				.ToList();
 			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
 				.Where(s => s.IsContainer)

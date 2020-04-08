@@ -14,9 +14,17 @@ namespace ApiManager.ViewModels
 	class ScenarioViewModel : CommandTreeViewModel
 	{
 		private IEnumerable<string> _apis;
-		public ScenarioViewModel(Scenario scenario, ApiInfo apiInfo, IDataRepository repository)
+		private IDataRepository _repository;
+		private Action<Scenario> _onEvent;
+		public ScenarioViewModel(
+			Scenario scenario, 
+			Action<Scenario> onEvent,
+			ApiInfo apiInfo, 
+			IDataRepository repository)
 			: base(null, scenario.Name, scenario.Name)
 		{
+			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
+			this._onEvent = onEvent ?? throw new ArgumentNullException(nameof(onEvent));
 			this.IsExpanded = true;
 			this.Scenario = scenario;
 			this.FileName = scenario.FileName;
@@ -37,11 +45,15 @@ namespace ApiManager.ViewModels
 				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			   }
 		   });
+
+			this.CopyCommand = new DelegateCommand(() => this.CopyScenario());
+
 		}
 
 		public string Name { get; }
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public ICommand CopyCommand { get; }
 		public Scenario Scenario { get; }
 		public IEnumerable<string> Apis
 		{
@@ -57,6 +69,12 @@ namespace ApiManager.ViewModels
 
 				return this._apis;
 			}
+		}
+
+		private void CopyScenario()
+		{
+			var newScenario = this._repository.CopyScenario(this.Scenario);
+			this._onEvent(newScenario);
 		}
 	}
 }

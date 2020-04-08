@@ -46,10 +46,7 @@ namespace ApiManager.ViewModels
 
 		protected override void LoadChildren()
 		{
-			foreach (var child in this.Scenario.Children)
-			{
-				this.Children.Add(new ScenarioViewModel(child, this._apiInfo, this._repository));
-			}
+			this.Load();		
 		}
 
 		public string Name { get; }
@@ -72,5 +69,17 @@ namespace ApiManager.ViewModels
 		}
 
 		public Scenario Scenario { get; }
+
+		private void Load()
+		{
+			this.Children.Clear();
+			foreach (var child in this.Scenario.Children)
+			{
+				this.Children.Add(new ScenarioViewModel(child,  (newScenario)=>
+				{
+					this.Children.Add(new ScenarioViewModel(newScenario, (s) => { }, this._apiInfo, this._repository));
+				}, this._apiInfo, this._repository));
+			}
+		}
 	}
 }

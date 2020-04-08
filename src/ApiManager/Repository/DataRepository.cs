@@ -137,5 +137,14 @@ namespace ApiManager.Repository
 				this._helpCommands = (info as HelpCommandInfo).Commands.ToList();
 			}
 		}
+
+		public Scenario CopyScenario(Scenario scenario)
+		{
+			var scenarioName = $"{scenario.Name}_copy.txt";
+			var scenarioFileName = Path.Combine(Path.GetDirectoryName(scenario.FileName), scenarioName);
+			var newScenario = new Scenario(scenarioName, scenarioFileName);
+			File.Copy(scenario.FileName, scenarioFileName);
+			return newScenario;
+		}
 	}
 }

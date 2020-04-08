@@ -27,7 +27,15 @@
 						<StackPanel Orientation="Horizontal">
 							<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
 							<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-						</StackPanel>
+
+						<StackPanel.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
+							</ContextMenu>
+						</StackPanel.ContextMenu>
+					</StackPanel>
+						
+						
 					</HierarchicalDataTemplate>
 					<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioContainerViewModel}"  ItemsSource="{Binding Children}">
 						<StackPanel Orientation="Horizontal">
