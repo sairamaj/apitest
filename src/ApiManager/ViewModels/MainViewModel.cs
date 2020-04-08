@@ -29,6 +29,7 @@ namespace ApiManager.ViewModels
 		private IDataRepository _dataRepository;
 		private ISettings _settings;
 		private EnvironmentViewModel _selectedEnvironment;
+		private IResourceManager _resourceManager;
 
 		public MainViewModel(
 			ICommandExecutor executor,
@@ -41,6 +42,7 @@ namespace ApiManager.ViewModels
 			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
 			this._dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
+			this._resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
 
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
@@ -50,12 +52,9 @@ namespace ApiManager.ViewModels
 				this.LogViewModel.Add(error);
 			});
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
+			this.RefreshCommand = new DelegateCommand(this.Load);
 
-			foreach (var envInfo in dataRepository.GetApiConfigurations())
-			{
-				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, dataRepository, executor));
-			}
-
+			this.Load();
 			try
 			{
 				SubscribeApiInfo();
@@ -66,15 +65,9 @@ namespace ApiManager.ViewModels
 				MessageBox.Show(e.ToString());
 			}
 
-			this.VariableContainerViewModel = new VariableContainerViewModel(resourceManager);
-			this.AssertContainerViewModel = new AssertContainerViewModel(resourceManager);
-			this.ScriptContainerViewModel = new ScriptContainerViewModel(resourceManager);
-
-			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.LogViewModel = new LogViewModel();
 			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			//this.SelectedScneario = this.Scenarios.FirstOrDefault();
-			OnApiConfigSelectionChange();
 		}
 
 		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
@@ -113,12 +106,13 @@ namespace ApiManager.ViewModels
 		public bool IsClearBeforeRun { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
+		public ICommand RefreshCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
 		public LogViewModel LogViewModel { get; set; }
-		public VariableContainerViewModel VariableContainerViewModel { get; }
-		public AssertContainerViewModel AssertContainerViewModel { get; }
-		public ScriptContainerViewModel ScriptContainerViewModel { get; }
+		public VariableContainerViewModel VariableContainerViewModel { get; private set; }
+		public AssertContainerViewModel AssertContainerViewModel { get; private set; }
+		public ScriptContainerViewModel ScriptContainerViewModel { get; private set; }
 
 		public async Task RunAsync()
 		{
@@ -360,6 +354,22 @@ namespace ApiManager.ViewModels
 			{
 				MessageBox.Show($"{e.Message} - issues.txt", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		private void Load()
+		{
+			this.ApiInfoViewModels.Clear();
+			foreach (var envInfo in this._dataRepository.GetApiConfigurations())
+			{
+				this.ApiInfoViewModels.Add(new ApiViewModel(envInfo, this._dataRepository, this._apiExecutor));
+			}
+
+			this.VariableContainerViewModel = new VariableContainerViewModel(this._resourceManager);
+			this.AssertContainerViewModel = new AssertContainerViewModel(this._resourceManager);
+			this.ScriptContainerViewModel = new ScriptContainerViewModel(this._resourceManager);
+
+			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
+			this.OnApiConfigSelectionChange();
 		}
 	}
 }
