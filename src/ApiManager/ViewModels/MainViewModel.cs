@@ -17,6 +17,7 @@ using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.Registration;
 using Wpf.Util.Core.ViewModels;
+using Wpf.Util.Core.Extensions;
 
 namespace ApiManager.ViewModels
 {
@@ -145,23 +146,30 @@ namespace ApiManager.ViewModels
 				{
 					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
 						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario), null);
+
 					await new Executor(this._apiExecutor, this._settings)
-						.RunScenarioAsync(
-						this.SelectedApiInfoViewModel.ApiInfo,
-						this.SelectedEnvironment.Environment,
-						scenarioViewModel.Scenario).ConfigureAwait(false);
+									   .RunScenarioAsync(
+									   this.SelectedApiInfoViewModel.ApiInfo,
+									   this.SelectedEnvironment.Environment,
+									   scenarioViewModel.Scenario).ConfigureAwait(false);
 				}
 				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 				{
-					foreach (var scenario in scenaroContainer.Scenario.Children)
+					foreach (var scenarioviewModel 
+						in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
+
 					{
-						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenario), null);
+						this.SelectedApiInfoViewModel.Add(
+							new ApiExecuteInfo(
+							this.SelectedApiInfoViewModel.Name,
+							this.SelectedEnvironment.Environment,
+							scenarioviewModel.Scenario), null);
+
 						await new Executor(this._apiExecutor, this._settings)
 							.RunScenarioAsync(
 							this.SelectedApiInfoViewModel.ApiInfo,
 							this.SelectedEnvironment.Environment,
-							scenario).ConfigureAwait(false);
+							scenarioviewModel.Scenario).ConfigureAwait(false);
 					}
 				}
 				else
@@ -181,16 +189,7 @@ namespace ApiManager.ViewModels
 
 		private CommandTreeViewModel GetSelectedScenario()
 		{
-			var allScenarioViewModels = this.Scenarios.Union(this.Scenarios.SelectMany(s =>
-			{
-				var children = s.Children.OfType<TreeViewItemViewModel>();
-				foreach (var child in s.Children)
-				{
-					children = children.Union(child.Children);
-				}
-
-				return children;
-			}));
+			var allScenarioViewModels = this.Scenarios.Flatten(c => c.Children.OfType<CommandTreeViewModel>());
 			foreach (var scenario in allScenarioViewModels.OfType<CommandTreeViewModel>())
 			{
 				if (scenario.IsSelected)

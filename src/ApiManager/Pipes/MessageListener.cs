@@ -28,12 +28,11 @@ namespace ApiManager.Pipes
 					TokenImpersonationLevel.Impersonation);
 			do
 			{
-
-				TraceLogger.Debug("MessageListener.SubScribe.Connect");
-				await pipeClient.ConnectAsync(_source.Token);
-				TraceLogger.Debug("MessageListener.SubScribe.Connected");
 				try
 				{
+					TraceLogger.Debug("MessageListener.SubScribe.Connect");
+					await pipeClient.ConnectAsync(_source.Token);
+					TraceLogger.Debug("MessageListener.SubScribe.Connected");
 					do
 					{
 						var data = await new StreamString(pipeClient).ReadStringAsync();
@@ -47,22 +46,28 @@ namespace ApiManager.Pipes
 						}
 					} while (true);
 				}
+				catch (OperationCanceledException)
+				{
+					TraceLogger.Debug($"MessageListener.SubScribe OperationCanceledException. quitting");
+					quit = true;
+				}
 				catch (Exception e)
 				{
 					TraceLogger.Error($"MessageListener.SubScribe.Read:{e}");
-					quit = true;
 				}
 			} while (!quit);
 
+			TraceLogger.Debug("MessageListener.SubScribe closing the pipe.");
 			pipeClient.Close();
 		}
 
 		public async Task UnSubscribeAll()
 		{
+			TraceLogger.Debug("MessageListener.UnSubscribeAll cancelling.");
 			this._source.Cancel();
+			TraceLogger.Debug("MessageListener.UnSubscribeAll cancelled.");
 			await Task.Delay(0).ConfigureAwait(false);
 		}
-
 
 		class StreamString
 		{
