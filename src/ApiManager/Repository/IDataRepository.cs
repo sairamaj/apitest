@@ -12,5 +12,6 @@ namespace ApiManager.Repository
 		Task<IEnumerable<string>> GetVariables(ApiInfo info);
 		Task<IEnumerable<HelpCommand>> GetHelpCommands();
 		void AddManagementInfo(Info info);
+		Scenario CopyScenario(Scenario scenario);
 	}
 }
