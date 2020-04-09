@@ -15,50 +15,45 @@ using ApiManager.Variables.ViewModels;
 using Newtonsoft.Json;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
+using Wpf.Util.Core.Registration;
 using Wpf.Util.Core.ViewModels;
-using Environment = ApiManager.Model.Environment;
 
 namespace ApiManager.ViewModels
 {
 	class MainViewModel : CoreViewModel
 	{
 		private ApiViewModel _selectedApiInfoViewModel;
-		private IMessageListener _listener;
 		private ICommandExecutor _apiExecutor;
-		private PipeDataProcessor _dataProcessor;
 		private IDataRepository _dataRepository;
 		private ISettings _settings;
 		private EnvironmentViewModel _selectedEnvironment;
 		private IResourceManager _resourceManager;
+		private IServiceLocator _serviceLocator;
 
 		public MainViewModel(
 			ICommandExecutor executor,
 			IDataRepository dataRepository,
-			IMessageListener listener,
 			ISettings settings,
-			IResourceManager resourceManager)
+			IResourceManager resourceManager,
+			IServiceLocator serviceLocator)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
-			this._listener = listener ?? throw new ArgumentNullException(nameof(listener));
 			this._dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 			this._resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
+			this._serviceLocator = serviceLocator ?? throw new ArgumentNullException(nameof(serviceLocator));
 
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
-			_dataProcessor = new PipeDataProcessor(listener, error =>
-			{
-				this.LogViewModel.Add(error);
-			});
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 			this.RefreshCommand = new DelegateCommand(this.Load);
 
 			this.Load();
 			try
 			{
-				SubscribeApiInfo();
-				SubscribeLogs();
+				// SubscribeApiInfo();
+				// SubscribeLogs();
 			}
 			catch (Exception e)
 			{
@@ -128,8 +123,17 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
+			var listener = this._serviceLocator.Resolve<IMessageListener>();
 			try
 			{
+				var dataPocessor = new PipeDataProcessor(listener, error =>
+				{
+					this.LogViewModel.Add(error);
+				});
+
+
+				this.SubscribeApiInfo(dataPocessor);
+
 				var selectedScenario = GetSelectedScenario();
 
 				if (this.IsClearBeforeRun)
@@ -168,6 +172,10 @@ namespace ApiManager.ViewModels
 			catch (System.Exception e)
 			{
 				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			finally
+			{
+				await listener.UnSubscribeAll().ConfigureAwait(false);
 			}
 		}
 
@@ -239,49 +247,49 @@ namespace ApiManager.ViewModels
 			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
 		}
 
-		private void Subscribe(string name, Action<string> onMessage)
-		{
-			try
-			{
-				this._listener.SubScribe(name, onMessage);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.ToString());
-			}
-		}
+		//private void Subscribe(string name, Action<string> onMessage)
+		//{
+		//	try
+		//	{
+		//		this._listener.SubScribe(name, onMessage);
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		MessageBox.Show(e.ToString());
+		//	}
+		//}
 
-		private void SubscribeApiInfo()
+		private void SubscribeApiInfo(PipeDataProcessor dataProcessor)
 		{
-			_dataProcessor.Add("apiinfo", "api", msg =>
+			dataProcessor.Add("apiinfo", "api", msg =>
 			{
 				ConsumePipeData<ApiRequest>(msg);
 			});
 
-			_dataProcessor.Add("apiinfo", "extract", msg =>
+			dataProcessor.Add("apiinfo", "extract", msg =>
 			{
 				ConsumePipeData<ExtractVariableInfo>(msg);
 			});
 
-			_dataProcessor.Add("apiinfo", "assert", msg =>
+			dataProcessor.Add("apiinfo", "assert", msg =>
 			{
 				ConsumePipeData<AssertInfo>(msg);
 			});
 
-			_dataProcessor.Add("management", "apicommands", msg =>
+			dataProcessor.Add("management", "apicommands", msg =>
 			{
 				ConsumeManagementPipeData<ApiCommandInfo>(msg);
 			});
 
-			_dataProcessor.Add("management", "commands", msg =>
+			dataProcessor.Add("management", "commands", msg =>
 			{
 				ConsumeManagementPipeData<HelpCommandInfo>(msg);
 			});
-			_dataProcessor.Add("error", "error", msg =>
+			dataProcessor.Add("error", "error", msg =>
 			{
 				ConsumePipeData<ErrorInfo>(msg);
 			});
-			_dataProcessor.Add("js", "js", msg =>
+			dataProcessor.Add("js", "js", msg =>
 			{
 				ConsumePipeData<JsScriptInfo>(msg);
 			});
@@ -312,37 +320,37 @@ namespace ApiManager.ViewModels
 			this._dataRepository.AddManagementInfo(info);
 		}
 
-		private void SubscribeLogs()
-		{
-			Subscribe("log", msg =>
-			{
-				try
-				{
-					this.LogViewModel.Add(msg);
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show(e.Message);
-					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
-				}
-			});
-		}
+		//private void SubscribeLogs()
+		//{
+		//	Subscribe("log", msg =>
+		//	{
+		//		try
+		//		{
+		//			this.LogViewModel.Add(msg);
+		//		}
+		//		catch (Exception e)
+		//		{
+		//			MessageBox.Show(e.Message);
+		//			TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+		//		}
+		//	});
+		//}
 
-		private void SubscribeManagement()
-		{
-			Subscribe("management", msg =>
-			{
-				try
-				{
-					this.LogViewModel.Add(msg);
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show(e.Message);
-					TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
-				}
-			});
-		}
+		//private void SubscribeManagement()
+		//{
+		//	Subscribe("management", msg =>
+		//	{
+		//		try
+		//		{
+		//			this.LogViewModel.Add(msg);
+		//		}
+		//		catch (Exception e)
+		//		{
+		//			MessageBox.Show(e.Message);
+		//			TraceLogger.Error($"Error in apiinfo subscribe method {e.Message} ");
+		//		}
+		//	});
+		//}
 
 		private void ShowIssues()
 		{

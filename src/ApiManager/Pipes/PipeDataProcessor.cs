@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApiManager.Pipes
 {
@@ -20,7 +18,7 @@ namespace ApiManager.Pipes
 
 		public void Add(string name, string command, Action<string> action)
 		{
-			_commandActions.Add(command, action);
+			_commandActions[command] = action;
 			this._listener.SubScribe(name, msg =>
 			{
 				try

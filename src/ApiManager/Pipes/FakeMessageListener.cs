@@ -43,5 +43,10 @@ namespace ApiManager.Pipes
 		{
 			await Task.Delay(0);
 		}
+
+		public Task UnSubscribeAll()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

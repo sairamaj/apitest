@@ -49,9 +49,9 @@ namespace ApiManager
 					DataContext = new MainViewModel(
 					serviceLocator.Resolve<ICommandExecutor>(),
 					serviceLocator.Resolve<IDataRepository>(),
-					serviceLocator.Resolve<IMessageListener>(),
 					serviceLocator.Resolve<ISettings>(),
-					serviceLocator.Resolve<IResourceManager>())
+					serviceLocator.Resolve<IResourceManager>(),
+					serviceLocator)
 				};
 				RunWithSingleInstance(() => win.ShowDialog());
 			}

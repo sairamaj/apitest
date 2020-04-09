@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ApiManager.Model;
 using Newtonsoft.Json;
@@ -11,55 +12,25 @@ namespace ApiManager.Pipes
 {
 	internal class MessageListener : IMessageListener
 	{
-		public async Task SubScribe(Action<ApiRequest> onMessage)
+		CancellationTokenSource _source;
+		public MessageListener()
 		{
-			do
-			{
-				var pipeClient =
-					new NamedPipeClientStream(
-						".",
-						"apiinfo",
-						PipeDirection.In, PipeOptions.None,
-						TokenImpersonationLevel.Impersonation);
-
-				TraceLogger.Debug("MessageListener.SubScribe.Connect");
-				await pipeClient.ConnectAsync();
-				TraceLogger.Debug("MessageListener.SubScribe.Connected");
-				try
-				{
-					do
-					{
-						var data = await new StreamString(pipeClient).ReadStringAsync();
-						try
-						{
-							onMessage(JsonConvert.DeserializeObject<ApiRequest>(data));
-						}
-						catch (Exception e)
-						{
-							TraceLogger.Error($"MessageListener.SubScribe.Deserialize:{e}");
-						}
-					} while (true);
-				}
-				catch (Exception e)
-				{
-					TraceLogger.Error($"MessageListener.SubScribe.Read:{e}");
-				}
-			} while (true);
+			_source = new CancellationTokenSource();
 		}
-
 		public async Task SubScribe(string name, Action<string> onMessage)
 		{
+			var quit = false;
+			var pipeClient =
+				new NamedPipeClientStream(
+					".",
+					name,
+					PipeDirection.In, PipeOptions.None,
+					TokenImpersonationLevel.Impersonation);
 			do
 			{
-				var pipeClient =
-					new NamedPipeClientStream(
-						".",
-						name,
-						PipeDirection.In, PipeOptions.None,
-						TokenImpersonationLevel.Impersonation);
 
 				TraceLogger.Debug("MessageListener.SubScribe.Connect");
-				await pipeClient.ConnectAsync();
+				await pipeClient.ConnectAsync(_source.Token);
 				TraceLogger.Debug("MessageListener.SubScribe.Connected");
 				try
 				{
@@ -79,9 +50,19 @@ namespace ApiManager.Pipes
 				catch (Exception e)
 				{
 					TraceLogger.Error($"MessageListener.SubScribe.Read:{e}");
+					quit = true;
 				}
-			} while (true);
+			} while (!quit);
+
+			pipeClient.Close();
 		}
+
+		public async Task UnSubscribeAll()
+		{
+			this._source.Cancel();
+			await Task.Delay(0).ConfigureAwait(false);
+		}
+
 
 		class StreamString
 		{
