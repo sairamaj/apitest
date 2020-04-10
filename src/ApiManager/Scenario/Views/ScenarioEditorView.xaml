@@ -1,0 +1,12 @@
+﻿<Window x:Class="ApiManager.Scenario.Views.ScenarioEditorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.Views"
+        mc:Ignorable="d"
+        Title="ScenarioEditorView" Height="450" Width="800">
+    <Grid>
+        <TextBox Text="{Binding Content}" TextWrapping="Wrap"  Height="300" />
+    </Grid>
+</Window>

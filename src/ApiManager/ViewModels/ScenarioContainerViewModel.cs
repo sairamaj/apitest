@@ -76,9 +76,9 @@ namespace ApiManager.ViewModels
 			this.Children.Clear();
 			foreach (var child in this.Scenario.Children.Where(s => !s.IsContainer))
 			{
-				this.Children.Add(new ScenarioViewModel(child,  (newScenario)=>
+				this.Children.Add(new ScenarioViewModel(this, child,  (newScenario)=>
 				{
-					this.Children.Add(new ScenarioViewModel(newScenario, (s) => { }, this._apiInfo, this._repository));
+					this.Children.Add(new ScenarioViewModel(this, newScenario, (s) => { }, this._apiInfo, this._repository));
 				}, this._apiInfo, this._repository));
 			}
 
@@ -87,6 +87,13 @@ namespace ApiManager.ViewModels
 			{
 				this.Children.Add(new ScenarioContainerViewModel(child, this._apiInfo, this._repository));
 			}
+		}
+
+		internal void AddScenario(string name)
+		{
+			var fileName = Path.Combine(Path.GetDirectoryName(this.FileName), name) + ".txt";
+			var newScenario = new Scenario(fileName);
+			this.Children.Add(new ScenarioViewModel(this, newScenario, (s)=> { }, this._apiInfo, this._repository));
 		}
 	}
 }

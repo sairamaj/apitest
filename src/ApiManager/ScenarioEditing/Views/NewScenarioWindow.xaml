@@ -1,0 +1,24 @@
+﻿<Window x:Class="ApiManager.ScenarioEditing.Views.NewScenarioWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.ScenarioEditing.Views"
+        mc:Ignorable="d"
+        Title="Enter scenario name" Height="250" Width="400">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="80"/>
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0"/>
+		<TextBox Text="{Binding Name}" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" Width="300"/>
+		<Button Content="Ok" Grid.Row="1" Grid.Column="0"/>
+		<Button Content="Cancel" Grid.Row="1" Grid.Column="1"/>
+	</Grid>
+</Window>

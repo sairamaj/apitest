@@ -18,6 +18,7 @@ using Wpf.Util.Core.Command;
 using Wpf.Util.Core.Registration;
 using Wpf.Util.Core.ViewModels;
 using Wpf.Util.Core.Extensions;
+using ApiManager.ScenarioEditing.Views;
 
 namespace ApiManager.ViewModels
 {
@@ -49,6 +50,16 @@ namespace ApiManager.ViewModels
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 			this.RefreshCommand = new DelegateCommand(this.Load);
+			this.NewScenarioFileCommand = new DelegateCommand(() =>
+			{
+				var selectedScenarioViewModel = this.GetSelectedScenario();
+				if (selectedScenarioViewModel == null)
+				{
+					MessageBox.Show("Select scneario folder/file.");
+					return;
+				}
+				CreateNewScenario(selectedScenarioViewModel);
+			});
 
 			this.Load();
 			try
@@ -65,7 +76,6 @@ namespace ApiManager.ViewModels
 			//this.Scenarios = this.SelectedApiInfoViewModel.ApiInfo.Scenarios.Select(c => new ScenarioViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			//this.SelectedScneario = this.Scenarios.FirstOrDefault();
 		}
-
 		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
 
 		public ApiViewModel SelectedApiInfoViewModel
@@ -103,6 +113,7 @@ namespace ApiManager.ViewModels
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
 		public ICommand RefreshCommand { get; set; }
+		public ICommand NewScenarioFileCommand { get; set; }
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
 		public LogViewModel LogViewModel { get; set; }
@@ -155,7 +166,7 @@ namespace ApiManager.ViewModels
 				}
 				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 				{
-					foreach (var scenarioviewModel 
+					foreach (var scenarioviewModel
 						in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
 
 					{
@@ -382,6 +393,37 @@ namespace ApiManager.ViewModels
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.OnApiConfigSelectionChange();
+		}
+
+		private void CreateNewScenario(CommandTreeViewModel selectedScenarioViewModel)
+		{
+			var name = "foo";
+			ScenarioContainerViewModel container = null;
+			if (selectedScenarioViewModel is ScenarioViewModel fileViewModel)
+			{
+				container = fileViewModel.Parent as ScenarioContainerViewModel;
+			}
+			if (selectedScenarioViewModel is ScenarioContainerViewModel)
+			{
+				container = selectedScenarioViewModel as ScenarioContainerViewModel;
+			}
+
+			if (container == null)
+			{
+				MessageBox.Show($"Unable to find container view for :{selectedScenarioViewModel.Name}");
+				return;
+			}
+
+			container.AddScenario("foo");
+
+			return;
+			var win = new NewScenarioWindow();
+			var ret = win.ShowDialog();
+			if (!ret.Value)
+			{
+				return;
+			}
+			MessageBox.Show($"new scenario file: {selectedScenarioViewModel.Name}");
 		}
 	}
 }

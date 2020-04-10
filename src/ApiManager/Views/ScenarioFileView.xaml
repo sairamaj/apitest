@@ -30,7 +30,6 @@
 					 VerticalAlignment="Center"
 					 HorizontalAlignment="Right"
 					 DockPanel.Dock="Right"
-					 IsEnabled="false"
 					 Margin="3,0,0,0"/>
 			<Button  Background="{StaticResource NewFileButtonImageBrush}" 
 					 Width="20" Height="20" 

@@ -108,6 +108,9 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="ScenarioEditing\Views\NewScenarioWindow.xaml.cs">
+      <DependentUpon>NewScenarioWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\JavaScriptUiHelper.cs" />
     <Compile Include="Scripts\Model\ScriptData.cs" />
     <Compile Include="Scripts\ViewModels\JavaScriptViewModel.cs" />
@@ -199,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\Views\NewScenarioWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -381,6 +388,8 @@
     </Content>
     <Resource Include="images\failed.png" />
     <Resource Include="images\success.png" />
+    <Resource Include="images\newfile.png" />
+    <Resource Include="images\newfolder.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

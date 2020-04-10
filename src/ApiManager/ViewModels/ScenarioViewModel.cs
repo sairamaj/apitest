@@ -19,11 +19,12 @@ namespace ApiManager.ViewModels
 		private ApiInfo _apiInfo;
 		private Action<Scenario> _onEvent;
 		public ScenarioViewModel(
+			CommandTreeViewModel parent,
 			Scenario scenario, 
 			Action<Scenario> onEvent,
 			ApiInfo apiInfo, 
 			IDataRepository repository)
-			: base(null, scenario.Name, scenario.Name)
+			: base(parent, scenario.Name, scenario.Name)
 		{
 			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
 			this._onEvent = onEvent ?? throw new ArgumentNullException(nameof(onEvent));
