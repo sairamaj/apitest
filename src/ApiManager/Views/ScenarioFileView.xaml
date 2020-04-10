@@ -9,6 +9,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
 		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
+		<ImageBrush x:Key="NewFileButtonImageBrush" ImageSource="../images/newfile.png" />
+		<ImageBrush x:Key="NewFolderButtonImageBrush" ImageSource="../images/newfolder.png" />
 
 		<Style TargetType="TreeViewItem">
 			<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -20,13 +22,30 @@
 			<RowDefinition Height="20" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
+		<DockPanel>
 			<TextBlock Text="Scenarios" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
+			<Button  Background="{StaticResource NewFolderButtonImageBrush}" 
+					 Width="20" Height="20" 
+					 Command="{Binding NewScenarioFolderCommand}" 
+					 VerticalAlignment="Center"
+					 HorizontalAlignment="Right"
+					 DockPanel.Dock="Right"
+					 IsEnabled="false"
+					 Margin="3,0,0,0"/>
+			<Button  Background="{StaticResource NewFileButtonImageBrush}" 
+					 Width="20" Height="20" 
+					 Command="{Binding NewScenarioFileCommand}" 
+					 VerticalAlignment="Center"
+					 DockPanel.Dock="Right"
+					 HorizontalAlignment="Right" Margin="5,0,0,0"
+					 />
+		</DockPanel>
 		<TreeView ItemsSource="{Binding Scenarios}" Grid.Row="1" Grid.Column="0">
-				<TreeView.Resources>
-					<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
-						<StackPanel Orientation="Horizontal">
-							<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
-							<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+			<TreeView.Resources>
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
 						<StackPanel.ContextMenu>
 							<ContextMenu>
@@ -34,15 +53,15 @@
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>
-						
-						
-					</HierarchicalDataTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioContainerViewModel}"  ItemsSource="{Binding Children}">
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="{Binding Name}" />
-						</StackPanel>
-					</HierarchicalDataTemplate>
-				</TreeView.Resources>
-			</TreeView>
+
+
+				</HierarchicalDataTemplate>
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioContainerViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+			</TreeView.Resources>
+		</TreeView>
 	</Grid>
 </UserControl>
