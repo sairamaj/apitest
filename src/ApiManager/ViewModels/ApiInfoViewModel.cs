@@ -1,9 +1,4 @@
-﻿using ApiManager.Model;
-using ApiManager.Repository;
-using ApiManager.Views;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,6 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using ApiManager.Model;
+using ApiManager.Repository;
+using ApiManager.Views;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Wpf.Util.Core.Command;
 
 namespace ApiManager.ViewModels
@@ -62,7 +62,7 @@ namespace ApiManager.ViewModels
 		public ApiRequest ApiInfo { get; set; }
 		public ICommand ShowJwtTokenCommand { get; set; }
 		public ICommand ViewAsHTMLCommand { get; set; }
-
+		public bool IsSuccess => this.ApiInfo.HttpCode >= 200 && this.ApiInfo.HttpCode <= 299;
 
 		static string SerializeToken(String jwtToken)
 		{

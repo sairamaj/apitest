@@ -6,7 +6,7 @@ class PropertyBag:
         self.properties = parameters
         self.access_token = ""
         self.session_name = "unknown"
-        self.last_response = None
+        self.last_http_request = None
         self.resources_path = None
 
     def get(self, name):
@@ -32,12 +32,12 @@ class PropertyBag:
         self._session_name = value
 
     @property
-    def last_response(self):
-        return self._last_response
+    def last_http_request(self):
+        return self._last_http_request
 
-    @last_response.setter
-    def last_response(self, value):
-        self._last_response = value
+    @last_http_request.setter
+    def last_http_request(self, value):
+        self._last_http_request = value
 
     @property
     def config_filename(self):
@@ -53,8 +53,10 @@ class PropertyBag:
 
     def additional_properties(self):
         additional = {}
-        if self.last_response != None:
-            additional['last_response'] = self.last_response[:30]
+        if self.last_http_request != None:
+            additional['last_http_request.request'] = self.last_http_request.request[:30]
+            additional['last_http_request.response'] = self.last_http_request.response[:30]
+            additional['last_http_request.status_code'] = self.last_http_request.status_code
         additional['session'] = self.session_name
         additional['resource_path'] = self.resource_path
         return additional

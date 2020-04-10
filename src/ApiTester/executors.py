@@ -19,6 +19,7 @@ from utils import readAllText
 from commandinfo import getCommandsInfo
 from js_executor import JsExecutor
 from jpath_extractor import JPathExtractor
+from http_request import HttpRequest
 
 
 class ExecutorRequest:
@@ -54,13 +55,15 @@ class AccessTokenExecutor(ICommand):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            self.property_bag.last_response = self.extractResponseContent(
-                oauth.response)
+            self.property_bag.last_http_request = HttpRequest(
+                "", self.extractResponseContent(oauth.response), oauth.response.status_code)
             collectlog(oauth.response, self.property_bag.session_name)
             pprint(response)
             self.property_bag.access_token = response["access_token"]
         except Exception as e:
             collectlog(oauth.response, self.property_bag.session_name)
+            self.property_bag.last_http_request = HttpRequest(
+                "", self.extractResponseContent(oauth.response), oauth.response.status_code)
             raise
 
 
@@ -84,13 +87,14 @@ class ApiExecutor(ICommand):
             else:
                 raise ValueError(f"{executorRequest.method} not supported.")
 
-            self.property_bag.last_response = self.extractResponseContent(
-                api.response)
+            self.property_bag.last_http_request = HttpRequest(
+                "", self.extractResponseContent(api.response), api.response.status_code)
+
             collectlog(api.response, self.property_bag.session_name)
             pprint(response)
         except ApiException as ae:
-            self.property_bag.last_response = self.extractResponseContent(
-                api.response)
+            self.property_bag.last_http_request = HttpRequest(
+                "", self.extractResponseContent(api.response), api.response.status_code)
             collectlog(api.response, self.property_bag.session_name)
         except Exception as e:
             self.property_bag.last_response = self.extractResponseContent(
@@ -250,10 +254,11 @@ class ExtractVariableCommandExecutor(ICommand):
             if isinstance(executorRequest, ExtractVariableExecutorRequest) == False:
                 raise ValueError(
                     f"{type(executorRequest)} is not of ExtractVariableExecutorRequest")
-            if self.property_bag.last_response == None:
+            if self.property_bag.last_http_request == None:
                 raise ValueError(
-                    "no last_response avialble, please execute any api request to extract variables.")
-            variable_value = JPathExtractor(json.loads(self.property_bag.last_response)).extract(variable_path)
+                    "no last_http_request avialble, please execute any api request to extract variables.")
+            variable_value = JPathExtractor(json.loads(
+                self.property_bag.last_http_request.response)).extract(variable_path)
         except Exception as e:
             success = False
             message = str(e)
@@ -275,17 +280,24 @@ class AssertCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of AssertExecutorRequest")
 
+        if self.property_bag.last_http_request == None:
+            raise ValueError("No http request yet, please execute any api")
+
         json_path = executorRequest.json_path
         expected = executorRequest.value
         actual = ""
         try:
             # check whether variable exists in property bag or not
-            actual = JPathExtractor(json.loads(self.property_bag.last_response)).extract(json_path)
+            if json_path == "status_code" :  # special case
+                actual = self.property_bag.last_http_request.status_code
+            else:
+                actual = JPathExtractor(json.loads(
+                self.property_bag.last_http_request.response)).extract(json_path)
             if actual == None:
                 raise ValueError(
                     f"!assert: variable {executorRequest.variable_name} not found")
             print(f"asserting: {actual} ---> {executorRequest.value}")
-            assert actual == executorRequest.value, f"Did not match. expected:{executorRequest.value} actual:{actual}"
+            assert str(actual) == str(executorRequest.value), f"Did not match. expected:{executorRequest.value} actual:{actual}"
         except AssertionError as e:
             sendAssertInfo(self.property_bag.session_name,
                            json_path, expected, actual, False, str(e))
@@ -293,6 +305,7 @@ class AssertCommandExecutor(ICommand):
 
         sendAssertInfo(self.property_bag.session_name,
                        json_path, expected, actual, True, "success")
+
 
 class AssertsJsRequestCommandExecutor(ICommand):
     def __init__(self, property_bag):
@@ -306,7 +319,7 @@ class AssertsJsRequestCommandExecutor(ICommand):
         js = JsExecutor(executorRequest.js_file)
         try:
             script_response = js.execute_postprocess_with_asserts(
-                self.property_bag.last_response, executorRequest.assert_records)
+                self.property_bag.last_http_request.response, executorRequest.assert_records)
             if script_response == None:
                 script_response = "success"
             sendJsExecuteInfo(self.property_bag.session_name,
@@ -314,7 +327,7 @@ class AssertsJsRequestCommandExecutor(ICommand):
         except Exception as e:
             sendJsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, str(e), True)
-        
+
 
 class ConvertJsonToHtmlCommandExecutor(ICommand):
     def __init__(self, property_bag):
@@ -347,7 +360,7 @@ class JavaScirptCommandExecutor(ICommand):
         js = JsExecutor(executorRequest.js_file)
         try:
             script_response = js.execute_postprocess(
-                'this is request', self.property_bag.last_response, executorRequest.script_args)
+                'this is request', self.property_bag.last_http_request.response, executorRequest.script_args)
             if script_response == None:
                 script_response = "success"
             sendJsExecuteInfo(self.property_bag.session_name,

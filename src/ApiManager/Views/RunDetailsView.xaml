@@ -63,10 +63,7 @@
 			<Setter Property="Control.Foreground" Value="Red" />
 			<Setter Property="Control.FontWeight" Value="Bold" />
 			<Style.Triggers>
-				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="OK" >
-					<Setter Property="Control.Foreground" Value="Green" />
-				</DataTrigger>
-				<DataTrigger Binding="{Binding ApiInfo.StatusCode}" Value="Created" >
+				<DataTrigger Binding="{Binding IsSuccess}" Value="True" >
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
 			</Style.Triggers>
