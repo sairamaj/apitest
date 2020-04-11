@@ -75,3 +75,10 @@ class JavaScriptExecutorRequest(ExecutorRequest):
         self.command = "!js"
         self.js_file = js_file
         self.script_args = script_args
+
+class HttpRequestExecutorRequest(ExecutorRequest):
+    def __init__(self, request_file, request_id):
+        self.command = "!httprequest"
+        self.request_file = request_file
+        self.request_id = request_id
+    

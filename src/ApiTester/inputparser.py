@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
-from executorRequest import AssertsExecutorWithJsRequest
+from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
 from utils import readAllText, read_key_value_pairs
@@ -19,6 +19,7 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         '!assert': AssertRequestInputParser(workingDirectory),
         '!asserts_with_js': AssertsWithJsRequestInputParser(workingDirectory),
         '!extract': ExtractVariableRequestInputParser(workingDirectory),
+        '!httprequest': HttpRequestInputParser(workingDirectory),
         '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
         '!set': SetCommandInputParser(workingDirectory),
@@ -229,7 +230,8 @@ class AssertsWithJsRequestInputParser(InputParser):
         delimiter = '|'
         if len(parts) > 2:
             delimiter = parts[2]
-        assert_records = transform(read_key_value_pairs(assert_file, delimiter),property_bag.properties)
+        assert_records = transform(read_key_value_pairs(
+            assert_file, delimiter), property_bag.properties)
 
         js_file = ResourceProvider(
             property_bag.resource_path).js_filepath('asserts_json.js')
@@ -267,3 +269,23 @@ class JavaScriptRequestInputParser(InputParser):
             if len(arg_parts) > 1:
                 script_args[arg_parts[0]] = arg_parts[1]
         return JavaScriptExecutorRequest(js_file, script_args)
+
+
+class HttpRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        parts = command.split(' ')
+        if len(parts) < 2:
+            raise ValueError(
+                "!httprequest requires request_filename [optional request_id] (ex: !httprequest sample.json [request_id]) ")
+        request_file = parts[1]
+        request_id = ""
+        if len(parts) > 2:
+            request_id = parts[2]
+
+        if os.path.exists(request_file) == False:
+            raise ValueError(f"{request_file} does not exists.")
+
+        return HttpRequestExecutorRequest(request_file, request_id)

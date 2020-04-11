@@ -19,7 +19,7 @@ def debug(response):
     pprint('_________________')
 
 
-def collectlog(response, sessionName):
+def collectlog(response, sessionName, request_id=""):
     debug(response)
 
     try:
@@ -31,9 +31,10 @@ def collectlog(response, sessionName):
 
         pipeServer.send("api|" + json.dumps({
             "session": sessionName,
+            "requestid": request_id,
             "url": response.request.url,
             "method": response.request.method,
-            "httpcode" : response.status_code,
+            "httpcode": response.status_code,
             "statuscode": response.reason,
             "timetaken": response.elapsed.microseconds,
             "request": {
@@ -95,6 +96,7 @@ def sendManagementInfo(sessionName, name, info):
     except:
         print('exception in sendManagementInfo. ignoring.')
 
+
 def sendErrorInfo(sessionName, error):
     data = {
         "session": sessionName,
@@ -107,12 +109,13 @@ def sendErrorInfo(sessionName, error):
     except Exception as e:
         print(f'exception in sendErrorInfo. ignoring. {str(e)}')
 
+
 def sendJsExecuteInfo(sessionName, script_file_name, message, iserror):
     data = {
         "session": sessionName,
         "scriptfilename": script_file_name,
-        "message" : message,
-        "iserror" : iserror
+        "message": message,
+        "iserror": iserror
     }
     try:
         info = f"js|" + json.dumps(data)

@@ -9,7 +9,8 @@ from logcollector import sendJsExecuteInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
-from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest, AssertsExecutorWithJsRequest
+from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
+from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
@@ -20,6 +21,8 @@ from commandinfo import getCommandsInfo
 from js_executor import JsExecutor
 from jpath_extractor import JPathExtractor
 from http_request import HttpRequest
+from http_request2 import HttpRequest2
+from http_requestdata import HttpRequestData
 
 
 class ExecutorRequest:
@@ -288,16 +291,17 @@ class AssertCommandExecutor(ICommand):
         actual = ""
         try:
             # check whether variable exists in property bag or not
-            if json_path == "status_code" :  # special case
+            if json_path == "status_code":  # special case
                 actual = self.property_bag.last_http_request.status_code
             else:
                 actual = JPathExtractor(json.loads(
-                self.property_bag.last_http_request.response)).extract(json_path)
+                    self.property_bag.last_http_request.response)).extract(json_path)
             if actual == None:
                 raise ValueError(
                     f"!assert: variable {executorRequest.variable_name} not found")
             print(f"asserting: {actual} ---> {executorRequest.value}")
-            assert str(actual) == str(executorRequest.value), f"Did not match. expected:{executorRequest.value} actual:{actual}"
+            assert str(actual) == str(
+                executorRequest.value), f"Did not match. expected:{executorRequest.value} actual:{actual}"
         except AssertionError as e:
             sendAssertInfo(self.property_bag.session_name,
                            json_path, expected, actual, False, str(e))
@@ -368,3 +372,28 @@ class JavaScirptCommandExecutor(ICommand):
         except Exception as e:
             sendJsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, str(e), True)
+
+
+class HttpRequestCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, HttpRequestExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of HttpRequestExecutorRequest")
+        print(
+            f"Executing: {executorRequest.request_file} with requestid:{executorRequest.request_id}")
+
+        try:
+            req_data = HttpRequestData(executorRequest.request_file)
+            request2 = HttpRequest2(
+                req_data.url, req_data.method, req_data.headers, req_data.request)
+            response = request2.get()
+            collectlog(response.response, self.property_bag.session_name,
+                       executorRequest.request_id)
+        except Exception as e:
+            collectlog(response, self.property_bag.session_name,
+                       executorRequest.request_id)
+            self.property_bag.last_http_request = HttpRequest(
+                "", self.extractResponseContent(response), response.status_code)
