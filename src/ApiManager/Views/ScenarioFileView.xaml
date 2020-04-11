@@ -99,11 +99,11 @@
 				<SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
 			</TreeView.Resources>
-			<!--<TreeView.ContextMenu>
+			<TreeView.ContextMenu>
 				<ContextMenu>
-					<MenuItem Header="New Scenario" Command="{Binding Path=NewScenarioFolderCommand}"/>
+					<MenuItem Header="New Scenario" Command="{Binding Path=NewRootScenarioFolderCommand}"/>
 				</ContextMenu>
-			</TreeView.ContextMenu>-->
+			</TreeView.ContextMenu>
 		</TreeView>
 	</Grid>
 </UserControl>

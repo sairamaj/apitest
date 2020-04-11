@@ -72,6 +72,13 @@ namespace ApiManager.ViewModels
 				createNewScenarioContainer.WithErrorMessageBox();
 			});
 
+			this.NewRootScenarioFolderCommand = new DelegateCommand(() =>
+			{
+				Action createNewScenarioContainer = () => CreateNewScenarioContainer(null);
+				createNewScenarioContainer.WithErrorMessageBox();
+			});
+			
+
 			this.RefreshScenariosCommand = new DelegateCommand(() => { this.RefreshScenarios(true); });
 
 			this.Load();
@@ -128,6 +135,8 @@ namespace ApiManager.ViewModels
 		public ICommand RefreshCommand { get; set; }
 		public ICommand NewScenarioFileCommand { get; set; }
 		public ICommand NewScenarioFolderCommand { get; set; }
+		public ICommand NewRootScenarioFolderCommand { get; set; }
+		
 		public ICommand RefreshScenariosCommand { get; set; }
 
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
