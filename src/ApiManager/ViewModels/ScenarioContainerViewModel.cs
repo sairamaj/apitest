@@ -26,7 +26,7 @@ namespace ApiManager.ViewModels
 			this._repository = repository;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
-			this.IsExpanded = true;
+			//this.IsExpanded = true;
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
 		   {
 		   try
@@ -91,9 +91,16 @@ namespace ApiManager.ViewModels
 
 		internal void AddScenario(string name)
 		{
-			var fileName = Path.Combine(Path.GetDirectoryName(this.FileName), name) + ".txt";
+			var fileName = Path.Combine(this.FileName, name) + ".txt";
 			var newScenario = new Scenario(fileName);
 			this.Children.Add(new ScenarioViewModel(this, newScenario, (s)=> { }, this._apiInfo, this._repository));
+		}
+
+		internal void AddScenarioContainer(string name)
+		{
+			var fileName = Path.Combine(this.FileName, name);
+			var newScenarioContainer = new Scenario(fileName);
+			this.Children.Add(new ScenarioContainerViewModel(newScenarioContainer, this._apiInfo, this._repository));
 		}
 	}
 }

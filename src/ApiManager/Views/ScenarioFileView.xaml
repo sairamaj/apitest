@@ -30,13 +30,16 @@
 					 VerticalAlignment="Center"
 					 HorizontalAlignment="Right"
 					 DockPanel.Dock="Right"
-					 Margin="3,0,0,0"/>
+					 Margin="3,0,0,0"
+					 ToolTip="Create new scenario container"
+				/>
 			<Button  Background="{StaticResource NewFileButtonImageBrush}" 
 					 Width="20" Height="20" 
 					 Command="{Binding NewScenarioFileCommand}" 
 					 VerticalAlignment="Center"
 					 DockPanel.Dock="Right"
 					 HorizontalAlignment="Right" Margin="5,0,0,0"
+					 ToolTip="Create new scenario"
 					 />
 		</DockPanel>
 		<TreeView ItemsSource="{Binding Scenarios}" Grid.Row="1" Grid.Column="0">

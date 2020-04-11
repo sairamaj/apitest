@@ -6,6 +6,8 @@ using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.ScenarioEditing.Views;
 using ApiManager.ViewModels;
 using ApiManager.Views;
 using Autofac;

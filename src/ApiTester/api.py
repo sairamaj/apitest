@@ -37,7 +37,8 @@ class Api:
             if len(response.content) > 0 :
                 return response.json()
             return ""
-        raise ApiException(response.status_code, response.content.json())
+        
+        raise ApiException(response.status_code, response.content)
 
     def patch(self, jsonData):
         headers = {'Content-Type': 'application/json',

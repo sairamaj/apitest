@@ -5,7 +5,7 @@ namespace ApiManager.Extensions
 {
 	internal static class ActionExtensions
 	{
-		public static void ActionWithErrorMessageBox(this Action action)
+		public static void WithErrorMessageBox(this Action action)
 		{
 			try
 			{

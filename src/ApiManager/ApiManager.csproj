@@ -108,6 +108,11 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
+    <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
+      <DependentUpon>NewScenarioFolderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\Views\NewScenarioWindow.xaml.cs">
       <DependentUpon>NewScenarioWindow.xaml</DependentUpon>
     </Compile>
@@ -202,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
