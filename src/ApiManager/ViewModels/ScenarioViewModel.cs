@@ -14,22 +14,20 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class ScenarioViewModel : CommandTreeViewModel
+	class ScenarioViewModel : ScenarioBaseViewModel
 	{
 		private IEnumerable<string> _apis;
 		private IDataRepository _repository;
 		private ApiInfo _apiInfo;
-		private Action<ScenarioAction, Scenario> _onEvent;
 		public ScenarioViewModel(
 			CommandTreeViewModel parent,
 			Scenario scenario,
 			Action<ScenarioAction, Scenario> onEvent,
 			ApiInfo apiInfo,
 			IDataRepository repository)
-			: base(parent, scenario.Name, scenario.Name)
+			: base(parent, scenario, onEvent)
 		{
 			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
-			this._onEvent = onEvent ?? throw new ArgumentNullException(nameof(onEvent));
 			this._apiInfo = apiInfo;
 
 			this.Scenario = scenario;
@@ -53,7 +51,6 @@ namespace ApiManager.ViewModels
 		   });
 
 			this.CopyCommand = new DelegateCommand(() => this.CopyScenario());
-			this.DeleteCommand = new DelegateCommand(() => this.DeleteScenario());
 			this.IsExpanded = true;
 		}
 
@@ -61,7 +58,6 @@ namespace ApiManager.ViewModels
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
 		public ICommand CopyCommand { get; }
-		public ICommand DeleteCommand { get; }
 
 		public Scenario Scenario { get; }
 		public IEnumerable<string> Apis
@@ -101,16 +97,6 @@ namespace ApiManager.ViewModels
 				return;
 			}
 			this._onEvent(ScenarioAction.Copy,copiedScenario);
-		}
-
-		private void DeleteScenario()
-		{
-			var deletedScenario = ScenarioEditingHelper.DeleteScenario(this.Scenario);
-			if (!deletedScenario)
-			{
-				return;
-			}
-			this._onEvent(ScenarioAction.Delete, this.Scenario);
 		}
 
 		private void DoScenarioAction(ScenarioAction e, Scenario scenario)

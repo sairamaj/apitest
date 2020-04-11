@@ -11,16 +11,14 @@ using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
-using ApiManager.Extensions;
 
 namespace ApiManager.ViewModels
 {
-	class ScenarioContainerViewModel : CommandTreeViewModel
+	class ScenarioContainerViewModel : ScenarioBaseViewModel
 	{
 		private IEnumerable<string> _apis;
 		private readonly ApiInfo _apiInfo;
 		private readonly IDataRepository _repository;
-		private Action<ScenarioAction, Scenario> _onEvent;
 
 		public ScenarioContainerViewModel(
 			TreeViewItemViewModel parent,
@@ -28,14 +26,12 @@ namespace ApiManager.ViewModels
 			Action<ScenarioAction, Scenario> onEvent,
 			ApiInfo apiInfo,
 			IDataRepository repository)
-			: base(parent, scenario.Name, scenario.Name)
+			: base(parent, scenario, onEvent)
 		{
-			this.Scenario = scenario;
 			this._apiInfo = apiInfo;
 			this._repository = repository;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
-			this._onEvent = onEvent;
 
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
 		   {
@@ -53,9 +49,6 @@ namespace ApiManager.ViewModels
 				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			   }
 		   });
-
-			Action deleteAction = () => this.DeleteScenario();
-			this.DeleteCommand = new DelegateCommand(deleteAction.WithErrorMessageBox);
 		}
 
 		protected override void LoadChildren()
@@ -82,9 +75,6 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		public Scenario Scenario { get; }
-		public ICommand DeleteCommand { get; }
-
 		private void Load()
 		{
 			this.Children.Clear();
@@ -100,7 +90,7 @@ namespace ApiManager.ViewModels
 					this.Parent,
 					child,
 					(e, s) => this.DoScenarioAction(e, s),
-					this._apiInfo, 
+					this._apiInfo,
 					this._repository));
 			}
 		}
@@ -141,16 +131,6 @@ namespace ApiManager.ViewModels
 					}
 					break;
 			}
-		}
-
-		private void DeleteScenario()
-		{
-			var deletedScenario = ScenarioEditingHelper.DeleteScenario(this.Scenario);
-			if (!deletedScenario)
-			{
-				return;
-			}
-			this._onEvent(ScenarioAction.Delete, this.Scenario);
 		}
 	}
 }
