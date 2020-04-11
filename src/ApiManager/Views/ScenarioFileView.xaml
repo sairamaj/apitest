@@ -80,6 +80,8 @@
 							<ContextMenu>
 								<MenuItem Header="Reveal In Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
 								<Separator />
+								<MenuItem Header="New Scenario" Command="{Binding Path=NewScenarioCommand}"/>
+								<MenuItem Header="New Scenario Folder" Command="{Binding Path=NewScenarioFolderCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>

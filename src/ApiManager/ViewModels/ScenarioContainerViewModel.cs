@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Repository;
@@ -33,22 +31,9 @@ namespace ApiManager.ViewModels
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
 
-			this.EditCommandFileCommand = new DelegateCommand(async () =>
-		   {
-			   try
-			   {
-				   //var helpCommands = await repository.GetHelpCommands().ConfigureAwait(true);
-				   //var apiCommands = await repository.GetCommands(apiInfo).ConfigureAwait(true);
-
-				   //var view = new ScenarioEditorView { DataContext = new ScenarioEditorViewModel(scenario, helpCommands, apiCommands) };
-				   //view.ShowDialog();
-				   Process.Start(scenario.FileName);
-			   }
-			   catch (Exception e)
-			   {
-				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			   }
-		   });
+			this.NewScenarioCommand = new DelegateCommand(this.CreateNewScenario);
+			this.NewScenarioFolderCommand = new DelegateCommand(this.CreateNewScenarioFolder);
+			
 		}
 
 		protected override void LoadChildren()
@@ -59,6 +44,9 @@ namespace ApiManager.ViewModels
 		public string Name { get; }
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public ICommand NewScenarioCommand { get; }
+		public ICommand NewScenarioFolderCommand { get; }
+
 		public IEnumerable<string> Apis
 		{
 			get
@@ -130,6 +118,24 @@ namespace ApiManager.ViewModels
 						this.Children.Remove(childToRemove);
 					}
 					break;
+			}
+		}
+
+		private void CreateNewScenario()
+		{
+			var newScenario = ScenarioEditingHelper.CreateNewScenario(this.Scenario.ContainerPath);
+			if (newScenario != null)
+			{
+				this.AddScenario(newScenario);
+			}
+		}
+
+		private void CreateNewScenarioFolder()
+		{
+			var newScenario = ScenarioEditingHelper.CreateNewScenarioContainer(this.Scenario.ContainerPath);
+			if (newScenario != null)
+			{
+				this.AddScenarioContainer(newScenario);
 			}
 		}
 	}

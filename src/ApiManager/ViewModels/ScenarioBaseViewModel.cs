@@ -4,17 +4,18 @@ using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.Utils;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ViewModels
 {
-	class ScenarioBaseViewModel: CommandTreeViewModel
+	class ScenarioBaseViewModel : CommandTreeViewModel
 	{
 		protected Action<ScenarioAction, Scenario> _onEvent;
 
 		public ScenarioBaseViewModel(
-			TreeViewItemViewModel parent, 
+			TreeViewItemViewModel parent,
 			Scenario scenario,
 			Action<ScenarioAction, Scenario> onEvent)
 			: base(parent, scenario.Name, scenario.FileName)
@@ -26,8 +27,9 @@ namespace ApiManager.ViewModels
 			{
 				Process.Start(this.Scenario.ContainerPath);
 			});
-			this.DeleteCommand = new DelegateCommand(() => this.DeleteScenario());
 
+			this.DeleteCommand = new DelegateCommand(
+				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
 		}
 
 		public Scenario Scenario { get; }

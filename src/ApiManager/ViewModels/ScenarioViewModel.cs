@@ -9,6 +9,7 @@ using ApiManager.Model;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.Utils;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
@@ -33,22 +34,13 @@ namespace ApiManager.ViewModels
 			this.Scenario = scenario;
 			this.FileName = scenario.FileName;
 			this.Name = scenario.Name;
-			this.EditCommandFileCommand = new DelegateCommand(async () =>
-		   {
-			   try
-			   {
-				   //var helpCommands = await repository.GetHelpCommands().ConfigureAwait(true);
-				   //var apiCommands = await repository.GetCommands(apiInfo).ConfigureAwait(true);
-
-				   //var view = new ScenarioEditorView { DataContext = new ScenarioEditorViewModel(scenario, helpCommands, apiCommands) };
-				   //view.ShowDialog();
-				   Process.Start(scenario.FileName);
-			   }
-			   catch (Exception e)
-			   {
-				   MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			   }
-		   });
+			this.EditCommandFileCommand = new DelegateCommand(() =>
+			{
+				UiHelper.SafeAction(() =>
+				{
+					Process.Start(this.Scenario.FileName);
+				}, this.Scenario.Name);
+			});
 
 			this.CopyCommand = new DelegateCommand(() => this.CopyScenario());
 			this.IsExpanded = true;
@@ -83,8 +75,8 @@ namespace ApiManager.ViewModels
 				this.Children.Add(new ScenarioContainerViewModel(
 					this.Parent,
 					container,
-					(e,s)=> this.DoScenarioAction(e,s),
-					this._apiInfo, 
+					(e, s) => this.DoScenarioAction(e, s),
+					this._apiInfo,
 					this._repository));
 			}
 		}
@@ -96,7 +88,7 @@ namespace ApiManager.ViewModels
 			{
 				return;
 			}
-			this._onEvent(ScenarioAction.Copy,copiedScenario);
+			this._onEvent(ScenarioAction.Copy, copiedScenario);
 		}
 
 		private void DoScenarioAction(ScenarioAction e, Scenario scenario)
