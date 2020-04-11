@@ -11,6 +11,7 @@
 		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
 		<ImageBrush x:Key="NewFileButtonImageBrush" ImageSource="../images/newfile.png" />
 		<ImageBrush x:Key="NewFolderButtonImageBrush" ImageSource="../images/newfolder.png" />
+		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../images/refresh.png" />
 
 		<Style TargetType="TreeViewItem">
 			<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
@@ -24,6 +25,17 @@
 		</Grid.RowDefinitions>
 		<DockPanel>
 			<TextBlock Text="Scenarios" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
+
+
+			<Button  Background="{StaticResource RefreshButtonImageBrush}" 
+					 Width="20" Height="20" 
+					 Command="{Binding RefreshScenariosCommand}" 
+					 VerticalAlignment="Center"
+					 HorizontalAlignment="Right"
+					 DockPanel.Dock="Right"
+					 Margin="3,0,0,0"
+					 ToolTip="Refreshes scenarios"
+				/>
 			<Button  Background="{StaticResource NewFolderButtonImageBrush}" 
 					 Width="20" Height="20" 
 					 Command="{Binding NewScenarioFolderCommand}" 

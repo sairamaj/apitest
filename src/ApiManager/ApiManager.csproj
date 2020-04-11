@@ -404,6 +404,7 @@
     <Resource Include="images\success.png" />
     <Resource Include="images\newfile.png" />
     <Resource Include="images\newfolder.png" />
+    <Resource Include="images\refresh.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

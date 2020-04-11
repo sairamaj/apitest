@@ -40,7 +40,6 @@ namespace ApiManager.Repository
 				await this._executor.GetApiCommands(info).ConfigureAwait(false);
 			}
 				
-
 			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
 			// Better way is to coordinate between this and pipe line responser.
 			await Task.Delay(100).ConfigureAwait(false);
@@ -77,11 +76,7 @@ namespace ApiManager.Repository
 					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this._settings.ConfigurationPath)))
 			{
 				var api = new ApiInfo(Path.GetFileNameWithoutExtension(envFolder), envFolder);
-				var scenariosPath = Path.Combine(envFolder, "scenarios");
-				if (Directory.Exists(scenariosPath))
-				{
-					api.Scenarios = GetScenarios(scenariosPath);
-				}
+				api.Scenarios = GetScenarios(api);
 
 				var environmentsPath = Path.Combine(envFolder, "environments");
 				if (Directory.Exists(environmentsPath))
@@ -133,6 +128,17 @@ namespace ApiManager.Repository
 			{
 				this._helpCommands = (info as HelpCommandInfo).Commands.ToList();
 			}
+		}
+
+		public IEnumerable<Scenario> GetScenarios(ApiInfo apiInfo)
+		{
+			var scenariosPath = Path.Combine(apiInfo.Path, "scenarios");
+			if (Directory.Exists(scenariosPath))
+			{
+				return GetScenarios(scenariosPath);
+			}
+
+			return new List<Scenario>();
 		}
 
 		private IEnumerable<Scenario> GetScenarios(string path)

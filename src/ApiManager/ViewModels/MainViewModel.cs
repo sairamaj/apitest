@@ -63,13 +63,15 @@ namespace ApiManager.ViewModels
 				Action createNewScenario = () => CreateNewScenario(selectedScenarioViewModel);
 				createNewScenario.WithErrorMessageBox();
 			});
-			this.NewScenarioFolderCommand = new DelegateCommand(() =>
-		   {
-			   var selectedScenarioViewModel = this.GetSelectedScenario();
-			   Action createNewScenarioContainer = () => CreateNewScenarioContainer(selectedScenarioViewModel);
-			   createNewScenarioContainer.WithErrorMessageBox();
 
-		   });
+			this.NewScenarioFolderCommand = new DelegateCommand(() =>
+			{
+				var selectedScenarioViewModel = this.GetSelectedScenario();
+				Action createNewScenarioContainer = () => CreateNewScenarioContainer(selectedScenarioViewModel);
+				createNewScenarioContainer.WithErrorMessageBox();
+			});
+
+			this.RefreshScenariosCommand = new DelegateCommand(() => { this.RefreshScenarios(true); });
 
 			this.Load();
 			try
@@ -125,6 +127,7 @@ namespace ApiManager.ViewModels
 		public ICommand RefreshCommand { get; set; }
 		public ICommand NewScenarioFileCommand { get; set; }
 		public ICommand NewScenarioFolderCommand { get; set; }
+		public ICommand RefreshScenariosCommand { get; set; }
 
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
 
@@ -250,22 +253,36 @@ namespace ApiManager.ViewModels
 
 		private async void OnApiConfigSelectionChange()
 		{
-			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
-				.Where(s => s.IsContainer)
-				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
-				.ToList();
-			this.Scenarios = new SafeObservableCollection<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>().ToList());
 			this.Environments = this.SelectedApiInfoViewModel.ApiInfo.Environments
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
-			OnPropertyChanged(() => this.Scenarios);
 			OnPropertyChanged(() => this.Environments);
 
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
 			OnPropertyChanged(() => this.SelectedEnvironment);
 
 			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
+			this.RefreshScenarios(false);
 		}
 
+		private void RefreshScenarios(bool isRefresh)
+		{
+			if (this.SelectedApiInfoViewModel == null)
+			{
+				MessageBox.Show("Selected Api", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			if (isRefresh)
+			{
+				this.SelectedApiInfoViewModel.ApiInfo.Scenarios = this._dataRepository.GetScenarios(this.SelectedApiInfoViewModel.ApiInfo);
+			}
+
+			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
+				.Where(s => s.IsContainer)
+				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
+				.ToList();
+			this.Scenarios = new SafeObservableCollection<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>().ToList());
+			OnPropertyChanged(() => this.Scenarios);
+		}
 		private void SubscribeApiInfo(IApiTestConsoleCommunicator communicator)
 		{
 			communicator.Add("apiinfo", "api", msg =>
