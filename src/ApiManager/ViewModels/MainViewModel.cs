@@ -22,6 +22,7 @@ using ApiManager.ScenarioEditing.Views;
 using ApiManager.ScenarioEditing.ViewModel;
 using ApiManager.Extensions;
 using System.IO;
+using ApiManager.ScenarioEditing;
 
 namespace ApiManager.ViewModels
 {
@@ -438,26 +439,22 @@ namespace ApiManager.ViewModels
 				rootDirctory = container.FileName;
 			}
 
-			var winx = new NewScenarioFolderWindow();
-			var vm = new NewScenarioFolderEditViewModel(winx, rootDirctory);
-			winx.DataContext = vm;
-			var result = winx.ShowDialog();
-			if (!result.Value)
+			var scenarioContainer = ScenarioEditingHelper.CreateNewScenarioContainer(rootDirctory);
+			if (scenarioContainer == null)
 			{
 				return;
 			}
 
 			if (container != null)
 			{
-				container.AddScenarioContainer(vm.Name);
+				container.AddScenarioContainer(scenarioContainer);
 			}
 			else
 			{
 				// adding to root container.
-				var newContainer = new Scenario(Path.Combine(rootDirctory, vm.Name), true);
 				this.Scenarios.Add(
 					new ScenarioContainerViewModel(
-						newContainer, 
+						scenarioContainer, 
 						this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			}
 		}
@@ -480,16 +477,13 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			var winx = new NewScenarioWindow();
-			var vm = new NewScenarioEditViewModel(winx, container.FileName);
-			winx.DataContext = vm;
-			var result = winx.ShowDialog();
-			if (!result.Value)
+			var scenario = ScenarioEditingHelper.CreateNewScenario(container.FileName);
+			if (scenario == null)
 			{
 				return;
 			}
 
-			container.AddScenario(vm.Name);
+			container.AddScenario(scenario);
 		}
 	}
 }

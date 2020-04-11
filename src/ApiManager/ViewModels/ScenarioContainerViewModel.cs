@@ -89,18 +89,14 @@ namespace ApiManager.ViewModels
 			}
 		}
 
-		internal void AddScenario(string name)
+		internal void AddScenario(Scenario scenario)
 		{
-			var fileName = Path.Combine(this.FileName, name) + ".txt";
-			var newScenario = new Scenario(fileName);
-			this.Children.Add(new ScenarioViewModel(this, newScenario, (s)=> { }, this._apiInfo, this._repository));
+			this.Children.Add(new ScenarioViewModel(this, scenario, (s)=> { }, this._apiInfo, this._repository));
 		}
 
-		internal void AddScenarioContainer(string name)
+		internal void AddScenarioContainer(Scenario scenarioContainer)
 		{
-			var fileName = Path.Combine(this.FileName, name);
-			var newScenarioContainer = new Scenario(fileName);
-			this.Children.Add(new ScenarioContainerViewModel(newScenarioContainer, this._apiInfo, this._repository));
+			this.Children.Add(new ScenarioContainerViewModel(scenarioContainer, this._apiInfo, this._repository));
 		}
 	}
 }

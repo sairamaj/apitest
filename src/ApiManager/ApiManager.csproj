@@ -108,6 +108,7 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
     <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
