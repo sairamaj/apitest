@@ -6,15 +6,23 @@
              xmlns:local="clr-namespace:ApiManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
 			<RowDefinition />
 			<RowDefinition Height="3"/>
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<local:RequestView Grid.Row="0" Grid.Column="0" DataContext="{Binding Request}"/>
-		<GridSplitter Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
-		<local:ResponseView Grid.Row="2" Grid.Column="0" DataContext="{Binding Response}"/>
+		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
+			<Button Height="35" Width="100" FontWeight="Bold" Margin="10,0,0,0" 
+					Content="Try Again" Command="{Binding SubmitRequest}" HorizontalAlignment="Left"
+					VerticalContentAlignment="Center"
+					/>
+			<TextBlock Text="(You can change the request and submit just this request alone.)" Margin="4,0,0,0" />
+		</StackPanel>
+		<local:RequestView Grid.Row="1" Grid.Column="0" DataContext="{Binding Request}"/>
+		<GridSplitter Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
+		<local:ResponseView Grid.Row="3" Grid.Column="0" DataContext="{Binding Response}"/>
 	</Grid>
 </UserControl>

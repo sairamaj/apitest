@@ -24,7 +24,12 @@
 	</UserControl.Resources>
 	<Grid>
 		<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
-                                Style="{StaticResource AvalonTextBoxStyles}" x:Name="TextEditor" DataContext="{Binding}">
+                                Style="{StaticResource AvalonTextBoxStyles}" 
+								x:Name="TextEditor" 
+								DataContext="{Binding}"
+								ScrollViewer.HorizontalScrollBarVisibility="Auto"
+								ScrollViewer.VerticalScrollBarVisibility="Auto"
+								>
 			<i:Interaction.Behaviors>
 				<views:AvalonEditBehaviour GiveMeTheText="{Binding RequestData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			</i:Interaction.Behaviors>
