@@ -84,7 +84,12 @@ namespace ApiManager.ViewModels
 		{
 			foreach (var container in this.Scenario.Children.Where(s => s.IsContainer))
 			{
-				this.Children.Add(new ScenarioContainerViewModel(container, this._apiInfo, this._repository));
+				this.Children.Add(new ScenarioContainerViewModel(
+					this.Parent,
+					container,
+					(e,s)=> this.DoScenarioAction(e,s),
+					this._apiInfo, 
+					this._repository));
 			}
 		}
 
@@ -108,5 +113,8 @@ namespace ApiManager.ViewModels
 			this._onEvent(ScenarioAction.Delete, this.Scenario);
 		}
 
+		private void DoScenarioAction(ScenarioAction e, Scenario scenario)
+		{
+		}
 	}
 }

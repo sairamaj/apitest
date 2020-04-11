@@ -13,6 +13,7 @@ using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
+using ApiManager.ScenarioEditing.ViewModel;
 using ApiManager.Scripts.ViewModels;
 using ApiManager.Variables.ViewModels;
 using Newtonsoft.Json;
@@ -278,7 +279,12 @@ namespace ApiManager.ViewModels
 
 			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
 				.Where(s => s.IsContainer)
-				.Select(c => new ScenarioContainerViewModel(c, this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository))
+				.Select(c => new ScenarioContainerViewModel(
+					null,
+					c,
+					(e, s) => this.DoScenarioAction(e,s),
+					this.SelectedApiInfoViewModel.ApiInfo,
+					this._dataRepository))
 				.ToList();
 			this.Scenarios = new SafeObservableCollection<CommandTreeViewModel>(scenarioContainerViewModels.OfType<CommandTreeViewModel>().ToList());
 			OnPropertyChanged(() => this.Scenarios);
@@ -449,8 +455,11 @@ namespace ApiManager.ViewModels
 				// adding to root container.
 				this.Scenarios.Add(
 					new ScenarioContainerViewModel(
+						null, 
 						scenarioContainer,
-						this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
+						(e, s) => this.DoScenarioAction(e,s),
+						this.SelectedApiInfoViewModel.ApiInfo, 
+						this._dataRepository));
 			}
 		}
 
@@ -479,6 +488,27 @@ namespace ApiManager.ViewModels
 			}
 
 			container.AddScenario(scenario);
+		}
+
+		private void DoScenarioAction(ScenarioAction e, Scenario scenario)
+		{
+			switch (e)
+			{
+				case ScenarioAction.Copy:
+					break;
+				case ScenarioAction.Delete:
+					if (scenario.IsContainer)
+					{
+						var childToRemove = this.Scenarios.OfType<ScenarioContainerViewModel>().FirstOrDefault(s => s.Scenario.Name == scenario.Name);
+						this.Scenarios.Remove(childToRemove);
+					}
+					else
+					{
+						var childToRemove = this.Scenarios.OfType<ScenarioViewModel>().FirstOrDefault(s => s.Scenario.Name == scenario.Name);
+						this.Scenarios.Remove(childToRemove);
+					}
+					break;
+			}
 		}
 	}
 }

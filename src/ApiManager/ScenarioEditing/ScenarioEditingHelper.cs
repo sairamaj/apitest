@@ -22,7 +22,7 @@ namespace ApiManager.ScenarioEditing
 			return new Scenario(Path.Combine(parentPath, vm.Name), true);
 		}
 
-		public static  Scenario CreateNewScenario(string parentPath)
+		public static Scenario CreateNewScenario(string parentPath)
 		{
 			var winx = new NewScenarioWindow();
 			var vm = new NewScenarioEditViewModel(winx, parentPath);
@@ -54,20 +54,37 @@ namespace ApiManager.ScenarioEditing
 
 		public static bool DeleteScenario(Scenario scenario)
 		{
+			var msg = string.Empty;
+			if (scenario.IsContainer)
+			{
+				msg = $"Are u sure you want to delete Folder: {scenario.Name}. " +
+					$"All Child scenarios will be deleted recursively.";
+			}
+			else
+			{
+				msg = $"Are u sure you want to delete {scenario.Name}";
+			}
 			var result = MessageBox.Show(
-				$"Are u sure you want to delete {scenario.Name}",
-				"Confirm",
-				MessageBoxButton.YesNo, MessageBoxImage.Question);
+						 msg,
+						 "Confirm",
+						 MessageBoxButton.YesNo, MessageBoxImage.Question);
+
 			if (result == MessageBoxResult.No)
 			{
 				return false;
 			}
 
-			if (File.Exists(scenario.FileName))
+			if (scenario.IsContainer)
 			{
-				File.Delete(scenario.FileName);
+				Directory.Delete(scenario.ContainerPath, true);
 			}
-
+			else
+			{
+				if (File.Exists(scenario.FileName))
+				{
+					File.Delete(scenario.FileName);
+				}
+			}
 			return true;
 		}
 	}

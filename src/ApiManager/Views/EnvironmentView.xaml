@@ -16,7 +16,8 @@
 	<Grid>
 		<StackPanel>
 			<TextBlock Text="Environments:" FontWeight="Bold"/>
-			<ListView ItemsSource="{Binding Environments}" BorderThickness="0" Margin="10,0,0,0" SelectedItem="{Binding SelectedEnvironment}">
+			<ListView ItemsSource="{Binding Environments}" BorderThickness="0" 
+					  Margin="10,0,0,0" SelectedItem="{Binding SelectedEnvironment}">
 				<ListView.View >
 					<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 						<GridViewColumn>
