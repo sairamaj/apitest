@@ -111,6 +111,7 @@
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\ScenarioAction.cs" />
     <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
       <DependentUpon>NewScenarioFolderWindow.xaml</DependentUpon>
     </Compile>

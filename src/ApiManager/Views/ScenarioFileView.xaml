@@ -52,6 +52,7 @@
 						<StackPanel.ContextMenu>
 							<ContextMenu>
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
+								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>

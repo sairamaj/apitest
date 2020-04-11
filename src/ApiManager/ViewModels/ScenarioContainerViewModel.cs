@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Repository;
+using ApiManager.ScenarioEditing.ViewModel;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
@@ -19,7 +20,7 @@ namespace ApiManager.ViewModels
 		private readonly IDataRepository _repository;
 
 		public ScenarioContainerViewModel(Scenario scenario, ApiInfo apiInfo, IDataRepository repository)
-			:base(null, scenario.Name, scenario.Name)
+			: base(null, scenario.Name, scenario.Name)
 		{
 			this.Scenario = scenario;
 			this._apiInfo = apiInfo;
@@ -29,8 +30,8 @@ namespace ApiManager.ViewModels
 			//this.IsExpanded = true;
 			this.EditCommandFileCommand = new DelegateCommand(async () =>
 		   {
-		   try
-		   {
+			   try
+			   {
 				   //var helpCommands = await repository.GetHelpCommands().ConfigureAwait(true);
 				   //var apiCommands = await repository.GetCommands(apiInfo).ConfigureAwait(true);
 
@@ -47,7 +48,7 @@ namespace ApiManager.ViewModels
 
 		protected override void LoadChildren()
 		{
-			this.Load();		
+			this.Load();
 		}
 
 		public string Name { get; }
@@ -76,10 +77,7 @@ namespace ApiManager.ViewModels
 			this.Children.Clear();
 			foreach (var child in this.Scenario.Children.Where(s => !s.IsContainer))
 			{
-				this.Children.Add(new ScenarioViewModel(this, child,  (newScenario)=>
-				{
-					this.Children.Add(new ScenarioViewModel(this, newScenario, (s) => { }, this._apiInfo, this._repository));
-				}, this._apiInfo, this._repository));
+				this.Children.Add(new ScenarioViewModel(this, child, (e, s) => this.DoScnearioAction(e, s), this._apiInfo, this._repository));
 			}
 
 			// Add containers.
@@ -91,12 +89,26 @@ namespace ApiManager.ViewModels
 
 		internal void AddScenario(Scenario scenario)
 		{
-			this.Children.Add(new ScenarioViewModel(this, scenario, (s)=> { }, this._apiInfo, this._repository));
+			this.Children.Add(new ScenarioViewModel(this, scenario, (e, s) => this.DoScnearioAction(e, s), this._apiInfo, this._repository));
 		}
 
 		internal void AddScenarioContainer(Scenario scenarioContainer)
 		{
 			this.Children.Add(new ScenarioContainerViewModel(scenarioContainer, this._apiInfo, this._repository));
+		}
+
+		private void DoScnearioAction(ScenarioAction e, Scenario scenario)
+		{
+			switch (e)
+			{
+				case ScenarioAction.Copy:
+					this.AddScenario(scenario);
+					break;
+				case ScenarioAction.Delete:
+					var childToRemove = this.Children.OfType<ScenarioViewModel>().FirstOrDefault(s => s.Scenario.Name == scenario.Name);
+					this.Children.Remove(childToRemove);
+					break;
+			}
 		}
 	}
 }

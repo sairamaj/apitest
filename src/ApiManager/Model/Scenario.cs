@@ -18,6 +18,15 @@ namespace ApiManager.Model
 		public string Name { get;  }
 		public string FileName { get; }
 		public bool IsContainer { get; }
+
+		public string ContainerPath
+		{
+			get
+			{
+				return this.IsContainer ? this.FileName : Path.GetDirectoryName(this.FileName);
+			}
+		}
+
 		public IEnumerable<Scenario> Children { get { return this._children; } }
 		public void AddScenario(Scenario scenario)
 		{

@@ -124,15 +124,6 @@ namespace ApiManager.Repository
 			}
 		}
 
-		public Scenario CopyScenario(Scenario scenario)
-		{
-			var scenarioName = $"{scenario.Name}_copy.txt";
-			var scenarioFileName = Path.Combine(scenario.FileName, scenarioName);
-			var newScenario = new Scenario(scenarioFileName);
-			File.Copy(scenario.FileName, scenarioFileName);
-			return newScenario;
-		}
-
 		private IEnumerable<Scenario> GetScenarios(string path)
 		{
 			var scenarios = new List<Scenario>();

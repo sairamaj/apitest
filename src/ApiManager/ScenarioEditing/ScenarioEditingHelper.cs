@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing.ViewModel;
 using ApiManager.ScenarioEditing.Views;
@@ -33,6 +34,41 @@ namespace ApiManager.ScenarioEditing
 			}
 
 			return new Scenario(Path.Combine(parentPath, vm.Name) + ".txt");
+		}
+
+		public static Scenario CopyScenario(Scenario scenario)
+		{
+			var win = new NewScenarioWindow();
+			var vm = new NewScenarioEditViewModel(win, scenario.ContainerPath);
+			win.DataContext = vm;
+			var result = win.ShowDialog();
+			if (!result.Value)
+			{
+				return null;
+			}
+
+			var newFileName = Path.Combine(scenario.ContainerPath, vm.Name) + ".txt";
+			File.WriteAllText(newFileName, File.ReadAllText(scenario.FileName));
+			return new Scenario(newFileName);
+		}
+
+		public static bool DeleteScenario(Scenario scenario)
+		{
+			var result = MessageBox.Show(
+				$"Are u sure you want to delete {scenario.Name}",
+				"Confirm",
+				MessageBoxButton.YesNo, MessageBoxImage.Question);
+			if (result == MessageBoxResult.No)
+			{
+				return false;
+			}
+
+			if (File.Exists(scenario.FileName))
+			{
+				File.Delete(scenario.FileName);
+			}
+
+			return true;
 		}
 	}
 }
