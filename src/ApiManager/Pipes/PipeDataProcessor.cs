@@ -16,10 +16,10 @@ namespace ApiManager.Pipes
 			this._onErrorAction = onErrorAction ?? throw new ArgumentNullException(nameof(onErrorAction));
 		}
 
-		public void Add(string name, string command, Action<string> action)
+		public void Add(string channel, string command, Action<string> action)
 		{
 			_commandActions[command] = action;
-			this._listener.SubScribe(name, msg =>
+			this._listener.SubScribe(channel, msg =>
 			{
 				try
 				{

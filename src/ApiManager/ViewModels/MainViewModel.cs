@@ -2,27 +2,25 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Asserts.ViewModels;
+using ApiManager.Extensions;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.ScenarioEditing;
 using ApiManager.Scripts.ViewModels;
 using ApiManager.Variables.ViewModels;
 using Newtonsoft.Json;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
+using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 using Wpf.Util.Core.ViewModels;
-using Wpf.Util.Core.Extensions;
-using ApiManager.ScenarioEditing.Views;
-using ApiManager.ScenarioEditing.ViewModel;
-using ApiManager.Extensions;
-using System.IO;
-using ApiManager.ScenarioEditing;
 
 namespace ApiManager.ViewModels
 {
@@ -70,7 +68,7 @@ namespace ApiManager.ViewModels
 			   var selectedScenarioViewModel = this.GetSelectedScenario();
 			   Action createNewScenarioContainer = () => CreateNewScenarioContainer(selectedScenarioViewModel);
 			   createNewScenarioContainer.WithErrorMessageBox();
-			   
+
 		   });
 
 			this.Load();
@@ -149,66 +147,58 @@ namespace ApiManager.ViewModels
 				return;
 			}
 
-			var listener = this._serviceLocator.Resolve<IMessageListener>();
-			try
+			using (var apiCommunicator = this._serviceLocator.Resolve<IApiTestConsoleCommunicator>())
 			{
-				var dataPocessor = new PipeDataProcessor(listener, error =>
+				try
 				{
-					this.LogViewModel.Add(error);
-				});
+					this.SubscribeApiInfo(apiCommunicator);
 
+					var selectedScenario = GetSelectedScenario();
 
-				this.SubscribeApiInfo(dataPocessor);
-
-				var selectedScenario = GetSelectedScenario();
-
-				if (this.IsClearBeforeRun)
-				{
-					this.CurrentRequestResponseViewModel?.Clear();
-				}
-
-				if (selectedScenario is ScenarioViewModel scenarioViewModel)
-				{
-					this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-						this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario), null);
-
-					await new Executor(this._apiExecutor, this._settings)
-									   .RunScenarioAsync(
-									   this.SelectedApiInfoViewModel.ApiInfo,
-									   this.SelectedEnvironment.Environment,
-									   scenarioViewModel.Scenario).ConfigureAwait(false);
-				}
-				else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
-				{
-					foreach (var scenarioviewModel
-						in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
-
+					if (this.IsClearBeforeRun)
 					{
-						this.SelectedApiInfoViewModel.Add(
-							new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name,
-							this.SelectedEnvironment.Environment,
-							scenarioviewModel.Scenario), null);
+						this.CurrentRequestResponseViewModel?.Clear();
+					}
+
+					if (selectedScenario is ScenarioViewModel scenarioViewModel)
+					{
+						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
+							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario), null);
 
 						await new Executor(this._apiExecutor, this._settings)
-							.RunScenarioAsync(
-							this.SelectedApiInfoViewModel.ApiInfo,
-							this.SelectedEnvironment.Environment,
-							scenarioviewModel.Scenario).ConfigureAwait(false);
+										   .RunScenarioAsync(
+										   this.SelectedApiInfoViewModel.ApiInfo,
+										   this.SelectedEnvironment.Environment,
+										   scenarioViewModel.Scenario).ConfigureAwait(false);
+					}
+					else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
+					{
+						foreach (var scenarioviewModel
+							in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
+
+						{
+							this.SelectedApiInfoViewModel.Add(
+								new ApiExecuteInfo(
+								this.SelectedApiInfoViewModel.Name,
+								this.SelectedEnvironment.Environment,
+								scenarioviewModel.Scenario), null);
+
+							await new Executor(this._apiExecutor, this._settings)
+								.RunScenarioAsync(
+								this.SelectedApiInfoViewModel.ApiInfo,
+								this.SelectedEnvironment.Environment,
+								scenarioviewModel.Scenario).ConfigureAwait(false);
+						}
+					}
+					else
+					{
+						MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 				}
-				else
+				catch (System.Exception e)
 				{
-					MessageBox.Show("Select Scenario File", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
-			}
-			catch (System.Exception e)
-			{
-				MessageBox.Show(e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
-			finally
-			{
-				await listener.UnSubscribeAll().ConfigureAwait(false);
 			}
 		}
 
@@ -276,49 +266,37 @@ namespace ApiManager.ViewModels
 			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
 		}
 
-		//private void Subscribe(string name, Action<string> onMessage)
-		//{
-		//	try
-		//	{
-		//		this._listener.SubScribe(name, onMessage);
-		//	}
-		//	catch (Exception e)
-		//	{
-		//		MessageBox.Show(e.ToString());
-		//	}
-		//}
-
-		private void SubscribeApiInfo(PipeDataProcessor dataProcessor)
+		private void SubscribeApiInfo(IApiTestConsoleCommunicator communicator)
 		{
-			dataProcessor.Add("apiinfo", "api", msg =>
+			communicator.Add("apiinfo", "api", msg =>
 			{
 				ConsumePipeData<ApiRequest>(msg);
 			});
 
-			dataProcessor.Add("apiinfo", "extract", msg =>
+			communicator.Add("apiinfo", "extract", msg =>
 			{
 				ConsumePipeData<ExtractVariableInfo>(msg);
 			});
 
-			dataProcessor.Add("apiinfo", "assert", msg =>
+			communicator.Add("apiinfo", "assert", msg =>
 			{
 				ConsumePipeData<AssertInfo>(msg);
 			});
 
-			dataProcessor.Add("management", "apicommands", msg =>
+			communicator.Add("management", "apicommands", msg =>
 			{
 				ConsumeManagementPipeData<ApiCommandInfo>(msg);
 			});
 
-			dataProcessor.Add("management", "commands", msg =>
+			communicator.Add("management", "commands", msg =>
 			{
 				ConsumeManagementPipeData<HelpCommandInfo>(msg);
 			});
-			dataProcessor.Add("error", "error", msg =>
+			communicator.Add("error", "error", msg =>
 			{
 				ConsumePipeData<ErrorInfo>(msg);
 			});
-			dataProcessor.Add("js", "js", msg =>
+			communicator.Add("js", "js", msg =>
 			{
 				ConsumePipeData<JsScriptInfo>(msg);
 			});
@@ -454,7 +432,7 @@ namespace ApiManager.ViewModels
 				// adding to root container.
 				this.Scenarios.Add(
 					new ScenarioContainerViewModel(
-						scenarioContainer, 
+						scenarioContainer,
 						this.SelectedApiInfoViewModel.ApiInfo, this._dataRepository));
 			}
 		}

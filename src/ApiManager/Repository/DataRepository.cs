@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiManager.Model;
+using ApiManager.Pipes;
+using Newtonsoft.Json;
 using ApiEnvironment = ApiManager.Model.Environment;
 
 namespace ApiManager.Repository
@@ -28,7 +30,16 @@ namespace ApiManager.Repository
 				return await Task.FromResult<ApiCommandInfo>(commands).ConfigureAwait(false);
 			}
 
-			await this._executor.GetApiCommands(info).ConfigureAwait(false);
+			using (var communicator = new ApiTestConsoleCommunicator(new MessageListener()))
+			{
+				communicator.Add("management", "apicommands", data =>
+				{
+					var apiCommandsInfo = JsonConvert.DeserializeObject<ApiCommandInfo>(data);
+					_apiCommands[apiCommandsInfo.Session] = apiCommandsInfo;
+				});
+				await this._executor.GetApiCommands(info).ConfigureAwait(false);
+			}
+				
 
 			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
 			// Better way is to coordinate between this and pipe line responser.
@@ -41,7 +52,7 @@ namespace ApiManager.Repository
 			return new ApiCommandInfo();
 		}
 
-
+			
 		public async Task<IEnumerable<string>> GetVariables(ApiInfo info)
 		{
 			if (this._apiVariables.TryGetValue(info.Name, out var variables))

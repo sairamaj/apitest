@@ -1,18 +1,18 @@
 ﻿using System;
-using System.IO;
-using System.IO.Pipes;
 using System.Net;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ApiManager.Model;
-using Newtonsoft.Json;
 
 namespace ApiManager.Pipes
 {
 	internal class FakeMessageListener : IMessageListener
 	{
+		public void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task SubScribe(Action<ApiRequest> onMessage)
 		{
 			await new TaskFactory().StartNew(() =>

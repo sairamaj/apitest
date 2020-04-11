@@ -91,7 +91,7 @@ def sendManagementInfo(sessionName, name, info):
     try:
         info = f"{name}|" + json.dumps(data)
         print(info)
-        pipeServer.send(info)
+        managementPipe.send(info)
     except:
         print('exception in sendManagementInfo. ignoring.')
 

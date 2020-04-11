@@ -34,16 +34,8 @@ namespace ApiManager
 			try
 			{
 				var builder = new ContainerBuilder();
-				var settings = JsonConvert.DeserializeObject<Settings>(
-					File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json")));
-				settings.MakeAbsolultePaths();
+				builder.RegisterModule(new RegistrationModule());
 
-				builder.RegisterInstance(settings).As<ISettings>();
-				builder.RegisterType<CommandExecutor>().As<ICommandExecutor>().SingleInstance();
-				builder.RegisterType<ResourceManager>().As<IResourceManager>().SingleInstance();
-				builder.RegisterType<DataRepository>().As<IDataRepository>().SingleInstance();
-				builder.RegisterType<MessageListener>().As<IMessageListener>();
-				// builder.RegisterType<FakeMessageListener>().As<IMessageListener>();
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 
 				var win = new MainWindow

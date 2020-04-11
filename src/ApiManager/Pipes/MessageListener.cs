@@ -5,20 +5,25 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ApiManager.Model;
-using Newtonsoft.Json;
 
 namespace ApiManager.Pipes
 {
-	internal class MessageListener : IMessageListener
+	internal class MessageListener : IMessageListener, IDisposable
 	{
 		CancellationTokenSource _source;
+		private bool _isDisposed;
+
 		public MessageListener()
 		{
 			_source = new CancellationTokenSource();
 		}
 		public async Task SubScribe(string name, Action<string> onMessage)
 		{
+			if (this._isDisposed)
+			{
+				throw new ObjectDisposedException("MessageListner has been disposed already.");
+			}
+
 			var quit = false;
 			var pipeClient =
 				new NamedPipeClientStream(
@@ -67,6 +72,23 @@ namespace ApiManager.Pipes
 			this._source.Cancel();
 			TraceLogger.Debug("MessageListener.UnSubscribeAll cancelled.");
 			await Task.Delay(0).ConfigureAwait(false);
+		}
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool isDisposing)
+		{
+			if (!isDisposing || _isDisposed)
+			{
+				return;
+			}
+
+			this.UnSubscribeAll().Wait();
+			this._isDisposed = true;
 		}
 
 		class StreamString

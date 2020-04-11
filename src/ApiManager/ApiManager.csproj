@@ -97,9 +97,12 @@
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Pipes\FakeMessageListener.cs" />
+    <Compile Include="Pipes\ApiTestConsoleCommunicator.cs" />
+    <Compile Include="Pipes\IApiTestConsoleCommunicator.cs" />
     <Compile Include="Pipes\MessageListener.cs" />
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
+    <Compile Include="RegistrationModule.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
     <Compile Include="Repository\CommandFormatter.cs" />
     <Compile Include="Repository\ICommandExecutor.cs" />
