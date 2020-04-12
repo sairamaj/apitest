@@ -37,6 +37,7 @@ namespace ApiManager
 				builder.RegisterModule(new RegistrationModule());
 
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
+				ServiceLocator.Initialize(serviceLocator);		// todo: need to revisit this (added to avoid passing locator to all ctors)
 
 				var win = new MainWindow
 				{

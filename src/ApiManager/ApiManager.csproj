@@ -76,6 +76,7 @@
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
+    <Compile Include="HttpRequestClient.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
     <Compile Include="Model\AssertInfo.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Scripts\Views\ScriptView.xaml.cs">
       <DependentUpon>ScriptView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="Utils\UiHelper.cs" />
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />

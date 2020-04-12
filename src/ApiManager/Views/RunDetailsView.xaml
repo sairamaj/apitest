@@ -280,7 +280,7 @@
 						<Button Content="Html"  Style="{StaticResource ApplicationLinkButtonNoUnderLine2}" Command="{Binding ViewAsHTMLCommand}" Margin="5,0,0,0"/>
 					</StackPanel>
 				</Expander.Header>
-				<local:RequestResponseContainerView  DataContext="{Binding ApiInfo}" Height="500"/>
+				<local:RequestResponseContainerView  DataContext="{Binding}" Height="500"/>
 			</Expander>
 		</DataTemplate>
 

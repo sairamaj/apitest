@@ -131,7 +131,7 @@ namespace ApiManager.Repository
 				SessionName = info.Name,
 				Commands = new string[] { "!management variables" },
 				BatchFileName = FileHelper.WriteToTempFile("[]", ".json")
-		});
+			});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
 
@@ -143,7 +143,7 @@ namespace ApiManager.Repository
 			ValidateSettings(this._settings);
 			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
 			{
-				ConfigFileName = FileHelper.WriteToTempFile("[]",".json"),
+				ConfigFileName = FileHelper.WriteToTempFile("[]", ".json"),
 				SessionName = "apimanger",
 				Commands = new string[] { "!management commands" }
 			});
@@ -244,6 +244,20 @@ namespace ApiManager.Repository
 			};
 
 			return tcs.Task;
+		}
+
+		public async Task<string> SubmitHttpRequest(string requestFile, string id)
+		{
+			var requestCommand = $"!httprequest {requestFile} {id}";
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
+			{
+				ConfigFileName = FileHelper.WriteToTempFile("[]", ".json"),
+				Commands = new string[] { requestCommand },
+			});
+
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
+
+			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
 		private Task<int> StartProcess(string cmd, string args)

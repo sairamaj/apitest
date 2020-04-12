@@ -16,13 +16,15 @@
 
 		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
 			<Button Height="35" Width="100" FontWeight="Bold" Margin="10,0,0,0" 
-					Content="Try Again" Command="{Binding SubmitRequest}" HorizontalAlignment="Left"
+					Content="Try Again" Command="{Binding SubmitRequestCommand}" HorizontalAlignment="Left"
 					VerticalContentAlignment="Center"
 					/>
-			<TextBlock Text="(You can change the request and submit just this request alone.)" Margin="4,0,0,0" />
+			<TextBlock Text="(You can change the request and submit just this request alone.)" 
+					   VerticalAlignment="Center"
+					   Margin="4,0,0,0" />
 		</StackPanel>
-		<local:RequestView Grid.Row="1" Grid.Column="0" DataContext="{Binding Request}"/>
+		<local:RequestView Grid.Row="1" Grid.Column="0" DataContext="{Binding ApiInfo.Request}"/>
 		<GridSplitter Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
-		<local:ResponseView Grid.Row="3" Grid.Column="0" DataContext="{Binding Response}"/>
+		<local:ResponseView Grid.Row="3" Grid.Column="0" DataContext="{Binding ApiInfo.Response}"/>
 	</Grid>
 </UserControl>

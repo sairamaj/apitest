@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
@@ -57,11 +58,27 @@ namespace ApiManager.ViewModels
 				   FileHelper.DeleteIfExists(tempJsonFileName);
 			   }
 		   });
+
+			this.SubmitRequestCommand = new DelegateCommand(async () =>
+			{
+				try
+				{
+					var response = await this.SubmitRequestAsync().ConfigureAwait(false);
+					this.ApiInfo = response;
+					OnPropertyChanged(() => this.ApiInfo);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show(e.ToString());
+				}
+			});
 		}
 
 		public ApiRequest ApiInfo { get; set; }
 		public ICommand ShowJwtTokenCommand { get; set; }
 		public ICommand ViewAsHTMLCommand { get; set; }
+		public ICommand SubmitRequestCommand { get; set; }
+
 		public bool IsSuccess => this.ApiInfo.HttpCode >= 200 && this.ApiInfo.HttpCode <= 299;
 
 		static string SerializeToken(String jwtToken)
@@ -115,6 +132,12 @@ namespace ApiManager.ViewModels
 
 			// Output the whole thing to pretty Json object formatted.
 			return JToken.Parse(jwtOutput).ToString(Formatting.Indented);
+		}
+
+		private async Task<ApiRequest> SubmitRequestAsync()
+		{
+			var request = new HttpRequestClient(this.ApiInfo);
+			return await request.GetResponseAsync().ConfigureAwait(false);
 		}
 	}
 }

@@ -12,5 +12,6 @@ namespace ApiManager.Repository
 		Task<string> GetApiVariables(ApiInfo info);
 		Task<string> GetHelpCommands();
 		Task<string> ConvertJsonToHtml(string jsonFile, string outHtmlFile);
+		Task<string> SubmitHttpRequest(string requestFile, string id);
 	}
 }
