@@ -17,7 +17,12 @@ namespace ApiManager.Views
 			using (var xshd_stream = assembly.GetManifestResourceStream(resourceName))
 			{
 				var xshd_reader = new XmlTextReader(xshd_stream);
-				this.TextEditor.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(xshd_reader, ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
+				this.Headers.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(xshd_reader, ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
+			}
+			using (var xshd_stream = assembly.GetManifestResourceStream(resourceName))
+			{
+				var xshd_reader = new XmlTextReader(xshd_stream);
+				this.Body.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(xshd_reader, ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
 			}
 		}
 	}

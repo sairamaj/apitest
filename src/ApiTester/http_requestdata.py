@@ -17,6 +17,7 @@
 # request_end
 ##############################
 
+import sys
 from utils import readAllText
 
 class HttpRequestData:
@@ -56,7 +57,7 @@ class HttpRequestData:
                     self.request += line
 
 if __name__ == "__main__":
-    req_data = HttpRequestData(r"c:\temp\req.txt")
+    req_data = HttpRequestData(sys.argv[1])
     print(f"|{req_data.method}|")
     print(f"|{req_data.url}|")
     print('_________ headers ______________')

@@ -64,8 +64,11 @@ namespace ApiManager.ViewModels
 				try
 				{
 					var response = await this.SubmitRequestAsync().ConfigureAwait(false);
-					this.ApiInfo = response;
-					OnPropertyChanged(() => this.ApiInfo);
+					if (response != null)
+					{
+						this.ApiInfo = response;
+						OnPropertyChanged(() => this.ApiInfo);
+					}
 				}
 				catch (Exception e)
 				{

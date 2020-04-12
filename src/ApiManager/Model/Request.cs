@@ -19,6 +19,9 @@ namespace ApiManager.Model
 
 				return JsonConvert.SerializeObject(this.Headers, Formatting.Indented);
 			}
+			set
+			{
+			}
 		}
 
 		public string GetHeaderValue(string name)
@@ -41,6 +44,14 @@ namespace ApiManager.Model
 			set
 			{
 
+			}
+		}
+
+		public string RequestWithoutBody
+		{
+			get => $"Url:{this.Url}\r\n\r\nHeaders:\r\n{this.HeadersAsString}";
+			set
+			{
 			}
 		}
 	}

@@ -22,19 +22,38 @@
 			<Setter Property="HorizontalScrollBarVisibility"  Value="Auto" />
 		</Style>
 	</UserControl.Resources>
-	<Grid>
-		<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
+	<DockPanel>
+		<!--<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition />
+		</Grid.RowDefinitions>-->
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+			<TextBlock Text="{Binding Url}" FontWeight="Bold"/>
+		</StackPanel>
+		<Expander Header="Headers" IsExpanded="False" DockPanel.Dock="Top">
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" 
-								x:Name="TextEditor" 
-								DataContext="{Binding}"
-								ScrollViewer.HorizontalScrollBarVisibility="Auto"
-								ScrollViewer.VerticalScrollBarVisibility="Auto"
-								>
-			<i:Interaction.Behaviors>
-				<views:AvalonEditBehaviour GiveMeTheText="{Binding RequestData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-			</i:Interaction.Behaviors>
-		</avalonedit:TextEditor>
+								x:Name="Headers" 
+								DataContext="{Binding}"								>
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding HeadersAsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+		</Expander>
 
-	</Grid>
+		<Expander Header="Body" IsExpanded="True">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<avalonedit:TextEditor  Grid.Row="1" Grid.Column="0"
+                                Style="{StaticResource AvalonTextBoxStyles}" 
+								x:Name="Body" 
+								DataContext="{Binding}"
+								>
+					<i:Interaction.Behaviors>
+						<views:AvalonEditBehaviour GiveMeTheText="{Binding Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					</i:Interaction.Behaviors>
+				</avalonedit:TextEditor>
+			</ScrollViewer>
+		</Expander>
+	</DockPanel>
 
 </UserControl>
