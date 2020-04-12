@@ -121,10 +121,19 @@
     <Compile Include="Resources\Views\ResourceDataView.xaml.cs">
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
+    <Compile Include="ScenarioEditing\Models\CommentScenarioItem.cs" />
+    <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
+    <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
+    <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioAction.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\ScenarioLineItemViewModel.cs" />
     <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
       <DependentUpon>NewScenarioFolderWindow.xaml</DependentUpon>
     </Compile>
@@ -233,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Views\ResourceDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\EditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

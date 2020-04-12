@@ -1,26 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using ApiManager.Model;
+using ApiManager.ScenarioEditing.Models;
+using ApiManager.ScenarioEditing.ViewModel;
+using Wpf.Util.Core;
 
 namespace ApiManager.ScenarioEditing.ViewModels
 {
 	class ScenarioEditorViewModel
 	{
-		public ScenarioEditorViewModel(
-			Scenario scenario, 
-			IEnumerable<HelpCommand> helpCommands,
-			ApiCommandInfo apiCommandInfo)
+		public ScenarioEditorViewModel(Scenario scenario)
 		{
-			this.Commands = File.ReadAllLines(scenario.FileName);
-			this.Content = File.ReadAllText(scenario.FileName);
-			this.Content += "\r\n";
-			this.Content += string.Join(",", helpCommands.Select(h => h.Name).ToArray());
-			this.Content += "\r\n";
-			this.Content += string.Join(",", apiCommandInfo.ApiCommands.Select(a => a.Key).ToArray());
+			var lines = File.ReadAllLines(scenario.FileName);
+			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
+
+			foreach (var line in lines)
+			{
+				if (line.StartsWith("#", System.StringComparison.OrdinalIgnoreCase))
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line)));
+				}
+				else if (line.StartsWith("!", System.StringComparison.OrdinalIgnoreCase))
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line)));
+				}
+				else
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First())));
+				}
+			}
 		}
 
-		IEnumerable<string> Commands { get; set; }
-		public string Content { get; set; }
+		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
 	}
 }

@@ -6,7 +6,9 @@ using System.Windows;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.ScenarioEditing.Views;
 using ApiManager.ViewModels;
 using ApiManager.Views;
@@ -33,6 +35,12 @@ namespace ApiManager
 
 			try
 			{
+				var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+					@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
+				EditorWindow editorWindow = new EditorWindow();
+				editorWindow.DataContext = new ScenarioEditorViewModel(new Scenario(fileName));
+				editorWindow.ShowDialog();
+				System.Environment.Exit(-1);
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 

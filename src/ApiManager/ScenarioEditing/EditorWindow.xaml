@@ -1,0 +1,44 @@
+﻿<Window x:Class="ApiManager.ScenarioEditing.EditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.ScenarioEditing"
+        mc:Ignorable="d"
+        Title="EditorWindow" Height="450" Width="800">
+	<Window.Resources>
+		<DataTemplate x:Key="ApiHeaderTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding LineItem.Command}" />
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="CommentHeaderTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding LineItem.Line}" FontWeight="Bold"  Foreground="Green"/>
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="CommandHeaderTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta"/>
+			</StackPanel>
+		</DataTemplate>		
+		<local:ScenarioItemDataHeaderTemplateSelector x:Key="ScenarioItemDataHeaderTemplateSelector" 
+                                             ApiHeaderTemplate="{StaticResource ApiHeaderTemplate}"
+											 CommentHeaderTemplate="{StaticResource CommentHeaderTemplate}"
+											 CommandHeaderTemplate="{StaticResource CommandHeaderTemplate}"
+                                        />
+
+	</Window.Resources>
+	<Grid>
+		<ListView 
+					ItemsSource="{Binding ScenarioLineItems}"
+					BorderThickness="0" 
+					ItemTemplateSelector="{StaticResource ScenarioItemDataHeaderTemplateSelector}" 
+					Background="White" 
+					ScrollViewer.VerticalScrollBarVisibility="Auto"
+					ScrollViewer.CanContentScroll="False"							
+					/>
+	</Grid>
+</Window>

@@ -1,5 +1,7 @@
 accesstoken.password
 apis
 developers
+# extract developer
 !extract [0] a_developer
+# assert developer
 !assert a_developer sai2@abc.com
