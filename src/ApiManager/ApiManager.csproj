@@ -112,6 +112,15 @@
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="Resources\Model\ResourceData.cs" />
+    <Compile Include="Resources\ViewModels\ResourceContainerViewModel.cs" />
+    <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />
+    <Compile Include="Resources\Views\ResourceContainerView.xaml.cs">
+      <DependentUpon>ResourceContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ResourceDataView.xaml.cs">
+      <DependentUpon>ResourceDataView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
@@ -216,6 +225,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Views\ResourceContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Views\ResourceDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

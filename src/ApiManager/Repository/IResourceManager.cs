@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ApiManager.Asserts.Model;
 using ApiManager.Model;
+using ApiManager.Resources.Model;
 using ApiManager.Scripts.Models;
 using Environment = ApiManager.Model.Environment;
 
@@ -13,5 +14,6 @@ namespace ApiManager.Repository
 		IDictionary<string, string> Get(Environment environment);
 		IEnumerable<AssertData> GetAssertData();
 		IEnumerable<ScriptData> GetScriptsData();
+		IEnumerable<ResourceData> GetResources(string method);
 	}
 }

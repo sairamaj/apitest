@@ -7,8 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid>
-		<Expander Header="System" IsExpanded="True" >
-			<local:ScriptView DataContext="{Binding Scripts}" />
-		</Expander>
+		<local:ScriptView DataContext="{Binding Scripts}" />
 	</Grid>
 </UserControl>

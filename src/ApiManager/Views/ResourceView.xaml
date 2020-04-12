@@ -7,6 +7,7 @@
 			 xmlns:views="clr-namespace:ApiManager.VariableView.Views"
 			 xmlns:views1="clr-namespace:ApiManager.Asserts.Views"
 			 xmlns:views11="clr-namespace:ApiManager.Scripts.Views"
+			 xmlns:views2="clr-namespace:ApiManager.Resources.Views"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
@@ -18,6 +19,12 @@
 		</Expander>
 		<Expander Header="Scripts">
 			<views11:ScriptsContainerView DataContext="{Binding ScriptContainerViewModel}"/>
+		</Expander>
+		<Expander Header="Posts">
+			<views2:ResourceContainerView DataContext="{Binding PostResourceContainerViewModel}"/>
+		</Expander>
+		<Expander Header="Patches">
+			<views2:ResourceContainerView DataContext="{Binding PatchResourceContainerViewModel}"/>
 		</Expander>
 	</StackPanel>
 </UserControl>

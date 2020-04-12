@@ -12,6 +12,7 @@ using ApiManager.Extensions;
 using ApiManager.Model;
 using ApiManager.Pipes;
 using ApiManager.Repository;
+using ApiManager.Resources.ViewModels;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
 using ApiManager.Scripts.ViewModels;
@@ -145,6 +146,9 @@ namespace ApiManager.ViewModels
 		public VariableContainerViewModel VariableContainerViewModel { get; private set; }
 		public AssertContainerViewModel AssertContainerViewModel { get; private set; }
 		public ScriptContainerViewModel ScriptContainerViewModel { get; private set; }
+		public ResourceContainerViewModel PostResourceContainerViewModel { get; private set; }
+		public ResourceContainerViewModel PatchResourceContainerViewModel { get; private set; }
+		
 
 		public async Task RunAsync()
 		{
@@ -414,6 +418,8 @@ namespace ApiManager.ViewModels
 			this.VariableContainerViewModel = new VariableContainerViewModel(this._resourceManager);
 			this.AssertContainerViewModel = new AssertContainerViewModel(this._resourceManager);
 			this.ScriptContainerViewModel = new ScriptContainerViewModel(this._resourceManager);
+			this.PostResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "post");
+			this.PatchResourceContainerViewModel= new ResourceContainerViewModel(this._resourceManager, "patch");
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.OnApiConfigSelectionChange();
