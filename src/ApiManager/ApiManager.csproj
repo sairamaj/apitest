@@ -343,9 +343,6 @@
     <None Include="Configuration\Apis\Apigee\scenarios\_posts\create_developer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Resource Include="Configuration\Apis\Apigee\scenarios\access_token_for_2_users - Copy.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Configuration\Apis\Apigee\scenarios\developer\create.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

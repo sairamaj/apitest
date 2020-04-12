@@ -27,9 +27,6 @@
 			<RowDefinition/>
 			<RowDefinition />
 		</Grid.RowDefinitions>-->
-		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-			<TextBlock Text="{Binding Url}" FontWeight="Bold"/>
-		</StackPanel>
 		<Expander Header="Headers" IsExpanded="False" DockPanel.Dock="Top">
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" 

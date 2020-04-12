@@ -6,16 +6,57 @@
              xmlns:local="clr-namespace:ApiManager.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<TextBlock>
+						    <ContentPresenter />
+						</TextBlock>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Foreground" Value="Blue" />
+			<Setter Property="FontSize" Value="13" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Margin" Value="15,0,0,0" />
+			<Setter Property="Cursor" Value="Hand" />
+
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="Foreground" Value="Red" />
+				</Trigger>
+				<DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
+					<Setter Property="Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
+		<Style x:Key="ApiStyle" >
+			<Setter Property="Control.Foreground" Value="Red" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsSuccess}" Value="True" >
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
+	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="40"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="30"/>
 			<RowDefinition />
 			<RowDefinition Height="3"/>
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
 		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
-			<Button Height="35" Width="100" FontWeight="Bold" Margin="10,0,0,0" 
+			<Button Height="28" Width="90" FontWeight="Bold" Margin="10,0,0,0" 
 					Content="Try Again" Command="{Binding SubmitRequestCommand}" HorizontalAlignment="Left"
 					VerticalContentAlignment="Center"
 					/>
@@ -23,8 +64,21 @@
 					   VerticalAlignment="Center"
 					   Margin="4,0,0,0" />
 		</StackPanel>
-		<local:RequestView Grid.Row="1" Grid.Column="0" DataContext="{Binding ApiInfo.Request}"/>
-		<GridSplitter Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
-		<local:ResponseView Grid.Row="3" Grid.Column="0" DataContext="{Binding ApiInfo.Response}"/>
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" >
+			<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}">
+				<TextBlock Text="{Binding ApiInfo.HttpCode}"/>
+				<TextBlock Text="(" />
+				<TextBlock Text="{Binding ApiInfo.StatusCode}" />
+				<TextBlock Text=")" />
+			</StackPanel>
+			<Button Content="{Binding ApiInfo.Url}" 
+					Style="{StaticResource ApplicationLinkButtonNoUnderLine}" 
+					Margin="5,0,0,0" HorizontalAlignment="Center"
+					Command="{Binding OpenUrlCommand}"/>
+		</StackPanel>
+
+		<local:RequestView Grid.Row="2" Grid.Column="0" DataContext="{Binding ApiInfo.Request}"/>
+		<GridSplitter Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
+		<local:ResponseView Grid.Row="4" Grid.Column="0" DataContext="{Binding ApiInfo.Response}"/>
 	</Grid>
 </UserControl>

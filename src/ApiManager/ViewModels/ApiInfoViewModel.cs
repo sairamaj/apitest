@@ -25,7 +25,7 @@ namespace ApiManager.ViewModels
 			{
 				try
 				{
-					var viewModel = new JwtTokenViewModel(SerializeToken(apiInfo.JwtToken));
+					var viewModel = new JwtTokenViewModel(SerializeToken(this.ApiInfo.JwtToken));
 					var win = new JwtTokenWindow() { DataContext = viewModel };
 					win.ShowDialog();
 				}
@@ -41,7 +41,7 @@ namespace ApiManager.ViewModels
 			   string tempHtmlFileName = string.Empty;
 			   try
 			   {
-				   tempJsonFileName = FileHelper.WriteToTempFile(apiInfo.Response.Content, ".json");
+				   tempJsonFileName = FileHelper.WriteToTempFile(this.ApiInfo.Response.Content, ".json");
 				   tempHtmlFileName = FileHelper.GetTempFileName(".html");
 				   await executor.ConvertJsonToHtml(tempJsonFileName, tempHtmlFileName);
 				   if (File.Exists(tempHtmlFileName))
@@ -68,6 +68,7 @@ namespace ApiManager.ViewModels
 					{
 						this.ApiInfo = response;
 						OnPropertyChanged(() => this.ApiInfo);
+						OnPropertyChanged(() => this.IsSuccess);
 					}
 				}
 				catch (Exception e)
@@ -75,12 +76,15 @@ namespace ApiManager.ViewModels
 					MessageBox.Show(e.ToString());
 				}
 			});
+
+			this.OpenUrlCommand = new DelegateCommand( () => Process.Start(this.ApiInfo.Url));
 		}
 
 		public ApiRequest ApiInfo { get; set; }
 		public ICommand ShowJwtTokenCommand { get; set; }
 		public ICommand ViewAsHTMLCommand { get; set; }
 		public ICommand SubmitRequestCommand { get; set; }
+		public ICommand OpenUrlCommand { get; set; }
 
 		public bool IsSuccess => this.ApiInfo.HttpCode >= 200 && this.ApiInfo.HttpCode <= 299;
 
