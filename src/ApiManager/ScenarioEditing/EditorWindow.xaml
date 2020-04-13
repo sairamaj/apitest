@@ -4,30 +4,130 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApiManager.ScenarioEditing"
+		xmlns:view="clr-namespace:ApiManager.Views"
+		
         mc:Ignorable="d"
         Title="EditorWindow" Height="450" Width="800">
 	<Window.Resources>
+
+		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
+		<ImageBrush x:Key="CommentButtonImageBrush" ImageSource="../images/comment.png" />
+		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
+
+		<Style x:Key="ImageStyle">
+			<Setter Property="Control.Width" Value="10" />
+			<Setter Property="Control.Height" Value="10" />
+		</Style>
+
+		<Style x:Key="Arg1Style">
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+		</Style>
+
+		<Style x:Key="Arg2Style">
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+		</Style>
+
+		<Style x:Key="KeyWordStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+			<!--<Setter Property="Control.Width" Value="150" />-->
+		</Style>
+
+		<Style x:Key="EditingModeStyle">
+			<Setter Property="Control.Visibility" Value="Hidden"/>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.EditingModeOn}" Value="True">
+					<Setter Property="Control.Visibility" Value="Visible"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
 		<DataTemplate x:Key="ApiHeaderTemplate">
-			<StackPanel>
-				<TextBlock Text="{Binding LineItem.Command}" />
+			<StackPanel Orientation="Horizontal">
+				<!--<Button  Background="{StaticResource ApiButtonImageBrush}" Style="{StaticResource ImageStyle}" />-->
+				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource KeyWordStyle}" Foreground="Blue"/>
+
+				<Grid>
+					<TextBlock Text="{Binding LineItem.Command}" Margin="10,0,0,0">
+						<TextBlock.InputBindings>
+							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
+						</TextBlock.InputBindings>
+					</TextBlock>
+
+					<ListBox 
+						  ItemsSource="{Binding LineItem.Apis}" 
+						  Style="{StaticResource EditingModeStyle}"
+						  SelectedItem="{Binding LineItem.Command}">
+						<ListBox.InputBindings>
+							<KeyBinding Key="Esc" Command="{Binding LineItem.DoneWithEditingCommand}" 
+										CommandParameter="{Binding SelectedItem, 
+								RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}}"/>
+						</ListBox.InputBindings>
+					</ListBox>
+
+					<!--<ComboBox 
+						  ItemsSource="{Binding LineItem.Apis}" 
+						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
+						  Style="{StaticResource EditingModeStyle}"
+						  SelectedItem="{Binding LineItem.Command}"
+						  view:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="{Binding LineItem.DoneWithEditingCommand}"
+						  />-->
+					<!--<ComboBox 
+						  ItemsSource="{Binding LineItem.Apis}" 
+						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
+						  Style="{StaticResource EditingModeStyle}"
+						  SelectedItem="{Binding LineItem.Command}"
+						  view:ComboBoxBehaviors.OnLostFocus="{Binding LineItem.LostFocusCommand}"
+						  />-->
+				</Grid>
+				<!--<ComboBox BorderThickness="0" Width="100"
+						  Margin="10,0,0,0" ItemsSource="{Binding LineItem.Apis}" 
+						  SelectedItem="{Binding LineItem.Command}"
+						  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+						  Style="{StaticResource EditingModeStyle}"
+						  >
+					<ComboBox.InputBindings>
+					
+						<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
+
+					</ComboBox.InputBindings>
+				</ComboBox>-->
+				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}" />
+				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}" />
 			</StackPanel>
 		</DataTemplate>
 
 		<DataTemplate x:Key="CommentHeaderTemplate">
-			<StackPanel>
-				<TextBlock Text="{Binding LineItem.Line}" FontWeight="Bold"  Foreground="Green"/>
+			<StackPanel Orientation="Horizontal">
+				<!--<Button  Background="{StaticResource CommentButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
+				<TextBlock 
+					Text="{Binding LineItem.Line}" Foreground="Green" Style="{StaticResource KeyWordStyle}"/>
 			</StackPanel>
 		</DataTemplate>
 
-		<DataTemplate x:Key="CommandHeaderTemplate">
-			<StackPanel>
-				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta"/>
+		<DataTemplate x:Key="LineBreakHeaderTemplate">
+			<StackPanel Orientation="Horizontal">
 			</StackPanel>
-		</DataTemplate>		
+		</DataTemplate>
+
+
+		<DataTemplate x:Key="CommandHeaderTemplate">
+			<StackPanel Orientation="Horizontal">
+				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
+				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta" Style="{StaticResource KeyWordStyle}"/>
+				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
+				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
+			</StackPanel>
+		</DataTemplate>
 		<local:ScenarioItemDataHeaderTemplateSelector x:Key="ScenarioItemDataHeaderTemplateSelector" 
                                              ApiHeaderTemplate="{StaticResource ApiHeaderTemplate}"
 											 CommentHeaderTemplate="{StaticResource CommentHeaderTemplate}"
 											 CommandHeaderTemplate="{StaticResource CommandHeaderTemplate}"
+											 LineBreakHeaderTemplate="{StaticResource LineBreakHeaderTemplate}"
+													  
                                         />
 
 	</Window.Resources>

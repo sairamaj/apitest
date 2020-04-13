@@ -124,6 +124,7 @@
     <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\Models\LineBreakScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommentScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Views\ApiConfigurationViewer.xaml.cs">
       <DependentUpon>ApiConfigurationViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ComboBoxBehaviors.cs" />
     <Compile Include="Views\CommandView.xaml.cs">
       <DependentUpon>CommandView.xaml</DependentUpon>
     </Compile>
@@ -191,6 +193,8 @@
     <Compile Include="Scripts\Views\JavaScriptView.xaml.cs">
       <DependentUpon>JavaScriptView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ExtendedComboBox.cs" />
+    <Compile Include="Views\InputBindingsManager.cs" />
     <Compile Include="Views\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
@@ -445,6 +449,8 @@
     <Resource Include="images\newfile.png" />
     <Resource Include="images\newfolder.png" />
     <Resource Include="images\refresh.png" />
+    <Resource Include="images\comment.png" />
+    <Resource Include="images\command.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

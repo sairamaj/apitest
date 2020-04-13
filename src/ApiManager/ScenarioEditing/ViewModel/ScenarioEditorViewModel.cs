@@ -22,6 +22,10 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line)));
 				}
+				else if (line.Trim().Length == 0)
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem()));
+				}
 				else if (line.StartsWith("!", System.StringComparison.OrdinalIgnoreCase))
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line)));

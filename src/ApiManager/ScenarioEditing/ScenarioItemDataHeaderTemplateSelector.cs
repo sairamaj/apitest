@@ -9,6 +9,7 @@ namespace ApiManager.ScenarioEditing
 		public DataTemplate ApiHeaderTemplate { get; set; }
 		public DataTemplate CommentHeaderTemplate { get; set; }
 		public DataTemplate CommandHeaderTemplate { get; set; }
+		public DataTemplate LineBreakHeaderTemplate { get; set; }
 
 		public override DataTemplate SelectTemplate(object item, DependencyObject container)
 		{
@@ -20,6 +21,8 @@ namespace ApiManager.ScenarioEditing
 						return CommentHeaderTemplate;
 					case "command":
 						return CommandHeaderTemplate;
+					case "linebreak":
+						return LineBreakHeaderTemplate;
 					default:
 						return ApiHeaderTemplate;
 				}

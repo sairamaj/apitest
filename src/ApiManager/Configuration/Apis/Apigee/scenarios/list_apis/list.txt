@@ -1,7 +1,15 @@
+############################################
+# Sample File
+############################################
+
+# Act
 accesstoken.password
 apis
 developers
-# extract developer
+
+# Extracts
 !extract [0] a_developer
+
+# Asserts
 # assert developer
 !assert a_developer sai2@abc.com
