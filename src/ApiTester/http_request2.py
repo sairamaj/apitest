@@ -17,7 +17,7 @@ class HttpRequest2:
         elif self.method == 'post':
             response = requests.post(self.url, data=self.body, headers=self.headers, verify=False)
         elif self.method == 'patch':
-            response = requests.post(self.url, data=self.body, headers=self.headers, verify=False)
+            response = requests.patch(self.url, data=self.body, headers=self.headers, verify=False)
         else:
             raise ValueError(f"{self.method} not supported")
 

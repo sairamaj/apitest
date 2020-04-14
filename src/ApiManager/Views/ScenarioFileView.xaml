@@ -62,7 +62,7 @@
 
 						<StackPanel.ContextMenu>
 							<ContextMenu>
-								<MenuItem Header="Reveal In Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
+								<MenuItem Header="Open In File Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
 								<Separator />
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
@@ -78,7 +78,7 @@
 
 						<StackPanel.ContextMenu>
 							<ContextMenu>
-								<MenuItem Header="Reveal In Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
+								<MenuItem Header="Open Folder In File Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
 								<Separator />
 								<MenuItem Header="New Scenario" Command="{Binding Path=NewScenarioCommand}"/>
 								<MenuItem Header="New Scenario Folder" Command="{Binding Path=NewScenarioFolderCommand}"/>

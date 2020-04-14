@@ -39,6 +39,6 @@ class PipeServer():
         win32file.CloseHandle(self.pipe)
 
     def saveToFile(self, data):
-        #pass
-        with open(r'c:\temp\temp\send.json', 'w') as out_file:
-            out_file.write(data)
+        pass
+        #with open(r'c:\temp\temp\send.json', 'w') as out_file:
+        #    out_file.write(data)

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ApiManager.ScenarioEditing.Views"
 		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Enter New scenario container name" Height="200" Width="350">
+        Title="Enter New scenario folder" Height="200" Width="350">
 
 	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 		<Grid.RowDefinitions>
