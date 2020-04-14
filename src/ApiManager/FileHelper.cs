@@ -32,7 +32,7 @@ namespace ApiManager
 			}
 		}
 
-		private static string GetTempPath()
+		public static string GetTempPath()
 		{
 			var apiSubPath = Path.Combine(Path.GetTempPath(), ApiTestSubPath);
 			if (!Directory.Exists(apiSubPath))

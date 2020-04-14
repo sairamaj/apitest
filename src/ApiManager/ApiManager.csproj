@@ -104,6 +104,7 @@
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
     <Compile Include="RegistrationModule.cs" />
+    <Compile Include="Report\ReportGenerator.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
     <Compile Include="Repository\CommandFormatter.cs" />
     <Compile Include="Repository\ICommandExecutor.cs" />
