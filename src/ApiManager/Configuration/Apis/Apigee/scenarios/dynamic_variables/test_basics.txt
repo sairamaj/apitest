@@ -1,0 +1,15 @@
+# dates
+!set a={{$today_date}}
+!set b={{$today_date format=%Y-%m-%d}}
+!set c={{$today_date format=%Y-%m-%d days=-10}}
+
+# randoms
+!set d={{$random}}
+!set e={{$random min=100}}
+!set f={{$random min=100 max=500}}
+
+# guid
+!set g={{$guid}}
+
+!list
+!waitforuserinput

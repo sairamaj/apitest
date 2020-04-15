@@ -364,6 +364,9 @@
     <Content Include="Configuration\Apis\Apigee\scenarios\developer\create.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configuration\Apis\Apigee\scenarios\dynamic_variables\test_basics.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\js_tests\list.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
