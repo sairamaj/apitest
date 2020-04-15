@@ -10,7 +10,7 @@ from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequ
 from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
-from utils import readAllText, read_key_value_pairs
+from utils import readAllText, read_key_value_pairs, line_parser
 from resource_provider import ResourceProvider
 
 
@@ -126,16 +126,15 @@ class SetCommandInputParser(InputParser):
         self.workingDirectory = workingDirectory
 
     def parseCommand(self, command, apis, property_bag):
-        parts = command.split(' ')
+        args = line_parser(command)
         # ex:
         #   set param=value
-        if len(parts) < 2:
+        if len(args) < 2:
             raise ValueError("set require name=value format")
-        nameValueParts = parts[1].split('=')
-        name = nameValueParts[0]
+        name = args[1]
         value = ""
-        if len(nameValueParts) > 1:
-            value = nameValueParts[1]
+        if len(args) > 2:
+            value = args[2]
         # go through transformation
         value = transformValue(value, property_bag.properties)
 

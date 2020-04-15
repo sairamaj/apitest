@@ -6,6 +6,7 @@ import re
 import pystache
 import sys
 import json
+from variables.evaluate_dynamic_varb import evaluate_dynamic
 
 
 def getUserInput(prompt):
@@ -16,14 +17,18 @@ def getUserInput(prompt):
 def updateVariables(inputs, getFunc):
     for k, v in inputs.items():
         if type(v) is str:
-            variables = re.findall(r"{(\w+)}", v)
+            variables = re.findall(r"{{(.+?)}", v)
             variableValues = {}
             for variable in variables:
-                val = getFunc(variable)
-                if val != None:
-                    subItems = {'temp': val}
-                    updatedSubItems = updateVariables(subItems, getFunc)
-                    variableValues[variable] = updatedSubItems.get('temp')
+                if variable.startswith('$'):
+                    val = evaluate_dynamic(variable)
+                    variableValues[variable] = val
+                else:
+                    val = getFunc(variable)
+                    if val != None:
+                        subItems = {'temp': val}
+                        updatedSubItems = updateVariables(subItems, getFunc)
+                        variableValues[variable] = updatedSubItems.get('temp')
             if len(variableValues) > 0:
                 inputs[k] = pystache.render(str(v), variableValues)
         if type(v) is dict:
