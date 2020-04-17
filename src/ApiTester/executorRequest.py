@@ -47,10 +47,11 @@ class WaitForUserInputExecutorRequest(ExecutorRequest):
         self.prompt = prompt
 
 class ExtractVariableExecutorRequest(ExecutorRequest):
-    def __init__(self, json_path, variable_name):
+    def __init__(self, json_path, variable_name, from_source):
         self.command = "!extract"
         self.json_path = json_path
         self.variable_name = variable_name
+        self.from_source = from_source
 
 class AssertExecutorRequest(ExecutorRequest):
     def __init__(self, json_path, value):

@@ -74,7 +74,7 @@ class Api:
                    'Authorization': 'Bearer {}'.format(self.access_token)}
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
-        response = requests.delete(
+        response = requests.deletea(
             url, data=json.dumps(jsonData, indent=4), headers=headers, verify=False)
         self.response = response
         if response.status_code == 200:

@@ -58,15 +58,13 @@ class AccessTokenExecutor(ICommand):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            self.property_bag.last_http_request = HttpRequest(
-                "", self.extractResponseContent(oauth.response), oauth.response.status_code)
+            self.property_bag.last_http_request = HttpRequest(oauth.response)
             collectlog(oauth.response, self.property_bag.session_name)
             pprint(response)
             self.property_bag.access_token = response["access_token"]
         except Exception as e:
             collectlog(oauth.response, self.property_bag.session_name)
-            self.property_bag.last_http_request = HttpRequest(
-                "", self.extractResponseContent(oauth.response), oauth.response.status_code)
+            self.property_bag.last_http_request = HttpRequest(oauth.response)
             raise
 
 
@@ -93,24 +91,20 @@ class ApiExecutor(ICommand):
                 response = api.delete(executorRequest.payLoad)
             else:
                 raise ValueError(f"{executorRequest.method} not supported.")
-
-            self.property_bag.last_http_request = HttpRequest(
-                "", self.extractResponseContent(api.response), api.response.status_code)
+            
+            self.property_bag.last_http_request = HttpRequest(api.response)
 
             collectlog(api.response, self.property_bag.session_name)
             pprint(response)
         except ApiException as ae:
-            self.property_bag.last_http_request = HttpRequest(
-                "", self.extractResponseContent(api.response), api.response.status_code)
+            self.property_bag.last_http_request = HttpRequest(api.response)
             collectlog(api.response, self.property_bag.session_name)
         except Exception as e:
-            self.property_bag.last_response = self.extractResponseContent(
-                api.response)
+            self.property_bag.last_http_request = HttpRequest(api.response)
             collectlog(api.response, self.property_bag.session_name)
             raise
         finally:
             pass
-
 
 class SetExecutor(ICommand):
     def __init__(self, property_bag):
@@ -163,7 +157,8 @@ class HelpExecutor(ICommand):
         print('!help.routename.pathname route path.')
         print('!assert json_path expected_value')
         print('!asserts_with_js assert_file [optional delimiter]')
-        print('!extract jsonpath variable (extracts data into variable given json path).')
+        print('!extract jsonpath variable (extracts fron last response into variable given json path).')
+        print('!extract_from_request jsonpath variable (extracts from last request  into variable given json path).')
         print('!js jsfilename (executes java script file).')
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
@@ -259,6 +254,7 @@ class ExtractVariableCommandExecutor(ICommand):
     def execute(self, executorRequest):
         variable_path = executorRequest.json_path
         variable_name = executorRequest.variable_name
+        from_source = executorRequest.from_source
         variable_value = ""
         try:
             if isinstance(executorRequest, ExtractVariableExecutorRequest) == False:
@@ -267,7 +263,11 @@ class ExtractVariableCommandExecutor(ICommand):
             if self.property_bag.last_http_request == None:
                 raise ValueError(
                     "no last_http_request avialble, please execute any api request to extract variables.")
-            variable_value = JPathExtractor(json.loads(
+            if from_source == 'request':
+                variable_value = JPathExtractor(json.loads(
+                self.property_bag.last_http_request.request)).extract(variable_path)
+            else:
+                variable_value = JPathExtractor(json.loads(
                 self.property_bag.last_http_request.response)).extract(variable_path)
         except Exception as e:
             success = False

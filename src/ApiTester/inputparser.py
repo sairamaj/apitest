@@ -19,6 +19,7 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         '!assert': AssertRequestInputParser(workingDirectory),
         '!asserts_with_js': AssertsWithJsRequestInputParser(workingDirectory),
         '!extract': ExtractVariableRequestInputParser(workingDirectory),
+        '!extract_from_request': ExtractVariableFromRequestRequestInputParser(workingDirectory),
         '!httprequest': HttpRequestInputParser(workingDirectory),
         '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
@@ -197,7 +198,18 @@ class ExtractVariableRequestInputParser(InputParser):
         if len(parts) < 3:
             raise ValueError(
                 "!extract requires jsonPath and variable name ( ex !extract user.name userName)")
-        return ExtractVariableExecutorRequest(parts[1], parts[2])
+        return ExtractVariableExecutorRequest(parts[1], parts[2], 'response')
+
+class ExtractVariableFromRequestRequestInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        parts = command.split(' ')
+        if len(parts) < 3:
+            raise ValueError(
+                "!extract requires jsonPath and variable name ( ex !extract_from_request user.name userName)")
+        return ExtractVariableExecutorRequest(parts[1], parts[2],'request')
 
 
 class AssertRequestInputParser(InputParser):
