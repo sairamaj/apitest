@@ -40,12 +40,41 @@ class Api:
         
         raise ApiException(response.status_code, response.content)
 
+    def put(self, jsonData):
+        headers = {'Content-Type': 'application/json',
+                   'Authorization': 'Bearer {}'.format(self.access_token)}
+        headers = dict(headers, **self.apiInfo.headers)
+        url = self.apiInfo.baseUrl + self.apiInfo.path
+        response = requests.put(
+            url, data=json.dumps(jsonData, indent=4), headers=headers, verify=False)
+        self.response = response
+        if response.status_code == 200:
+            if len(response.content) > 0 :
+                return response.json()
+            return ""
+        
+        raise ApiException(response.status_code, response.content)
+
     def patch(self, jsonData):
         headers = {'Content-Type': 'application/json',
                    'Authorization': 'Bearer {}'.format(self.access_token)}
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
         response = requests.patch(
+            url, data=json.dumps(jsonData, indent=4), headers=headers, verify=False)
+        self.response = response
+        if response.status_code == 200:
+            if len(response.content) > 0 :
+                return response.json()
+            return ""
+        raise ApiException(response.status_code, response.content)
+
+    def delete(self, jsonData):
+        headers = {'Content-Type': 'application/json',
+                   'Authorization': 'Bearer {}'.format(self.access_token)}
+        headers = dict(headers, **self.apiInfo.headers)
+        url = self.apiInfo.baseUrl + self.apiInfo.path
+        response = requests.delete(
             url, data=json.dumps(jsonData, indent=4), headers=headers, verify=False)
         self.response = response
         if response.status_code == 200:

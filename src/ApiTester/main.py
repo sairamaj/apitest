@@ -69,6 +69,7 @@ def main():
     # Run batch
     if args.batch != None:
         loggerPipe.send(f"info: starting {args.batch}")
+        property_bag.user_input = False  # in batch jobs lets start with no user input (one can still enable in the batch file)
         try:
             workingDirectory = os.path.dirname(args.batch)
             session = Session(config.apis(), workingDirectory,  property_bag)    

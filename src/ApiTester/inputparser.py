@@ -75,8 +75,8 @@ class ApiCommandInputParser(InputParser):
             route = parts[0]
             path = "_"
 
-        supportedVerbs = ['get', 'post', 'patch']
-        if method in ['get', 'post', 'patch'] == False:
+        supportedVerbs = ['get', 'post', 'patch', 'put', 'delete']
+        if method not in supportedVerbs:
             raise ValueError(
                 f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
@@ -90,27 +90,27 @@ class ApiCommandInputParser(InputParser):
             foundApiInfo = copy.deepcopy(
                 foundApiInfo)      # we need fresh copy
 
-        data = transform(foundApiInfo.body, property_bag.properties)
+        data = transform(foundApiInfo.body,
+                         property_bag.properties, property_bag.user_input)
         path = transformString('path', foundApiInfo.path,
-                               property_bag.properties)
+                               property_bag.properties, property_bag.user_input)
         baseUrl = transformString(
-            'baseurl', foundApiInfo.baseUrl, property_bag.properties)
+            'baseurl', foundApiInfo.baseUrl, property_bag.properties, property_bag.user_input )
 
         transformedHeaders = transform(
-            foundApiInfo.headers, property_bag.properties)
+            foundApiInfo.headers, property_bag.properties, property_bag.user_input)
 
         apiInfoWithData = ApiInfo(
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
         jsonData = ""
-        if method == 'post' or method == 'patch':
+        if method in ['post','patch','put'] :
             if len(filename) == 0:
                 raise Exception(f'{method} requires filename')
             fileNameWithPath = ResourceProvider(
                 property_bag.resource_path).api_filepath_for_http_verb(filename, method)
             post_data = json.loads(readAllText(fileNameWithPath))
             tranform_items = {"temp": post_data}
-            tranformed_items = transform(
-                tranform_items, property_bag.properties)
+            tranformed_items = transform(tranform_items, property_bag.properties,property_bag.user_input)
             jsonData = tranformed_items["temp"]
             print(f"--------> {jsonData}")
             print(f"--------> {type(jsonData)}")

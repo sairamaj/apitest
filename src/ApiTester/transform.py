@@ -14,6 +14,10 @@ def getUserInput(prompt):
     return input()
 
 
+def getEmpty(varb):
+    return ""
+
+
 def updateVariables(inputs, getFunc):
     for k, v in inputs.items():
         if type(v) is str:
@@ -41,33 +45,40 @@ def updateVariables(inputs, getFunc):
     return inputs
 
 
-def transform(inputs, argItems):
+def transform(inputs, argItems, user_input):
     if inputs == None:
         return None
     inputs = updateVariables(inputs, lambda v: argItems.get(v, None))
-    inputs = updateVariables(inputs, getUserInput)
+    if user_input == True:
+        inputs = updateVariables(inputs, getUserInput)
+    else:
+        inputs = updateVariables(inputs, getEmpty)
     return inputs
 
 
-def transformString(name, item, argItems):
+def transformString(name, item, argItems, user_input):
     if item == None:
         return None
     inputs = {name: item}
     inputs = updateVariables(inputs, lambda v: argItems.get(v, None))
-    inputs = updateVariables(inputs, getUserInput)
+    if user_input == True:
+        inputs = updateVariables(inputs, getUserInput)
+    else:
+        inputs = updateVariables(inputs, getEmpty)
     return inputs[name]
+
 
 def transformValue(value, argItems):
     # create temp dict
     temp = {"key": value}
-    transform(temp, argItems)
+    transform(temp, argItems,True)
     # extract value
     return temp['key']
 
 
-
 def getVariables(data):
     return re.findall(r"{(\w+)}", data)
+
 
 if __name__ == "__main__":
     data = """
@@ -94,7 +105,7 @@ if __name__ == "__main__":
     }
 }
 """
-    
+
     info = json.loads(data)
     variables = {
         "email": "s@abc.com",

@@ -2,7 +2,6 @@ from variables.datetime_variable import DateVariable
 from variables.random_variable import RandomVariable
 from variables.guid_variable import GuidVariable
 
-
 def evaluate_dynamic(variable):
     evaluator = { 
         "$today_date": DateVariable(variable),

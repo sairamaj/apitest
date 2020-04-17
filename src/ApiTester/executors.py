@@ -87,6 +87,10 @@ class ApiExecutor(ICommand):
                 response = api.post(executorRequest.payLoad)
             elif executorRequest.method == 'patch':
                 response = api.patch(executorRequest.payLoad)
+            elif executorRequest.method == 'put':
+                response = api.put(executorRequest.payLoad)
+            elif executorRequest.method == 'delete':
+                response = api.delete(executorRequest.payLoad)
             else:
                 raise ValueError(f"{executorRequest.method} not supported.")
 
@@ -116,7 +120,10 @@ class SetExecutor(ICommand):
         if isinstance(executorRequest, SetExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of SetExecutorRequest")
-        self.property_bag.properties = dict(self.property_bag.properties,
+        if executorRequest.parameterName == "user_input":
+            self.property_bag.user_input = executorRequest.parameterValue
+        else:
+            self.property_bag.properties = dict(self.property_bag.properties,
                                             **{executorRequest.parameterName: executorRequest.parameterValue})
 
 

@@ -8,6 +8,7 @@ class PropertyBag:
         self.session_name = "unknown"
         self.last_http_request = None
         self.resources_path = None
+        self.user_input = True
 
     def get(self, name):
         return self.properties.get(name, None)
@@ -22,6 +23,14 @@ class PropertyBag:
     @access_token.setter
     def access_token(self, value):
         self._access_token = value
+
+    @property
+    def user_input(self):
+        return self._user_input
+
+    @user_input.setter
+    def user_input(self, value):
+        self._user_input = value
 
     @property
     def session_name(self):
@@ -59,6 +68,7 @@ class PropertyBag:
             additional['last_http_request.status_code'] = self.last_http_request.status_code
         additional['session'] = self.session_name
         additional['resource_path'] = self.resource_path
+        additional['user_input'] = self.user_input
         return additional
 
             
