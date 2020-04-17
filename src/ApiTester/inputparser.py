@@ -209,8 +209,7 @@ class ExtractVariableFromRequestRequestInputParser(InputParser):
         if len(parts) < 3:
             raise ValueError(
                 "!extract requires jsonPath and variable name ( ex !extract_from_request user.name userName)")
-        return ExtractVariableExecutorRequest(parts[1], parts[2],'request')
-
+        return ExtractVariableExecutorRequest(parts[1].strip(), parts[2].strip(),'request')
 
 class AssertRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
@@ -221,7 +220,7 @@ class AssertRequestInputParser(InputParser):
         if len(parts) < 3:
             raise ValueError(
                 "!assert requires json_path and value_to_match ( ex !assert json_path value_to_match)")
-        return AssertExecutorRequest(parts[1], parts[2])
+        return AssertExecutorRequest(parts[1].strip(), parts[2].strip())
 
 
 class AssertsWithJsRequestInputParser(InputParser):
