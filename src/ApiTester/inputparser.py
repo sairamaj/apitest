@@ -37,7 +37,10 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         return None
     parser = commands.get(commandName, None)
     if parser == None:
-        parser = ApiCommandInputParser(workingDirectory)
+        if commandName.startswith('!'):
+            raise ValueError(f"{commandName} not available")
+        else:
+            parser = ApiCommandInputParser(workingDirectory)
 
     return parser.parseCommand(command, apis, property_bag)
 

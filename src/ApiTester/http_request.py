@@ -1,6 +1,12 @@
 class HttpRequest:
     def __init__(self, apiResponse):
 
+        if apiResponse == None:
+            self.request = ""
+            self.response = ""
+            sefl.status_code = 0
+            return
+            
         # extract request
         bodyString = apiResponse.request.body
         if isinstance(bodyString, bytes):
