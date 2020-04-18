@@ -14,7 +14,7 @@ from property_bag import PropertyBag
 from transform import transformValue
 from publish.publisher import Publisher
 
-publisher = Publisher()
+publisher = Publisher({})
 
 def main():
     # Load file
@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--config", help="Config File")
     parser.add_argument("--varfile", help="Variables file")
     parser.add_argument("--session", help="Session name")
+    parser.add_argument("--output", help="Output directory where results will be written")
     parser.add_argument("--resource_path", help="Resource Path")
     args, unknown = parser.parse_known_args()
 
@@ -63,6 +64,8 @@ def main():
         property_bag.session_name = args.session
     if args.resource_path != "":
         property_bag.resource_path = args.resource_path
+    if args.output != "":
+        property_bag.add('output', args.output)
     config = Config(args.config)
 
     # Run batch

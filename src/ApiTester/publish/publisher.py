@@ -7,11 +7,11 @@ pipeServer = PipeServer('apiinfo')
 errorPipe = PipeServer('error')
 loggerPipe = PipeServer('log')
 managementPipe = PipeServer('management')
-file_publisher = FilePublisher(r'c:\temp\results')
+
 
 class Publisher:
-    def __init__(self):
-        pass
+    def __init__(self, properties):
+        self.properties = properties
 
     def log(self, message):
 
@@ -47,7 +47,10 @@ class Publisher:
                 }
             })
 
-            file_publisher.api_data(data)
+            output_path = self.properties.get('output', None)
+            if output_path != None:
+                FilePublisher(output_path).api_data(data)
+
             pipeServer.send(data)
 
         except Exception as e:
@@ -64,7 +67,11 @@ class Publisher:
         try:
             info = "extract|" + json.dumps(data)
             print(info)
-            file_publisher.extract_data(info)
+
+            output_path = self.properties.get('output', None)
+            if output_path != None:
+                FilePublisher(output_path).extract_data(info)
+
             pipeServer.send(info)
         except Exception as e:
             print(f'exception in extractInfo. ignoring {e}.')
@@ -81,7 +88,11 @@ class Publisher:
         try:
             info = "assert|" + json.dumps(data)
             print(info)
-            file_publisher.assert_data(info)
+
+            output_path = self.properties.get('output', None)
+            if output_path != None:
+                FilePublisher(output_path).assert_data(info)
+
             pipeServer.send(info)
         except Exception as e:
             print(f'exception in assertInfo. ignoring.{e}')
@@ -106,7 +117,11 @@ class Publisher:
         try:
             info = f"error|" + json.dumps(data)
             print(info)
-            file_publisher.error_data(info)
+
+            output_path = self.properties.get('output', None)
+            if output_path != None:
+                FilePublisher(output_path).error_data(info)
+
             pipeServer.send(info)
         except Exception as e:
             print(f'exception in errorInfo. ignoring. {str(e)}')
@@ -121,7 +136,11 @@ class Publisher:
         try:
             info = f"js|" + json.dumps(data)
             print(info)
-            file_publisher.js_data(data)
+
+            output_path = self.properties.get('output', None)
+            if output_path != None:
+                FilePublisher(output_path).js_data(info)
+
             pipeServer.send(info)
         except Exception as e:
             print(f'exception in jsExecuteInfo. ignoring. {str(e)}')
