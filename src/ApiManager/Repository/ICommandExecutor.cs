@@ -7,6 +7,7 @@ namespace ApiManager.Repository
 	interface ICommandExecutor
 	{
 		Task<string> StartAsync(TestData testData);
+		string GenerateScript(TestData testData);
 		Task<string> OpenCommandPromptAsync(TestData testData);
 		Task<string> GetApiCommands(ApiInfo info);
 		Task<string> GetApiVariables(ApiInfo info);

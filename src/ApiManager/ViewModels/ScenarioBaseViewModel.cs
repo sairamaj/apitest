@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing;
@@ -30,11 +31,15 @@ namespace ApiManager.ViewModels
 
 			this.DeleteCommand = new DelegateCommand(
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
+
+			this.GenerateScriptCommand = new DelegateCommand(
+				() => UiHelper.SafeAction(this.GenerateScript, "Generate Script"));
 		}
 
 		public Scenario Scenario { get; }
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
+		public ICommand GenerateScriptCommand { get; }
 
 		private void DeleteScenario()
 		{
@@ -44,6 +49,12 @@ namespace ApiManager.ViewModels
 				return;
 			}
 			this._onEvent(ScenarioAction.Delete, this.Scenario);
+		}
+
+		private void GenerateScript()
+		{
+			// var executor = ServiceLocator.Locator.Resolve<ICommandExecutor>();
+
 		}
 	}
 }

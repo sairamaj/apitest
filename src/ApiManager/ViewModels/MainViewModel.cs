@@ -51,6 +51,8 @@ namespace ApiManager.ViewModels
 
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
+			this.GenerateScriptCommand = new DelegateCommand(() => this.GenerateScript());
+			
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 			this.RefreshCommand = new DelegateCommand(this.Load);
@@ -130,6 +132,7 @@ namespace ApiManager.ViewModels
 		public ObservableCollection<CommandTreeViewModel> Scenarios { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public ICommand RunCommand { get; set; }
+		public ICommand GenerateScriptCommand { get; set; }
 		public bool IsClearBeforeRun { get; set; }
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
@@ -148,7 +151,18 @@ namespace ApiManager.ViewModels
 		public ScriptContainerViewModel ScriptContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PostResourceContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PatchResourceContainerViewModel { get; private set; }
-		
+
+		public void GenerateScript()
+		{
+			var executor = new Executor(this._apiExecutor, this._settings);
+			var selectedScenario = GetSelectedScenario();
+			if (selectedScenario is ScenarioViewModel scenarioViewModel)
+			{
+				executor.GenerateScript(this.SelectedApiInfoViewModel.ApiInfo,
+													   this.SelectedEnvironment.Environment,
+													   scenarioViewModel.Scenario);
+			}
+		}
 
 		public async Task RunAsync()
 		{

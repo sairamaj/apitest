@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using ApiManager.Model;
@@ -17,6 +18,21 @@ namespace ApiManager
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor) );
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
+		}
+
+		public async void GenerateScript(ApiInfo api, Environment environment, Scenario scenario)
+		{
+			var variableFileName = CreateVariableFile(api, environment);
+			var scriptContents = _executor.GenerateScript(
+				new TestData
+				{
+					ConfigName = api.Configuration,
+					CommandsTextFileName = scenario.FileName,
+					VariablesFileName = variableFileName,
+					SessionName = $"{api.Name}|{scenario.Name}",
+				});
+			var output = FileHelper.WriteToTempFile(scriptContents, ".bat");
+			Process.Start("notepad.exe", output);
 		}
 
 		public async Task RunScenarioAsync(ApiInfo api, Environment environment, Scenario scenario)

@@ -12,9 +12,9 @@ from inputparser import InputParser
 from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
-from logcollector import sendErrorInfo
+from publish.publisher import Publisher
 
-
+publisher = Publisher()
 class Session:
     def __init__(self, apis, workingDirectory, property_bag):
         self.apis = apis
@@ -57,7 +57,7 @@ class Session:
             print('-'*60)
 
         if error != None:
-            sendErrorInfo(self.property_bag.session_name, error)
+            publisher.errorInfo(self.property_bag.session_name, error)
 
     def executeBatch(self, fileName):
         with open(fileName, "r") as file:

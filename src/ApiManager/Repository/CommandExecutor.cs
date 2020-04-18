@@ -43,6 +43,14 @@ namespace ApiManager.Repository
 			return tcs.Task;
 		}
 
+		public string GenerateScript(TestData testData)
+		{
+			var content = this._settings.ConsoleExecutableName;
+			content += " ";
+			content += CreateArguments(testData, this._settings.IsPythonExecutable);
+			return content;
+		}
+
 		private void Validate(TestData testData)
 		{
 		}

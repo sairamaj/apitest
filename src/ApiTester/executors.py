@@ -4,15 +4,12 @@ from oauth import OAuth
 from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api, ApiException
-from logcollector import collectlog, sendExtractInfo, sendAssertInfo, sendManagementInfo
-from logcollector import sendJsExecuteInfo
 from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
-from pipeserver import PipeServer
 from jsonpath_ng.ext import parse
 from json2html import *
 from transform import getVariables
@@ -23,8 +20,9 @@ from jpath_extractor import JPathExtractor
 from http_request import HttpRequest
 from http_request2 import HttpRequest2
 from http_requestdata import HttpRequestData
+from publish.publisher import Publisher
 
-
+publisher = Publisher()
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
         self.command = command
@@ -59,11 +57,11 @@ class AccessTokenExecutor(ICommand):
         try:
             response = oauth.getAccessToken()
             self.property_bag.last_http_request = HttpRequest(oauth.response)
-            collectlog(oauth.response, self.property_bag.session_name)
+            publisher.apiresult(oauth.response, self.property_bag.session_name)
             pprint(response)
             self.property_bag.access_token = response["access_token"]
         except Exception as e:
-            collectlog(oauth.response, self.property_bag.session_name)
+            publisher.apiresult(oauth.response, self.property_bag.session_name)
             self.property_bag.last_http_request = HttpRequest(oauth.response)
             raise
 
@@ -94,14 +92,14 @@ class ApiExecutor(ICommand):
             
             self.property_bag.last_http_request = HttpRequest(api.response)
 
-            collectlog(api.response, self.property_bag.session_name)
+            publisher.apiresult(api.response, self.property_bag.session_name)
             pprint(response)
         except ApiException as ae:
             self.property_bag.last_http_request = HttpRequest(api.response)
-            collectlog(api.response, self.property_bag.session_name)
+            publisher.apiresult(api.response, self.property_bag.session_name)
         except Exception as e:
             self.property_bag.last_http_request = HttpRequest(api.response)
-            collectlog(api.response, self.property_bag.session_name)
+            publisher.apiresult(api.response, self.property_bag.session_name)
             raise
         finally:
             pass
@@ -213,7 +211,7 @@ class ManagementCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         if executorRequest.request == "commands":
-            sendManagementInfo(self.property_bag.session_name,
+            publisher.managementInfo(self.property_bag.session_name,
                                "commands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
             commands = {}
@@ -223,12 +221,12 @@ class ManagementCommandExecutor(ICommand):
                     subcommands.append(path)
                 commands[name] = subcommands
             print(f"apis : {type(executorRequest.apis)}")
-            sendManagementInfo(self.property_bag.session_name,
+            publisher.managementInfo(self.property_bag.session_name,
                                "apicommands", commands)
         elif executorRequest.request == "variables":
             variables = getVariables(readAllText(
                 self.property_bag.config_filename))
-            sendManagementInfo(self.property_bag.session_name,
+            publisher.managementInfo(self.property_bag.session_name,
                                "variables", variables)
             print(variables)
         else:
@@ -272,12 +270,13 @@ class ExtractVariableCommandExecutor(ICommand):
         except Exception as e:
             success = False
             message = str(e)
-            sendExtractInfo(self.property_bag.session_name,
+            
+            publisher.extractInfo(self.property_bag.session_name,
                             variable_name, "", False, str(e))
             raise
 
         self.property_bag.add(variable_name, variable_value)
-        sendExtractInfo(self.property_bag.session_name,
+        publisher.extractInfo(self.property_bag.session_name,
                         variable_name, variable_value, True, "")
 
 
@@ -310,11 +309,11 @@ class AssertCommandExecutor(ICommand):
             assert str(actual) == str(
                 executorRequest.value), f"Did not match. expected:{executorRequest.value} actual:{actual}"
         except AssertionError as e:
-            sendAssertInfo(self.property_bag.session_name,
+            publisher.assertInfo(self.property_bag.session_name,
                            json_path, expected, actual, False, str(e))
             raise
 
-        sendAssertInfo(self.property_bag.session_name,
+        publisher.assertInfo(self.property_bag.session_name,
                        json_path, expected, actual, True, "success")
 
 
@@ -333,10 +332,10 @@ class AssertsJsRequestCommandExecutor(ICommand):
                 self.property_bag.last_http_request.response, executorRequest.assert_records)
             if script_response == None:
                 script_response = "success"
-            sendJsExecuteInfo(self.property_bag.session_name,
+            publisher.jsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, script_response, False)
         except Exception as e:
-            sendJsExecuteInfo(self.property_bag.session_name,
+            publisher.jsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, str(e), True)
 
 
@@ -374,10 +373,10 @@ class JavaScirptCommandExecutor(ICommand):
                 'this is request', self.property_bag.last_http_request.response, executorRequest.script_args)
             if script_response == None:
                 script_response = "success"
-            sendJsExecuteInfo(self.property_bag.session_name,
+            publisher.jsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, script_response, False)
         except Exception as e:
-            sendJsExecuteInfo(self.property_bag.session_name,
+            publisher.jsExecuteInfo(self.property_bag.session_name,
                               executorRequest.js_file, str(e), True)
 
 
