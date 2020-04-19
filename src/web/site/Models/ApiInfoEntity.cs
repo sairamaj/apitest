@@ -9,7 +9,7 @@ namespace site.Models
         {
             this.Id = Guid.NewGuid();
         }
-        public Guid Id { get; set; }
+        public Guid Id { get;}
         public string Method { get; set; }
         public string Url { get; set; }
         public string Path
@@ -27,5 +27,7 @@ namespace site.Models
         {
             return $"{this.Method} {this.HttpCode} {this.Url}";
         }
+
+        public bool Success => this.HttpCode >=200 && this.HttpCode <=299;
     }
 }

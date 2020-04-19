@@ -1,13 +1,30 @@
 ﻿@model IEnumerable<site.Models.RunEntity>
+@{
+    ViewData["Title"] = "Api Status";
+}
 
+<style type="text/css">
+  .completed{
+      background-color:green;
+  }
+  .running{
+      background-color:blueviolet;
+  }
+  .success{
+      background-color: green;
+  }
+  .failed{
+      background-color: red;
+  }
+</style>
 <dv>
 <table border="1" cellpadding="10" align="center">
                     <th>Name</th>
                     <th>Date</th>
                     <th>Status</th>
-                                  
             @foreach(var run in Model.OrderBy(t=> t.Name)){
-                 <tr>
+                var style  = run.Status == RunStatus.Running ? "running" : "completed";
+                 <tr class=@style>
                     <td>@run.Name </td>
                     <td>@run.DateTime </td>
                     <td>@run.Status </td>
@@ -27,12 +44,19 @@
                                   
             @foreach(var run in Model.OrderBy(t=> t.Name)){
                 @foreach(var api in run.Apis){
+                    var style  = api.Success ? "success" : "failed";
                  <tr>
                     <td>@api.Path</td>
                     <td>@api.Method </td>
-                    <td>@api.HttpCode (@api.StatusCode) </td>
+                    <td class=@style>@api.HttpCode (@api.StatusCode) </td>
                     <td>
-        <a class="navbar-brand" asp-area="" asp-controller="ApiDetails" asp-action="Index">
+                    <a 
+                        class="navbar-brand" 
+                        asp-area="" 
+                        asp-controller="ApiDetails" 
+                        asp-action="Index"
+                        asp-route-id="@api.Id"
+                        >
             Details  </a>
     </td>
                 </tr>
