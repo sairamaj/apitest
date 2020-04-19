@@ -1,8 +1,9 @@
 using System;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace ApiRunner
 {
-    public class ApiInfo
+    public class ApiInfoEntity : TableEntity
     {
         public Guid Id { get; set; }
         public string Method { get; set; }

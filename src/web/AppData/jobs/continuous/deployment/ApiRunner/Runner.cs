@@ -47,7 +47,7 @@ namespace ApiRunner
                     PropertyNameCaseInsensitive = true,
                 };
                 System.Console.WriteLine(Path.GetFileName(fileName));
-                var apiInfo = JsonSerializer.Deserialize<ApiInfo>(File.ReadAllText(fileName), options);
+                var apiInfo = JsonSerializer.Deserialize<ApiInfoEntity>(File.ReadAllText(fileName), options);
                 System.Console.WriteLine(apiInfo);
             }
         }
