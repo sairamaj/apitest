@@ -4,6 +4,7 @@ using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using site.Models;
 
+//https://microsoft.github.io/AzureTipsAndTricks/blog/tip84.html
 namespace site.Repository
 {
     class AzureRepository : IAzureRepository
@@ -55,23 +56,12 @@ namespace site.Repository
         }
 
 
-        public async IAsyncEnumerable<ApiInfoEntity> GetApiDetails(string apiId)
+        public async Task<ApiInfoDetailEntity> GetApiDetails(string environment,string apiId)
         {
             var table = await GetApiRunTable();
-            TableContinuationToken token = null;
-            var entities = new List<RunEntity>();
-            do
-            {
-                var queryResult = await table.ExecuteQuerySegmentedAsync(
-                    new TableQuery<ApiInfoEntity>()
-                    .Where(TableQuery.GenerateFilterCondition("RowKey",QueryComparisons.Equal, apiId)), token);
-                foreach (var result in queryResult.Results)
-                {
-                    yield return result;
-                }
 
-                token = queryResult.ContinuationToken;
-            } while (token != null);
+            var x=  await table.ExecuteAsync(TableOperation.Retrieve<ApiInfoDetailEntity>(environment, apiId));
+            return x.Result as ApiInfoDetailEntity;
         }
 
         private CloudStorageAccount StorageAccount => CloudStorageAccount.Parse(this._connectionString);

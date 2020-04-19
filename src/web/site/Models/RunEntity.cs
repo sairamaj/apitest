@@ -11,6 +11,7 @@ namespace site.Models
             this.Apis = new List<ApiInfoEntity>();
         }
         
+        public string Id => this.PartitionKey;
         public string Name {get; set;}
         public DateTime DateTime {get; set;}
         public RunStatus Status {get; set;}

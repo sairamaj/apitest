@@ -20,23 +20,11 @@ namespace site.Controllers
         }
 
         public IAzureRepository Repository { get; }
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index(string runId, string apiId)
         {
-            ApiInfoEntity apiInfo = null;
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
-            await foreach (var api in this.Repository.GetApiDetails(id))
-            {
-                apiInfo = api;
-
-                apiInfo.Data = JsonSerializer.Serialize(JsonSerializer.Deserialize<object>(api.Data), options);
-                break;
-            }
-
-            return View(apiInfo);
+            System.Console.WriteLine($"env: {runId}:{apiId}");
+            var detail = await this.Repository.GetApiDetails(runId, apiId);
+            return View(detail);
         }
     }
 

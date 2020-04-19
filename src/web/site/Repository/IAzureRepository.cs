@@ -9,6 +9,6 @@ namespace site.Repository
         IAsyncEnumerable<RunEntity> GetRuns(string environment);
         IAsyncEnumerable<ApiInfoEntity> GetApis(string runId);
 
-        IAsyncEnumerable<ApiInfoEntity> GetApiDetails(string apiId);
+        Task<ApiInfoDetailEntity> GetApiDetails(string environment, string apiId);
     }
 }

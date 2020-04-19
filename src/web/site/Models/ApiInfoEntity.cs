@@ -22,7 +22,6 @@ namespace site.Models
         }
         public int HttpCode { get; set; }
         public string StatusCode { get; set; }
-        public string Data { get; set; }
 
         public override string ToString()
         {
