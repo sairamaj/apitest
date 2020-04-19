@@ -4,6 +4,7 @@ namespace ApiRunner.Repository
 {
     interface IAzureRepository
     {
-        Task AddApiInfo(ApiInfoEntity apiEntity);
+        Task Add(ApiInfoEntity api);
+        Task Add(RunEntity run);
     }
 }

@@ -12,17 +12,27 @@ namespace ApiRunner.Repository
         }
         public string ConnectionString { get; }
 
-        public async Task AddApiInfo(ApiInfoEntity apiEntity)
+        public async Task Add(ApiInfoEntity api)
+        {
+            await AddRunInfo(api);
+        }
+
+        public async Task Add(RunEntity run)
+        {
+            await AddRunInfo(run);
+        }
+
+        private async Task AddRunInfo(TableEntity entity)
         {
             // Retrieve storage account information from connection string.
             var storageAccount = CreateStorageAccountFromConnectionString(this.ConnectionString);
             // Create the InsertOrReplace table operation
-            var insertOrMergeOperation = TableOperation.InsertOrMerge(apiEntity);
+            var insertOrMergeOperation = TableOperation.InsertOrMerge(entity);
             // Execute the operation.
             var table = await GetApiRunTable(storageAccount);
             TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
-        }
 
+        }
         private static CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
         {
             return CloudStorageAccount.Parse(storageConnectionString);
