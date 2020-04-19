@@ -16,6 +16,6 @@ namespace site.Models
         public RunStatus Status {get; set;}
         public string Message {get; set;}
 
-        public IEnumerable<ApiInfoEntity> Apis {get; set;}
+        public IList<ApiInfoEntity> Apis {get; set;}
     }
 }

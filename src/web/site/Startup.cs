@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using site.Models;
+using site.Repository;
 
 namespace site
 {
@@ -24,6 +26,7 @@ namespace site
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddTransient<IAzureRepository, AzureRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

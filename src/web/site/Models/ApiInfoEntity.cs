@@ -5,17 +5,18 @@ namespace site.Models
 {
     public class ApiInfoEntity : TableEntity
     {
-        public ApiInfoEntity()
-        {
-            this.Id = Guid.NewGuid();
-        }
-        public Guid Id { get;}
+        public string Id => this.RowKey;
         public string Method { get; set; }
         public string Url { get; set; }
         public string Path
         {
             get
             {
+                if (string.IsNullOrEmpty(this.Url))
+                {
+                    return string.Empty;
+                }
+
                 return new Uri(this.Url).PathAndQuery;
             }
         }
@@ -28,6 +29,6 @@ namespace site.Models
             return $"{this.Method} {this.HttpCode} {this.Url}";
         }
 
-        public bool Success => this.HttpCode >=200 && this.HttpCode <=299;
+        public bool Success => this.HttpCode >= 200 && this.HttpCode <= 299;
     }
 }

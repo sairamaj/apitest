@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using site.Models;
+using site.Repository;
 
 namespace site.Controllers
 {
@@ -13,34 +14,34 @@ namespace site.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            IAzureRepository repository,
+            ILogger<HomeController> logger)
         {
+            Repository = repository;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IAzureRepository Repository { get; }
+        public async Task<IActionResult> Index()
         {
-            var runs = new List<RunEntity>(){
-                new RunEntity {
-                    Name="Apigee",
-                    Status= RunStatus.Completed,
-                    Apis = new List<ApiInfoEntity>{
-                        new ApiInfoEntity{
-                            Method = "GET",
-                            HttpCode = 200,
-                            StatusCode = "Ok",
-                            Url  = "https://foo.com/api/oauth"
-                        },
-                        new ApiInfoEntity{
-                            Method = "GET",
-                            HttpCode = 400,
-                            StatusCode = "Bad Request",
-                            Url  = "https://foo.com/api/list"
-                        },
-                    }
-                },
-                new RunEntity {Name="Apigee", Status= RunStatus.Running}
-            };
+            var runs = new List<RunEntity>();
+            await foreach (var run in Repository.GetRuns("apigee"))
+            {
+                runs.Add(run);
+            }
+
+            // Get last run
+            var lastRun = runs.OrderByDescending(r=> r.DateTime).FirstOrDefault();
+            // Fill apis for the last run
+            if( lastRun != null)
+            {
+                await foreach (var api in Repository.GetApis(lastRun.PartitionKey))
+                {
+                    lastRun.Apis.Add(api);
+                }
+            }
+
             return View(runs);
         }
 
