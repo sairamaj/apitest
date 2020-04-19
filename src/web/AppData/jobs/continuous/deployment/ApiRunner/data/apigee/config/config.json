@@ -1,0 +1,28 @@
+{
+	"accesstoken": {
+		"baseurl": "https://login.apigee.com/oauth/token",
+		"password": {
+			"path": "",
+			"body": {
+				"grant_type": "password",
+				"username": "{{username}}",
+				"password": "{{password}}"
+			},
+			"headers": {
+				"Authorization": "Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0"
+			}
+		}
+	},
+	"apis": {
+		"baseurl": "https://api.enterprise.apigee.com/v1/organizations/{{org_name}}",
+		"_": {
+			"path": "/apis"
+		}
+	},
+	"developers": {
+		"baseurl": "https://api.enterprise.apigee.com/v1/organizations/{{org_name}}",
+		"_": {
+			"path": "/developers"
+		}
+	}
+}

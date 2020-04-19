@@ -32,9 +32,11 @@ namespace ApiRunner
                         webJobConfiguration.AddTimers();
                         webJobConfiguration.AddAzureStorageCoreServices();
                     })
-                    .ConfigureServices(serviceCollection => serviceCollection.AddTransient<AppRunner>())
+                    .ConfigureServices(serviceCollection => serviceCollection.AddTransient<AppRunnerJob>())
+                    .ConfigureServices(serviceCollection => serviceCollection.AddTransient<IRunner, Runner>())
                     .Build();
-            builder.Run();
+            // builder.Run();
+            AppRunnerJob.Start();
         }
     }
 }
