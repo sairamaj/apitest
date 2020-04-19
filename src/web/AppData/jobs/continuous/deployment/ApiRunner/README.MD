@@ -1,0 +1,1 @@
+[webjobj](https://dotnetcoretutorials.com/2018/10/10/azure-webjobs-in-net-core-part-2/)
