@@ -1,0 +1,42 @@
+﻿@model IEnumerable<site.Models.RunEntity>
+
+<dv>
+<table border="1" cellpadding="10" align="center">
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                                  
+            @foreach(var run in Model.OrderBy(t=> t.Name)){
+                 <tr>
+                    <td>@run.Name </td>
+                    <td>@run.DateTime </td>
+                    <td>@run.Status </td>
+                </tr>
+            }
+</table>
+</dv>
+
+<br/>
+
+<dv>
+<table border="1" cellpadding="10" align="center">
+                    <th>Path</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                                  
+            @foreach(var run in Model.OrderBy(t=> t.Name)){
+                @foreach(var api in run.Apis){
+                 <tr>
+                    <td>@api.Path</td>
+                    <td>@api.Method </td>
+                    <td>@api.HttpCode (@api.StatusCode) </td>
+                    <td>
+        <a class="navbar-brand" asp-area="" asp-controller="ApiDetails" asp-action="Index">
+            Details  </a>
+    </td>
+                </tr>
+                }
+            }
+</table>
+</dv>
