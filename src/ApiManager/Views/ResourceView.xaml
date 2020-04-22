@@ -26,5 +26,8 @@
 		<Expander Header="Patches">
 			<views2:ResourceContainerView DataContext="{Binding PatchResourceContainerViewModel}"/>
 		</Expander>
+		<Expander Header="Puts">
+			<views2:ResourceContainerView DataContext="{Binding PutResourceContainerViewModel}"/>
+		</Expander>
 	</StackPanel>
 </UserControl>

@@ -151,6 +151,7 @@ namespace ApiManager.ViewModels
 		public ScriptContainerViewModel ScriptContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PostResourceContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PatchResourceContainerViewModel { get; private set; }
+		public ResourceContainerViewModel PutResourceContainerViewModel { get; private set; }
 
 		public void GenerateScript()
 		{
@@ -434,6 +435,8 @@ namespace ApiManager.ViewModels
 			this.ScriptContainerViewModel = new ScriptContainerViewModel(this._resourceManager);
 			this.PostResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "post");
 			this.PatchResourceContainerViewModel= new ResourceContainerViewModel(this._resourceManager, "patch");
+			this.PutResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "put");
+			
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.OnApiConfigSelectionChange();

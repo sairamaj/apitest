@@ -9,6 +9,7 @@ def writeAllText(fileName, content):
     with open(fileName, 'w') as file:
         file.write(content)
 
+
 def read_key_value_pairs(fileName, delim):
     key_values = {}
     with open(fileName, 'r') as file:
@@ -32,16 +33,18 @@ def line_parser(val, first_split=' ', second_split='='):
     args.append(remain)
     return args
 
-def line_to_dictionary(val,delim=' ',tag_delim='=' ):
+
+def line_to_dictionary(val, delim=' ', tag_delim='='):
     items = dict()
     for x in val.split(delim):
         parts = x.split(tag_delim)
         if len(parts) > 1:
-            items[parts[0]]=parts[1]
+            items[parts[0]] = parts[1]
         else:
-            items[parts[0]]=""
+            items[parts[0]] = ""
     return items
 
+
 if __name__ == '__main__':
-    kvs = read_key_value_pairs(sys.argv[1],sys.argv[2])
+    kvs = read_key_value_pairs(sys.argv[1], sys.argv[2])
     print(kvs)

@@ -16,6 +16,17 @@ from publish.publisher import Publisher
 
 publisher = Publisher({})
 
+def read_variables(file_name):
+    variables = {}
+    with open(file_name, 'r') as in_file:
+        for line in in_file.readlines():
+            parts = line.strip().split('=')
+            if len(parts) > 1:
+                if parts[0].startswith('#') == False:
+                    variables[parts[0]] = transformValue(parts[1], variables)
+    return variables
+
+
 def main():
     # Load file
     parser = argparse.ArgumentParser()
@@ -39,12 +50,8 @@ def main():
     # Load variables
     variables = {}
     if args.varfile != None:
-        with open(args.varfile, 'r') as in_file:
-            for line in in_file.readlines():
-                parts = line.strip().split('=')
-                if len(parts) > 1 :
-                    if parts[0].startswith('#') == False:
-                        variables[parts[0]] =transformValue(parts[1], variables)
+        for variable_file in args.varfile.split(','):
+            variables = dict(read_variables(variable_file), **variables)
 
     # add glonbal exception
     def my_except_hook(exctype, value, traceback):

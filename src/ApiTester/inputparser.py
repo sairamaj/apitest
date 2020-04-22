@@ -112,10 +112,10 @@ class ApiCommandInputParser(InputParser):
                 raise Exception(f'{method} requires filename')
             fileNameWithPath = ResourceProvider(
                 property_bag.resource_path).api_filepath_for_http_verb(filename, method)
-            post_data = json.loads(readAllText(fileNameWithPath))
+            post_data = readAllText(fileNameWithPath)
             tranform_items = {"temp": post_data}
             tranformed_items = transform(tranform_items, property_bag.properties,property_bag.user_input)
-            jsonData = tranformed_items["temp"]
+            jsonData = json.loads(tranformed_items["temp"])
             print(f"--------> {jsonData}")
             print(f"--------> {type(jsonData)}")
 
