@@ -4,7 +4,7 @@ class HttpRequest:
         if apiResponse == None:
             self.request = ""
             self.response = ""
-            sefl.status_code = 0
+            self.status_code = 0
             return
             
         # extract request

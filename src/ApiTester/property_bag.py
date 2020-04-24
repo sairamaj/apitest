@@ -60,6 +60,10 @@ class PropertyBag:
     def resources_path(self, value):
         self._resources_path = value
 
+    @property
+    def output(self):
+        return self.properties.get('output')
+
     def additional_properties(self):
         additional = {}
         if self.last_http_request != None:

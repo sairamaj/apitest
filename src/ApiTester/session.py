@@ -1,3 +1,4 @@
+import os
 import sys
 import traceback
 from config import Config
@@ -13,6 +14,7 @@ from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
 from publish.publisher import Publisher
+from publish.generate_junit_report import Reporter
 
 class Session:
     def __init__(self, apis, workingDirectory, property_bag):
@@ -71,3 +73,7 @@ class Session:
                         self.executeCommandInput(final_command.get('command'))
                     except ApiException as ae:
                         printError(str(ae))
+        if self.property_bag.output != None:
+            print('generating report')
+            results_file = os.path.join(self.property_bag.output, "results.xml")
+            Reporter(self.property_bag.output).generate_junit(results_file)

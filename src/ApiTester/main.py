@@ -57,12 +57,12 @@ def main():
     def my_except_hook(exctype, value, traceback):
         publisher.log(f"error executing {args.batch}: {str(value)}")
         printError(f"Global exception: {str(value)}")
-        input('press any key to quit.')
+        #input('press any key to quit.')
         print("Exception in user code:")
         print('-'*60)
         traceback.print_exc(file=sys.stdout)
         print('-'*60)
-        input('press any key to quit.')
+        #input('press any key to quit.')
         sys.__excepthook__(exctype, value, traceback)
 
     sys.excepthook = my_except_hook
