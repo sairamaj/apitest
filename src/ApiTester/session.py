@@ -14,7 +14,7 @@ from property_bag import PropertyBag
 from inputparser import parseCommand
 from transform import transform
 from publish.publisher import Publisher
-from publish.generate_junit_report import Reporter
+from publish.junitreport import Reporter
 
 class Session:
     def __init__(self, apis, workingDirectory, property_bag):
