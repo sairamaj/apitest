@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,10 +22,12 @@ namespace ApiManager.ViewModels
 
 		public ScenarioBaseViewModel(
 			TreeViewItemViewModel parent,
+			ApiInfo apiInfo,
 			Scenario scenario,
 			Action<ScenarioAction, Scenario> onEvent)
 			: base(parent, scenario.Name, scenario.FileName)
 		{
+			this.ApiInfo = apiInfo;
 			this.Scenario = scenario;
 			this._onEvent = onEvent;
 
@@ -35,14 +38,15 @@ namespace ApiManager.ViewModels
 
 			this.DeleteCommand = new DelegateCommand(
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
-			this.SmartEditorCommand =  new DelegateCommand(
+			this.SmartEditorCommand = new DelegateCommand(
 				async () => await this.ShowSmartEditor().ConfigureAwait(false));
 		}
 
+		public ApiInfo ApiInfo { get; }
 		public Scenario Scenario { get; }
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
-		public ICommand SmartEditorCommand { get;  }
+		public ICommand SmartEditorCommand { get; }
 
 		private void DeleteScenario()
 		{
@@ -59,11 +63,26 @@ namespace ApiManager.ViewModels
 			try
 			{
 				var repository = ServiceLocator.Locator.Resolve<IDataRepository>();
-				var firstApiInfo = repository.GetApiConfigurations().First();
-				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(firstApiInfo).ConfigureAwait(true);
+				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(this.ApiInfo).ConfigureAwait(true);
 				EditorWindow editorWindow = new EditorWindow();
-				editorWindow.DataContext = new ScenarioEditorViewModel(
-					this.Scenario, apiCommandInfo.ApiCommands.Select(kv => kv.Key));
+				var apis = apiCommandInfo.ApiCommands;
+				var items = new List<string>();
+				foreach (var kv in apis)
+				{
+					foreach (var sub in kv.Value)
+					{
+						if (sub == "_")
+						{
+							items.Add($"{kv.Key}");
+						}
+						else
+						{
+							items.Add($"{kv.Key}.{sub}");
+						}
+					}
+				}
+
+				editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
 				editorWindow.ShowDialog();
 			}
 			catch (Exception e)

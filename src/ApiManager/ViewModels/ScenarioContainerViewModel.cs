@@ -24,7 +24,7 @@ namespace ApiManager.ViewModels
 			Action<ScenarioAction, Scenario> onEvent,
 			ApiInfo apiInfo,
 			IDataRepository repository)
-			: base(parent, scenario, onEvent)
+			: base(parent, apiInfo, scenario, onEvent)
 		{
 			this._apiInfo = apiInfo;
 			this._repository = repository;
