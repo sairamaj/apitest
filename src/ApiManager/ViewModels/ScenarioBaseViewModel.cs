@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.Utils;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
@@ -30,11 +35,14 @@ namespace ApiManager.ViewModels
 
 			this.DeleteCommand = new DelegateCommand(
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
+			this.SmartEditorCommand =  new DelegateCommand(
+				async () => await this.ShowSmartEditor().ConfigureAwait(false));
 		}
 
 		public Scenario Scenario { get; }
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
+		public ICommand SmartEditorCommand { get;  }
 
 		private void DeleteScenario()
 		{
@@ -44,6 +52,25 @@ namespace ApiManager.ViewModels
 				return;
 			}
 			this._onEvent(ScenarioAction.Delete, this.Scenario);
+		}
+
+		private async Task ShowSmartEditor()
+		{
+			try
+			{
+				var repository = ServiceLocator.Locator.Resolve<IDataRepository>();
+				var firstApiInfo = repository.GetApiConfigurations().First();
+				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(firstApiInfo).ConfigureAwait(true);
+				EditorWindow editorWindow = new EditorWindow();
+				editorWindow.DataContext = new ScenarioEditorViewModel(
+					this.Scenario, apiCommandInfo.ApiCommands.Select(kv => kv.Key));
+				editorWindow.ShowDialog();
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+			}
+
 		}
 	}
 }

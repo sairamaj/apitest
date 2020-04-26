@@ -1,11 +1,14 @@
-﻿namespace ApiManager.ScenarioEditing.Models
+﻿using System.Collections.Generic;
+
+namespace ApiManager.ScenarioEditing.Models
 {
 	class ApiScenarioItem : ScenarioLineItem
 	{
 		private string _command;
-		public ApiScenarioItem(string command) : base("api")
+		public ApiScenarioItem(string command, IEnumerable<string> apis) : base("api")
 		{
 			this.Command = command;
+			Apis = apis;
 		}
 
 		public string Command
@@ -23,13 +26,8 @@
 
 			}
 		}
-		public string[] Apis
-		{
-			get
-			{
-				return new string[] { "accesstoken.password", "developers", "apis" };
-			}
-		}
+
+		public IEnumerable<string> Apis { get; }
 
 	}
 }

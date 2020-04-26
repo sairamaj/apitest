@@ -35,12 +35,6 @@ namespace ApiManager
 
 			try
 			{
-				var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-					@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
-				EditorWindow editorWindow = new EditorWindow();
-				editorWindow.DataContext = new ScenarioEditorViewModel(new Scenario(fileName));
-				editorWindow.ShowDialog();
-				System.Environment.Exit(-1);
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 

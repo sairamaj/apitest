@@ -47,6 +47,13 @@ namespace ApiManager.Views
 			if (e.NewValue != null)
 			{
 	element.PreviewKeyDown += new KeyEventHandler(HandlePreviewKeyDown);
+				if (element is ComboBox comboBox)
+				{
+					//foreach (var child in comboBox.LogicalChildren)
+					//{
+					//}
+				}
+				
 			}
 		}
 

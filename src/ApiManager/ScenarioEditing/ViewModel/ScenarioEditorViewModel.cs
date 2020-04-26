@@ -11,7 +11,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 {
 	class ScenarioEditorViewModel
 	{
-		public ScenarioEditorViewModel(Scenario scenario)
+		public ScenarioEditorViewModel(Scenario scenario, IEnumerable<string> apis)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
@@ -32,7 +32,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				}
 				else
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First())));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First(), apis)));
 				}
 			}
 		}

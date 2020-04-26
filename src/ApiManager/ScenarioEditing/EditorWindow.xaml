@@ -14,7 +14,7 @@
 		<ImageBrush x:Key="CommentButtonImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
 
-		<Style x:Key="ImageStyle">
+		<Style x:Key="ImageStyle"> 
 			<Setter Property="Control.Width" Value="10" />
 			<Setter Property="Control.Height" Value="10" />
 		</Style>
@@ -36,6 +36,14 @@
 			<!--<Setter Property="Control.Width" Value="150" />-->
 		</Style>
 
+		<Style x:Key="ApiWordStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Blue" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+			<!--<Setter Property="Control.Width" Value="150" />-->
+		</Style>
+
 		<Style x:Key="EditingModeStyle">
 			<Setter Property="Control.Visibility" Value="Hidden"/>
 			<Style.Triggers>
@@ -45,56 +53,35 @@
 			</Style.Triggers>
 		</Style>
 
+		<Style x:Key="EditingModeStyleForTextBox" BasedOn="{StaticResource ApiWordStyle}">
+			<Setter Property="Control.Visibility" Value="Visible"/>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.EditingModeOn}" Value="True">
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>		
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
-				<!--<Button  Background="{StaticResource ApiButtonImageBrush}" Style="{StaticResource ImageStyle}" />-->
-				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource KeyWordStyle}" Foreground="Blue"/>
-
+				
 				<Grid>
-					<TextBlock Text="{Binding LineItem.Command}" Margin="10,0,0,0">
+					<TextBlock 
+						Style="{StaticResource EditingModeStyleForTextBox}"
+						Text="{Binding LineItem.Command}" Margin="10,0,0,0">
 						<TextBlock.InputBindings>
 							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
 						</TextBlock.InputBindings>
 					</TextBlock>
 
-					<ListBox 
-						  ItemsSource="{Binding LineItem.Apis}" 
-						  Style="{StaticResource EditingModeStyle}"
-						  SelectedItem="{Binding LineItem.Command}">
-						<ListBox.InputBindings>
-							<KeyBinding Key="Esc" Command="{Binding LineItem.DoneWithEditingCommand}" 
-										CommandParameter="{Binding SelectedItem, 
-								RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}}"/>
-						</ListBox.InputBindings>
-					</ListBox>
-
-					<!--<ComboBox 
+					<ComboBox 
 						  ItemsSource="{Binding LineItem.Apis}" 
 						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
 						  Style="{StaticResource EditingModeStyle}"
 						  SelectedItem="{Binding LineItem.Command}"
 						  view:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="{Binding LineItem.DoneWithEditingCommand}"
-						  />-->
-					<!--<ComboBox 
-						  ItemsSource="{Binding LineItem.Apis}" 
-						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
-						  Style="{StaticResource EditingModeStyle}"
-						  SelectedItem="{Binding LineItem.Command}"
-						  view:ComboBoxBehaviors.OnLostFocus="{Binding LineItem.LostFocusCommand}"
-						  />-->
+						  />
 				</Grid>
-				<!--<ComboBox BorderThickness="0" Width="100"
-						  Margin="10,0,0,0" ItemsSource="{Binding LineItem.Apis}" 
-						  SelectedItem="{Binding LineItem.Command}"
-						  xmlns:sys="clr-namespace:System;assembly=mscorlib"
-						  Style="{StaticResource EditingModeStyle}"
-						  >
-					<ComboBox.InputBindings>
-					
-						<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
 
-					</ComboBox.InputBindings>
-				</ComboBox>-->
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}" />
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}" />
 			</StackPanel>
