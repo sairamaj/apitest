@@ -1,6 +1,9 @@
 accesstoken.password
 apis
-developers
-!extract [0] a_developer
+__update_last_response json_path=[2] value=dummy__
 !waitforuserinput
+apis post __get_last_response__
+!extract [0] a_developer
+#!waitforuserinput
 !assert a_developer sai2@abc.com
+

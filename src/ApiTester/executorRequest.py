@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractstaticmethod
 from utils import readAllText
 
+
 class ExecutorRequest(metaclass=ABCMeta):
     pass
 
@@ -41,10 +42,12 @@ class ManagementCommandExecutorRequest(ExecutorRequest):
         self.request = request
         self.apis = apis
 
+
 class WaitForUserInputExecutorRequest(ExecutorRequest):
     def __init__(self, prompt):
         self.command = "!waitforuserinput"
         self.prompt = prompt
+
 
 class ExtractVariableExecutorRequest(ExecutorRequest):
     def __init__(self, json_path, variable_name, from_source):
@@ -53,11 +56,13 @@ class ExtractVariableExecutorRequest(ExecutorRequest):
         self.variable_name = variable_name
         self.from_source = from_source
 
+
 class AssertExecutorRequest(ExecutorRequest):
     def __init__(self, json_path, value):
         self.command = "!assert"
         self.json_path = json_path
         self.value = value
+
 
 class AssertsExecutorWithJsRequest(ExecutorRequest):
     def __init__(self, js_file, assert_records):
@@ -65,11 +70,13 @@ class AssertsExecutorWithJsRequest(ExecutorRequest):
         self.js_file = js_file
         self.assert_records = assert_records
 
+
 class ConvertJsonToHtmlExecutorRequest(ExecutorRequest):
     def __init__(self, json_filename, html_filename):
         self.command = "!convert_json_html"
         self.json_filename = json_filename
         self.html_filename = html_filename
+
 
 class JavaScriptExecutorRequest(ExecutorRequest):
     def __init__(self, js_file, script_args):
@@ -77,9 +84,16 @@ class JavaScriptExecutorRequest(ExecutorRequest):
         self.js_file = js_file
         self.script_args = script_args
 
+
 class HttpRequestExecutorRequest(ExecutorRequest):
     def __init__(self, request_file, request_id):
         self.command = "!httprequest"
         self.request_file = request_file
         self.request_id = request_id
-    
+
+
+class FuncCommandExecutorRequest(ExecutorRequest):
+    def __init__(self, name, args):
+        self.command = "__funceval__"
+        self.name = name
+        self.args = args

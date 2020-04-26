@@ -70,6 +70,10 @@ class Session:
                     final_command = transform(
                         {"command": command}, self.property_bag.properties, self.property_bag.user_input)
                     try:
+                        # print(f"original: {command}")
+                        # final = final_command.get('command')
+                        # print(f"fina: {final}")
+                        # input('about')
                         self.executeCommandInput(final_command.get('command'))
                     except ApiException as ae:
                         printError(str(ae))

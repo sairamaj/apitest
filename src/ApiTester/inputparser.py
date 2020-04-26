@@ -7,11 +7,12 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
-from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest
+from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
-from utils import readAllText, read_key_value_pairs, line_parser
+from utils import readAllText, read_key_value_pairs, line_parser, line_to_dictionary, isFunc
 from resource_provider import ResourceProvider
+from functionevaluator import evaluate_func
 
 
 def parseCommand(command, workingDirectory, apis, property_bag):
@@ -39,6 +40,8 @@ def parseCommand(command, workingDirectory, apis, property_bag):
     if parser == None:
         if commandName.startswith('!'):
             raise ValueError(f"{commandName} not available")
+        elif isFunc(command.strip()):
+            parser = FuncCommandInputParser(workingDirectory)
         else:
             parser = ApiCommandInputParser(workingDirectory)
 
@@ -108,11 +111,15 @@ class ApiCommandInputParser(InputParser):
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
         jsonData = ""
         if method in ['post','patch','put'] :
-            if len(filename) == 0:
-                raise Exception(f'{method} requires filename')
-            fileNameWithPath = ResourceProvider(
+            if isFunc(filename):
+                post_data = evaluate_func(filename, property_bag.last_http_request)
+            else:
+                if len(filename) == 0:
+                    raise Exception(f'{method} requires filename')
+                fileNameWithPath = ResourceProvider(
                 property_bag.resource_path).api_filepath_for_http_verb(filename, method)
-            post_data = readAllText(fileNameWithPath)
+                post_data = readAllText(fileNameWithPath)
+
             tranform_items = {"temp": post_data}
             tranformed_items = transform(tranform_items, property_bag.properties,property_bag.user_input)
             jsonData = json.loads(tranformed_items["temp"])
@@ -302,3 +309,15 @@ class HttpRequestInputParser(InputParser):
             raise ValueError(f"{request_file} does not exists.")
 
         return HttpRequestExecutorRequest(request_file, request_id)
+
+class FuncCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        command = command.strip().strip('__')
+        args = line_to_dictionary(command)
+        func_name = next(iter(args))    # first key is name
+        args.pop(func_name, None)       # remove this
+        return FuncCommandExecutorRequest(func_name, args)
+

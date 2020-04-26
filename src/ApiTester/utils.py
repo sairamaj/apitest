@@ -1,5 +1,8 @@
 import sys
 
+def isFunc(expression):
+    return expression.startswith('__') and expression.endswith('__')
+
 def readAllText(fileName):
     with open(fileName, 'r') as file:
         return file.read()
