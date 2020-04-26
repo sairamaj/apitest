@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.Utils;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
@@ -17,10 +22,12 @@ namespace ApiManager.ViewModels
 
 		public ScenarioBaseViewModel(
 			TreeViewItemViewModel parent,
+			ApiInfo apiInfo,
 			Scenario scenario,
 			Action<ScenarioAction, Scenario> onEvent)
 			: base(parent, scenario.Name, scenario.FileName)
 		{
+			this.ApiInfo = apiInfo;
 			this.Scenario = scenario;
 			this._onEvent = onEvent;
 
@@ -31,15 +38,15 @@ namespace ApiManager.ViewModels
 
 			this.DeleteCommand = new DelegateCommand(
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
-
-			this.GenerateScriptCommand = new DelegateCommand(
-				() => UiHelper.SafeAction(this.GenerateScript, "Generate Script"));
+			this.SmartEditorCommand = new DelegateCommand(
+				async () => await this.ShowSmartEditor().ConfigureAwait(false));
 		}
 
+		public ApiInfo ApiInfo { get; }
 		public Scenario Scenario { get; }
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
-		public ICommand GenerateScriptCommand { get; }
+		public ICommand SmartEditorCommand { get; }
 
 		private void DeleteScenario()
 		{
@@ -51,9 +58,37 @@ namespace ApiManager.ViewModels
 			this._onEvent(ScenarioAction.Delete, this.Scenario);
 		}
 
-		private void GenerateScript()
+		private async Task ShowSmartEditor()
 		{
-			// var executor = ServiceLocator.Locator.Resolve<ICommandExecutor>();
+			try
+			{
+				var repository = ServiceLocator.Locator.Resolve<IDataRepository>();
+				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(this.ApiInfo).ConfigureAwait(true);
+				EditorWindow editorWindow = new EditorWindow();
+				var apis = apiCommandInfo.ApiCommands;
+				var items = new List<string>();
+				foreach (var kv in apis)
+				{
+					foreach (var sub in kv.Value)
+					{
+						if (sub == "_")
+						{
+							items.Add($"{kv.Key}");
+						}
+						else
+						{
+							items.Add($"{kv.Key}.{sub}");
+						}
+					}
+				}
+
+				editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
+				editorWindow.ShowDialog();
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.ToString());
+			}
 
 		}
 	}
