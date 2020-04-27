@@ -4,11 +4,13 @@ from jsonpath_ng.ext import parse
 from utils import line_to_dictionary
 import json
 
+
 class FuncEvaluator:
     def __init__(self, last_api_info):
 
         self.func = {
             "update_last_response": self.update_last_response,
+            "remove_item_from_last_response": self.remove_item_from_last_response,
             "get_last_response": self.get_last_response
         }
 
@@ -39,6 +41,16 @@ class FuncEvaluator:
     def get_last_response(self):
         print('get_last_response')
         return self.last_api_info.response
+
+    def remove_item_from_last_response(self, json_path):
+        response_info = json.loads(self.last_api_info.response)
+        found = response_info.get(json_path, None)
+        if found == None:
+            return
+        response_info.pop(json_path)
+        self.last_api_info.response = json.dumps(response_info, indent=4)
+        print(self.last_api_info.response)
+
 
 def evaluate_func(command, last_request_info):
     command = command.strip().strip('__')
