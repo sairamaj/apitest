@@ -9,7 +9,8 @@ class FuncEvaluator:
     def __init__(self, last_api_info):
 
         self.func = {
-            "update_last_response": self.update_last_response,
+            "update_item_in_last_response": self.update_last_response,
+            "add_item_to_last_response": self.add_item_to_last_response,
             "remove_item_from_last_response": self.remove_item_from_last_response,
             "get_last_response": self.get_last_response
         }
@@ -51,6 +52,11 @@ class FuncEvaluator:
         self.last_api_info.response = json.dumps(response_info, indent=4)
         print(self.last_api_info.response)
 
+    def add_item_to_last_response(self, json_path, value):
+        response_info = json.loads(self.last_api_info.response)
+        response_info[json_path] = value
+        self.last_api_info.response = json.dumps(response_info, indent=4)
+        print(self.last_api_info.response)
 
 def evaluate_func(command, last_request_info):
     command = command.strip().strip('__')
