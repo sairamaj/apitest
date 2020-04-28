@@ -97,3 +97,9 @@ class FuncCommandExecutorRequest(ExecutorRequest):
         self.command = "__funceval__"
         self.name = name
         self.args = args
+
+class PrintCommandExecutorRequest(ExecutorRequest):
+    def __init__(self, message):
+        self.command = "!print"
+        self.message = message
+

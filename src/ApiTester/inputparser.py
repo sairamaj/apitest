@@ -7,7 +7,8 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutorRequest, HelpExecutorRequest
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
-from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest
+from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest, \
+                     PrintCommandExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
 from utils import readAllText, read_key_value_pairs, line_parser, line_to_dictionary, isFunc
@@ -24,6 +25,7 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         '!httprequest': HttpRequestInputParser(workingDirectory),
         '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
+        "!print" : PrintCommandInputParser(workingDirectory),
         '!set': SetCommandInputParser(workingDirectory),
         '!help': HelpCommandInputParser(workingDirectory),
         '!management': ManagementCommandRequestInputParser(workingDirectory),
@@ -321,3 +323,12 @@ class FuncCommandInputParser(InputParser):
         args.pop(func_name, None)       # remove this
         return FuncCommandExecutorRequest(func_name, args)
 
+class PrintCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        parts = command.split(' ')
+        message = command[len(parts[0])+1:]
+        message = transformValue(message, property_bag.properties)
+        return PrintCommandExecutorRequest(message)

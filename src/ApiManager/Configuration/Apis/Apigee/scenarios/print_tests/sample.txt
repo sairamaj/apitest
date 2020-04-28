@@ -1,0 +1,6 @@
+!print Hello World
+!set country=USA
+!print Country name is {{country}}
+!print This is random variable {{$random}}
+!print Today date is {{$today_date}}
+!print Tomorrow is  {{$today_date days=1}}

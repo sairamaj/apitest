@@ -334,6 +334,11 @@ namespace ApiManager.ViewModels
 				ConsumePipeData<AssertInfo>(msg);
 			});
 
+			communicator.Add("apiinfo", "print", msg =>
+			{
+				ConsumePipeData<PrintInfo>(msg);
+			});
+
 			communicator.Add("management", "apicommands", msg =>
 			{
 				ConsumeManagementPipeData<ApiCommandInfo>(msg);

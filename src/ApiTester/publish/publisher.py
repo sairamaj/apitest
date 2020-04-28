@@ -97,6 +97,18 @@ class Publisher:
         except Exception as e:
             print(f'exception in assertInfo. ignoring.{e}')
 
+    def printInfo(self, sessionName, message):
+        data = {
+            "session": sessionName,
+            "message": message}
+
+        try:
+            info = "print|" + json.dumps(data)
+            print(info)
+            pipeServer.send(info)
+        except Exception as e:
+            print(f'exception in assertInfo. ignoring.{e}')
+
     def managementInfo(self, sessionName, name, info):
         data = {
             "session": sessionName,

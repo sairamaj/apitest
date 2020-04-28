@@ -13,10 +13,10 @@ namespace ApiManager.Views
 		public DataTemplate ErrorHeaderTemplate { get; set; }
 		public DataTemplate ApiExecuteHeaderTemplate { get; set; }
 		public DataTemplate JsScrptHeaderTemplate { get; set; }
-		
+        public DataTemplate PrintHeaderTemplate { get; set; }
 
 
-		public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var viewModel = item as InfoViewModel;
             if (viewModel == null)
@@ -30,7 +30,9 @@ namespace ApiManager.Views
                     return ExtractHeaderTemplate;
 				case "Assert":
 					return AssertHeaderTemplate;
-				case "Error":
+                case "Print":
+                    return PrintHeaderTemplate;
+                case "Error":
 					return ErrorHeaderTemplate;
 				case "ApiExecute":
 					return ApiExecuteHeaderTemplate;

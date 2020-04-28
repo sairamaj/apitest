@@ -68,6 +68,10 @@ namespace ApiManager.ViewModels
 				this.RequestResponses.Add(new JsExecuteViewModel(jsScript));
 				isError = jsScript.IsError;
 			}
+			else if (info is PrintInfo printInfo)
+			{
+				this.RequestResponses.Add(new PrintInfoViewModel(printInfo));
+			}
 
 			if (isError)
 			{

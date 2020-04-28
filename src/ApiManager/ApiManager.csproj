@@ -79,6 +79,7 @@
     <Compile Include="HttpRequestClient.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
+    <Compile Include="Model\PrintInfo.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
     <Compile Include="Variables\ViewModels\VariableViewModel.cs" />
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
+    <Compile Include="ViewModels\PrintInfoViewModel.cs" />
     <Compile Include="ViewModels\JsExecuteViewModel.cs" />
     <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />
     <Compile Include="ViewModels\AssertInfoViewModel.cs" />
@@ -391,6 +393,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\Apis\Apigee\scenarios\list_apis\errors\error1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\Apis\Apigee\scenarios\print_tests\sample.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\Apis\Apigee\variables.var">

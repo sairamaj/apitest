@@ -8,7 +8,8 @@ from abc import ABCMeta, abstractstaticmethod
 from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
-from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest
+from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest, \
+                            PrintCommandExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from jsonpath_ng.ext import parse
 from json2html import *
@@ -439,3 +440,17 @@ class FuncCommandExecutor(ICommand):
                 f"{type(executorRequest)} is not of FuncCommandExecutorRequest")
         FuncEvaluator(self.property_bag.last_http_request).evaluate(
             executorRequest.name, executorRequest.args)
+
+class PrintCommandExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+        super(PrintCommandExecutor, self).__init__(property_bag)
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, PrintCommandExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of PrintCommandExecutorRequest")
+        print(f"{executorRequest.message}")
+        self.publisher.printInfo(self.property_bag.session_name, executorRequest.message)
+
+
