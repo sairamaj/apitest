@@ -63,6 +63,18 @@ namespace ApiManager.ViewModels
 			}
 		}
 
+		public void RefreshStatus()
+		{
+			if (this.Children.OfType<ScenarioViewModel>().Any(c => c.TestStatus == ScenarioTestStatus.Failed))
+			{
+				this.UpdateStatus(ScenarioTestStatus.Failed);
+			}
+			else
+			{
+				this.UpdateStatus(ScenarioTestStatus.Success);
+			}
+		}
+
 		private void Load()
 		{
 			this.Children.Clear();

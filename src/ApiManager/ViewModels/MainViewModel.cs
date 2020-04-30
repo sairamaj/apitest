@@ -194,45 +194,22 @@ namespace ApiManager.ViewModels
 
 					if (selectedScenario is ScenarioViewModel scenarioViewModel)
 					{
-						var executionInfo = new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name,
-							this.SelectedEnvironment.Environment,
-							scenarioViewModel.Scenario);
-						this.SelectedApiInfoViewModel.Add(executionInfo, null);
-
-						scenarioViewModel.UpdateStatus(ScenarioTestStatus.Running);
-						try
-						{
-							await new Executor(this._apiExecutor, this._settings)
-											   .RunScenarioAsync(
-											   this.SelectedApiInfoViewModel.ApiInfo,
-											   this.SelectedEnvironment.Environment,
-											   scenarioViewModel.Scenario).ConfigureAwait(false);
-							scenarioViewModel.UpdateStatus(executionInfo.Success ? ScenarioTestStatus.Success : ScenarioTestStatus.Failed);
-						}
-						catch (Exception)
-						{
-							scenarioViewModel.UpdateStatus(ScenarioTestStatus.Failed);
-							throw;
-						}
+						await ExecuteScenario(scenarioViewModel).ConfigureAwait(false);
 					}
 					else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 					{
-						foreach (var scenarioviewModel
-							in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
-
+						scenaroContainer.UpdateStatus(ScenarioTestStatus.Running);
+						try
 						{
-							this.SelectedApiInfoViewModel.Add(
-								new ApiExecuteInfo(
-								this.SelectedApiInfoViewModel.Name,
-								this.SelectedEnvironment.Environment,
-								scenarioviewModel.Scenario), null);
-
-							await new Executor(this._apiExecutor, this._settings)
-								.RunScenarioAsync(
-								this.SelectedApiInfoViewModel.ApiInfo,
-								this.SelectedEnvironment.Environment,
-								scenarioviewModel.Scenario).ConfigureAwait(false);
+							foreach (var scenarioviewModel
+								in scenaroContainer.Children.Flatten(c => c.Children.OfType<CommandTreeViewModel>()).OfType<ScenarioViewModel>())
+							{
+								await ExecuteScenario(scenarioviewModel).ConfigureAwait(false);
+							}
+						}
+						finally
+						{
+							scenaroContainer.RefreshStatus();
 						}
 					}
 					else
@@ -247,6 +224,30 @@ namespace ApiManager.ViewModels
 			}
 		}
 
+		private async Task ExecuteScenario(ScenarioViewModel scenarioViewModel)
+		{
+			var executionInfo = new ApiExecuteInfo(
+				this.SelectedApiInfoViewModel.Name,
+				this.SelectedEnvironment.Environment,
+				scenarioViewModel.Scenario);
+			this.SelectedApiInfoViewModel.Add(executionInfo, null);
+
+			scenarioViewModel.UpdateStatus(ScenarioTestStatus.Running);
+			try
+			{
+				await new Executor(this._apiExecutor, this._settings)
+								   .RunScenarioAsync(
+								   this.SelectedApiInfoViewModel.ApiInfo,
+								   this.SelectedEnvironment.Environment,
+								   scenarioViewModel.Scenario).ConfigureAwait(false);
+				scenarioViewModel.UpdateStatus(executionInfo.Success ? ScenarioTestStatus.Success : ScenarioTestStatus.Failed);
+			}
+			catch (Exception)
+			{
+				scenarioViewModel.UpdateStatus(ScenarioTestStatus.Failed);
+				throw;
+			}
+		}
 		private CommandTreeViewModel GetSelectedScenario()
 		{
 			var allScenarioViewModels = this.Scenarios.Flatten(c => c.Children.OfType<CommandTreeViewModel>());

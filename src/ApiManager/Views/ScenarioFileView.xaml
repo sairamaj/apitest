@@ -75,6 +75,7 @@
 		</DockPanel>
 		<TreeView ItemsSource="{Binding Scenarios}" Grid.Row="1" Grid.Column="0">
 			<TreeView.Resources>
+				
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
 						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
@@ -98,6 +99,8 @@
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioContainerViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" />
+						<Button   Style="{StaticResource ScenarioTestStatusStyle}" 
+								  Width="12" Height="12" VerticalAlignment="Center" Margin="3,0,0,0" BorderThickness="0"/>
 
 						<StackPanel.ContextMenu>
 							<ContextMenu>
@@ -113,14 +116,10 @@
 
 				</HierarchicalDataTemplate>
 
-				<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                      Color="LightBlue" />
-				<SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
 				<SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="Transparent" />
+                     Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}" />
 				<SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
+                     Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
 			</TreeView.Resources>
 			<TreeView.ContextMenu>
 				<ContextMenu>
