@@ -52,7 +52,7 @@ namespace ApiManager.ViewModels
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.GenerateScriptCommand = new DelegateCommand(() => this.GenerateScript());
-			
+
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 			this.RefreshCommand = new DelegateCommand(this.Load);
@@ -80,7 +80,7 @@ namespace ApiManager.ViewModels
 				Action createNewScenarioContainer = () => CreateNewScenarioContainer(null);
 				createNewScenarioContainer.WithErrorMessageBox();
 			});
-			
+
 
 			this.RefreshScenariosCommand = new DelegateCommand(() => { this.RefreshScenarios(true); });
 
@@ -140,7 +140,7 @@ namespace ApiManager.ViewModels
 		public ICommand NewScenarioFileCommand { get; set; }
 		public ICommand NewScenarioFolderCommand { get; set; }
 		public ICommand NewRootScenarioFolderCommand { get; set; }
-		
+
 		public ICommand RefreshScenariosCommand { get; set; }
 
 		public RequestResponseContainerViewModel CurrentRequestResponseViewModel { get; set; }
@@ -194,14 +194,27 @@ namespace ApiManager.ViewModels
 
 					if (selectedScenario is ScenarioViewModel scenarioViewModel)
 					{
-						this.SelectedApiInfoViewModel.Add(new ApiExecuteInfo(
-							this.SelectedApiInfoViewModel.Name, this.SelectedEnvironment.Environment, scenarioViewModel.Scenario), null);
+						var executionInfo = new ApiExecuteInfo(
+							this.SelectedApiInfoViewModel.Name,
+							this.SelectedEnvironment.Environment,
+							scenarioViewModel.Scenario);
+						this.SelectedApiInfoViewModel.Add(executionInfo, null);
 
-						await new Executor(this._apiExecutor, this._settings)
-										   .RunScenarioAsync(
-										   this.SelectedApiInfoViewModel.ApiInfo,
-										   this.SelectedEnvironment.Environment,
-										   scenarioViewModel.Scenario).ConfigureAwait(false);
+						scenarioViewModel.UpdateStatus(ScenarioTestStatus.Running);
+						try
+						{
+							await new Executor(this._apiExecutor, this._settings)
+											   .RunScenarioAsync(
+											   this.SelectedApiInfoViewModel.ApiInfo,
+											   this.SelectedEnvironment.Environment,
+											   scenarioViewModel.Scenario).ConfigureAwait(false);
+							scenarioViewModel.UpdateStatus(executionInfo.Success ? ScenarioTestStatus.Success : ScenarioTestStatus.Failed);
+						}
+						catch (Exception)
+						{
+							scenarioViewModel.UpdateStatus(ScenarioTestStatus.Failed);
+							throw;
+						}
 					}
 					else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 					{
@@ -310,7 +323,7 @@ namespace ApiManager.ViewModels
 				.Select(c => new ScenarioContainerViewModel(
 					null,
 					c,
-					(e, s) => this.DoScenarioAction(e,s),
+					(e, s) => this.DoScenarioAction(e, s),
 					this.SelectedApiInfoViewModel.ApiInfo,
 					this._dataRepository))
 				.ToList();
@@ -439,9 +452,9 @@ namespace ApiManager.ViewModels
 			this.AssertContainerViewModel = new AssertContainerViewModel(this._resourceManager);
 			this.ScriptContainerViewModel = new ScriptContainerViewModel(this._resourceManager);
 			this.PostResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "post");
-			this.PatchResourceContainerViewModel= new ResourceContainerViewModel(this._resourceManager, "patch");
+			this.PatchResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "patch");
 			this.PutResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "put");
-			
+
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.OnApiConfigSelectionChange();
@@ -492,10 +505,10 @@ namespace ApiManager.ViewModels
 				// adding to root container.
 				this.Scenarios.Add(
 					new ScenarioContainerViewModel(
-						null, 
+						null,
 						scenarioContainer,
-						(e, s) => this.DoScenarioAction(e,s),
-						this.SelectedApiInfoViewModel.ApiInfo, 
+						(e, s) => this.DoScenarioAction(e, s),
+						this.SelectedApiInfoViewModel.ApiInfo,
 						this._dataRepository));
 			}
 		}

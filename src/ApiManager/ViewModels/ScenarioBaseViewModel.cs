@@ -30,6 +30,7 @@ namespace ApiManager.ViewModels
 			this.ApiInfo = apiInfo;
 			this.Scenario = scenario;
 			this._onEvent = onEvent;
+			this.TestStatus = ScenarioTestStatus.None;
 
 			this.RelvealInExplorerCommand = new DelegateCommand(() =>
 			{
@@ -42,11 +43,19 @@ namespace ApiManager.ViewModels
 				async () => await this.ShowSmartEditor().ConfigureAwait(false));
 		}
 
+		public ScenarioTestStatus TestStatus { get; private set; }
+
 		public ApiInfo ApiInfo { get; }
 		public Scenario Scenario { get; }
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
 		public ICommand SmartEditorCommand { get; }
+
+		public void UpdateStatus(ScenarioTestStatus status)
+		{
+			this.TestStatus = status;
+			OnPropertyChanged(() => this.TestStatus);
+		}
 
 		private void DeleteScenario()
 		{

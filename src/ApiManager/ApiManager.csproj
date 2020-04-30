@@ -95,6 +95,7 @@
     <Compile Include="Model\JwtToken.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\Request.cs" />
+    <Compile Include="Model\ScenarioTestStatus.cs" />
     <Compile Include="Model\TestData.cs" />
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\Settings.cs" />
@@ -463,6 +464,7 @@
     <Resource Include="images\refresh.png" />
     <Resource Include="images\comment.png" />
     <Resource Include="images\command.png" />
+    <Resource Include="images\progress.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

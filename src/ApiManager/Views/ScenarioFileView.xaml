@@ -9,6 +9,9 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
 		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
+		<ImageBrush x:Key="TestStatusSuccessButtonImageBrush" ImageSource="../images/success.png" />
+		<ImageBrush x:Key="TestStatusFailedButtonImageBrush" ImageSource="../images/failed.png" />
+		<ImageBrush x:Key="TestStatusProgressButtonImageBrush" ImageSource="../images/progress.png" />
 		<ImageBrush x:Key="NewFileButtonImageBrush" ImageSource="../images/newfile.png" />
 		<ImageBrush x:Key="NewFolderButtonImageBrush" ImageSource="../images/newfolder.png" />
 		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../images/refresh.png" />
@@ -16,6 +19,23 @@
 		<Style TargetType="TreeViewItem">
 			<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
 			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+		</Style>
+
+		<Style x:Key="ScenarioTestStatusStyle">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding TestStatus}" Value="Success" >
+					<Setter Property="Control.Background" Value="{StaticResource TestStatusSuccessButtonImageBrush}"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding TestStatus}" Value="Failed" >
+					<Setter Property="Control.Background" Value="{StaticResource TestStatusFailedButtonImageBrush}"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding TestStatus}" Value="Running" >
+					<Setter Property="Control.Background" Value="{StaticResource TestStatusProgressButtonImageBrush}"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding TestStatus}" Value="None" >
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+			</Style.Triggers>
 		</Style>
 	</UserControl.Resources>
 	<Grid>
@@ -59,7 +79,8 @@
 					<StackPanel Orientation="Horizontal">
 						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
 						<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-
+						<Button   Style="{StaticResource ScenarioTestStatusStyle}" 
+								  Width="12" Height="12" VerticalAlignment="Center" Margin="3,0,0,0" BorderThickness="0"/>
 						<StackPanel.ContextMenu>
 							<ContextMenu>
 								<MenuItem Header="Open In File Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
