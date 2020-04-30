@@ -1,19 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Windows;
-using ApiManager.Model;
-using ApiManager.Pipes;
+using ApiManager.QuickTest.ViewModels;
+using ApiManager.QuickTest.Views;
 using ApiManager.Repository;
-using ApiManager.ScenarioEditing;
-using ApiManager.ScenarioEditing.ViewModel;
-using ApiManager.ScenarioEditing.ViewModels;
-using ApiManager.ScenarioEditing.Views;
 using ApiManager.ViewModels;
 using ApiManager.Views;
 using Autofac;
-using Newtonsoft.Json;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
@@ -35,6 +30,7 @@ namespace ApiManager
 
 			try
 			{
+				TestQuickEdit();
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
@@ -76,6 +72,31 @@ namespace ApiManager
 				}
 				action();
 			}
+		}
+
+		private void TestQuickEdit()
+		{
+			QuickEditWindow quickEdit = new QuickEditWindow();
+			var commands = new Dictionary<string, IEnumerable<string>>();
+			commands["accesstoken"] = new List<string>
+			{
+				"password"
+			};
+			commands["apis"] = new List<string>
+			{
+				"_"
+			};
+			commands["developers"] = new List<string>
+			{
+				"_"
+			};
+
+			quickEdit.DataContext = new QuickEditorViewModel(new Model.ApiCommandInfo
+			{
+				ApiCommands = commands
+			}, new Model.Environment("Apigee", @"Configuration\Apis\Apigee\config.json"));
+			quickEdit.ShowDialog();
+			System.Environment.Exit(-1);
 		}
 	}
 }

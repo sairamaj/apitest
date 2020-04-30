@@ -44,6 +44,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -105,6 +106,14 @@
     <Compile Include="Pipes\MessageListener.cs" />
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
+    <Compile Include="QuickTest\ViewModels\HttpRequestEditorViewModel.cs" />
+    <Compile Include="QuickTest\ViewModels\QuickEditorViewModel.cs" />
+    <Compile Include="QuickTest\Views\HttpRequestEditor.xaml.cs">
+      <DependentUpon>HttpRequestEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QuickTest\Views\QuickEditWindow.xaml.cs">
+      <DependentUpon>QuickEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Report\ReportGenerator.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
@@ -242,6 +251,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuickTest\Views\HttpRequestEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuickTest\Views\QuickEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
