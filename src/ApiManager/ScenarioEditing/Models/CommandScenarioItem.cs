@@ -5,7 +5,7 @@ namespace ApiManager.ScenarioEditing.Models
 	class CommandScenarioItem : ScenarioLineItem
 	{
 
-		public CommandScenarioItem(string line) : base("command")
+		public CommandScenarioItem(string line) : base("command", line)
 		{
 			var parts = line.Split();
 			this.Command = parts.First();

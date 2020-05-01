@@ -7,8 +7,9 @@ namespace ApiManager.ScenarioEditing.Models
 {
 	class ScenarioLineItem : CoreViewModel
 	{
-		public ScenarioLineItem(string type)
+		public ScenarioLineItem(string type, string originalLine)
 		{
+			OriginalLine = originalLine;
 			Type = type;
 			this.StartEditingModeCommand = new DelegateCommand(() =>
 			{
@@ -22,9 +23,11 @@ namespace ApiManager.ScenarioEditing.Models
 		   });
 		}
 
+		public string OriginalLine { get; }
 		public string Type { get; set; }
 		public ICommand StartEditingModeCommand { get; }
 		public bool EditingModeOn { get; set; }
 		public ICommand DoneWithEditingCommand { get; }
+
 	}
 }

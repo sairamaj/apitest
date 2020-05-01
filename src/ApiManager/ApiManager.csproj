@@ -127,6 +127,7 @@
     <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\Models\FunctionScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\LineBreakScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommentScenarioItem.cs" />
@@ -465,6 +466,7 @@
     <Resource Include="images\comment.png" />
     <Resource Include="images\command.png" />
     <Resource Include="images\progress.png" />
+    <Resource Include="images\save.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

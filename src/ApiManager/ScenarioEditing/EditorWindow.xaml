@@ -13,6 +13,7 @@
 		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
 		<ImageBrush x:Key="CommentButtonImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
+		<ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../images/save.png" />
 
 		<Style x:Key="ImageStyle"> 
 			<Setter Property="Control.Width" Value="10" />
@@ -35,6 +36,13 @@
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<!--<Setter Property="Control.Width" Value="150" />-->
 		</Style>
+
+		<Style x:Key="FunctionItemStyle">
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+			<Setter Property="Control.Foreground" Value="Brown" />
+		</Style>
+		
 
 		<Style x:Key="ApiWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
@@ -100,6 +108,14 @@
 			</StackPanel>
 		</DataTemplate>
 
+		<DataTemplate x:Key="FunctionHeaderTemplate">
+			<StackPanel Orientation="Horizontal">
+				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
+				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource FunctionItemStyle}"/>
+				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
+				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
+			</StackPanel>
+		</DataTemplate>
 
 		<DataTemplate x:Key="CommandHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
@@ -114,12 +130,23 @@
 											 CommentHeaderTemplate="{StaticResource CommentHeaderTemplate}"
 											 CommandHeaderTemplate="{StaticResource CommandHeaderTemplate}"
 											 LineBreakHeaderTemplate="{StaticResource LineBreakHeaderTemplate}"
+											 FunctionHeaderTemplate="{StaticResource FunctionHeaderTemplate}"
 													  
                                         />
 
 	</Window.Resources>
 	<Grid>
-		<ListView 
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+			<Button  Background="{StaticResource SaveButtonImageBrush}" Width="25" Height="25" 
+					 Command="{Binding SaveCommandFileCommand}" VerticalAlignment="Center"
+					 Margin="15,0,0,0"
+					 />
+		</StackPanel>
+		<ListView   Grid.Row="1" Grid.Column="0"
 					ItemsSource="{Binding ScenarioLineItems}"
 					BorderThickness="0" 
 					ItemTemplateSelector="{StaticResource ScenarioItemDataHeaderTemplateSelector}" 

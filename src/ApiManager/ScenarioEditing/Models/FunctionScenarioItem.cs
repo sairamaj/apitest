@@ -2,13 +2,12 @@
 
 namespace ApiManager.ScenarioEditing.Models
 {
-	class ApiScenarioItem : ScenarioLineItem
+	class FunctionScenarioItem : ScenarioLineItem
 	{
 		private string _command;
-		public ApiScenarioItem(string command, IEnumerable<string> apis) : base("api", command)
+		public FunctionScenarioItem(string command) : base("function", command)
 		{
 			this.Command = command;
-			Apis = apis;
 		}
 
 		public string Command
@@ -20,10 +19,6 @@ namespace ApiManager.ScenarioEditing.Models
 			set
 			{
 				this._command = value;
-				this.EditingModeOn = false;
-				OnPropertyChanged(() => this.Command);
-				OnPropertyChanged(() => this.EditingModeOn);
-
 			}
 		}
 

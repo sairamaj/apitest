@@ -2,7 +2,7 @@
 {
 	class LineBreakScenarioItem : ScenarioLineItem
 	{
-		public LineBreakScenarioItem() : base("linebreak")
+		public LineBreakScenarioItem() : base("linebreak","")
 		{
 		}
 	}

@@ -2,10 +2,14 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing.Models;
 using ApiManager.ScenarioEditing.ViewModel;
 using Wpf.Util.Core;
+using Wpf.Util.Core.Command;
 
 namespace ApiManager.ScenarioEditing.ViewModels
 {
@@ -16,6 +20,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
 
+			// todo: move to parser.
 			foreach (var line in lines)
 			{
 				if (line.StartsWith("#", System.StringComparison.OrdinalIgnoreCase))
@@ -30,13 +35,33 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line)));
 				}
+				else if (line.StartsWith("__", System.StringComparison.OrdinalIgnoreCase))
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line)));
+				}
 				else
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First(), apis)));
 				}
 			}
+
+			this.SaveCommandFileCommand = new DelegateCommand(() =>
+		   {
+			   this.Save();
+		   });
 		}
 
 		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
+		public ICommand SaveCommandFileCommand { get; }
+		private void Save()
+		{
+			var builder = new StringBuilder();
+			foreach (var item in ScenarioLineItems)
+			{
+				builder.AppendLine(item.LineItem.OriginalLine);
+			}
+
+			File.WriteAllText(@"c:\temp\foo.txt", builder.ToString());
+		}
 	}
 }
