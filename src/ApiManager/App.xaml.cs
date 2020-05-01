@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
+using ApiManager.Model;
 using ApiManager.QuickTest.ViewModels;
 using ApiManager.QuickTest.Views;
 using ApiManager.Repository;
@@ -77,24 +78,28 @@ namespace ApiManager
 		private void TestQuickEdit()
 		{
 			QuickEditWindow quickEdit = new QuickEditWindow();
-			var commands = new Dictionary<string, IEnumerable<string>>();
-			commands["accesstoken"] = new List<string>
+			var commands = new List<ApiCommandDetail>()
 			{
-				"password"
+				new ApiCommandDetail{
+					Command = "accesstoken",
+					SubCommand = "_",
+					BaseUrl = "http://{{host}}/foo",
+					Path = "/"
+				},
+				new ApiCommandDetail{
+					Command = "accesstoken",
+					SubCommand = "info",
+					BaseUrl = "http://{{host}}/foo",
+					Path = "/"
+				},
+				new ApiCommandDetail{
+					Command = "apis",
+					SubCommand = "info",
+					BaseUrl = "http://{{host}}/foo",
+					Path = "/apis"
+				}
 			};
-			commands["apis"] = new List<string>
-			{
-				"_"
-			};
-			commands["developers"] = new List<string>
-			{
-				"_"
-			};
-
-			quickEdit.DataContext = new QuickEditorViewModel(new Model.ApiCommandInfo
-			{
-				ApiCommands = commands
-			}, new Model.Environment("Apigee", @"Configuration\Apis\Apigee\config.json"));
+			quickEdit.DataContext = new QuickEditorViewModel(commands, new Model.Environment("Apigee", @"Configuration\Apis\Apigee\environments\sairamaj_account.var"));
 			quickEdit.ShowDialog();
 			System.Environment.Exit(-1);
 		}

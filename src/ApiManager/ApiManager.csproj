@@ -78,6 +78,7 @@
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpRequestClient.cs" />
+    <Compile Include="Model\ApiCommandDetail.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
     <Compile Include="Model\PrintInfo.cs" />
