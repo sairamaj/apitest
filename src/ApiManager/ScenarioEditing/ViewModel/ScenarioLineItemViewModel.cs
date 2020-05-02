@@ -10,21 +10,33 @@ namespace ApiManager.ScenarioEditing.ViewModel
 	class ScenarioLineItemViewModel : CoreViewModel
 	{
 		public ScenarioLineItemViewModel(
-			ScenarioLineItem lineItem, 
+			ScenarioLineItem lineItem,
 			Action<ScenarioEditingAction, ScenarioLineItemViewModel> onEditAction)
 		{
-			this. LineItem = lineItem ?? throw new System.ArgumentNullException(nameof(lineItem));
-			this.DeleteCommand = new DelegateCommand(() => {
+			this.LineItem = lineItem ?? throw new System.ArgumentNullException(nameof(lineItem));
+			this.MoveUpCommand = new DelegateCommand(() =>
+			{
+				onEditAction(ScenarioEditingAction.MoveUp, this);
+			});
+			this.MoveDownCommand = new DelegateCommand(() =>
+			{
+				onEditAction(ScenarioEditingAction.MoveDown, this);
+			});
+			this.DeleteCommand = new DelegateCommand(() =>
+			{
 				onEditAction(ScenarioEditingAction.Delete, this);
 			});
-			this.CommentCommand = new DelegateCommand(() => {
+			this.CommentCommand = new DelegateCommand(() =>
+			{
 				this.LineItem.ToggleComment();
 			});
-			
+
 		}
 
 		public ScenarioLineItem LineItem { get; }
 		public ICommand DeleteCommand { get; }
 		public ICommand CommentCommand { get; }
+		public ICommand MoveUpCommand { get; }
+		public ICommand MoveDownCommand { get; }
 	}
 }

@@ -153,10 +153,10 @@
 							 Command="{Binding CommentCommand}"
 							 ToolTip="Toggle Comment"/>
 					<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding LineItem.MoveUpCommand}" 
+							 Command="{Binding MoveUpCommand}" 
 							 ToolTip="Move up"/>
 					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding LineItem.MoveDownCommand}"
+							 Command="{Binding MoveDownCommand}"
 							 ToolTip="Move down"/>
 					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding DeleteCommand}"

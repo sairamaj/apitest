@@ -77,6 +77,24 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				case ScenarioEditingAction.Delete:
 					this.ScenarioLineItems.Remove(item);
 					break;
+				case ScenarioEditingAction.MoveUp:
+					var index = this.ScenarioLineItems.IndexOf(item);
+					if (index <= 0)
+					{
+						return;	// already top
+					}
+					this.ScenarioLineItems.Remove(item);
+					this.ScenarioLineItems.Insert(index - 1, item);
+					break;
+				case ScenarioEditingAction.MoveDown:
+					var index1 = this.ScenarioLineItems.IndexOf(item);
+					if (index1 >= this.ScenarioLineItems.Count()-1)
+					{
+						return; // already bootom
+					}
+					this.ScenarioLineItems.Remove(item);
+					this.ScenarioLineItems.Insert(index1 + 1, item);
+					break;
 			}
 		}
 	}
