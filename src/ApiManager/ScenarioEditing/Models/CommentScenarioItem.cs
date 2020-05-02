@@ -8,5 +8,10 @@
 		}
 
 		public string Line { get; }
+
+		public override string GetCommand()
+		{
+			return this.Line;
+		}
 	}
 }

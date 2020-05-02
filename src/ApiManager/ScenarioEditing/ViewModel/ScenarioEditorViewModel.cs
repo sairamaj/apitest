@@ -49,8 +49,11 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		   {
 			   this.Save();
 		   });
+
+			this.ScenarioEditTitle = $"{scenario.Name} ({scenario.FileName})";
 		}
 
+		public string ScenarioEditTitle { get; }
 		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
 		public ICommand SaveCommandFileCommand { get; }
 		private void Save()
@@ -58,10 +61,12 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			var builder = new StringBuilder();
 			foreach (var item in ScenarioLineItems)
 			{
-				builder.AppendLine(item.LineItem.OriginalLine);
+				builder.AppendLine(item.LineItem.GetCommand());
 			}
 
-			File.WriteAllText(@"c:\temp\foo.txt", builder.ToString());
+			var file = @"c:\temp\foo.txt";
+			File.WriteAllText(file, builder.ToString());
+			MessageBox.Show($"{file} has been saved.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 	}
 }

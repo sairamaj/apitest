@@ -5,7 +5,7 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.Models
 {
-	class ScenarioLineItem : CoreViewModel
+	internal abstract class ScenarioLineItem : CoreViewModel
 	{
 		public ScenarioLineItem(string type, string originalLine)
 		{
@@ -28,6 +28,6 @@ namespace ApiManager.ScenarioEditing.Models
 		public ICommand StartEditingModeCommand { get; }
 		public bool EditingModeOn { get; set; }
 		public ICommand DoneWithEditingCommand { get; }
-
+		public abstract string GetCommand();
 	}
 }

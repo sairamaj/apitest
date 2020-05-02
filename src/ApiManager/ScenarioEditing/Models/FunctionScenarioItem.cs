@@ -24,5 +24,9 @@ namespace ApiManager.ScenarioEditing.Models
 
 		public IEnumerable<string> Apis { get; }
 
+		public override string GetCommand()
+		{
+			return this.Command;
+		}
 	}
 }

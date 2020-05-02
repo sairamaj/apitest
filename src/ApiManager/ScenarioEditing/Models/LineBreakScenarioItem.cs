@@ -5,5 +5,10 @@
 		public LineBreakScenarioItem() : base("linebreak","")
 		{
 		}
+
+		public override string GetCommand()
+		{
+			return string.Empty;
+		}
 	}
 }

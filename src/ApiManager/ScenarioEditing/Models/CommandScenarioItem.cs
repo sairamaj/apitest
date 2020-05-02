@@ -16,5 +16,21 @@ namespace ApiManager.ScenarioEditing.Models
 		public string Command { get; }
 		public string Arg1 { get; set; }
 		public string Arg2 { get; set; }
+
+		public override string GetCommand()
+		{
+			var cmd = this.Command;
+			if (!string.IsNullOrWhiteSpace(this.Arg1))
+			{
+				cmd += " " + this.Arg1;
+			}
+
+			if (!string.IsNullOrWhiteSpace(this.Arg2))
+			{
+				cmd += " " + this.Arg2;
+			}
+
+			return cmd;
+		}
 	}
 }

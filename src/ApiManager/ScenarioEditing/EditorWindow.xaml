@@ -7,7 +7,7 @@
 		xmlns:view="clr-namespace:ApiManager.Views"
 		
         mc:Ignorable="d"
-        Title="EditorWindow" Height="450" Width="800">
+        Title="{Binding ScenarioEditTitle}" Height="450" Width="800">
 	<Window.Resources>
 
 		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
@@ -15,7 +15,7 @@
 		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
 		<ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../images/save.png" />
 
-		<Style x:Key="ImageStyle"> 
+		<Style x:Key="ImageStyle">
 			<Setter Property="Control.Width" Value="10" />
 			<Setter Property="Control.Height" Value="10" />
 		</Style>
@@ -42,7 +42,15 @@
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<Setter Property="Control.Foreground" Value="Brown" />
 		</Style>
-		
+
+		<Style x:Key="ContextCommandMenu">
+			<Setter Property="Control.Background" Value="White" />
+			<Style.Triggers>
+				<Trigger Property="Control.IsMouseOver" Value="True">
+					<Setter Property="Control.Background" Value="Blue" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 
 		<Style x:Key="ApiWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
@@ -68,10 +76,10 @@
 					<Setter Property="Control.Visibility" Value="Hidden"/>
 				</DataTrigger>
 			</Style.Triggers>
-		</Style>		
+		</Style>
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
-				
+
 				<Grid>
 					<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
@@ -118,7 +126,7 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="CommandHeaderTemplate">
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal"  Style="{StaticResource ContextCommandMenu}">
 				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
 				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta" Style="{StaticResource KeyWordStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
