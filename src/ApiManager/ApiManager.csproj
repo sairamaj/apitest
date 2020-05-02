@@ -79,6 +79,7 @@
     <Compile Include="HttpRequestClient.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
+    <Compile Include="Model\BangCommandInfo.cs" />
     <Compile Include="Model\PrintInfo.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
@@ -134,6 +135,15 @@
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoContainerViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangContainerCommandInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\MainViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml.cs">
+      <DependentUpon>CreateScenarioLineItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
@@ -256,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

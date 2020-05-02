@@ -1,0 +1,48 @@
+﻿<Window x:Class="ApiManager.ScenarioEditing.NewLineItem.Views.CreateScenarioLineItemView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.ScenarioEditing.NewLineItem.Views"
+		xmlns:viewModel="clr-namespace:ApiManager.ScenarioEditing.NewLineItem.ViewModels"
+        mc:Ignorable="d"
+        Title="CreateScenarioLineItemView" Height="450" Width="800">
+	<Grid>
+
+		<TreeView ItemsSource="{Binding RootCommands}">
+			<TreeView.Resources>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoContainerViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:BangContainerCommandInfoViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionInfoViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:BangCommandInfoViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoViewModel}"  ItemsSource="{Binding Children}">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+
+			</TreeView.Resources>
+		</TreeView>
+	</Grid>
+</Window>
