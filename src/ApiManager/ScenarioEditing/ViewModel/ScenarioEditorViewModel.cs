@@ -25,23 +25,24 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				if (line.StartsWith("#", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line), OnEditAction));
 				}
 				else if (line.Trim().Length == 0)
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem()));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem(), OnEditAction));
 				}
 				else if (line.StartsWith("!", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line), OnEditAction));
 				}
 				else if (line.StartsWith("__", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line), OnEditAction));
 				}
 				else
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First(), apis)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
+						new ApiScenarioItem(line.Split().First(), apis), OnEditAction));
 				}
 			}
 
@@ -67,6 +68,16 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			var file = @"c:\temp\foo.txt";
 			File.WriteAllText(file, builder.ToString());
 			MessageBox.Show($"{file} has been saved.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+		}
+
+		private void OnEditAction(ScenarioEditingAction action, ScenarioLineItemViewModel item)
+		{
+			switch (action)
+			{
+				case ScenarioEditingAction.Delete:
+					this.ScenarioLineItems.Remove(item);
+					break;
+			}
 		}
 	}
 }

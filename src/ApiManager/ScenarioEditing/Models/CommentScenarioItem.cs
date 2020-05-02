@@ -1,8 +1,12 @@
-﻿namespace ApiManager.ScenarioEditing.Models
+﻿using System;
+
+namespace ApiManager.ScenarioEditing.Models
 {
 	class CommentScenarioItem : ScenarioLineItem
 	{
-		public CommentScenarioItem(string line) : base("comment", line)
+		public CommentScenarioItem(
+			string line)
+			: base("comment", line)
 		{
 			this.Line = line;
 		}
@@ -12,6 +16,10 @@
 		public override string GetCommand()
 		{
 			return this.Line;
+		}
+
+		public override void ToggleComment()
+		{
 		}
 	}
 }

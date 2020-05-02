@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ApiManager.ScenarioEditing.Models
 {
 	class CommandScenarioItem : ScenarioLineItem
 	{
-
-		public CommandScenarioItem(string line) : base("command", line)
+		public CommandScenarioItem(
+			string line) 
+			: base("command", line)
 		{
 			var parts = line.Split();
 			this.Command = parts.First();
@@ -13,7 +15,7 @@ namespace ApiManager.ScenarioEditing.Models
 			this.Arg2 = parts.Length > 2 ? parts[2] : string.Empty;
 		}
 
-		public string Command { get; }
+		public string Command { get; private set; }
 		public string Arg1 { get; set; }
 		public string Arg2 { get; set; }
 
@@ -31,6 +33,23 @@ namespace ApiManager.ScenarioEditing.Models
 			}
 
 			return cmd;
+		}
+
+		public override void ToggleComment()
+		{
+			if (this.Command.StartsWith("#"))
+			{
+				this.Command = this.Command.TrimStart(new[] { '#' });
+				this.IsCommented = false;
+			}
+			else
+			{
+				this.Command = $"#{this.Command}";
+				this.IsCommented = true;
+			}
+
+			OnPropertyChanged(() => this.Command);
+			OnPropertyChanged(() => this.IsCommented);
 		}
 	}
 }

@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using ApiManager.Model;
-using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
-using ApiManager.ScenarioEditing.ViewModel;
 using ApiManager.ScenarioEditing.ViewModels;
-using ApiManager.ScenarioEditing.Views;
 using ApiManager.ViewModels;
 using ApiManager.Views;
 using Autofac;
-using Newtonsoft.Json;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
@@ -35,6 +30,7 @@ namespace ApiManager
 
 			try
 			{
+				TestSmartEditor();
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
@@ -76,6 +72,15 @@ namespace ApiManager
 				}
 				action();
 			}
+		}
+
+		private void TestSmartEditor()
+		{
+			EditorWindow editorWindow = new EditorWindow();
+			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
+			editorWindow.DataContext = new ScenarioEditorViewModel(scenario, new string[] { "accesstoken.password", "apis._" });
+			editorWindow.ShowDialog();
+			System.Environment.Exit(-1);
 		}
 	}
 }

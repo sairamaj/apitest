@@ -132,6 +132,7 @@
     <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommentScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
+    <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />

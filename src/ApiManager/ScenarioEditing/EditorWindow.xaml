@@ -12,6 +12,7 @@
 
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		<ImageBrush x:Key="MoveUpImageBrush" ImageSource="../images/moveup.png" />
+		<ImageBrush x:Key="CommentImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="MoveDownImageBrush" ImageSource="../images/movedown.png" />
 		<ImageBrush x:Key="DeleteImageBrush" ImageSource="../images/delete.png" />
 
@@ -38,7 +39,16 @@
 			<Setter Property="Control.FontStyle" Value="Italic" />
 			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
-			<!--<Setter Property="Control.Width" Value="150" />-->
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
+			
+		</Style>
+
+		<Style x:Key="CommandStyle" BasedOn="{StaticResource KeyWordStyle}">
+			<Setter Property="Control.Foreground" Value="Magenta" />
 		</Style>
 
 		<Style x:Key="FunctionItemStyle">
@@ -132,16 +142,25 @@
 
 		<DataTemplate x:Key="CommandHeaderTemplate">
 			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
-				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta" Style="{StaticResource KeyWordStyle}"/>
+				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
 				<StackPanel Margin="30,0,0,0" Orientation="Horizontal" 
 							Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
 							Converter={StaticResource BooleanToVisibilityConverter}}"
 							Height="30">
-					<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Command="{Binding LineItem.MoveUpCommand}" />
-					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="2,0,0,0" Command="{Binding LineItem.MoveDownCommand}"/>
-					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="2,0,0,0" Command="{Binding LineItem.DeleteCommand}"/>
+					<Button  Background="{StaticResource CommentImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+							 Command="{Binding CommentCommand}"
+							 ToolTip="Toggle Comment"/>
+					<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+							 Command="{Binding LineItem.MoveUpCommand}" 
+							 ToolTip="Move up"/>
+					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+							 Command="{Binding LineItem.MoveDownCommand}"
+							 ToolTip="Move down"/>
+					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+							 Command="{Binding DeleteCommand}"
+							 ToolTip="Delete"/>
 				</StackPanel>
 			</StackPanel>
 		</DataTemplate>

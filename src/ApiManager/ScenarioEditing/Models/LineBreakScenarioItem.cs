@@ -1,14 +1,21 @@
-﻿namespace ApiManager.ScenarioEditing.Models
+﻿using System;
+
+namespace ApiManager.ScenarioEditing.Models
 {
 	class LineBreakScenarioItem : ScenarioLineItem
 	{
-		public LineBreakScenarioItem() : base("linebreak","")
+		public LineBreakScenarioItem() 
+			: base("linebreak","")
 		{
 		}
 
 		public override string GetCommand()
 		{
 			return string.Empty;
+		}
+
+		public override void ToggleComment()
+		{
 		}
 	}
 }
