@@ -10,7 +10,11 @@
         Title="{Binding ScenarioEditTitle}" Height="450" Width="800">
 	<Window.Resources>
 
-		<ImageBrush x:Key="ApiButtonImageBrush" ImageSource="../images/api.png" />
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<ImageBrush x:Key="MoveUpImageBrush" ImageSource="../images/moveup.png" />
+		<ImageBrush x:Key="MoveDownImageBrush" ImageSource="../images/movedown.png" />
+		<ImageBrush x:Key="DeleteImageBrush" ImageSource="../images/delete.png" />
+
 		<ImageBrush x:Key="CommentButtonImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
 		<ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../images/save.png" />
@@ -21,41 +25,41 @@
 		</Style>
 
 		<Style x:Key="Arg1Style">
-			<Setter Property="Control.FontWeight" Value="Bold" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 		</Style>
 
 		<Style x:Key="Arg2Style">
-			<Setter Property="Control.FontWeight" Value="Bold" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 		</Style>
 
 		<Style x:Key="KeyWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
-			<Setter Property="Control.FontWeight" Value="Bold" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<!--<Setter Property="Control.Width" Value="150" />-->
 		</Style>
 
 		<Style x:Key="FunctionItemStyle">
-			<Setter Property="Control.FontWeight" Value="Bold" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<Setter Property="Control.Foreground" Value="Brown" />
 		</Style>
 
-		<Style x:Key="ContextCommandMenu">
-			<Setter Property="Control.Background" Value="White" />
+		<!--<Style x:Key="ContextCommandMenu">
+			<Setter Property="Control.Visibility" Value="Hidden" />
 			<Style.Triggers>
 				<Trigger Property="Control.IsMouseOver" Value="True">
-					<Setter Property="Control.Background" Value="Blue" />
+					<Setter Property="Control.Visibility" Value="Visible" TargetName="EditButtons" />
 				</Trigger>
 			</Style.Triggers>
-		</Style>
+		</Style>-->
 
 		<Style x:Key="ApiWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
 			<Setter Property="Control.Foreground" Value="Blue" />
-			<Setter Property="Control.FontWeight" Value="Bold" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<!--<Setter Property="Control.Width" Value="150" />-->
 		</Style>
@@ -118,6 +122,7 @@
 
 		<DataTemplate x:Key="FunctionHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
+				<!--https://stackoverflow.com/questions/258824/wpf-binding-ismouseover-to-visibility-->
 				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource FunctionItemStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
@@ -126,13 +131,22 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="CommandHeaderTemplate">
-			<StackPanel Orientation="Horizontal"  Style="{StaticResource ContextCommandMenu}">
-				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
+			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
 				<TextBlock Text="{Binding LineItem.Command}" FontWeight="Bold"  Foreground="Magenta" Style="{StaticResource KeyWordStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
+				<StackPanel Margin="30,0,0,0" Orientation="Horizontal" 
+							Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
+							Converter={StaticResource BooleanToVisibilityConverter}}"
+							Height="30">
+					<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Command="{Binding LineItem.MoveUpCommand}" />
+					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="2,0,0,0" Command="{Binding LineItem.MoveDownCommand}"/>
+					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="2,0,0,0" Command="{Binding LineItem.DeleteCommand}"/>
+				</StackPanel>
 			</StackPanel>
 		</DataTemplate>
+
+
 		<local:ScenarioItemDataHeaderTemplateSelector x:Key="ScenarioItemDataHeaderTemplateSelector" 
                                              ApiHeaderTemplate="{StaticResource ApiHeaderTemplate}"
 											 CommentHeaderTemplate="{StaticResource CommentHeaderTemplate}"

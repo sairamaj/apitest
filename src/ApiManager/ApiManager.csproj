@@ -467,6 +467,9 @@
     <Resource Include="images\command.png" />
     <Resource Include="images\progress.png" />
     <Resource Include="images\save.png" />
+    <Resource Include="images\movedown.png" />
+    <Resource Include="images\moveup.png" />
+    <Resource Include="images\delete.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
