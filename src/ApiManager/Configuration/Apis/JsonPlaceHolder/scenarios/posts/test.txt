@@ -1,0 +1,12 @@
+######################################
+# Sample demonstrating the HTTP posts
+######################################
+
+!print Get posts
+posts
+
+!print Extract first id
+!extract [0].id post_id
+
+!print Get posts by id
+posts.id 

@@ -28,7 +28,7 @@ class Session:
         self.executeCommandInput("!help")   # show help to start with
         while quit == False:
             printPrompt(">>")
-            command = input("")
+            command = input("").strip(' ')
             if self.executeCommandInput(command) == False:
                 quit = True
 
@@ -74,7 +74,7 @@ class Session:
                         # final = final_command.get('command')
                         # print(f"fina: {final}")
                         # input('about')
-                        self.executeCommandInput(final_command.get('command'))
+                        self.executeCommandInput(final_command.get('command').strip(' '))
                     except ApiException as ae:
                         printError(str(ae))
         if self.property_bag.output != None:

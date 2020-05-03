@@ -125,7 +125,10 @@ namespace ApiManager.ViewModels
 			set
 			{
 				this._selectedEnvironment = value;
-				this.VariableContainerViewModel.UpdateEnvironmentVariables(this._selectedEnvironment.Environment);
+				if (value != null)
+				{
+					this.VariableContainerViewModel.UpdateEnvironmentVariables(this._selectedEnvironment.Environment);
+				}
 			}
 		}
 

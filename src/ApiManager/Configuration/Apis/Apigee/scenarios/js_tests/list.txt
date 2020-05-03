@@ -1,5 +1,0 @@
-!js validate_api.js
-!js validate_api_fail.js
-!return
-accesstoken.password
-apis

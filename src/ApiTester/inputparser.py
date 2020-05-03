@@ -88,7 +88,7 @@ class ApiCommandInputParser(InputParser):
         supportedVerbs = ['get', 'post', 'patch', 'put', 'delete']
         if method not in supportedVerbs:
             raise ValueError(
-                f"{method} not supported, supported are {supportedVerbs}")
+                f"{method} not supported, supported are {supportedVerbs} for command:{command}")
         apiInfos = apis.get(route, None)
 
         if apiInfos == None:

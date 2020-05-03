@@ -1,6 +1,0 @@
-accesstoken.password
-!extract access_token access_token
-apis
-#!waitforuserinput extractdone
-developers
-

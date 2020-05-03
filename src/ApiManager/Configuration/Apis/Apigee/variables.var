@@ -1,4 +1,0 @@
-﻿# variables at apigee api level
-# these variables will override system
-apigee_x=1
-apigee_y=2

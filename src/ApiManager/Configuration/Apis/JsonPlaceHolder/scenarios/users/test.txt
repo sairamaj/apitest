@@ -1,0 +1,16 @@
+######################################
+# Sample demonstrating the default path
+#	users will get all users
+######################################
+
+!print Act (Get Users)
+users
+
+!extract [0].name first_name
+
+!print Assert (Validate the output)
+!assert status_code 200
+!assert [0].email Sincere@april.biz
+
+
+

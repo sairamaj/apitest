@@ -1,5 +1,0 @@
-accesstoken.password
-apis
-developers
-!extract [0] a_developer
-!assert a_developer sai2@abc.com

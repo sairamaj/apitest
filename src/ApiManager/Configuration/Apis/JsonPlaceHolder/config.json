@@ -1,0 +1,17 @@
+{
+  "users": {
+    "baseurl": "https://{{host}}/users",
+    "_": {
+      "path": "/"
+    }
+  },
+  "posts": {
+    "baseurl": "https://{{host}}/posts",
+    "_": {
+      "path": "/"
+    },
+    "id": {
+      "path": "/{{post_id}}"
+    }
+  }
+}

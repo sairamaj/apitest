@@ -424,49 +424,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Configuration\Apis\Apigee\config.json">
+    <None Include="Configuration\Apis\JsonPlaceHolder\environments\test.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Configuration\Apis\Apigee\environments\gmail_account.var">
+    <Content Include="Configuration\Apis\JsonPlaceHolder\scenarios\posts\test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Configuration\Apis\Apigee\scenarios\_posts\create_developer.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Configuration\Apis\Apigee\scenarios\developer\create.txt">
+    <Content Include="Configuration\Apis\JsonPlaceHolder\scenarios\users\test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\dynamic_variables\test_basics.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\js_tests\list.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\level1\level2\level3\testing1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\list_apis\errors\error1.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\print_tests\sample.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\variables.var">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Configuration\Apis\Azure\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Configuration\Apis\variables.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configuration\Apis\Azure\variables.var">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Resources\Post\create_developer.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Configuration\Resources\Put\testput.json">
+    <None Include="Configuration\Apis\JsonPlaceHolder\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -474,27 +444,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="images\edit.png" />
-    <Content Include="Configuration\Apis\Apigee\scenarios\error_tests\error_tests.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\extracts_failed.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\assert_tests\assert_tests.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\extracts_sample.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\access_token_for_2_users.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\list_apis\list.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Apis\Apigee\scenarios\list_apis\list_deployments.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="images\commandprompt.png" />
     <Resource Include="images\run.png" />
     <Resource Include="images\api.png" />
@@ -503,12 +452,6 @@
     <Resource Include="images\assert_success.png" />
     <Resource Include="images\assert.png" />
     <Resource Include="images\js.png" />
-    <Content Include="Configuration\Resources\Scripts\assert_json.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Resources\Scripts\validate_api_fail.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="images\failed.png" />
     <Resource Include="images\success.png" />
     <Resource Include="images\newfile.png" />
@@ -522,9 +465,6 @@
     <Resource Include="images\moveup.png" />
     <Resource Include="images\delete.png" />
     <Content Include="issues.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Resources\Scripts\validate_api.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="settings.json">
@@ -576,21 +516,11 @@
       <Version>1.0.0-alpha1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Configuration\Apis\Apigee\environments\sairamaj_account.var">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Configuration\Apis\Azure\environments\sairama_visualstudio_account.var">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Content Include="Configuration\Apis\Azure\scenarios\get_accesstoken.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Folder Include="Configuration\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Views\AvalonJsonSyntax.xml" />
-    <Content Include="Configuration\Apis\Apigee\scenarios\list_apis\list_apis.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
