@@ -91,8 +91,14 @@ namespace ApiManager.ViewModels
 					}
 				}
 
+				editorWindow.DataContext = new ScenarioEditorViewModel(
+					this.Scenario,
+					new string[] { "accesstoken.password", "apis._" },
+					Array.Empty<BangCommandInfo>(),
+					new ApiCommandInfo());
+
 				//editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
-				//editorWindow.ShowDialog();
+				editorWindow.ShowDialog();
 			}
 			catch (Exception e)
 			{

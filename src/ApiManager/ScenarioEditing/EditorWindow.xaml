@@ -205,8 +205,8 @@
 		<Grid Grid.Row="1" Grid.Column="0" >
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition />
-				<ColumnDefinition Width="3"/>
-				<ColumnDefinition Width="175"/>
+				<!--<ColumnDefinition Width="3"/>
+				<ColumnDefinition Width="175"/>-->
 			</Grid.ColumnDefinitions>
 		<ListView   Grid.Row="0" Grid.Column="0"
 					ItemsSource="{Binding ScenarioLineItems}"
@@ -220,8 +220,8 @@
 					DragDrop:DragDropHelper.DragDropTemplate="{StaticResource DragTemplate}" 
 					AllowDrop="True"
 					/>
-			<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-			<views:CommandViewer Grid.Row="0" Grid.Column="2"/>
+			<!--<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />-->
+			<!--<views:CommandViewer Grid.Row="0" Grid.Column="2"/>-->
 		</Grid>
 	</Grid>
 </Window>
