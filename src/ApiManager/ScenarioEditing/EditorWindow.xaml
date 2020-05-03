@@ -5,10 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApiManager.ScenarioEditing"
 		xmlns:view="clr-namespace:ApiManager.Views"
-		
-        mc:Ignorable="d"
+		xmlns:views="clr-namespace:ApiManager.ScenarioEditing.Views"
+		xmlns:DragDrop="clr-namespace:ApiManager.Views"
+		mc:Ignorable="d"
         Title="{Binding ScenarioEditTitle}" Height="450" Width="800">
 	<Window.Resources>
+
+		<DataTemplate x:Key="DragTemplate">
+			<DataTemplate.Resources>
+				<Style TargetType="Image">
+					<Setter Property="Width" Value="50" />
+					<Setter Property="Height" Value="50" />
+					<Setter Property="Margin" Value="5" />
+				</Style>
+			</DataTemplate.Resources>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="{Binding Path=LineItem.OriginalLine}" Margin="2" TextAlignment="Center" FontWeight="Bold" />
+			</StackPanel>
+		</DataTemplate>
 
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 		<ImageBrush x:Key="MoveUpImageBrush" ImageSource="../images/moveup.png" />
@@ -98,18 +112,18 @@
 					<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
 						Text="{Binding LineItem.Command}" Margin="10,0,0,0">
-						<TextBlock.InputBindings>
+						<!--<TextBlock.InputBindings>
 							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
-						</TextBlock.InputBindings>
+						</TextBlock.InputBindings>-->
 					</TextBlock>
 
-					<ComboBox 
+					<!--<ComboBox 
 						  ItemsSource="{Binding LineItem.Apis}" 
 						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
 						  Style="{StaticResource EditingModeStyle}"
 						  SelectedItem="{Binding LineItem.Command}"
 						  view:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="{Binding LineItem.DoneWithEditingCommand}"
-						  />
+						  />-->
 				</Grid>
 
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}" />
@@ -152,15 +166,16 @@
 					<Button  Background="{StaticResource CommentImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding CommentCommand}"
 							 ToolTip="Toggle Comment"/>
-					<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+					<!--<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding MoveUpCommand}" 
 							 ToolTip="Move up"/>
 					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding MoveDownCommand}"
-							 ToolTip="Move down"/>
+							 ToolTip="Move down"/>-->
 					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding DeleteCommand}"
 							 ToolTip="Delete"/>
+					<TextBlock Text="Use drag &amp; drop to move up and down" Foreground="DarkGoldenrod" Margin="15,0,0,0" VerticalAlignment="Center"/>
 				</StackPanel>
 			</StackPanel>
 		</DataTemplate>
@@ -187,13 +202,26 @@
 					 Margin="15,0,0,0"
 					 />
 		</StackPanel>
-		<ListView   Grid.Row="1" Grid.Column="0"
+		<Grid Grid.Row="1" Grid.Column="0" >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="3"/>
+				<ColumnDefinition Width="175"/>
+			</Grid.ColumnDefinitions>
+		<ListView   Grid.Row="0" Grid.Column="0"
 					ItemsSource="{Binding ScenarioLineItems}"
 					BorderThickness="0" 
 					ItemTemplateSelector="{StaticResource ScenarioItemDataHeaderTemplateSelector}" 
 					Background="White" 
 					ScrollViewer.VerticalScrollBarVisibility="Auto"
-					ScrollViewer.CanContentScroll="False"							
+					ScrollViewer.CanContentScroll="False"			
+					DragDrop:DragDropHelper.IsDropTarget="True"
+					DragDrop:DragDropHelper.IsDragSource="True" 
+					DragDrop:DragDropHelper.DragDropTemplate="{StaticResource DragTemplate}" 
+					AllowDrop="True"
 					/>
+			<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+			<views:CommandViewer Grid.Row="0" Grid.Column="2"/>
+		</Grid>
 	</Grid>
 </Window>

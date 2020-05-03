@@ -78,31 +78,31 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
-			var apiCmdInfo = new ApiCommandInfo();
-			apiCmdInfo.ApiCommands["accesstoken"] = new List<string>
-			{
-				{"password" }
-			};
-			apiCmdInfo.ApiCommands["apis"] = new List<string>
-			{
-				{"_" }
-			};
-			var view = new CreateScenarioLineItemView()
-			{
-				DataContext = new ApiManager.ScenarioEditing.NewLineItem.ViewModels.MainViewModel(
-					new List<BangCommandInfo>
-					{
-						new BangCommandInfo("!assert","Assert help here"),
-						new BangCommandInfo("!extract","Extracts variable")
-					},
-					apiCmdInfo
-					)
-			};
-			view.ShowDialog();
-			//EditorWindow editorWindow = new EditorWindow();
-			//var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
-			//editorWindow.DataContext = new ScenarioEditorViewModel(scenario, new string[] { "accesstoken.password", "apis._" });
-			//editorWindow.ShowDialog();
+			//var apiCmdInfo = new ApiCommandInfo();
+			//apiCmdInfo.ApiCommands["accesstoken"] = new List<string>
+			//{
+			//	{"password" }
+			//};
+			//apiCmdInfo.ApiCommands["apis"] = new List<string>
+			//{
+			//	{"_" }
+			//};
+			//var view = new CreateScenarioLineItemView()
+			//{
+			//	DataContext = new ApiManager.ScenarioEditing.NewLineItem.ViewModels.MainViewModel(
+			//		new List<BangCommandInfo>
+			//		{
+			//			new BangCommandInfo("!assert","Assert help here"),
+			//			new BangCommandInfo("!extract","Extracts variable")
+			//		},
+			//		apiCmdInfo
+			//		)
+			//};
+			//view.ShowDialog();
+			EditorWindow editorWindow = new EditorWindow();
+			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
+			editorWindow.DataContext = new ScenarioEditorViewModel(scenario, new string[] { "accesstoken.password", "apis._" });
+			editorWindow.ShowDialog();
 			System.Environment.Exit(-1);
 		}
 	}

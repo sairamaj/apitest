@@ -155,6 +155,9 @@
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioAction.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioLineItemViewModel.cs" />
+    <Compile Include="ScenarioEditing\Views\CommandViewer.xaml.cs">
+      <DependentUpon>CommandViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
       <DependentUpon>NewScenarioFolderWindow.xaml</DependentUpon>
     </Compile>
@@ -282,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\Views\CommandViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
