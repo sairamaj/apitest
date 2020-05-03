@@ -15,5 +15,6 @@ namespace ApiManager.Repository
 		IEnumerable<AssertData> GetAssertData();
 		IEnumerable<ScriptData> GetScriptsData();
 		IEnumerable<ResourceData> GetResources(string method);
+		IEnumerable<VariableGroupData> GetVariableGroupData();
 	}
 }

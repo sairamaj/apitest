@@ -8,7 +8,7 @@ from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutor
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest, \
-                     PrintCommandExecutorRequest
+                     PrintCommandExecutorRequest, SetGroupExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
 from utils import readAllText, read_key_value_pairs, line_parser, line_to_dictionary, isFunc
@@ -27,6 +27,7 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         '!list': ListCommandInputParser(workingDirectory),
         "!print" : PrintCommandInputParser(workingDirectory),
         '!set': SetCommandInputParser(workingDirectory),
+        "!setgroup": SetGroupCommandInputParser(workingDirectory),
         '!help': HelpCommandInputParser(workingDirectory),
         '!management': ManagementCommandRequestInputParser(workingDirectory),
         '!convert_json_html': ConvertJsonToHtmlRequestInputParser(workingDirectory),
@@ -153,6 +154,27 @@ class SetCommandInputParser(InputParser):
 
         return SetExecutorRequest(name, value)
 
+class SetGroupCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        args = line_parser(command)
+        # ex:
+        #   setgroup filename
+        if len(args) < 2:
+            raise ValueError("setgroup require filename")
+        file_name = args[1]
+
+        # go through transformation
+
+        file_name = ResourceProvider(property_bag.resource_path).variables_filepath(file_name)
+        if os.path.exists(file_name) == False:
+            raise ValueError(f"{file_name} does not exists.")
+
+        key_value_pairs = read_key_value_pairs(file_name,'=')
+        key_value_pairs = transform(key_value_pairs, property_bag.properties, property_bag.user_input)
+        return SetGroupExecutorRequest(key_value_pairs)
 
 class ListCommandInputParser(InputParser):
     def __init__(self, workingDirectory):

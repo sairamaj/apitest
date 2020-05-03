@@ -5,11 +5,12 @@ from apiresponse import ApiResponse
 from pprint import pprint
 from api import Api, ApiException
 from abc import ABCMeta, abstractstaticmethod
-from executorRequest import ApiExecutorRequest, SetExecutorRequest, HelpExecutorRequest, ManagementCommandExecutorRequest
+from executorRequest import ApiExecutorRequest, SetExecutorRequest, SetGroupExecutorRequest,  HelpExecutorRequest, \
+    ManagementCommandExecutorRequest
 from executorRequest import WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest, ConvertJsonToHtmlExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest, \
-                            PrintCommandExecutorRequest
+    PrintCommandExecutorRequest
 from ui import printRoute, printPath, printInfo, waitForUserInput
 from jsonpath_ng.ext import parse
 from json2html import *
@@ -134,6 +135,20 @@ class SetExecutor(ICommand):
                                                 **{executorRequest.parameterName: executorRequest.parameterValue})
 
 
+class SetGroupExecutor(ICommand):
+    def __init__(self, property_bag):
+        self.property_bag = property_bag
+        super(SetGroupExecutor, self).__init__(property_bag)
+
+    def execute(self, executorRequest):
+        if isinstance(executorRequest, SetGroupExecutorRequest) == False:
+            raise ValueError(
+                f"{type(executorRequest)} is not of SetGroupExecutorRequest")
+
+        self.property_bag.properties = dict(
+            self.property_bag.properties, **executorRequest.key_value_pairs)
+
+
 class ListPropertiesExecutor(ICommand):
     def __init__(self, property_bag):
         self.property_bag = property_bag
@@ -175,6 +190,7 @@ class HelpExecutor(ICommand):
         print('!extract jsonpath variable (extracts fron last response into variable given json path).')
         print('!extract_from_request jsonpath variable (extracts from last request  into variable given json path).')
         print('!js jsfilename (executes java script file).')
+        print('!setgroup variablegroupfilename (to set variables from file).')
         print('!set name=value (to set variable).')
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
@@ -441,6 +457,7 @@ class FuncCommandExecutor(ICommand):
         FuncEvaluator(self.property_bag.last_http_request).evaluate(
             executorRequest.name, executorRequest.args)
 
+
 class PrintCommandExecutor(ICommand):
     def __init__(self, property_bag):
         self.property_bag = property_bag
@@ -451,6 +468,5 @@ class PrintCommandExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of PrintCommandExecutorRequest")
         print(f"{executorRequest.message}")
-        self.publisher.printInfo(self.property_bag.session_name, executorRequest.message)
-
-
+        self.publisher.printInfo(
+            self.property_bag.session_name, executorRequest.message)

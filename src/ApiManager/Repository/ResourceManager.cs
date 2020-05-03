@@ -81,6 +81,18 @@ namespace ApiManager.Repository
 			return new List<AssertData>();
 		}
 
+		public IEnumerable<VariableGroupData> GetVariableGroupData()
+		{
+			var varaibleGroupDirectory = Path.Combine(this._settings.ResourcesPath, "Variables");
+			if (Directory.Exists(varaibleGroupDirectory))
+			{
+				return Directory.GetFiles(varaibleGroupDirectory)
+					.Select(f => new VariableGroupData(Path.GetFileNameWithoutExtension(f), f));
+			}
+
+			return new List<VariableGroupData>();
+		}
+
 		public IEnumerable<ScriptData> GetScriptsData()
 		{
 			var path = Path.Combine(this._settings.ResourcesPath, "Scripts");

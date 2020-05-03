@@ -148,6 +148,7 @@ namespace ApiManager.ViewModels
 		public LogViewModel LogViewModel { get; set; }
 		public VariableContainerViewModel VariableContainerViewModel { get; private set; }
 		public AssertContainerViewModel AssertContainerViewModel { get; private set; }
+		public VariableGroupContainerViewModel VariableGroupContainerViewModel { get; private set; }
 		public ScriptContainerViewModel ScriptContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PostResourceContainerViewModel { get; private set; }
 		public ResourceContainerViewModel PatchResourceContainerViewModel { get; private set; }
@@ -451,6 +452,7 @@ namespace ApiManager.ViewModels
 
 			this.VariableContainerViewModel = new VariableContainerViewModel(this._resourceManager);
 			this.AssertContainerViewModel = new AssertContainerViewModel(this._resourceManager);
+			this.VariableGroupContainerViewModel = new VariableGroupContainerViewModel(this._resourceManager);
 			this.ScriptContainerViewModel = new ScriptContainerViewModel(this._resourceManager);
 			this.PostResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "post");
 			this.PatchResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "patch");

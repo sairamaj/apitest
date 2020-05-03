@@ -8,11 +8,15 @@
 			 xmlns:views1="clr-namespace:ApiManager.Asserts.Views"
 			 xmlns:views11="clr-namespace:ApiManager.Scripts.Views"
 			 xmlns:views2="clr-namespace:ApiManager.Resources.Views"
+			 xmlns:views3="clr-namespace:ApiManager.Variables.Views"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
 		<Expander Header="Variables">
 			<views:VariableContainerView DataContext="{Binding VariableContainerViewModel}"/>
+		</Expander>
+		<Expander Header="Variable Groups">
+			<views3:VariableGroupContainerView DataContext="{Binding VariableGroupContainerViewModel}"/>
 		</Expander>
 		<Expander Header="Asserts">
 			<views1:AssertContainerView DataContext="{Binding AssertContainerViewModel}"/>

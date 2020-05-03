@@ -162,8 +162,17 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="Utils\UiHelper.cs" />
+    <Compile Include="Variables\Model\VariableGroupData.cs" />
+    <Compile Include="Variables\ViewModels\VariableGroupViewModel.cs" />
     <Compile Include="Variables\ViewModels\VariableContainerViewModel.cs" />
+    <Compile Include="Variables\ViewModels\VariableGroupContainerViewModel.cs" />
     <Compile Include="Variables\ViewModels\VariableViewModel.cs" />
+    <Compile Include="Variables\Views\VariableGroupContainerView.xaml.cs">
+      <DependentUpon>VariableGroupContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Variables\Views\VariableGroupView.xaml.cs">
+      <DependentUpon>VariableGroupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
     <Compile Include="ViewModels\PrintInfoViewModel.cs" />
     <Compile Include="ViewModels\JsExecuteViewModel.cs" />
@@ -275,6 +284,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scripts\Views\ScriptView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Variables\Views\VariableGroupContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Variables\Views\VariableGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

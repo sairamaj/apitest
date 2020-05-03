@@ -18,12 +18,12 @@ class SetExecutorRequest(ExecutorRequest):
     def __init__(self, parameterName, parameterValue):
         self.command = "!set"
         self.parameterName = parameterName
-        if parameterValue.startswith('__file__:'):
-            filename = parameterValue[len('__file__:'):]
-            self.parameterValue = readAllText(filename)
-        else:
-            self.parameterValue = parameterValue
+        self.parameterValue = parameterValue
 
+class SetGroupExecutorRequest(ExecutorRequest):
+    def __init__(self, key_value_pairs):
+        self.command = "!setgroup"
+        self.key_value_pairs = key_value_pairs
 
 class ListExecutorRequest(ExecutorRequest):
     def __init__(self):
