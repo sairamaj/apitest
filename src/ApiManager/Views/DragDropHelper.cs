@@ -36,6 +36,7 @@ namespace ApiManager.Views
 
         // singleton
         private static DragDropHelper _instance;
+
         private static DragDropHelper Instance
         {
             get { return _instance ?? (_instance = new DragDropHelper()); }
@@ -190,6 +191,10 @@ namespace ApiManager.Views
         private void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
         {
             this._targetItemsControl = (ItemsControl)sender;
+            if (this._sourceItemsControl == null)
+            {
+                this._sourceItemsControl = this._targetItemsControl;
+            }
             //var margin = SumMargins(_targetItemsControl);
             //_targetTopMargin = margin.Top;
             //_targetLeftMargin = margin.Left;
@@ -198,6 +203,14 @@ namespace ApiManager.Views
             DecideDropTarget(e);
             if (draggedItem != null)
             {
+                if (this._topWindow == null)
+                {
+                    this._topWindow = Window.GetWindow(this._targetItemsControl);
+                }
+                if (this._sourceItemContainer == null) 
+                {
+                    this._sourceItemContainer = _sourceItemsControl.ContainerFromElement((DependencyObject)e.OriginalSource) as FrameworkElement;
+                }
                 var position = e.GetPosition(this._topWindow);
                 //ScrollIntoView(this._targetItemsControl, position);
                 // Dragged Adorner is created on the first enter only.

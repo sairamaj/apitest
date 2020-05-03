@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
@@ -21,7 +22,8 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 
 		public override object GetDragData()
 		{
-			return this.Name;
+			var format = DataFormats.GetDataFormat("DragDropItemsControl");
+			return new DataObject(format.Name, new DummyTestViewModel(this.Name));
 		}
 	}
 }
