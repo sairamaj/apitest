@@ -137,10 +137,15 @@
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DummyTestViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\EditorViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoContainerViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangContainerCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\MainViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml.cs">
+      <DependentUpon>CommandView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml.cs">
       <DependentUpon>CreateScenarioLineItemView.xaml</DependentUpon>
     </Compile>
@@ -209,8 +214,11 @@
     <Compile Include="Scripts\Views\JavaScriptView.xaml.cs">
       <DependentUpon>JavaScriptView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DragDropHelper.cs" />
+    <Compile Include="Views\DraggedAdorner.cs" />
     <Compile Include="Views\ExtendedComboBox.cs" />
     <Compile Include="Views\InputBindingsManager.cs" />
+    <Compile Include="Views\InsertionAdorner.cs" />
     <Compile Include="Views\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
@@ -266,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

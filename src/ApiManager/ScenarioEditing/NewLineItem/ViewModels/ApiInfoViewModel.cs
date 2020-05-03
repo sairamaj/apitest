@@ -18,5 +18,10 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		{
 			this.SubCommands.ToList().ForEach(s => new ApiInfoViewModel(s, new List<string> { }));
 		}
+
+		public override object GetDragData()
+		{
+			return this.Name;
+		}
 	}
 }

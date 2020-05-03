@@ -5,11 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApiManager.ScenarioEditing.NewLineItem.Views"
 		xmlns:viewModel="clr-namespace:ApiManager.ScenarioEditing.NewLineItem.ViewModels"
+		xmlns:DragDrop="clr-namespace:ApiManager.Views"
         mc:Ignorable="d"
         Title="CreateScenarioLineItemView" Height="450" Width="800">
-	<Grid>
+	<Window.Resources>
+		<DataTemplate x:Key="ListTemplate" >
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="{Binding Name}" Margin="2"/>
+			</StackPanel>
+		</DataTemplate>
 
-		<TreeView ItemsSource="{Binding RootCommands}">
+		<DataTemplate x:Key="DragTemplate">
+			<DataTemplate.Resources>
+				<Style TargetType="Image">
+					<Setter Property="Width" Value="50" />
+					<Setter Property="Height" Value="50" />
+					<Setter Property="Margin" Value="5" />
+				</Style>
+			</DataTemplate.Resources>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="{Binding Path=Name}" Margin="2" TextAlignment="Center" FontWeight="Bold" />
+			</StackPanel>
+		</DataTemplate>
+
+	</Window.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"/>
+			<ColumnDefinition Width="3"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<TreeView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding RootCommands}">
 			<TreeView.Resources>
 
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoContainerViewModel}"  ItemsSource="{Binding Children}">
@@ -38,11 +64,20 @@
 
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Name}" />
+						<local:CommandView DataContext="{Binding}"/>
 					</StackPanel>
 				</HierarchicalDataTemplate>
 
 			</TreeView.Resources>
 		</TreeView>
+
+		<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+		<ListView  Grid.Row="0" Grid.Column="2" ItemsSource="{Binding DeleteContactList}" 
+				   DragDrop:DragDropHelper.IsDropTarget="True"
+				   DragDrop:DragDropHelper.IsDragSource="True" 
+				   ItemTemplate="{StaticResource ListTemplate}"
+				   DragDrop:DragDropHelper.DragDropTemplate="{StaticResource DragTemplate}" 
+				   AllowDrop="True"/>
+
 	</Grid>
 </Window>
