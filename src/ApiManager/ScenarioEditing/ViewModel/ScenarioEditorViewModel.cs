@@ -7,15 +7,21 @@ using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing.Models;
+using ApiManager.ScenarioEditing.NewLineItem.ViewModels;
 using ApiManager.ScenarioEditing.ViewModel;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
+using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.ViewModels
 {
 	class ScenarioEditorViewModel
 	{
-		public ScenarioEditorViewModel(Scenario scenario, IEnumerable<string> apis)
+		public ScenarioEditorViewModel(
+			Scenario scenario, 
+			IEnumerable<string> apis,
+			IEnumerable<BangCommandInfo> bangCommands,
+			ApiCommandInfo apiCommandInfo)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
@@ -52,8 +58,16 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		   });
 
 			this.ScenarioEditTitle = $"{scenario.Name} ({scenario.FileName})";
+			this.RootCommands = new List<CommandTreeViewModel>()
+			{
+				new ApiInfoContainerViewModel(apiCommandInfo),
+				new BangContainerCommandInfoViewModel(bangCommands),
+				new FunctionInfoViewModel("functions", "functions")
+			};
+
 		}
 
+		public IEnumerable<CommandTreeViewModel> RootCommands { get; }
 		public string ScenarioEditTitle { get; }
 		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
 		public ICommand SaveCommandFileCommand { get; }

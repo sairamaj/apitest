@@ -91,8 +91,8 @@ namespace ApiManager.ViewModels
 					}
 				}
 
-				editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
-				editorWindow.ShowDialog();
+				//editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
+				//editorWindow.ShowDialog();
 			}
 			catch (Exception e)
 			{
