@@ -7,15 +7,21 @@ using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.ScenarioEditing.Models;
+using ApiManager.ScenarioEditing.NewLineItem.ViewModels;
 using ApiManager.ScenarioEditing.ViewModel;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
+using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.ViewModels
 {
 	class ScenarioEditorViewModel
 	{
-		public ScenarioEditorViewModel(Scenario scenario, IEnumerable<string> apis)
+		public ScenarioEditorViewModel(
+			Scenario scenario, 
+			IEnumerable<string> apis,
+			IEnumerable<BangCommandInfo> bangCommands,
+			ApiCommandInfo apiCommandInfo)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
@@ -25,23 +31,24 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				if (line.StartsWith("#", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line), OnEditAction));
 				}
 				else if (line.Trim().Length == 0)
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem()));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem(), OnEditAction));
 				}
 				else if (line.StartsWith("!", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line), OnEditAction));
 				}
 				else if (line.StartsWith("__", System.StringComparison.OrdinalIgnoreCase))
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line), OnEditAction));
 				}
 				else
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ApiScenarioItem(line.Split().First(), apis)));
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
+						new ApiScenarioItem(line.Split().First(), apis), OnEditAction));
 				}
 			}
 
@@ -49,8 +56,19 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		   {
 			   this.Save();
 		   });
+
+			this.ScenarioEditTitle = $"{scenario.Name} ({scenario.FileName})";
+			this.RootCommands = new List<CommandTreeViewModel>()
+			{
+				new ApiInfoContainerViewModel(apiCommandInfo),
+				new BangContainerCommandInfoViewModel(bangCommands),
+				new FunctionInfoViewModel("functions", "functions")
+			};
+
 		}
 
+		public IEnumerable<CommandTreeViewModel> RootCommands { get; }
+		public string ScenarioEditTitle { get; }
 		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
 		public ICommand SaveCommandFileCommand { get; }
 		private void Save()
@@ -58,10 +76,40 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			var builder = new StringBuilder();
 			foreach (var item in ScenarioLineItems)
 			{
-				builder.AppendLine(item.LineItem.OriginalLine);
+				builder.AppendLine(item.LineItem.GetCommand());
 			}
 
-			File.WriteAllText(@"c:\temp\foo.txt", builder.ToString());
+			var file = @"c:\temp\foo.txt";
+			File.WriteAllText(file, builder.ToString());
+			MessageBox.Show($"{file} has been saved.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+		}
+
+		private void OnEditAction(ScenarioEditingAction action, ScenarioLineItemViewModel item)
+		{
+			switch (action)
+			{
+				case ScenarioEditingAction.Delete:
+					this.ScenarioLineItems.Remove(item);
+					break;
+				case ScenarioEditingAction.MoveUp:
+					var index = this.ScenarioLineItems.IndexOf(item);
+					if (index <= 0)
+					{
+						return;	// already top
+					}
+					this.ScenarioLineItems.Remove(item);
+					this.ScenarioLineItems.Insert(index - 1, item);
+					break;
+				case ScenarioEditingAction.MoveDown:
+					var index1 = this.ScenarioLineItems.IndexOf(item);
+					if (index1 >= this.ScenarioLineItems.Count()-1)
+					{
+						return; // already bootom
+					}
+					this.ScenarioLineItems.Remove(item);
+					this.ScenarioLineItems.Insert(index1 + 1, item);
+					break;
+			}
 		}
 	}
 }

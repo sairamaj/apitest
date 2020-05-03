@@ -89,7 +89,7 @@
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 								<Separator />
-								<MenuItem Header="Smart Editor(Preview)" Command="{Binding Path=SmartEditorCommand}"/>
+								<MenuItem Header="Smart Editor(Preview)(In Progress)" Command="{Binding Path=SmartEditorCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>

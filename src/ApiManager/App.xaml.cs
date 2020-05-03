@@ -1,19 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using ApiManager.Model;
-using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
-using ApiManager.ScenarioEditing.ViewModel;
+using ApiManager.ScenarioEditing.NewLineItem.Views;
 using ApiManager.ScenarioEditing.ViewModels;
-using ApiManager.ScenarioEditing.Views;
 using ApiManager.ViewModels;
 using ApiManager.Views;
 using Autofac;
-using Newtonsoft.Json;
 using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.Registration;
 
@@ -35,11 +32,12 @@ namespace ApiManager
 
 			try
 			{
+				// TestSmartEditor();
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
-				ServiceLocator.Initialize(serviceLocator);		// todo: need to revisit this (added to avoid passing locator to all ctors)
+				ServiceLocator.Initialize(serviceLocator);      // todo: need to revisit this (added to avoid passing locator to all ctors)
 
 				var win = new MainWindow
 				{
@@ -69,13 +67,55 @@ namespace ApiManager
 				{
 					MessageBox.Show(
 						"Currently only one instance can be running. Please switch to the other instance.",
-						"Error", 
-						MessageBoxButton.OK, 
+						"Error",
+						MessageBoxButton.OK,
 						MessageBoxImage.Error);
 					System.Environment.Exit(-1);
 				}
 				action();
 			}
+		}
+
+		private void TestSmartEditor()
+		{
+			var apiCmdInfo = new ApiCommandInfo();
+			apiCmdInfo.ApiCommands["accesstoken"] = new List<string>
+			{
+				{"password" }
+			};
+			apiCmdInfo.ApiCommands["apis"] = new List<string>
+			{
+				{"_" }
+			};
+
+			var bangCommands = new List<BangCommandInfo>
+					{
+						new BangCommandInfo("!assert","Assert help here"),
+						new BangCommandInfo("!extract","Extracts variable")
+					};
+
+
+			//var view = new CreateScenarioLineItemView()
+			//{
+			//	DataContext = new ApiManager.ScenarioEditing.NewLineItem.ViewModels.MainViewModel(
+			//		new List<BangCommandInfo>
+			//		{
+			//			new BangCommandInfo("!assert","Assert help here"),
+			//			new BangCommandInfo("!extract","Extracts variable")
+			//		},
+			//		apiCmdInfo
+			//		)
+			//};
+			//view.ShowDialog();
+			EditorWindow editorWindow = new EditorWindow();
+			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
+			editorWindow.DataContext = new ScenarioEditorViewModel(
+				scenario, 
+				new string[] { "accesstoken.password", "apis._" },
+				bangCommands,
+				apiCmdInfo);
+			editorWindow.ShowDialog();
+			System.Environment.Exit(-1);
 		}
 	}
 }

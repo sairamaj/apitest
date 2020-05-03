@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ApiManager.ScenarioEditing.Models
 {
 	class FunctionScenarioItem : ScenarioLineItem
 	{
 		private string _command;
-		public FunctionScenarioItem(string command) : base("function", command)
+		public FunctionScenarioItem(
+			string command) 
+			: base("function", command)
 		{
 			this.Command = command;
 		}
@@ -24,5 +27,13 @@ namespace ApiManager.ScenarioEditing.Models
 
 		public IEnumerable<string> Apis { get; }
 
+		public override string GetCommand()
+		{
+			return this.Command;
+		}
+
+		public override void ToggleComment()
+		{
+		}
 	}
 }

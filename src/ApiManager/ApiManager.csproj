@@ -79,6 +79,7 @@
     <Compile Include="HttpRequestClient.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
+    <Compile Include="Model\BangCommandInfo.cs" />
     <Compile Include="Model\PrintInfo.cs" />
     <Compile Include="Model\AssertInfo.cs" />
     <Compile Include="Model\CommandInfo.cs" />
@@ -132,13 +133,31 @@
     <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommentScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
+    <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DummyTestViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\EditorViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoContainerViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangContainerCommandInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\MainViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml.cs">
+      <DependentUpon>CommandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml.cs">
+      <DependentUpon>CreateScenarioLineItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioAction.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioLineItemViewModel.cs" />
+    <Compile Include="ScenarioEditing\Views\CommandViewer.xaml.cs">
+      <DependentUpon>CommandViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\Views\NewScenarioFolderWindow.xaml.cs">
       <DependentUpon>NewScenarioFolderWindow.xaml</DependentUpon>
     </Compile>
@@ -207,8 +226,11 @@
     <Compile Include="Scripts\Views\JavaScriptView.xaml.cs">
       <DependentUpon>JavaScriptView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DragDropHelper.cs" />
+    <Compile Include="Views\DraggedAdorner.cs" />
     <Compile Include="Views\ExtendedComboBox.cs" />
     <Compile Include="Views\InputBindingsManager.cs" />
+    <Compile Include="Views\InsertionAdorner.cs" />
     <Compile Include="Views\ResourceView.xaml.cs">
       <DependentUpon>ResourceView.xaml</DependentUpon>
     </Compile>
@@ -264,6 +286,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\Views\CommandViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -484,6 +518,9 @@
     <Resource Include="images\command.png" />
     <Resource Include="images\progress.png" />
     <Resource Include="images\save.png" />
+    <Resource Include="images\movedown.png" />
+    <Resource Include="images\moveup.png" />
+    <Resource Include="images\delete.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
