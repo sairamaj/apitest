@@ -248,15 +248,8 @@ class ManagementCommandExecutor(ICommand):
             publisher.managementInfo(self.property_bag.session_name,
                                      "commands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
-            commands = {}
-            for name, apiInfos in executorRequest.apis.items():
-                subcommands = []
-                for path, apiInfo in apiInfos.items():
-                    subcommands.append(path)
-                commands[name] = subcommands
-            print(f"apis : {type(executorRequest.apis)}")
             self.publisher.managementInfo(self.property_bag.session_name,
-                                          "apicommands", commands)
+                                          "apicommands", self.get_api_json(executorRequest.apis))
         elif executorRequest.request == "variables":
             variables = getVariables(readAllText(
                 self.property_bag.config_filename))
@@ -267,6 +260,14 @@ class ManagementCommandExecutor(ICommand):
             raise ValueError(
                 f"invalid {executorRequest.request} management command (avaiable are commands and variables")
 
+    def get_api_json(self, apis):
+        commands = {}
+        for name, apiInfos in apis.items():
+            subcommands = []
+            for path, apiInfo in apiInfos.items():
+                subcommands.append(path)
+            commands[name] = subcommands
+        return commands
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):
