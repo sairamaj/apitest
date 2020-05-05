@@ -23,7 +23,6 @@ class Publisher:
     def apiresult(self, response, sessionName, request_id=""):
         try:
             bodyString = response.request.body
-            print(f"Type:{type(bodyString)}")
 
             if isinstance(bodyString, bytes):
                 bodyString = response.request.body.decode("utf-8")

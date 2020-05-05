@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 import traceback
+import logging
 from exceptions import ApiException
 from pprint import pprint
 from transform import transform
@@ -34,6 +35,7 @@ def main():
     parser.add_argument("--config", help="Config File")
     parser.add_argument("--varfile", help="Variables file")
     parser.add_argument("--session", help="Session name")
+    parser.add_argument("--log_level", help="Loglevel(DEBUG,INFO,ERROR)")
     parser.add_argument("--output", help="Output directory where results will be written")
     parser.add_argument("--resource_path", help="Resource Path")
     args, unknown = parser.parse_known_args()
@@ -42,6 +44,15 @@ def main():
         printError('Config file is required . [ex: main.py --config apigee.json] ')
         parser.print_help()
         sys.exit(-1)
+    
+    # Set log level.
+    if args.log_level == None:
+        logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
+    else:
+        level = logging._nameToLevel.get(args.log_level,None)
+        if level != None:
+            logging.basicConfig(stream=sys.stderr, level=level)
+
 
     # convert unknowns
     items = {x.split('=')[0][2:]: x.split('=')[-1] for x in unknown if x[:2] == '--'}
