@@ -13,7 +13,9 @@
 		</Style>
 	</UserControl.Resources>
 
-	<ListView ItemsSource="{Binding}" BorderThickness="0">
+	<ListView ItemsSource="{Binding}" BorderThickness="0" 
+			  					ScrollViewer.VerticalScrollBarVisibility="Auto"
+					ScrollViewer.CanContentScroll="True"	Height="500">
 		<ListView.View >
 			<GridView ColumnHeaderContainerStyle="{StaticResource DataHeaderStyle}">
 				<GridViewColumn>
