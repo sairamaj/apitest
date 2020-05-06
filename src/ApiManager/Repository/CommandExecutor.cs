@@ -161,6 +161,22 @@ namespace ApiManager.Repository
 			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
+		public async Task<string> GetFunctionCommands()
+		{
+			ValidateSettings(this._settings);
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
+			{
+				ConfigFileName = FileHelper.WriteToTempFile("[]", ".json"),
+				SessionName = "apimanger",
+				Commands = new string[] { "!management functions" }
+			});
+
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
+
+			return ret.ToString(CultureInfo.InvariantCulture);
+		}
+
+
 		private void ValidatePythonVersion()
 		{
 			var startInfo = new ProcessStartInfo(this._settings.ConsoleExecutableName, "--version");

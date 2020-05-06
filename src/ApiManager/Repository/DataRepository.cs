@@ -17,6 +17,7 @@ namespace ApiManager.Repository
 		private IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
 		private IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
 		private BangCommandInfo _bangCommands;
+		private FunctionCommandInfo _functionCommandInfo;
 
 		public DataRepository(ICommandExecutor executor, ISettings settings)
 		{
@@ -112,6 +113,37 @@ namespace ApiManager.Repository
 			}
 
 			return new BangCommandInfo();
+		}
+
+		public async Task<FunctionCommandInfo> GetFunctionCommandInfo()
+		{
+			if (_functionCommandInfo != null)
+			{
+				return this._functionCommandInfo;
+			}
+
+			using (var communicator = new ApiTestConsoleCommunicator(new MessageListener()))
+			{
+				communicator.Add("management", "functions", data =>
+				{
+					try
+					{
+						_functionCommandInfo = JsonConvert.DeserializeObject<FunctionCommandInfo>(data);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+					}
+				});
+				await this._executor.GetFunctionCommands().ConfigureAwait(false);
+			}
+
+			if (_functionCommandInfo != null)
+			{
+				return this._functionCommandInfo;
+			}
+
+			return new FunctionCommandInfo();
 		}
 
 		public void AddManagementInfo(Info info)

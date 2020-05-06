@@ -17,6 +17,7 @@ from json2html import *
 from transform import getVariables
 from utils import readAllText
 from commandinfo import getCommandsInfo
+from function_info import getFunctionsInfo
 from js_executor import JsExecutor
 from jpath_extractor import JPathExtractor
 from http_request import HttpRequest
@@ -250,6 +251,9 @@ class ManagementCommandExecutor(ICommand):
         elif executorRequest.request == "apicommands":
             self.publisher.managementInfo(self.property_bag.session_name,
                                           "apicommands", self.get_api_json(executorRequest.apis))
+        elif executorRequest.request == "functions":
+            self.publisher.managementInfo(self.property_bag.session_name,
+                                          "functions", getFunctionsInfo())
         elif executorRequest.request == "variables":
             variables = getVariables(readAllText(
                 self.property_bag.config_filename))

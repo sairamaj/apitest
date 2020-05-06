@@ -6,15 +6,15 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 {
-	class BangCommandInfoViewModel : CommandTreeViewModel
+	class FunctionCommandInfoViewModel : CommandTreeViewModel
 	{
-		public BangCommandInfoViewModel(BangCommand command) :base(null, command.Name, command.Name)
+		public FunctionCommandInfoViewModel(FunctionCommand command) :base(null, command.Name, command.Name)
 		{
 			Command = command;
 			this.IsExpanded = true;
 		}
 
-		public BangCommand Command { get; }
+		public FunctionCommand Command { get; }
 
 		public override object GetDragData()
 		{

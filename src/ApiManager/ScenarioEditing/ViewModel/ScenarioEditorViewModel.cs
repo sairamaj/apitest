@@ -19,9 +19,9 @@ namespace ApiManager.ScenarioEditing.ViewModels
 	{
 		public ScenarioEditorViewModel(
 			Scenario scenario, 
-			IEnumerable<string> apis,
 			BangCommandInfo bangCommandInfo,
-			ApiCommandInfo apiCommandInfo)
+			ApiCommandInfo apiCommandInfo,
+			FunctionCommandInfo functionCommandInfo)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
@@ -48,7 +48,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				else
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
-						new ApiScenarioItem(line.Split().First(), apis), OnEditAction));
+						new ApiScenarioItem(line.Split().First(), new string[] { "dummy" }), OnEditAction));
 				}
 			}
 
@@ -62,7 +62,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				new ApiInfoContainerViewModel(apiCommandInfo),
 				new BangContainerCommandInfoViewModel(bangCommandInfo),
-				new FunctionInfoViewModel("functions", "functions")
+				new FunctionContainerCommandInfoViewModel(functionCommandInfo)
 			};
 
 		}

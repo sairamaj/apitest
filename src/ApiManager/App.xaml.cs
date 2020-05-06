@@ -99,9 +99,8 @@ namespace ApiManager
 			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
 			editorWindow.DataContext = new ScenarioEditorViewModel(
 				scenario, 
-				new string[] { "accesstoken.password", "apis._" },
 				bangCommands,
-				apiCmdInfo);
+				apiCmdInfo, null);
 			editorWindow.ShowDialog();
 			System.Environment.Exit(-1);
 		}

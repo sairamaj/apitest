@@ -77,6 +77,8 @@
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpRequestClient.cs" />
+    <Compile Include="Model\FunctionCommandInfo.cs" />
+    <Compile Include="Model\FunctionCommand.cs" />
     <Compile Include="Model\BangCommand.cs" />
     <Compile Include="Model\ApiCommand.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
@@ -136,15 +138,13 @@
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
-    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
-    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DummyTestViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionContainerCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\EditorViewModel.cs" />
-    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoContainerViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangContainerCommandInfoViewModel.cs" />
-    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\MainViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml.cs">
       <DependentUpon>CommandView.xaml</DependentUpon>
     </Compile>

@@ -74,14 +74,15 @@ namespace ApiManager.ViewModels
 				var repository = ServiceLocator.Locator.Resolve<IDataRepository>();
 				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(this.ApiInfo).ConfigureAwait(true);
 				var bangCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetBangCommands().ConfigureAwait(true);
+				var functionCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetFunctionCommandInfo().ConfigureAwait(true);
 				EditorWindow editorWindow = new EditorWindow();
 				var apis = apiCommandInfo.ApiCommands;
 
 				editorWindow.DataContext = new ScenarioEditorViewModel(
 					this.Scenario,
-					new string[] { "accesstoken.password", "apis._" },
 					bangCommandInfo,
-					apiCommandInfo);
+					apiCommandInfo,
+					functionCommandInfo);
 
 				//editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
 				editorWindow.ShowDialog();

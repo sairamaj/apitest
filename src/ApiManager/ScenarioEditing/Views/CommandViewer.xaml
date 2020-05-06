@@ -46,7 +46,7 @@
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
-			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionInfoViewModel}"  ItemsSource="{Binding Children}">
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionContainerCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
@@ -54,7 +54,13 @@
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="{Binding Name}" />
+					<views:CommandView DataContext="{Binding}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionCommandInfoViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal">
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
