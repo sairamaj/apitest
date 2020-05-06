@@ -6,9 +6,9 @@ namespace ApiManager.Model
 	{
 		public ApiCommandInfo()
 		{
-			ApiCommands = new Dictionary<string, IEnumerable<string>>();
+			ApiCommands = new List<ApiCommand>();
 		}
 
-		public IDictionary<string, IEnumerable<string>> ApiCommands { get; set; }
+		public IEnumerable<ApiCommand> ApiCommands { get; set; }
 	}
 }

@@ -79,14 +79,6 @@ namespace ApiManager
 		private void TestSmartEditor()
 		{
 			var apiCmdInfo = new ApiCommandInfo();
-			apiCmdInfo.ApiCommands["accesstoken"] = new List<string>
-			{
-				{"password" }
-			};
-			apiCmdInfo.ApiCommands["apis"] = new List<string>
-			{
-				{"_" }
-			};
 
 			var bangCommands = new List<BangCommandInfo>
 					{

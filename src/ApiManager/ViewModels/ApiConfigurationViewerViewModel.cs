@@ -12,9 +12,7 @@ namespace ApiManager.ViewModels
 		{
 			this.ApiInfo = apiInfo;
 			this.ConfigurationData = File.ReadAllText(apiInfo.Configuration);
-			this.Commands = commandInfo.ApiCommands
-				.OrderBy(c => c.Key)
-				.Select(c =>new CommandInfoViewModel(c.Key, c.Value) );
+			this.Commands = commandInfo.ApiCommands.Select(c => new CommandInfoViewModel(c.Name, c.Routes.Select(r => r.Name)));
 		}
 
 		public ApiInfo ApiInfo { get; }

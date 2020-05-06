@@ -261,13 +261,20 @@ class ManagementCommandExecutor(ICommand):
                 f"invalid {executorRequest.request} management command (avaiable are commands and variables")
 
     def get_api_json(self, apis):
-        commands = {}
+        config = []
+        print(apis)
         for name, apiInfos in apis.items():
-            subcommands = []
-            for path, apiInfo in apiInfos.items():
-                subcommands.append(path)
-            commands[name] = subcommands
-        return commands
+            command = {}
+            command["name"] = name
+            routes = []
+            for route_name, apiInfo in apiInfos.items():
+                route = {}
+                route["name"] = route_name
+                routes.append(route)
+                #routes.append(path)
+            command["routes"] = routes
+            config.append(command)
+        return config
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):
