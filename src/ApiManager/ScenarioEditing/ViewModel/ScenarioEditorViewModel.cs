@@ -20,7 +20,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		public ScenarioEditorViewModel(
 			Scenario scenario, 
 			IEnumerable<string> apis,
-			IEnumerable<BangCommandInfo> bangCommands,
+			BangCommandInfo bangCommandInfo,
 			ApiCommandInfo apiCommandInfo)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
@@ -61,7 +61,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			this.RootCommands = new List<CommandTreeViewModel>()
 			{
 				new ApiInfoContainerViewModel(apiCommandInfo),
-				new BangContainerCommandInfoViewModel(bangCommands),
+				new BangContainerCommandInfoViewModel(bangCommandInfo),
 				new FunctionInfoViewModel("functions", "functions")
 			};
 

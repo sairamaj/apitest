@@ -146,14 +146,14 @@ namespace ApiManager.Repository
 			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
-		public async Task<string> GetHelpCommands()
+		public async Task<string> GetBangCommands()
 		{
 			ValidateSettings(this._settings);
 			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
 			{
 				ConfigFileName = FileHelper.WriteToTempFile("[]", ".json"),
 				SessionName = "apimanger",
-				Commands = new string[] { "!management commands" }
+				Commands = new string[] { "!management bangcommands" }
 			});
 
 			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);

@@ -359,10 +359,6 @@ namespace ApiManager.ViewModels
 				ConsumeManagementPipeData<ApiCommandInfo>(msg);
 			});
 
-			communicator.Add("management", "commands", msg =>
-			{
-				ConsumeManagementPipeData<HelpCommandInfo>(msg);
-			});
 			communicator.Add("error", "error", msg =>
 			{
 				ConsumePipeData<ErrorInfo>(msg);

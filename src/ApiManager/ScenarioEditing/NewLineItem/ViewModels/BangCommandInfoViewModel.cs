@@ -5,12 +5,12 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 {
 	class BangCommandInfoViewModel : CommandTreeViewModel
 	{
-		public BangCommandInfoViewModel(BangCommandInfo command) :base(null, command.Name, $"bang_command_{command.Name}")
+		public BangCommandInfoViewModel(BangCommand command) :base(null, command.Name, command.Name)
 		{
 			Command = command;
 			this.IsExpanded = true;
 		}
 
-		public BangCommandInfo Command { get; }
+		public BangCommand Command { get; }
 	}
 }

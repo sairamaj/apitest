@@ -1,14 +1,14 @@
-﻿namespace ApiManager.Model
+﻿using System.Collections.Generic;
+
+namespace ApiManager.Model
 {
-	class BangCommandInfo
+	class BangCommandInfo : Info
 	{
-		public BangCommandInfo(string name, string help)
+		public BangCommandInfo()
 		{
-			Name = name;
-			Help = help;
+			this.BangCommands = new List<BangCommand>();
 		}
 
-		public string Name { get; }
-		public string Help { get; }
+		public IEnumerable<BangCommand> BangCommands { get; set; }
 	}
 }

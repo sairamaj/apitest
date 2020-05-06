@@ -16,7 +16,7 @@ namespace ApiManager.Repository
 		private ISettings _settings;
 		private IDictionary<string, ApiCommandInfo> _apiCommands = new Dictionary<string, ApiCommandInfo>();
 		private IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
-		private IEnumerable<HelpCommand> _helpCommands;
+		private BangCommandInfo _bangCommands;
 
 		public DataRepository(ICommandExecutor executor, ISettings settings)
 		{
@@ -40,9 +40,6 @@ namespace ApiManager.Repository
 				await this._executor.GetApiCommands(info).ConfigureAwait(false);
 			}
 				
-			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
-			// Better way is to coordinate between this and pipe line responser.
-			await Task.Delay(100).ConfigureAwait(false);
 			if (this._apiCommands.TryGetValue(info.Name, out var commands1))
 			{
 				return await Task.FromResult<ApiCommandInfo>(commands1).ConfigureAwait(false);
@@ -92,24 +89,29 @@ namespace ApiManager.Repository
 			return apis;
 		}
 
-		public async Task<IEnumerable<HelpCommand>> GetHelpCommands()
+		public async Task<BangCommandInfo> GetBangCommands()
 		{
-			if (_helpCommands != null)
+			if (_bangCommands != null)
 			{
-				return this._helpCommands;
+
+				return this._bangCommands;
 			}
 
-			await this._executor.GetHelpCommands().ConfigureAwait(false);
-
-			// Hack. We are waiting a little bit the pipe line response to be parsed and added to this dictionary.
-			// Better way is to coordinate between this and pipe line responser.
-			await Task.Delay(100).ConfigureAwait(false);
-			if (_helpCommands != null)
+			using (var communicator = new ApiTestConsoleCommunicator(new MessageListener()))
 			{
-				return this._helpCommands;
+				communicator.Add("management", "bangcommands", data =>
+				{
+					_bangCommands = JsonConvert.DeserializeObject<BangCommandInfo>(data);
+				});
+				await this._executor.GetBangCommands().ConfigureAwait(false);
 			}
 
-			return new List<HelpCommand>();
+			if (_bangCommands != null)
+			{
+				return this._bangCommands;
+			}
+
+			return new BangCommandInfo();
 		}
 
 		public void AddManagementInfo(Info info)
@@ -123,10 +125,6 @@ namespace ApiManager.Repository
 			{
 				var variableInfo = info as ManagementVariableInfo;
 				this._apiVariables[variableInfo.Session] = variableInfo.Variables.ToList();
-			}
-			else if (info is HelpCommandInfo)
-			{
-				this._helpCommands = (info as HelpCommandInfo).Commands.ToList();
 			}
 		}
 

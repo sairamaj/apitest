@@ -77,6 +77,7 @@
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpRequestClient.cs" />
+    <Compile Include="Model\BangCommand.cs" />
     <Compile Include="Model\ApiCommand.cs" />
     <Compile Include="Model\ApiExecuteInfo.cs" />
     <Compile Include="Model\ApiRequest.cs" />
@@ -87,8 +88,6 @@
     <Compile Include="Model\CommandInfo.cs" />
     <Compile Include="Model\Environment.cs" />
     <Compile Include="Model\ErrorInfo.cs" />
-    <Compile Include="Model\HelpCommand.cs" />
-    <Compile Include="Model\HelpCommandInfo.cs" />
     <Compile Include="Model\JsScriptInfo.cs" />
     <Compile Include="Model\ManagementVariableInfo.cs" />
     <Compile Include="Model\ApiCommandInfo.cs" />
@@ -137,6 +136,7 @@
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DummyTestViewModel.cs" />

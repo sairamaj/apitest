@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-
-namespace ApiManager.Model
+﻿namespace ApiManager.Model
 {
-	public class HelpCommand
+	class BangCommand
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }

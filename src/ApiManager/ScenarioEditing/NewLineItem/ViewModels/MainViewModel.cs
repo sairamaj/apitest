@@ -10,13 +10,13 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	internal class MainViewModel : CoreViewModel
 	{
 		public MainViewModel(
-			IEnumerable<BangCommandInfo> bangCommands,
+			BangCommandInfo bangCommandInfo,
 			ApiCommandInfo apiCommandInfo)
 		{
 			this.RootCommands = new List<CommandTreeViewModel>()
 			{
 				new ApiInfoContainerViewModel(apiCommandInfo),
-				new BangContainerCommandInfoViewModel(bangCommands),
+				new BangContainerCommandInfoViewModel(bangCommandInfo),
 				new FunctionInfoViewModel("functions", "functions")
 			};
 

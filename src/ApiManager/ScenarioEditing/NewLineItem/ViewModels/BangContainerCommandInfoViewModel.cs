@@ -7,9 +7,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 {
 	internal class BangContainerCommandInfoViewModel : CommandTreeViewModel
 	{
-		public BangContainerCommandInfoViewModel(IEnumerable<BangCommandInfo> bangCommands) : base(null, "bang_commands","bang_commands")
+		public BangContainerCommandInfoViewModel(BangCommandInfo bangCommandInfo) : base(null, "bang_commands","bang_commands")
 		{
-			this.BangCommandInfos = bangCommands.Select(b => new BangCommandInfoViewModel(b));
+			this.BangCommandInfos = bangCommandInfo.BangCommands.Select(b => new BangCommandInfoViewModel(b));
 			this.IsExpanded = true;
 		}
 

@@ -80,11 +80,7 @@ namespace ApiManager
 		{
 			var apiCmdInfo = new ApiCommandInfo();
 
-			var bangCommands = new List<BangCommandInfo>
-					{
-						new BangCommandInfo("!assert","Assert help here"),
-						new BangCommandInfo("!extract","Extracts variable")
-					};
+			var bangCommands = new BangCommandInfo();
 
 
 			//var view = new CreateScenarioLineItemView()

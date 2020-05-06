@@ -195,7 +195,7 @@ class HelpExecutor(ICommand):
         print('!list (to list all variables).')
         print('!convert_json_html (Converts JSON file to HTML file).')
         print('!management apicommands (gets avarialble api commands ).')
-        print('!management commands (gets avarialble commands ).')
+        print('!management bangcommands (gets avarialble commands ).')
         print('!management variables (gets avarialble api variables ).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
@@ -244,9 +244,9 @@ class ManagementCommandExecutor(ICommand):
         if isinstance(executorRequest, ManagementCommandExecutorRequest) == False:
             raise ValueError(
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
-        if executorRequest.request == "commands":
-            publisher.managementInfo(self.property_bag.session_name,
-                                     "commands", getCommandsInfo())
+        if executorRequest.request == "bangcommands":
+            self.publisher.managementInfo(self.property_bag.session_name,
+                                     "bangcommands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
             self.publisher.managementInfo(self.property_bag.session_name,
                                           "apicommands", self.get_api_json(executorRequest.apis))

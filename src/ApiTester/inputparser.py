@@ -202,7 +202,7 @@ class ManagementCommandRequestInputParser(InputParser):
             raise ValueError(
                 f"!management command requires requestName (ex: !management commands)")
         # check supported management commands
-        supportedMgmtCommands = ['commands', 'apicommands', 'variables']
+        supportedMgmtCommands = ['bangcommands', 'apicommands', 'variables']
         mgmtRequest = parts[1]
         if mgmtRequest in supportedMgmtCommands:
             return ManagementCommandExecutorRequest(apis, mgmtRequest)
