@@ -76,26 +76,26 @@ namespace ApiManager.ViewModels
 				EditorWindow editorWindow = new EditorWindow();
 				var apis = apiCommandInfo.ApiCommands;
 				var items = new List<string>();
-				foreach (var kv in apis)
-				{
-					foreach (var sub in kv.Value)
-					{
-						if (sub == "_")
-						{
-							items.Add($"{kv.Key}");
-						}
-						else
-						{
-							items.Add($"{kv.Key}.{sub}");
-						}
-					}
-				}
+				//foreach (var kv in apis)
+				//{
+				//	foreach (var sub in kv.Value)
+				//	{
+				//		if (sub == "_")
+				//		{
+				//			items.Add($"{kv.Key}");
+				//		}
+				//		else
+				//		{
+				//			items.Add($"{kv.Key}.{sub}");
+				//		}
+				//	}
+				//}
 
 				editorWindow.DataContext = new ScenarioEditorViewModel(
 					this.Scenario,
 					new string[] { "accesstoken.password", "apis._" },
 					Array.Empty<BangCommandInfo>(),
-					new ApiCommandInfo());
+					apiCommandInfo);
 
 				//editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
 				editorWindow.ShowDialog();
