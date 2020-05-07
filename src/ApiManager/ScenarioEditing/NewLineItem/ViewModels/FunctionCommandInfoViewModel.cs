@@ -15,6 +15,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		}
 
 		public FunctionCommand FunctionCommand { get; }
+		public string Description => this.FunctionCommand.Description;
 
 		public override object GetDragData()
 		{

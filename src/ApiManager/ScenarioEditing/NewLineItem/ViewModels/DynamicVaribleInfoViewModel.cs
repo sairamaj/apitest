@@ -15,6 +15,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		}
 
 		public DynamicVariable Variable { get; }
+		public string Description => this.Variable.Description;
 
 		public override object GetDragData()
 		{

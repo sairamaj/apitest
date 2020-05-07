@@ -21,6 +21,8 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 			this.IsExpanded = true;
 		}
 
+		public string Description => this.Command.Description;
+
 		protected override void LoadChildren()
 		{
 		}

@@ -15,6 +15,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		}
 
 		public ApiCommand ApiCommand { get; }
+		public string Description => this.ApiCommand.Description;
 		protected override void LoadChildren()
 		{
 			if (this.ApiCommand.Routes == null)

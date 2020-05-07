@@ -66,7 +66,7 @@
 			</HierarchicalDataTemplate>
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiCommandViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal" Style="{StaticResource ApiWordStyle}">
-					<views:CommandView DataContext="{Binding ApiCommand}"/>
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 			
@@ -90,25 +90,25 @@
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal" Style="{StaticResource BangCommandStyle}">
-					<views:CommandView DataContext="{Binding BangCommand}"/>
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal" Style="{StaticResource FunctionItemStyle}">
-					<views:CommandView DataContext="{Binding FunctionCommand}"/>
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:DynamicVaribleInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal" Style="{StaticResource DynamicVariableStyle}">
-					<views:CommandView DataContext="{Binding Variable}"/>
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRouteInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal" Style="{StaticResource ApiWordStyle}">
-					<views:CommandView DataContext="{Binding Route}"/>
+					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 

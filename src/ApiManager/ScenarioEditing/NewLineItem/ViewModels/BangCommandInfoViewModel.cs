@@ -15,6 +15,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		}
 
 		public BangCommand BangCommand { get; }
+		public string Description => this.BangCommand.Description;
 
 		public override object GetDragData()
 		{
