@@ -56,7 +56,7 @@
 					</StackPanel>
 				</HierarchicalDataTemplate>
 
-				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoViewModel}"  ItemsSource="{Binding Children}">
+				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRouteInfoViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
 						<local:CommandView DataContext="{Binding}"/>
 					</StackPanel>

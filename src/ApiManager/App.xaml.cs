@@ -32,7 +32,7 @@ namespace ApiManager
 
 			try
 			{
-				// TestSmartEditor();
+				TestSmartEditor();
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
@@ -79,28 +79,79 @@ namespace ApiManager
 		private void TestSmartEditor()
 		{
 			var apiCmdInfo = new ApiCommandInfo();
+			apiCmdInfo.ApiCommands = new List<ApiCommand>
+			{
+				new ApiCommand{
+					Name = "api",
+					Description = "api description here",
+					Routes = new List<ApiRoute>{
+						new ApiRoute{
+							Name = "_",
+							Path = "/",
+							Description = "api root"
+						},
+						new ApiRoute{
+							Name = "foo",
+							Path = "/bar",
+							Description = "api foo help"
+						}
+					}
+				}
+			};
+			var bangCommands = new BangCommandInfo
+			{
+				BangCommands = new List<BangCommand>
+				{
+					new BangCommand {
+						Name = "!extract",
+						Description = "extract help here"
+					},
+					new BangCommand {
+						Name = "!assert",
+						Description = "assert help here"
+					}
+				}
+			};
+			var funcCommandInfo = new FunctionCommandInfo
+			{
+				Functions = new List<FunctionCommand>
+				{
+					new FunctionCommand{
+						Name = "func1",
+						Description = "func1 help here"
+					},
+					new FunctionCommand{
+						Name = "func2",
+						Description = "func2 help here"
+					},
+				}
+			};
 
-			var bangCommands = new BangCommandInfo();
+			var dynamicVariablesInfo = new DynamicVariableInfo()
+			{
+				DynamicVariables = new List<DynamicVariable>
+				{
+					new DynamicVariable{
+						Name = "random",
+						Description = "random help here"
+					},
+					new DynamicVariable{
+						Name = "today_date",
+						Description = "today_date help here"
+					},
+					new DynamicVariable{
+						Name = "guid",
+						Description = "guid help here"
+					}
+				}
+			};
 
-
-			//var view = new CreateScenarioLineItemView()
-			//{
-			//	DataContext = new ApiManager.ScenarioEditing.NewLineItem.ViewModels.MainViewModel(
-			//		new List<BangCommandInfo>
-			//		{
-			//			new BangCommandInfo("!assert","Assert help here"),
-			//			new BangCommandInfo("!extract","Extracts variable")
-			//		},
-			//		apiCmdInfo
-			//		)
-			//};
-			//view.ShowDialog();
 			EditorWindow editorWindow = new EditorWindow();
 			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
 			editorWindow.DataContext = new ScenarioEditorViewModel(
-				scenario, 
+				scenario,
 				bangCommands,
-				apiCmdInfo, null, null);
+				apiCmdInfo, funcCommandInfo, dynamicVariablesInfo);
 			editorWindow.ShowDialog();
 			System.Environment.Exit(-1);
 		}

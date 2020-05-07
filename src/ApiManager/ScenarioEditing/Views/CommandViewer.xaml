@@ -10,6 +10,31 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
 	<UserControl.Resources>
+		<Style x:Key="ApiWordStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Blue" />
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
+			<Setter Property="Control.Margin" Value="5,0,0,0" />
+			<!--<Setter Property="Control.Width" Value="150" />-->
+		</Style>
+
+		<Style x:Key="BangCommandStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Magenta" />
+		</Style>
+
+		<Style x:Key="FunctionItemStyle">
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Brown" />
+		</Style>
+
+		<Style x:Key="DynamicVariableStyle">
+			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Orange" />
+		</Style>
+
 		<DataTemplate x:Key="ListTemplate" >
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="{Binding Name}" Margin="2"/>
@@ -35,55 +60,55 @@
 		<TreeView.Resources>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoContainerViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal" Style="{StaticResource ApiWordStyle}">
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
-			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRootCommandViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="{Binding Name}" />
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiCommandViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal" Style="{StaticResource ApiWordStyle}">
+					<views:CommandView DataContext="{Binding ApiCommand}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 			
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangContainerCommandInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal" Style="{StaticResource BangCommandStyle}">
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionContainerCommandInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal" Style="{StaticResource FunctionItemStyle}">
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:DynamicVariableContainerInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
+				<StackPanel Orientation="Horizontal"  Style="{StaticResource DynamicVariableStyle}">
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangCommandInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
-					<views:CommandView DataContext="{Binding}"/>
+				<StackPanel Orientation="Horizontal" Style="{StaticResource BangCommandStyle}">
+					<views:CommandView DataContext="{Binding BangCommand}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionCommandInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
-					<views:CommandView DataContext="{Binding}"/>
+				<StackPanel Orientation="Horizontal" Style="{StaticResource FunctionItemStyle}">
+					<views:CommandView DataContext="{Binding FunctionCommand}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:DynamicVaribleInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
-					<views:CommandView DataContext="{Binding}"/>
+				<StackPanel Orientation="Horizontal" Style="{StaticResource DynamicVariableStyle}">
+					<views:CommandView DataContext="{Binding Variable}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
-			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiInfoViewModel}"  ItemsSource="{Binding Children}">
-				<StackPanel Orientation="Horizontal">
-					<views:CommandView DataContext="{Binding}"/>
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRouteInfoViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal" Style="{StaticResource ApiWordStyle}">
+					<views:CommandView DataContext="{Binding Route}"/>
 				</StackPanel>
 			</HierarchicalDataTemplate>
 

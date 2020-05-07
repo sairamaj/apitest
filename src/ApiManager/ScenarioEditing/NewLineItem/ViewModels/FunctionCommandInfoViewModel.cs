@@ -10,11 +10,11 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public FunctionCommandInfoViewModel(FunctionCommand command) :base(null, command.Name, command.Name)
 		{
-			Command = command;
+			this.FunctionCommand = command;
 			this.IsExpanded = true;
 		}
 
-		public FunctionCommand Command { get; }
+		public FunctionCommand FunctionCommand { get; }
 
 		public override object GetDragData()
 		{

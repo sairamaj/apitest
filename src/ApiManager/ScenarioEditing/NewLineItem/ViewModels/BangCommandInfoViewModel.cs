@@ -10,11 +10,11 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public BangCommandInfoViewModel(BangCommand command) :base(null, command.Name, command.Name)
 		{
-			Command = command;
+			this.BangCommand = command;
 			this.IsExpanded = true;
 		}
 
-		public BangCommand Command { get; }
+		public BangCommand BangCommand { get; }
 
 		public override object GetDragData()
 		{
