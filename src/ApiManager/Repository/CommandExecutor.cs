@@ -176,6 +176,26 @@ namespace ApiManager.Repository
 			return ret.ToString(CultureInfo.InvariantCulture);
 		}
 
+		public async Task<string> GetDynamicVariables()
+		{
+			return await RunCommand("!management dynamicvariables").ConfigureAwait(false);
+		}
+
+		private async Task<string> RunCommand(string command)
+		{
+			ValidateSettings(this._settings);
+			var args = new CommandFormatter(this._settings).GetCommandArguments(new CommandInfo
+			{
+				ConfigFileName = FileHelper.WriteToTempFile("[]", ".json"),
+				SessionName = "apimanger",
+				Commands = new string[] { command }
+			});
+
+			var ret = await StartProcess(this._settings.ConsoleExecutableName, args).ConfigureAwait(false);
+
+			return ret.ToString(CultureInfo.InvariantCulture);
+		}
+
 
 		private void ValidatePythonVersion()
 		{

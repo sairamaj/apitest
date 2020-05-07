@@ -23,6 +23,13 @@
 		"baseurl": "https://api.enterprise.apigee.com/v1/organizations/{{org_name}}",
 		"_": {
 			"path": "/developers"
+		},
+		"foo": {
+			"path": "/developers"
+		},
+		"bar": {
+			"path": "/developers"
 		}
+
 	}
 }

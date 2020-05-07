@@ -21,7 +21,8 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			Scenario scenario, 
 			BangCommandInfo bangCommandInfo,
 			ApiCommandInfo apiCommandInfo,
-			FunctionCommandInfo functionCommandInfo)
+			FunctionCommandInfo functionCommandInfo,
+			DynamicVariableInfo dynamicVariableInfo)
 		{
 			var lines = File.ReadAllLines(scenario.FileName);
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
@@ -48,7 +49,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				else
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
-						new ApiScenarioItem(line.Split().First(), new string[] { "dummy" }), OnEditAction));
+						new ApiScenarioItem(line.Split().First()), OnEditAction));
 				}
 			}
 

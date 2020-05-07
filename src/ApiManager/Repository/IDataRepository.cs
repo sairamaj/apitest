@@ -12,6 +12,8 @@ namespace ApiManager.Repository
 		Task<IEnumerable<string>> GetVariables(ApiInfo info);
 		Task<BangCommandInfo> GetBangCommands();
 		Task<FunctionCommandInfo> GetFunctionCommandInfo();
+		Task<DynamicVariableInfo> GetDynamicVariableInfo();
+
 		void AddManagementInfo(Info info);
 		IEnumerable<Scenario> GetScenarios(ApiInfo apiInfo);
 	}

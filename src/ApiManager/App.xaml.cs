@@ -100,7 +100,7 @@ namespace ApiManager
 			editorWindow.DataContext = new ScenarioEditorViewModel(
 				scenario, 
 				bangCommands,
-				apiCmdInfo, null);
+				apiCmdInfo, null, null);
 			editorWindow.ShowDialog();
 			System.Environment.Exit(-1);
 		}

@@ -18,6 +18,7 @@ from transform import getVariables
 from utils import readAllText
 from commandinfo import getCommandsInfo
 from function_info import getFunctionsInfo
+from dynamic_variable import getDynamicVariablesInfo
 from js_executor import JsExecutor
 from jpath_extractor import JPathExtractor
 from http_request import HttpRequest
@@ -197,7 +198,8 @@ class HelpExecutor(ICommand):
         print('!convert_json_html (Converts JSON file to HTML file).')
         print('!management apicommands (gets avarialble api commands ).')
         print('!management bangcommands (gets avarialble commands ).')
-        print('!management variables (gets avarialble api variables ).')
+        print('!management functions (gets avarialble functions ).')
+        print('!management dynamicvariables (gets avarialble api variables ).')
         print('!waitforuserinput <optionalprompt>  (useful in batch jobs to wait before proceeding).')
         print('-----------------------')
 
@@ -254,12 +256,9 @@ class ManagementCommandExecutor(ICommand):
         elif executorRequest.request == "functions":
             self.publisher.managementInfo(self.property_bag.session_name,
                                           "functions", getFunctionsInfo())
-        elif executorRequest.request == "variables":
-            variables = getVariables(readAllText(
-                self.property_bag.config_filename))
+        elif executorRequest.request == "dynamicvariables":
             self.publisher.managementInfo(self.property_bag.session_name,
-                                          "variables", variables)
-            print(variables)
+                                          "dynamicvariables", getDynamicVariablesInfo())
         else:
             raise ValueError(
                 f"invalid {executorRequest.request} management command (avaiable are commands and variables")

@@ -37,6 +37,7 @@ namespace ApiManager.ViewModels
 				Process.Start(this.Scenario.ContainerPath);
 			});
 
+
 			this.DeleteCommand = new DelegateCommand(
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
 			this.SmartEditorCommand = new DelegateCommand(
@@ -67,7 +68,7 @@ namespace ApiManager.ViewModels
 			this._onEvent(ScenarioAction.Delete, this.Scenario);
 		}
 
-		private async Task ShowSmartEditor()
+		protected async Task ShowSmartEditor()
 		{
 			try
 			{
@@ -75,6 +76,7 @@ namespace ApiManager.ViewModels
 				var apiCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetCommands(this.ApiInfo).ConfigureAwait(true);
 				var bangCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetBangCommands().ConfigureAwait(true);
 				var functionCommandInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetFunctionCommandInfo().ConfigureAwait(true);
+				var dynamicVariablesInfo = await ServiceLocator.Locator.Resolve<IDataRepository>().GetDynamicVariableInfo().ConfigureAwait(true);
 				EditorWindow editorWindow = new EditorWindow();
 				var apis = apiCommandInfo.ApiCommands;
 
@@ -82,7 +84,8 @@ namespace ApiManager.ViewModels
 					this.Scenario,
 					bangCommandInfo,
 					apiCommandInfo,
-					functionCommandInfo);
+					functionCommandInfo,
+					dynamicVariablesInfo);
 
 				//editorWindow.DataContext = new ScenarioEditorViewModel(this.Scenario, items);
 				editorWindow.ShowDialog();

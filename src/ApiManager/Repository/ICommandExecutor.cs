@@ -13,6 +13,7 @@ namespace ApiManager.Repository
 		Task<string> GetApiVariables(ApiInfo info);
 		Task<string> GetBangCommands();
 		Task<string> GetFunctionCommands();
+		Task<string> GetDynamicVariables();
 		Task<string> ConvertJsonToHtml(string jsonFile, string outHtmlFile);
 		Task<string> SubmitHttpRequest(string requestFile, string id);
 	}

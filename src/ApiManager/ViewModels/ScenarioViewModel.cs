@@ -36,9 +36,10 @@ namespace ApiManager.ViewModels
 			this.Name = scenario.Name;
 			this.EditCommandFileCommand = new DelegateCommand(() =>
 			{
-				UiHelper.SafeAction(() =>
+				UiHelper.SafeAction(async () =>
 				{
-					Process.Start(this.Scenario.FileName);
+					// Process.Start(this.Scenario.FileName);
+					await ShowSmartEditor().ConfigureAwait(false);
 				}, this.Scenario.Name);
 			});
 

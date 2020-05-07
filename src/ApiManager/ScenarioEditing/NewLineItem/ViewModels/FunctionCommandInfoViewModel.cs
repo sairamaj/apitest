@@ -19,8 +19,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		public override object GetDragData()
 		{
 			var format = DataFormats.GetDataFormat("DragDropItemsControl");
+			var functionName = $"__{this.Name}__";
 			var dragViewModel = new ScenarioLineItemViewModel(
-									new CommandScenarioItem(this.Name), (a, e) => { });
+									new FunctionScenarioItem(functionName), (a, e) => { });
 			return new DataObject(format.Name, dragViewModel);
 		}
 	}

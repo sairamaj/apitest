@@ -6,13 +6,9 @@ namespace ApiManager.ScenarioEditing.Models
 	class ApiScenarioItem : ScenarioLineItem
 	{
 		private string _command;
-		public ApiScenarioItem(
-			string command, 
-			IEnumerable<string> apis) 
-			: base("api", command)
+		public ApiScenarioItem(string command) : base("api", command)
 		{
 			this.Command = command;
-			Apis = apis;
 		}
 
 		public string Command

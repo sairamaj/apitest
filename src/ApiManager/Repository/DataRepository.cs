@@ -18,6 +18,7 @@ namespace ApiManager.Repository
 		private IDictionary<string, IEnumerable<string>> _apiVariables = new Dictionary<string, IEnumerable<string>>();
 		private BangCommandInfo _bangCommands;
 		private FunctionCommandInfo _functionCommandInfo;
+		private DynamicVariableInfo _dynamicVariableInfo;
 
 		public DataRepository(ICommandExecutor executor, ISettings settings)
 		{
@@ -144,6 +145,37 @@ namespace ApiManager.Repository
 			}
 
 			return new FunctionCommandInfo();
+		}
+
+		public async Task<DynamicVariableInfo> GetDynamicVariableInfo()
+		{
+			if (_dynamicVariableInfo != null)
+			{
+				return this._dynamicVariableInfo;
+			}
+
+			using (var communicator = new ApiTestConsoleCommunicator(new MessageListener()))
+			{
+				communicator.Add("management", "dynamicvariables", data =>
+				{
+					try
+					{
+						_dynamicVariableInfo = JsonConvert.DeserializeObject<DynamicVariableInfo>(data);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+					}
+				});
+				await this._executor.GetDynamicVariables().ConfigureAwait(false);
+			}
+
+			if (_dynamicVariableInfo != null)
+			{
+				return this._dynamicVariableInfo;
+			}
+
+			return new DynamicVariableInfo();
 		}
 
 		public void AddManagementInfo(Info info)
