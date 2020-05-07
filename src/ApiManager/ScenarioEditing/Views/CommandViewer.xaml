@@ -39,7 +39,12 @@
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
-
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRootCommandViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}" />
+				</StackPanel>
+			</HierarchicalDataTemplate>
+			
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangContainerCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="{Binding Name}" />
@@ -52,6 +57,12 @@
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:DynamicVariableContainerInfoViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}" />
+				</StackPanel>
+			</HierarchicalDataTemplate>
+
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:BangCommandInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal">
 					<views:CommandView DataContext="{Binding}"/>
@@ -59,6 +70,12 @@
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:FunctionCommandInfoViewModel}"  ItemsSource="{Binding Children}">
+				<StackPanel Orientation="Horizontal">
+					<views:CommandView DataContext="{Binding}"/>
+				</StackPanel>
+			</HierarchicalDataTemplate>
+
+			<HierarchicalDataTemplate DataType="{x:Type viewModel:DynamicVaribleInfoViewModel}"  ItemsSource="{Binding Children}">
 				<StackPanel Orientation="Horizontal">
 					<views:CommandView DataContext="{Binding}"/>
 				</StackPanel>

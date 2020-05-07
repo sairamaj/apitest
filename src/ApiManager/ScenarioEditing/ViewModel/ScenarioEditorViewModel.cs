@@ -63,7 +63,8 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				new ApiInfoContainerViewModel(apiCommandInfo),
 				new BangContainerCommandInfoViewModel(bangCommandInfo),
-				new FunctionContainerCommandInfoViewModel(functionCommandInfo)
+				new FunctionContainerCommandInfoViewModel(functionCommandInfo),
+				new DynamicVariableContainerInfoViewModel(dynamicVariableInfo),
 			};
 
 		}

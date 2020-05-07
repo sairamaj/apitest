@@ -140,7 +140,10 @@
     <Compile Include="ScenarioEditing\Models\ApiScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioEditingAction.cs" />
     <Compile Include="ScenarioEditing\Models\ScenarioLineItem.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiRootCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DynamicVariableContainerInfoViewModel.cs" />
+    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\DynamicVaribleInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionContainerCommandInfoViewModel.cs" />

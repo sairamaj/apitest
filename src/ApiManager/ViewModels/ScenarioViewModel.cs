@@ -38,8 +38,8 @@ namespace ApiManager.ViewModels
 			{
 				UiHelper.SafeAction(async () =>
 				{
-					// Process.Start(this.Scenario.FileName);
-					await ShowSmartEditor().ConfigureAwait(false);
+					Process.Start(this.Scenario.FileName);
+					// await ShowSmartEditor().ConfigureAwait(false);
 				}, this.Scenario.Name);
 			});
 
