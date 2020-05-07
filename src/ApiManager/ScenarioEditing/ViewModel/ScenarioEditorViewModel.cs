@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.ScenarioEditing.CommandEditing;
+using ApiManager.ScenarioEditing.CommandEditing.ViewModel;
+using ApiManager.ScenarioEditing.CommandEditing.Views;
 using ApiManager.ScenarioEditing.Models;
 using ApiManager.ScenarioEditing.NewLineItem.ViewModels;
 using ApiManager.ScenarioEditing.ViewModel;
@@ -15,7 +19,7 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.ScenarioEditing.ViewModels
 {
-	class ScenarioEditorViewModel
+	class ScenarioEditorViewModel : CoreViewModel
 	{
 		public ScenarioEditorViewModel(
 			Scenario scenario, 
@@ -67,6 +71,13 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				new DynamicVariableContainerInfoViewModel(dynamicVariableInfo),
 			};
 
+			this.ScenarioLineItems.CollectionChanged += (s, e) =>
+			{
+				if (e.Action == NotifyCollectionChangedAction.Add)
+				{
+					EditCommand(e.NewItems[0] as ScenarioLineItemViewModel);
+				}
+			};
 		}
 
 		public IEnumerable<CommandTreeViewModel> RootCommands { get; }
@@ -104,7 +115,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 					break;
 				case ScenarioEditingAction.MoveDown:
 					var index1 = this.ScenarioLineItems.IndexOf(item);
-					if (index1 >= this.ScenarioLineItems.Count()-1)
+					if (index1 >= this.ScenarioLineItems.Count - 1)
 					{
 						return; // already bootom
 					}
@@ -112,6 +123,24 @@ namespace ApiManager.ScenarioEditing.ViewModels
 					this.ScenarioLineItems.Insert(index1 + 1, item);
 					break;
 			}
+		}
+
+		private void EditCommand(ScenarioLineItemViewModel lineItemViewModel)
+		{
+			if (lineItemViewModel.LineItem is ApiScenarioItem apiScenarioItem)
+			{
+				var win = new EditApiCommandWindow();
+				var viewModel = new EditApiCommandViewModel(win, apiScenarioItem);
+				win.DataContext = viewModel;
+				win.ShowDialog();
+				return;
+			}
+
+			if (lineItemViewModel.LineItem is CommandScenarioItem bangCommandScenarioItem)
+			{
+				new EditBangCommandWindow().ShowDialog();
+			}
+
 		}
 	}
 }

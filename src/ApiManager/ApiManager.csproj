@@ -130,6 +130,13 @@
     <Compile Include="Resources\Views\ResourceDataView.xaml.cs">
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml.cs">
+      <DependentUpon>EditApiCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml.cs">
+      <DependentUpon>EditBangCommandWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
@@ -200,6 +207,7 @@
       <DependentUpon>VariableGroupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ApiConfigurationViewerViewModel.cs" />
+    <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\PrintInfoViewModel.cs" />
     <Compile Include="ViewModels\JsExecuteViewModel.cs" />
     <Compile Include="ViewModels\ApiExecuteInfoViewModel.cs" />
@@ -289,6 +297,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Views\ResourceDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
