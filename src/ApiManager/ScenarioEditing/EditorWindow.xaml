@@ -88,6 +88,16 @@
 			<!--<Setter Property="Control.Width" Value="150" />-->
 		</Style>
 
+		<Style x:Key="ApiMethodWordStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="OrangeRed" />
+		</Style>
+
+		<Style x:Key="ApiPayloadWordStyle">
+			<Setter Property="Control.FontStyle" Value="Italic" />
+			<Setter Property="Control.Foreground" Value="Magenta" />
+		</Style>
+
 		<Style x:Key="EditingModeStyle">
 			<Setter Property="Control.Visibility" Value="Hidden"/>
 			<Style.Triggers>
@@ -107,15 +117,23 @@
 		</Style>
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
-
-				<Grid>
 					<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
-						Text="{Binding LineItem.Command}" Margin="10,0,0,0">
-						<!--<TextBlock.InputBindings>
+						Text="{Binding LineItem.Command}" Margin="10,0,0,0" />
+
+					<TextBlock 
+						Text="{Binding LineItem.Method}" Margin="10,0,0,0" 
+						Style= "{StaticResource ApiMethodWordStyle}"
+						/>
+
+					<TextBlock 
+						Text="{Binding LineItem.PayloadFileName}" Margin="10,0,0,0" 
+						Style= "{StaticResource ApiPayloadWordStyle}"
+						/>
+					<!--<TextBlock.InputBindings>
 							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
 						</TextBlock.InputBindings>-->
-					</TextBlock>
+
 
 					<!--<ComboBox 
 						  ItemsSource="{Binding LineItem.Apis}" 
@@ -124,10 +142,6 @@
 						  SelectedItem="{Binding LineItem.Command}"
 						  view:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="{Binding LineItem.DoneWithEditingCommand}"
 						  />-->
-				</Grid>
-
-				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}" />
-				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}" />
 			</StackPanel>
 		</DataTemplate>
 

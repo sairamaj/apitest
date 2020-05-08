@@ -33,6 +33,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 			var format = DataFormats.GetDataFormat("DragDropItemsControl");
 			var dragViewModel = new ScenarioLineItemViewModel(
 									new ApiScenarioItem(finalCommand), (a, e) => { });
+			dragViewModel.IsDraggedAsNewItem = true;
 			return new DataObject(format.Name, dragViewModel);
 		}
 	}

@@ -6,6 +6,8 @@ using System.Windows;
 using ApiManager.Model;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
+using ApiManager.ScenarioEditing.CommandEditing.ViewModel;
+using ApiManager.ScenarioEditing.CommandEditing.Views;
 using ApiManager.ScenarioEditing.NewLineItem.Views;
 using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.ViewModels;
@@ -78,6 +80,14 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
+			var win = new EditApiCommandWindow();
+			var vm = new EditApiCommandViewModel(win, new ScenarioEditing.Models.ApiScenarioItem("api.foo post foo.txt"));
+			win.DataContext = vm;
+			win.ShowDialog();
+			return;
+
+
+
 			var apiCmdInfo = new ApiCommandInfo();
 			apiCmdInfo.ApiCommands = new List<ApiCommand>
 			{

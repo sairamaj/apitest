@@ -53,7 +53,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				else
 				{
 					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
-						new ApiScenarioItem(line.Split().First()), OnEditAction));
+						new ApiScenarioItem(line), OnEditAction));
 				}
 			}
 
@@ -75,7 +75,14 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				if (e.Action == NotifyCollectionChangedAction.Add)
 				{
-					EditCommand(e.NewItems[0] as ScenarioLineItemViewModel);
+					if (e.NewItems[0] is ScenarioLineItemViewModel scenarioLineItemViewModel)
+					{
+						// Edit only if it is coming from dragging from the command palette.
+						if (scenarioLineItemViewModel.IsDraggedAsNewItem)
+						{
+							EditCommand(scenarioLineItemViewModel);
+						}
+					}
 				}
 			};
 		}

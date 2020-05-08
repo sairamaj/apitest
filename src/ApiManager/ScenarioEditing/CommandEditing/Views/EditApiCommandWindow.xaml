@@ -6,25 +6,62 @@
         xmlns:local="clr-namespace:ApiManager.ScenarioEditing.CommandEditing"
 		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Api Edit" Height="250" Width="400">
+        Title="Api Edit" Height="200" Width="400">
 
+	<Window.Resources>
+		<Style x:Key="PayLoadInputStyle">
+			<Setter Property="Control.Visibility" Value="Visible" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding SelectedMethod}" Value="Get">
+					<Setter Property="Control.Visibility" Value="Hidden" />
+				</DataTrigger>
+				<DataTrigger Binding="{Binding SelectedMethod}" Value="Delete">
+					<Setter Property="Control.Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+
+		</Style>
+	</Window.Resources>
 	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="40"/>
-			<RowDefinition Height="40"/>
+			<RowDefinition Height="27"/>
+			<RowDefinition Height="27"/>
+			<RowDefinition Height="27"/>
+			<RowDefinition Height="27"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="120"/>
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
-		<TextBlock Text="Container Name:" HorizontalAlignment="Right" 
+		<TextBlock Text="Api:" HorizontalAlignment="Right" 
 				   VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="25"
-				   FontWeight="Bold"/>
-		<TextBox Text="{Binding Name}" HorizontalAlignment="Left" Controls:TextBoxHelper.Watermark="Scenario container name"  
-				 VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" 
-				 Width="200" Height="25" Margin="3,0,0,0"/>
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" >
+				   />
+		<TextBlock Text="{Binding ApiItem.Command}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" 
+				 Width="200" Height="25" Margin="3,0,0,0" FontWeight="Bold" Foreground="Blue"/>
+		
+		<TextBlock Text="Method:" HorizontalAlignment="Right" 
+				   VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Height="25"
+				   />
+		<ComboBox Grid.Row="1" Grid.Column="1" 
+				  ItemsSource="{Binding Methods}" 
+				  SelectedItem="{Binding SelectedMethod}"
+				  Height="20" Margin="3,0,0,0"/>
+		
+		<TextBlock Text="Payload:" HorizontalAlignment="Right" 
+				   VerticalAlignment="Center" 
+				   Style="{StaticResource PayLoadInputStyle}"
+				   Grid.Row="2" 
+				   Grid.Column="0" 
+				   Height="25"
+				   />
+		<ComboBox Grid.Row="2" Grid.Column="1" 
+				  ItemsSource="{Binding PayLoadFiles}" 
+				  SelectedItem="{Binding SelectedPayLoad}"
+				  Style="{StaticResource PayLoadInputStyle}"
+				  Height="20" Margin="3,0,0,0"/>
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" >
 			<Button Content="Ok" Width="80" Height="25" 
 					VerticalContentAlignment="Center" 
 					Command="{Binding OkCommand}" 
