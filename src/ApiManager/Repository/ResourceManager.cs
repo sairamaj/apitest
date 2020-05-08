@@ -120,9 +120,20 @@ namespace ApiManager.Repository
 		public string SaveApiRequestPayload(string content, string name, string method)
 		{
 			var fileName = Path.Combine(this._settings.ResourcesPath, method, name);
+			var directory = Path.GetDirectoryName(fileName);
+			if (!Directory.Exists(directory))
+			{
+				Directory.CreateDirectory(directory);
+			}
+
 			fileName = Path.ChangeExtension(fileName, "json");
 			File.WriteAllText(fileName, content);
 			return fileName;
+		}
+
+		public string GetResourcePath(string method)
+		{
+			return Path.Combine(this._settings.ResourcesPath, method);
 		}
 	}
 }

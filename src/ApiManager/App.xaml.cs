@@ -80,14 +80,16 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
-			var win1 = new NewApiResourceWindow();
-			var vm1 = new NewApiResourceViewModel(win1,"Post", ServiceLocator.Locator.Resolve<IResourceManager>());
-			win1.DataContext = vm1;
-			if (win1.ShowDialog().Value)
-			{
-				MessageBox.Show(vm1.Name);
-			}
-			System.Environment.Exit(-1);
+			return;
+			//var win1 = new NewApiResourceWindow();
+			//var vm1 = new NewApiResourceViewModel(win1,"Post", ServiceLocator.Locator.Resolve<IResourceManager>());
+			//win1.DataContext = vm1;
+			//if (win1.ShowDialog().Value)
+			//{
+			//	MessageBox.Show(vm1.Name);
+			//}
+			//System.Environment.Exit(-1);
+
 			var win = new EditApiCommandWindow();
 			var vm = new EditApiCommandViewModel(
 				win,
@@ -96,9 +98,9 @@ namespace ApiManager
 				);
 			win.DataContext = vm;
 			win.ShowDialog();
-			MessageBox.Show(vm.Command);
+			//MessageBox.Show(vm.Command);
 			System.Environment.Exit(-1);
-			//return;
+			return;
 
 
 			var apiCmdInfo = new ApiCommandInfo();

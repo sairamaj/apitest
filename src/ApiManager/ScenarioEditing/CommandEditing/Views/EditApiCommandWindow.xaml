@@ -21,18 +21,30 @@
 			</Style.Triggers>
 
 		</Style>
+
+		<Style x:Key="EditPayLoadStyle">
+			<Setter Property="Control.Visibility" Value="Visible" />
+			<Setter Property="Control.Width" Value="35" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding SelectedPayLoad}" Value="{x:Null}">
+					<Setter Property="Control.Visibility" Value="Hidden" />
+					<Setter Property="Control.Width" Value="0" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
 	</Window.Resources>
 	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="27"/>
 			<RowDefinition Height="27"/>
 			<RowDefinition Height="27"/>
-			<RowDefinition Height="27"/>
+			<RowDefinition Height="35"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="120"/>
 			<ColumnDefinition />
-			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="120"/>
 		</Grid.ColumnDefinitions>
 
 		<TextBlock Text="Api:" HorizontalAlignment="Right" 
@@ -40,7 +52,7 @@
 				   />
 		<TextBlock Text="{Binding ApiItem.Command}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" 
 				 Width="200" Height="25" Margin="3,0,0,0" FontWeight="Bold" Foreground="Blue"/>
-		
+
 		<TextBlock Text="Method:" HorizontalAlignment="Right" 
 				   VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Height="25"
 				   />
@@ -48,7 +60,7 @@
 				  ItemsSource="{Binding Methods}" 
 				  SelectedItem="{Binding SelectedMethod}"
 				  Height="20" Margin="3,0,0,0"/>
-		
+
 		<TextBlock Text="Payload:" HorizontalAlignment="Right" 
 				   VerticalAlignment="Center" 
 				   Style="{StaticResource PayLoadInputStyle}"
@@ -59,16 +71,23 @@
 		<ComboBox Grid.Row="2" Grid.Column="1" 
 				  ItemsSource="{Binding PayLoadFiles}" 
 				  SelectedItem="{Binding SelectedPayLoad}"
-				  DisplayMemberPath="Name"
 				  Style="{StaticResource PayLoadInputStyle}"
-				  Height="20" Margin="3,0,0,0"/>
-		<Button Grid.Row="2" Grid.Column="2" 
-				Content="New" 
-				Command="{Binding NewResourceCommand}" 
-				Style="{StaticResource PayLoadInputStyle}" 
-				Height="20"
+				  Height="25" Margin="3,0,0,0"/>
+		<StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Style="{StaticResource PayLoadInputStyle}">
+			<Button 
+				Content="Edit" 
+				Command="{Binding EditResourceCommand}" 
+				Style="{StaticResource EditPayLoadStyle}"
+				Height="25"
 				Margin="2,0,0,0"
 				/>
+			<Button 
+				Content="New" 
+				Command="{Binding NewResourceCommand}" 
+				Height="25"
+				Margin="2,0,0,0"
+				/>
+		</StackPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1" >
 			<Button Content="Ok" Width="80" Height="25" 
 					VerticalContentAlignment="Center" 

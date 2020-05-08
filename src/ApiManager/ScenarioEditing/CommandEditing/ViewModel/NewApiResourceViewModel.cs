@@ -10,7 +10,7 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 {
 	class NewApiResourceViewModel : CoreViewModel
 	{
-		public NewApiResourceViewModel(Window win, string method, IResourceManager resourceManager)
+		public NewApiResourceViewModel(Window win, string method, string fileName, IResourceManager resourceManager)
 		{
 			this.Title = $"File for {method}";
 			this.SaveCommand = new DelegateCommand(() =>
@@ -25,7 +25,12 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 				}
 				, "Saving");
 			});
-			this.Content = "{\r\n}";
+
+			if (!string.IsNullOrWhiteSpace(fileName))
+			{
+				this.Name = Path.GetFileNameWithoutExtension(fileName);
+				this.Content = File.ReadAllText(fileName);
+			}
 		}
 
 		public string Title { get; set; }

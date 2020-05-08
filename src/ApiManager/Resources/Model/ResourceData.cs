@@ -1,4 +1,6 @@
-﻿namespace ApiManager.Resources.Model
+﻿using System.IO;
+
+namespace ApiManager.Resources.Model
 {
 	class ResourceData
 	{
@@ -9,6 +11,7 @@
 		}
 
 		public string Name { get; }
+		public string FileWithExtension => Path.GetFileName(this.FileName); 
 		public string FileName { get; }
 	}
 }
