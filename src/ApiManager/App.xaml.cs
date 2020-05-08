@@ -34,7 +34,7 @@ namespace ApiManager
 
 			try
 			{
-				TestSmartEditor();
+				// TestSmartEditor();
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
