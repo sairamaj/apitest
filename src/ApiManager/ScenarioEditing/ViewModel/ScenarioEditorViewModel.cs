@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.Repository;
 using ApiManager.ScenarioEditing.CommandEditing;
 using ApiManager.ScenarioEditing.CommandEditing.ViewModel;
 using ApiManager.ScenarioEditing.CommandEditing.Views;
@@ -137,7 +138,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			if (lineItemViewModel.LineItem is ApiScenarioItem apiScenarioItem)
 			{
 				var win = new EditApiCommandWindow();
-				var viewModel = new EditApiCommandViewModel(win, apiScenarioItem);
+				var viewModel = new EditApiCommandViewModel(win, apiScenarioItem, ServiceLocator.Locator.Resolve<IResourceManager>());
 				win.DataContext = viewModel;
 				win.ShowDialog();
 				return;
@@ -145,7 +146,10 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 			if (lineItemViewModel.LineItem is CommandScenarioItem bangCommandScenarioItem)
 			{
-				new EditBangCommandWindow().ShowDialog();
+				if (new EditBangCommandWindow().ShowDialog().Value)
+				{
+					
+				}
 			}
 
 		}

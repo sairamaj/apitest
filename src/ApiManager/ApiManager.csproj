@@ -137,6 +137,9 @@
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml.cs">
       <DependentUpon>EditBangCommandWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\NewApiResourceWindow.xaml.cs">
+      <DependentUpon>NewApiResourceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
@@ -305,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\NewApiResourceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
