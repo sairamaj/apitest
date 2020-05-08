@@ -116,5 +116,13 @@ namespace ApiManager.Repository
 
 			return new List<ResourceData>();
 		}
+
+		public string SaveApiRequestPayload(string content, string name, string method)
+		{
+			var fileName = Path.Combine(this._settings.ResourcesPath, method, name);
+			fileName = Path.ChangeExtension(fileName, "json");
+			File.WriteAllText(fileName, content);
+			return fileName;
+		}
 	}
 }

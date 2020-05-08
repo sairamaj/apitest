@@ -131,6 +131,7 @@
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\NewApiResourceViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml.cs">
       <DependentUpon>EditApiCommandWindow.xaml</DependentUpon>
     </Compile>

@@ -16,5 +16,6 @@ namespace ApiManager.Repository
 		IEnumerable<ScriptData> GetScriptsData();
 		IEnumerable<ResourceData> GetResources(string method);
 		IEnumerable<VariableGroupData> GetVariableGroupData();
+		string SaveApiRequestPayload(string content, string name, string method);
 	}
 }
