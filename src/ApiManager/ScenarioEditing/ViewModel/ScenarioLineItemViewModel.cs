@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using ApiManager.ScenarioEditing.Models;
 using Wpf.Util.Core.Command;
@@ -29,7 +30,6 @@ namespace ApiManager.ScenarioEditing.ViewModel
 			{
 				this.LineItem.ToggleComment();
 			});
-
 		}
 		public bool IsDraggedAsNewItem { get; set; }
 		public ScenarioLineItem LineItem { get; }
@@ -37,6 +37,5 @@ namespace ApiManager.ScenarioEditing.ViewModel
 		public ICommand CommentCommand { get; }
 		public ICommand MoveUpCommand { get; }
 		public ICommand MoveDownCommand { get; }
-		
 	}
 }

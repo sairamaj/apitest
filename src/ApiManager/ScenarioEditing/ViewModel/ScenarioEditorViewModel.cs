@@ -53,7 +53,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				}
 				else
 				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(
+					this.ScenarioLineItems.Add(new ScenarioApiCommandLineItemViewModel(
 						new ApiScenarioItem(line), OnEditAction));
 				}
 			}

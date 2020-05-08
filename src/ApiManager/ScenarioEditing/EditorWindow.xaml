@@ -11,6 +11,34 @@
         Title="{Binding ScenarioEditTitle}" Height="450" Width="800">
 	<Window.Resources>
 
+		<Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<TextBlock>
+						    <ContentPresenter />
+						</TextBlock>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Foreground" Value="Blue" />
+			<Setter Property="FontSize" Value="13" />
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="Margin" Value="15,0,0,0" />
+			<Setter Property="Cursor" Value="Hand" />
+
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="true">
+					<Setter Property="Foreground" Value="Red" />
+				</Trigger>
+				<DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
+					<Setter Property="Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
 		<DataTemplate x:Key="DragTemplate">
 			<DataTemplate.Resources>
 				<Style TargetType="Image">
@@ -58,7 +86,7 @@
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
 			</Style.Triggers>
-			
+
 		</Style>
 
 		<Style x:Key="CommandStyle" BasedOn="{StaticResource KeyWordStyle}">
@@ -117,25 +145,29 @@
 		</Style>
 		<DataTemplate x:Key="ApiHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
-					<TextBlock 
+				<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
 						Text="{Binding LineItem.ApiName}" Margin="10,0,0,0" />
 
-					<TextBlock 
+				<TextBlock 
 						Text="{Binding LineItem.Method}" Margin="10,0,0,0" 
 						Style= "{StaticResource ApiMethodWordStyle}"
 						/>
 
-					<TextBlock 
-						Text="{Binding LineItem.PayloadFileName}" Margin="10,0,0,0" 
-						Style= "{StaticResource ApiPayloadWordStyle}"
-						/>
-					<!--<TextBlock.InputBindings>
+				<Button Content="{Binding LineItem.PayloadFileName}" 
+							Margin="10,0,0,0"
+							FontStyle="Italic"
+							Foreground="Magenta"
+						    FontWeight="Normal"
+							Style="{StaticResource ApplicationLinkButtonNoUnderLine}" 
+							Command="{Binding EditPayloadFileCommand}"
+							/>
+				<!--<TextBlock.InputBindings>
 							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
 						</TextBlock.InputBindings>-->
 
 
-					<!--<ComboBox 
+				<!--<ComboBox 
 						  ItemsSource="{Binding LineItem.Apis}" 
 						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
 						  Style="{StaticResource EditingModeStyle}"
@@ -222,7 +254,7 @@
 				<ColumnDefinition Width="3"/>
 				<ColumnDefinition Width="275"/>
 			</Grid.ColumnDefinitions>
-		<ListView   Grid.Row="0" Grid.Column="0"
+			<ListView   Grid.Row="0" Grid.Column="0"
 					ItemsSource="{Binding ScenarioLineItems}"
 					BorderThickness="0" 
 					ItemTemplateSelector="{StaticResource ScenarioItemDataHeaderTemplateSelector}" 

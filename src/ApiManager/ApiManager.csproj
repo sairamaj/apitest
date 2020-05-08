@@ -172,6 +172,7 @@
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioFolderEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\NewScenarioEditViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioAction.cs" />
+    <Compile Include="ScenarioEditing\ViewModel\ScenarioApiCommandLineItemViewModel.cs" />
     <Compile Include="ScenarioEditing\ViewModel\ScenarioLineItemViewModel.cs" />
     <Compile Include="ScenarioEditing\Views\CommandViewer.xaml.cs">
       <DependentUpon>CommandViewer.xaml</DependentUpon>

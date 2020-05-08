@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
+using Wpf.Util.Core.Command;
 
 namespace ApiManager.ScenarioEditing.Models
 {
@@ -31,7 +34,6 @@ namespace ApiManager.ScenarioEditing.Models
 		public string ApiName { get; set; }
 		public string Method { get; set; }
 		public string PayloadFileName { get; set; }
-
 		public IEnumerable<string> Apis { get; }
 
 		public override string GetCommand()

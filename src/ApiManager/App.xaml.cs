@@ -90,17 +90,17 @@ namespace ApiManager
 			//}
 			//System.Environment.Exit(-1);
 
-			var win = new EditApiCommandWindow();
-			var vm = new EditApiCommandViewModel(
-				win,
-				new ScenarioEditing.Models.ApiScenarioItem("api.foo post foo.txt"),
-				ServiceLocator.Locator.Resolve<IResourceManager>()
-				);
-			win.DataContext = vm;
-			win.ShowDialog();
-			//MessageBox.Show(vm.Command);
-			System.Environment.Exit(-1);
-			return;
+			//var win = new EditApiCommandWindow();
+			//var vm = new EditApiCommandViewModel(
+			//	win,
+			//	new ScenarioEditing.Models.ApiScenarioItem("api.foo post foo.txt"),
+			//	ServiceLocator.Locator.Resolve<IResourceManager>()
+			//	);
+			//win.DataContext = vm;
+			//win.ShowDialog();
+			////MessageBox.Show(vm.Command);
+			//System.Environment.Exit(-1);
+			//return;
 
 
 			var apiCmdInfo = new ApiCommandInfo();
