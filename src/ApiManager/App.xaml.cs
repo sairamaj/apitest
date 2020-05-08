@@ -34,12 +34,16 @@ namespace ApiManager
 
 			try
 			{
+<<<<<<< HEAD
 				// TestSmartEditor();
+=======
+>>>>>>> feature/edit1
 				var builder = new ContainerBuilder();
 				builder.RegisterModule(new RegistrationModule());
 
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 				ServiceLocator.Initialize(serviceLocator);      // todo: need to revisit this (added to avoid passing locator to all ctors)
+				TestSmartEditor();
 
 				var win = new MainWindow
 				{
@@ -80,12 +84,18 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
+			return;
 			var win = new EditApiCommandWindow();
-			var vm = new EditApiCommandViewModel(win, new ScenarioEditing.Models.ApiScenarioItem("api.foo post foo.txt"));
+			var vm = new EditApiCommandViewModel(
+				win,
+				new ScenarioEditing.Models.ApiScenarioItem("api.foo post foo.txt"),
+				ServiceLocator.Locator.Resolve<IResourceManager>()
+				);
 			win.DataContext = vm;
 			win.ShowDialog();
-			return;
-
+			MessageBox.Show(vm.Command);
+			System.Environment.Exit(-1);
+			//return;
 
 
 			var apiCmdInfo = new ApiCommandInfo();

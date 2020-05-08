@@ -119,7 +119,7 @@
 			<StackPanel Orientation="Horizontal">
 					<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
-						Text="{Binding LineItem.Command}" Margin="10,0,0,0" />
+						Text="{Binding LineItem.ApiName}" Margin="10,0,0,0" />
 
 					<TextBlock 
 						Text="{Binding LineItem.Method}" Margin="10,0,0,0" 

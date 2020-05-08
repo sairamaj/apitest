@@ -16,8 +16,11 @@ namespace ApiManager.ViewModels
 		{
 			this.OkCommand = new DelegateCommand(() =>
 			{
-				win.DialogResult = true;
-				win.Close();
+				if (this.OnClosing())
+				{
+					win.DialogResult = true;
+					win.Close();
+				}
 			});
 			this.CancelCommand = new DelegateCommand(() =>
 			{
@@ -29,6 +32,11 @@ namespace ApiManager.ViewModels
 
 		public ICommand OkCommand { get; }
 		public ICommand CancelCommand { get; }
+
+		protected virtual bool OnClosing()
+		{
+			return true;
+		}
 
 	}
 }
