@@ -124,11 +124,15 @@
     <Compile Include="Resources\Model\ResourceData.cs" />
     <Compile Include="Resources\ViewModels\ResourceContainerViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />
+    <Compile Include="Resources\ViewModels\ViewResourceViewModel.cs" />
     <Compile Include="Resources\Views\ResourceContainerView.xaml.cs">
       <DependentUpon>ResourceContainerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\Views\ResourceDataView.xaml.cs">
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ViewResourceWindow.xaml.cs">
+      <DependentUpon>ViewResourceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditAssertCommandViewModel.cs" />
@@ -309,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Views\ResourceDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Views\ViewResourceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
