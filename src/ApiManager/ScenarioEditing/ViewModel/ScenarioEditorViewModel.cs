@@ -190,27 +190,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			// todo: move to parser.
 			foreach (var line in lines)
 			{
-				if (line.StartsWith("#", System.StringComparison.OrdinalIgnoreCase))
-				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommentScenarioItem(line), OnEditAction));
-				}
-				else if (line.Trim().Length == 0)
-				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new LineBreakScenarioItem(), OnEditAction));
-				}
-				else if (line.StartsWith("!", System.StringComparison.OrdinalIgnoreCase))
-				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new CommandScenarioItem(line), OnEditAction));
-				}
-				else if (line.StartsWith("__", System.StringComparison.OrdinalIgnoreCase))
-				{
-					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new FunctionScenarioItem(line), OnEditAction));
-				}
-				else
-				{
-					this.ScenarioLineItems.Add(new ScenarioApiCommandLineItemViewModel(
-						new ApiScenarioItem(line), OnEditAction));
-				}
+				this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ScenarioParser().Parse(line), OnEditAction));
 			}
 		}
 	}
