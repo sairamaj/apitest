@@ -82,6 +82,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 						if (scenarioLineItemViewModel.IsDraggedAsNewItem)
 						{
 							EditCommand(scenarioLineItemViewModel);
+							scenarioLineItemViewModel.IsDraggedAsNewItem = false;	
 						}
 					}
 				}
@@ -146,12 +147,14 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 			if (lineItemViewModel.LineItem is CommandScenarioItem bangCommandScenarioItem)
 			{
-				if (new EditBangCommandWindow().ShowDialog().Value)
+				if (bangCommandScenarioItem.IsAssertCommand)
 				{
-					
+					var win = new EditAssertCommandWindow();
+					var vm = new EditAssertCommandViewModel(win, bangCommandScenarioItem);
+					win.DataContext = vm;
+					win.ShowDialog();
 				}
 			}
-
 		}
 	}
 }

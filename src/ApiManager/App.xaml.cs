@@ -8,7 +8,7 @@ using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.CommandEditing.ViewModel;
 using ApiManager.ScenarioEditing.CommandEditing.Views;
-using ApiManager.ScenarioEditing.NewLineItem.Views;
+using ApiManager.ScenarioEditing.Models;
 using ApiManager.ScenarioEditing.ViewModels;
 using ApiManager.ViewModels;
 using ApiManager.Views;
@@ -81,6 +81,9 @@ namespace ApiManager
 		private void TestSmartEditor()
 		{
 			return;
+			//TestAssertWindow();
+			//System.Environment.Exit(-1);
+			//return;
 			//var win1 = new NewApiResourceWindow();
 			//var vm1 = new NewApiResourceViewModel(win1,"Post", ServiceLocator.Locator.Resolve<IResourceManager>());
 			//win1.DataContext = vm1;
@@ -179,6 +182,17 @@ namespace ApiManager
 				apiCmdInfo, funcCommandInfo, dynamicVariablesInfo);
 			editorWindow.ShowDialog();
 			System.Environment.Exit(-1);
+		}
+
+		private void TestAssertWindow()
+		{
+			var win = new EditAssertCommandWindow();
+			var vm = new EditAssertCommandViewModel(win, new CommandScenarioItem("!assert"));
+			win.DataContext = vm;
+			if (win.ShowDialog().Value)
+			{
+				MessageBox.Show(vm.Command);
+			}
 		}
 	}
 }

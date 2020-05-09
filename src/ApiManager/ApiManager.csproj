@@ -131,9 +131,13 @@
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditAssertCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\NewApiResourceViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml.cs">
       <DependentUpon>EditApiCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditAssertCommandWindow.xaml.cs">
+      <DependentUpon>EditAssertCommandWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml.cs">
       <DependentUpon>EditBangCommandWindow.xaml</DependentUpon>
@@ -309,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditAssertCommandWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

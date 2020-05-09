@@ -197,7 +197,7 @@
 		<DataTemplate x:Key="CommandHeaderTemplate">
 			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
 				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
-				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
+				<TextBlock Text="{Binding LineItem.Name}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
 				
