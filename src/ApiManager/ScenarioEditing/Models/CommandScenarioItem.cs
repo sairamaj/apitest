@@ -8,10 +8,11 @@ namespace ApiManager.ScenarioEditing.Models
 	{
 		string _command;
 		public CommandScenarioItem(
-			string line) 
+			string line)
 			: base("command", line)
 		{
 			this.Parse(line);
+			this._command = line;
 		}
 
 		public string Command
@@ -38,9 +39,11 @@ namespace ApiManager.ScenarioEditing.Models
 			return cmd;
 		}
 
-		public BangCommandType CommandType {
-			get{
-				switch(this.Name)
+		public BangCommandType CommandType
+		{
+			get
+			{
+				switch (this.Name)
 				{
 					case "!assert":
 						return BangCommandType.Assert;

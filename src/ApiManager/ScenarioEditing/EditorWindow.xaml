@@ -8,7 +8,7 @@
 		xmlns:views="clr-namespace:ApiManager.ScenarioEditing.Views"
 		xmlns:DragDrop="clr-namespace:ApiManager.Views"
 		mc:Ignorable="d"
-        Title="{Binding ScenarioEditTitle}" Height="450" Width="800">
+        Title="{Binding ScenarioEditTitle}" Height="650" Width="1000">
 	<Window.Resources>
 
 		<Style x:Key="ApplicationLinkButtonNoUnderLine" TargetType="{x:Type Button}">
@@ -188,11 +188,14 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="FunctionHeaderTemplate">
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel"  Background="White" >
 				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource FunctionItemStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
+				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
+							Converter={StaticResource BooleanToVisibilityConverter}}"
+							Height="30"/>
 			</StackPanel>
 		</DataTemplate>
 

@@ -80,7 +80,7 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
-			return;
+			//return;
 			//TestExtractWindow();
 			//System.Environment.Exit(-1);
 			//return;
