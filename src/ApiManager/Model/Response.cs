@@ -25,7 +25,7 @@ namespace ApiManager.Model
 		{
 			get
 			{
-				return $"Headers:\r\n{this.HeadersAsString}\r\nContent:\r\n{this.Content}";
+				return $"Response Headers:\r\n{this.HeadersAsString}\r\nResponse Content:\r\n{this.Content}";
 			}
 			set
 			{

@@ -80,6 +80,7 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
+			return;
 			//var win1 = new NewApiResourceWindow();
 			//var vm1 = new NewApiResourceViewModel(win1,"Post", ServiceLocator.Locator.Resolve<IResourceManager>());
 			//win1.DataContext = vm1;

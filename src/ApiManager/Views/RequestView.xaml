@@ -23,11 +23,7 @@
 		</Style>
 	</UserControl.Resources>
 	<DockPanel>
-		<!--<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition />
-		</Grid.RowDefinitions>-->
-		<Expander Header="Headers" IsExpanded="False" DockPanel.Dock="Top">
+		<Expander Header="Request Headers" IsExpanded="False" DockPanel.Dock="Top">
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" 
 								x:Name="Headers" 
@@ -38,7 +34,7 @@
 			</avalonedit:TextEditor>
 		</Expander>
 
-		<Expander Header="Body" IsExpanded="True">
+		<Expander Header="Request Body" IsExpanded="True">
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
 				<avalonedit:TextEditor  Grid.Row="1" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" 
