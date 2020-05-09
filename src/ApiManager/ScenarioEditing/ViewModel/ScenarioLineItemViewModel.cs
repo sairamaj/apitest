@@ -9,22 +9,16 @@ namespace ApiManager.ScenarioEditing.ViewModel
 {
 	class ScenarioLineItemViewModel : CoreViewModel
 	{
+		Action<ScenarioEditingAction, ScenarioLineItemViewModel> _onEditAction;
 		public ScenarioLineItemViewModel(
 			ScenarioLineItem lineItem,
 			Action<ScenarioEditingAction, ScenarioLineItemViewModel> onEditAction)
 		{
+			this._onEditAction = onEditAction;
 			this.LineItem = lineItem ?? throw new System.ArgumentNullException(nameof(lineItem));
-			this.MoveUpCommand = new DelegateCommand(() =>
-			{
-				onEditAction(ScenarioEditingAction.MoveUp, this);
-			});
-			this.MoveDownCommand = new DelegateCommand(() =>
-			{
-				onEditAction(ScenarioEditingAction.MoveDown, this);
-			});
 			this.DeleteCommand = new DelegateCommand(() =>
 			{
-				onEditAction(ScenarioEditingAction.Delete, this);
+				this._onEditAction(ScenarioEditingAction.Delete, this);
 			});
 			this.CommentCommand = new DelegateCommand(() =>
 			{
@@ -37,5 +31,9 @@ namespace ApiManager.ScenarioEditing.ViewModel
 		public ICommand CommentCommand { get; }
 		public ICommand MoveUpCommand { get; }
 		public ICommand MoveDownCommand { get; }
+		public void AttachEditAction(Action<ScenarioEditingAction, ScenarioLineItemViewModel> onEditAction)
+		{
+			this._onEditAction = onEditAction;
+		}
 	}
 }

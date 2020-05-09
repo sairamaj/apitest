@@ -78,7 +78,7 @@
 				
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
-						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
+						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding SmartEditorCommand}" VerticalAlignment="Center"/>
 						<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
 						<Button   Style="{StaticResource ScenarioTestStatusStyle}" 
 								  Width="12" Height="12" VerticalAlignment="Center" Margin="3,0,0,0" BorderThickness="0"/>
@@ -89,7 +89,7 @@
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 								<Separator />
-								<MenuItem Header="Smart Editor(Preview)(In Progress)" Command="{Binding Path=SmartEditorCommand}"/>
+								<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCEditCommandFileCommandommandFileCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>

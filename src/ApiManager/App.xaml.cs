@@ -180,6 +180,7 @@ namespace ApiManager
 			EditorWindow editorWindow = new EditorWindow();
 			var scenario = new Scenario(@"Configuration\Apis\Apigee\scenarios\list_apis\list.txt");
 			editorWindow.DataContext = new ScenarioEditorViewModel(
+				editorWindow,
 				scenario,
 				bangCommands,
 				apiCmdInfo, funcCommandInfo, dynamicVariablesInfo);

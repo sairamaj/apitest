@@ -61,6 +61,8 @@
 		<ImageBrush x:Key="CommentButtonImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="CommandButtonImageBrush" ImageSource="../images/command.png" />
 		<ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../images/save.png" />
+		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
+		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../images/refresh.png" />
 
 		<Style x:Key="ImageStyle">
 			<Setter Property="Control.Width" Value="10" />
@@ -225,10 +227,19 @@
 			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-			<Button  Background="{StaticResource SaveButtonImageBrush}" Width="25" Height="25" 
+			<Button  Background="{StaticResource SaveButtonImageBrush}" Width="20" Height="20" 
 					 Command="{Binding SaveCommandFileCommand}" VerticalAlignment="Center"
 					 Margin="15,0,0,0"
 					 />
+			<Button  Background="{StaticResource EditButtonImageBrush}" Width="20" Height="20" 
+					 Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"
+					 Margin="15,0,0,0"
+					 />
+			<Button  Background="{StaticResource RefreshButtonImageBrush}" Width="20" Height="20" 
+					 Command="{Binding RefreshCommandCommand}" VerticalAlignment="Center"
+					 Margin="15,0,0,0"
+					 />
+			
 		</StackPanel>
 		<Grid Grid.Row="1" Grid.Column="0" >
 			<Grid.ColumnDefinitions>

@@ -81,6 +81,7 @@ namespace ApiManager.ViewModels
 				var apis = apiCommandInfo.ApiCommands;
 
 				editorWindow.DataContext = new ScenarioEditorViewModel(
+					editorWindow,
 					this.Scenario,
 					bangCommandInfo,
 					apiCommandInfo,
@@ -94,7 +95,6 @@ namespace ApiManager.ViewModels
 			{
 				MessageBox.Show(e.ToString());
 			}
-
 		}
 	}
 }
