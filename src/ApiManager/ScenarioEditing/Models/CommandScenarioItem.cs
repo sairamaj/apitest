@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ApiManager.Model;
 
 namespace ApiManager.ScenarioEditing.Models
 {
@@ -37,11 +38,17 @@ namespace ApiManager.ScenarioEditing.Models
 			return cmd;
 		}
 
-		public bool IsAssertCommand
-		{
-			get
-			{
-				return this.Name == "!assert";
+		public BangCommandType CommandType {
+			get{
+				switch(this.Name)
+				{
+					case "!assert":
+						return BangCommandType.Assert;
+					case "!extract":
+						return BangCommandType.Extract;
+					default:
+						return BangCommandType.Unknown;
+				}
 			}
 		}
 

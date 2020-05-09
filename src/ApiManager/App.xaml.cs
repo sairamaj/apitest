@@ -81,6 +81,9 @@ namespace ApiManager
 		private void TestSmartEditor()
 		{
 			return;
+			//TestExtractWindow();
+			//System.Environment.Exit(-1);
+			//return;
 			//TestAssertWindow();
 			//System.Environment.Exit(-1);
 			//return;
@@ -188,6 +191,16 @@ namespace ApiManager
 		{
 			var win = new EditAssertCommandWindow();
 			var vm = new EditAssertCommandViewModel(win, new CommandScenarioItem("!assert"));
+			win.DataContext = vm;
+			if (win.ShowDialog().Value)
+			{
+				MessageBox.Show(vm.Command);
+			}
+		}
+		private void TestExtractWindow()
+		{
+			var win = new EditExtractCommandWindow();
+			var vm = new EditExtractCommandViewModel(win, new CommandScenarioItem("!extract"));
 			win.DataContext = vm;
 			if (win.ShowDialog().Value)
 			{

@@ -77,6 +77,7 @@
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpRequestClient.cs" />
+    <Compile Include="Model\BangCommandType.cs" />
     <Compile Include="Model\DynamicVariableInfo.cs" />
     <Compile Include="Model\DynamicVariable.cs" />
     <Compile Include="Model\FunctionCommandInfo.cs" />
@@ -135,6 +136,7 @@
       <DependentUpon>ViewResourceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditExtractCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditAssertCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\NewApiResourceViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml.cs">
@@ -145,6 +147,9 @@
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml.cs">
       <DependentUpon>EditBangCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditExtractCommandWindow.xaml.cs">
+      <DependentUpon>EditExtractCommandWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\NewApiResourceWindow.xaml.cs">
       <DependentUpon>NewApiResourceWindow.xaml</DependentUpon>
@@ -329,6 +334,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\CommandEditing\Views\EditBangCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditExtractCommandWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

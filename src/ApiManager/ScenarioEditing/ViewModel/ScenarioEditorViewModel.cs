@@ -147,12 +147,21 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 			if (lineItemViewModel.LineItem is CommandScenarioItem bangCommandScenarioItem)
 			{
-				if (bangCommandScenarioItem.IsAssertCommand)
+				if (bangCommandScenarioItem.CommandType == BangCommandType.Assert)
 				{
 					var win = new EditAssertCommandWindow();
 					var vm = new EditAssertCommandViewModel(win, bangCommandScenarioItem);
 					win.DataContext = vm;
 					win.ShowDialog();
+					return;
+				}
+				if (bangCommandScenarioItem.CommandType == BangCommandType.Extract)
+				{
+					var win = new EditExtractCommandWindow();
+					var vm = new EditExtractCommandViewModel(win, bangCommandScenarioItem);
+					win.DataContext = vm;
+					win.ShowDialog();
+					return;
 				}
 			}
 		}
