@@ -21,7 +21,8 @@ namespace ApiManager.ScenarioEditing.Models
 
 		public override string GetCommand()
 		{
-			var cmd = this.Command;
+			var cmd = this.IsCommented ? "# " : string.Empty;
+			cmd += this.Command;
 			if (!string.IsNullOrWhiteSpace(this.Arg1))
 			{
 				cmd += " " + this.Arg1;

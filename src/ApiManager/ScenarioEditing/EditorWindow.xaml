@@ -166,7 +166,6 @@
 				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
 							Converter={StaticResource BooleanToVisibilityConverter}}"
 							Height="30"/>
-
 			</StackPanel>
 		</DataTemplate>
 
@@ -178,7 +177,6 @@
 				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
 							Converter={StaticResource BooleanToVisibilityConverter}}"
 							Height="30"/>
-
 			</StackPanel>
 		</DataTemplate>
 
@@ -203,6 +201,7 @@
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
+				
 				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
 							Converter={StaticResource BooleanToVisibilityConverter}}"
 							Height="30"/>
