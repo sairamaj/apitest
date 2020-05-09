@@ -34,22 +34,5 @@ namespace ApiManager.ScenarioEditing.Models
 
 			return cmd;
 		}
-
-		public override void ToggleComment()
-		{
-			if (this.Command.StartsWith("#"))
-			{
-				this.Command = this.Command.TrimStart(new[] { '#' });
-				this.IsCommented = false;
-			}
-			else
-			{
-				this.Command = $"#{this.Command}";
-				this.IsCommented = true;
-			}
-
-			OnPropertyChanged(() => this.Command);
-			OnPropertyChanged(() => this.IsCommented);
-		}
 	}
 }

@@ -144,6 +144,9 @@
     <Compile Include="ScenarioEditing\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\FloatingCommandPanel.xaml.cs">
+      <DependentUpon>FloatingCommandPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScenarioEditing\Models\FunctionScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\LineBreakScenarioItem.cs" />
     <Compile Include="ScenarioEditing\Models\CommandScenarioItem.cs" />
@@ -318,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\FloatingCommandPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

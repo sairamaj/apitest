@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
@@ -30,8 +28,11 @@ namespace ApiManager.ScenarioEditing.Models
 		public bool EditingModeOn { get; set; }
 		public ICommand DoneWithEditingCommand { get; }
 		public abstract string GetCommand();
-		public abstract void ToggleComment();
 		public bool IsCommented { get; set; }
-
+		public void ToggleComment()
+		{
+			this.IsCommented = !IsCommented;
+			OnPropertyChanged(() => this.IsCommented);
+		}
 	}
 }

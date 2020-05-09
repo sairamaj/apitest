@@ -38,11 +38,7 @@ namespace ApiManager.ScenarioEditing.Models
 
 		public override string GetCommand()
 		{
-			return this.Command;
-		}
-
-		public override void ToggleComment()
-		{
+			return this.IsCommented ? $"# {this.Command}" : this._command;
 		}
 
 		private void Parse(string command)

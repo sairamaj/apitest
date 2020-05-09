@@ -86,29 +86,29 @@
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
 			</Style.Triggers>
+		</Style>
 
+		<Style x:Key="CommentControlStyle">
+			<Setter Property="Control.Foreground" Value="Green" />
+			<Setter Property="Control.Width" Value="0" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
+					<Setter Property="Control.Width" Value="5" />
+				</DataTrigger>
+			</Style.Triggers>
 		</Style>
 
 		<Style x:Key="CommandStyle" BasedOn="{StaticResource KeyWordStyle}">
 			<Setter Property="Control.Foreground" Value="Magenta" />
 		</Style>
 
-		<Style x:Key="FunctionItemStyle">
+		<Style x:Key="FunctionItemStyle" BasedOn="{StaticResource KeyWordStyle}">
 			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
 			<Setter Property="Control.Margin" Value="5,0,0,0" />
 			<Setter Property="Control.Foreground" Value="Brown" />
 		</Style>
 
-		<!--<Style x:Key="ContextCommandMenu">
-			<Setter Property="Control.Visibility" Value="Hidden" />
-			<Style.Triggers>
-				<Trigger Property="Control.IsMouseOver" Value="True">
-					<Setter Property="Control.Visibility" Value="Visible" TargetName="EditButtons" />
-				</Trigger>
-			</Style.Triggers>
-		</Style>-->
-
-		<Style x:Key="ApiWordStyle">
+		<Style x:Key="ApiWordStyle" BasedOn="{StaticResource KeyWordStyle}">
 			<Setter Property="Control.FontStyle" Value="Italic" />
 			<Setter Property="Control.Foreground" Value="Blue" />
 			<!--<Setter Property="Control.FontWeight" Value="Bold" />-->
@@ -144,10 +144,11 @@
 			</Style.Triggers>
 		</Style>
 		<DataTemplate x:Key="ApiHeaderTemplate">
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
+				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
 				<TextBlock 
 						Style="{StaticResource EditingModeStyleForTextBox}"
-						Text="{Binding LineItem.ApiName}" Margin="10,0,0,0" />
+						Text="{Binding LineItem.ApiName}" Margin="4,0,0,0" />
 
 				<TextBlock 
 						Text="{Binding LineItem.Method}" Margin="10,0,0,0" 
@@ -162,26 +163,22 @@
 							Style="{StaticResource ApplicationLinkButtonNoUnderLine}" 
 							Command="{Binding EditPayloadFileCommand}"
 							/>
-				<!--<TextBlock.InputBindings>
-							<MouseBinding Command="{Binding LineItem.StartEditingModeCommand}" MouseAction="LeftClick" />
-						</TextBlock.InputBindings>-->
+				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
+							Converter={StaticResource BooleanToVisibilityConverter}}"
+							Height="30"/>
 
-
-				<!--<ComboBox 
-						  ItemsSource="{Binding LineItem.Apis}" 
-						  Text="{Binding SelectedItem, UpdateSourceTrigger=LostFocus}" 
-						  Style="{StaticResource EditingModeStyle}"
-						  SelectedItem="{Binding LineItem.Command}"
-						  view:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="{Binding LineItem.DoneWithEditingCommand}"
-						  />-->
 			</StackPanel>
 		</DataTemplate>
 
 		<DataTemplate x:Key="CommentHeaderTemplate">
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel"  Background="White" >
 				<!--<Button  Background="{StaticResource CommentButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
 				<TextBlock 
 					Text="{Binding LineItem.Line}" Foreground="Green" Style="{StaticResource KeyWordStyle}"/>
+				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
+							Converter={StaticResource BooleanToVisibilityConverter}}"
+							Height="30"/>
+
 			</StackPanel>
 		</DataTemplate>
 
@@ -192,8 +189,7 @@
 
 		<DataTemplate x:Key="FunctionHeaderTemplate">
 			<StackPanel Orientation="Horizontal">
-				<!--https://stackoverflow.com/questions/258824/wpf-binding-ismouseover-to-visibility-->
-				<!--<Button  Background="{StaticResource CommandButtonImageBrush}" Style="{StaticResource ImageStyle}"/>-->
+				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource FunctionItemStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
@@ -202,27 +198,14 @@
 
 		<DataTemplate x:Key="CommandHeaderTemplate">
 			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
+				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
+				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
-				<StackPanel Margin="30,0,0,0" Orientation="Horizontal" 
-							Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
+				<local:FloatingCommandPanel Visibility="{Binding Path=IsMouseOver, ElementName=LineItemPanel, 
 							Converter={StaticResource BooleanToVisibilityConverter}}"
-							Height="30">
-					<Button  Background="{StaticResource CommentImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding CommentCommand}"
-							 ToolTip="Toggle Comment"/>
-					<!--<Button  Background="{StaticResource MoveUpImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding MoveUpCommand}" 
-							 ToolTip="Move up"/>
-					<Button  Background="{StaticResource MoveDownImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding MoveDownCommand}"
-							 ToolTip="Move down"/>-->
-					<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
-							 Command="{Binding DeleteCommand}"
-							 ToolTip="Delete"/>
-					<TextBlock Text="Use drag &amp; drop to move up and down" Foreground="DarkGoldenrod" Margin="15,0,0,0" VerticalAlignment="Center"/>
-				</StackPanel>
+							Height="30"/>
 			</StackPanel>
 		</DataTemplate>
 

@@ -17,9 +17,5 @@ namespace ApiManager.ScenarioEditing.Models
 		{
 			return this.Line;
 		}
-
-		public override void ToggleComment()
-		{
-		}
 	}
 }
