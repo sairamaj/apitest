@@ -198,7 +198,6 @@
 			<StackPanel Orientation="Horizontal" x:Name="LineItemPanel" Background="White" >
 				<TextBlock Text="#" Style="{StaticResource CommentControlStyle}" />
 				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
-				<TextBlock Text="{Binding LineItem.Command}" Style="{StaticResource CommandStyle}"/>
 				<TextBlock Text="{Binding LineItem.Arg1}" Style="{StaticResource Arg1Style}"/>
 				<TextBlock Text="{Binding LineItem.Arg2}" Style="{StaticResource Arg2Style}"/>
 				
@@ -223,6 +222,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50"/>
 			<RowDefinition />
+			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
 			<Button  Background="{StaticResource SaveButtonImageBrush}" Width="25" Height="25" 
@@ -251,5 +251,10 @@
 			<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 			<views:CommandViewer Grid.Row="0" Grid.Column="2"/>
 		</Grid>
+
+		<StackPanel Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+			<TextBlock TextWrapping="Wrap" 
+					   Text="Drag api routes, bang commands, functions on to the editor to add to the scenarios\r\n. You can drag drop within the editor." />
+		</StackPanel>
 	</Grid>
 </Window>

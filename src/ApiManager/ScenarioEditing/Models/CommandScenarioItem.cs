@@ -31,7 +31,7 @@ namespace ApiManager.ScenarioEditing.Models
 			if (!string.IsNullOrWhiteSpace(this.Arg2))
 			{
 				cmd += " " + this.Arg2;
-			}
+				}
 
 			return cmd;
 		}

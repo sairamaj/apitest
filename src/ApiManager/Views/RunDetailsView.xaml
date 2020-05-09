@@ -225,7 +225,10 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="700"/>
 					</Grid.ColumnDefinitions>
-					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ErrorInfo.Error}" FontWeight="Bold"/>
+					<TextBlock Grid.Row="0" Grid.Column="0" 
+							   Text="{Binding ErrorInfo.Error}" 
+							   TextWrapping="Wrap"
+							   FontWeight="Bold" Height="300"/>
 				</Grid>
 			</Expander>
 		</DataTemplate>

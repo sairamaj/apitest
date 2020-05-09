@@ -84,7 +84,11 @@ def main():
         property_bag.resource_path = args.resource_path
     if args.output != "":
         property_bag.add('output', args.output)
-    config = Config(args.config)
+    try:
+        config = Config(args.config)
+    except Exception as e:
+        publisher.errorInfo(property_bag.session_name, f"error in {args.config}: {str(e)}")
+        raise
 
     # Run batch
     if args.batch != None:

@@ -31,7 +31,7 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 		{
 			var finalCommand = this.Route.Name == "_" ? this.Command.Name : $"{this.Command.Name}.{this.Route.Name}";
 			var format = DataFormats.GetDataFormat("DragDropItemsControl");
-			var dragViewModel = new ScenarioLineItemViewModel(
+			var dragViewModel = new ScenarioApiCommandLineItemViewModel(
 									new ApiScenarioItem(finalCommand), (a, e) => { });
 			dragViewModel.IsDraggedAsNewItem = true;
 			return new DataObject(format.Name, dragViewModel);
