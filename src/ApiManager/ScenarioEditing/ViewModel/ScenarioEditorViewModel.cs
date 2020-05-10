@@ -166,6 +166,24 @@ namespace ApiManager.ScenarioEditing.ViewModels
 					win.ShowDialog();
 				}
 
+				if (bangCommandScenarioItem.CommandType == BangCommandType.SetVariable)
+				{
+					var win = new EditSetVariableCommandWindow();
+					var vm = new EditSetVariableCommandViewModel(win, bangCommandScenarioItem);
+					win.DataContext = vm;
+					win.ShowDialog();
+				}
+
+				if (bangCommandScenarioItem.CommandType == BangCommandType.SetVariableGroup)
+				{
+					var win = new EditSetVariableGroupCommandWindow();
+					var vm = new EditSetVariableGroupCommandViewModel(
+						win,
+						bangCommandScenarioItem
+						, ServiceLocator.Locator.Resolve<IResourceManager>());
+					win.DataContext = vm;
+					win.ShowDialog();
+				}
 			}
 
 			return true;

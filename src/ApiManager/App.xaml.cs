@@ -83,6 +83,14 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
+			return;
+			var win = new EditSetVariableGroupCommandWindow();
+			var vm = new EditSetVariableGroupCommandViewModel(win, new CommandScenarioItem("!setgroup")
+				, ServiceLocator.Locator.Resolve<IResourceManager>());
+			win.DataContext = vm;
+			win.ShowDialog();
+			MessageBox.Show(vm.CommandItem.Command);
+			System.Environment.Exit(-1);
 			//var win = new EditPrintCommandWindow();
 			//var item = new CommandScenarioItem("!print hello");
 			//var vm = new EditPrintCommandViewModel(win, item);

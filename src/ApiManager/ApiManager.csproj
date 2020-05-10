@@ -140,6 +140,8 @@
       <DependentUpon>ViewResourceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditSetVariableGroupCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditSetVariableCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditExtractCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditAssertCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditPrintCommandViewModel.cs" />
@@ -158,6 +160,12 @@
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditPrintCommandWindow.xaml.cs">
       <DependentUpon>EditPrintCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditSetVariableCommandWindow.xaml.cs">
+      <DependentUpon>EditSetVariableCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditSetVariableGroupCommandWindow.xaml.cs">
+      <DependentUpon>EditSetVariableGroupCommandWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\NewApiResourceWindow.xaml.cs">
       <DependentUpon>NewApiResourceWindow.xaml</DependentUpon>
@@ -355,6 +363,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\CommandEditing\Views\EditPrintCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditSetVariableCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditSetVariableGroupCommandWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

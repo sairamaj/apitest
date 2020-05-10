@@ -52,6 +52,10 @@ namespace ApiManager.ScenarioEditing.Models
 						return BangCommandType.Extract;
 					case "!print":
 						return BangCommandType.Print;
+					case "!set":
+						return BangCommandType.SetVariable;
+					case "!setgroup":
+						return BangCommandType.SetVariableGroup;
 					default:
 						return BangCommandType.Unknown;
 				}

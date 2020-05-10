@@ -1,4 +1,6 @@
-﻿namespace ApiManager.Asserts.Model
+﻿using System.IO;
+
+namespace ApiManager.Asserts.Model
 {
 	class VariableGroupData
 	{
@@ -10,5 +12,6 @@
 
 		public string Name { get; }
 		public string FileName { get; }
+		public string FileWithExtension => Path.GetFileName(this.FileName);
 	}
 }

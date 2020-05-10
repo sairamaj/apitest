@@ -135,5 +135,10 @@ namespace ApiManager.Repository
 		{
 			return Path.Combine(this._settings.ResourcesPath, method);
 		}
+
+		public string GetVariableGroupPath()
+		{
+			return Path.Combine(this._settings.ResourcesPath, "Variables");
+		}
 	}
 }

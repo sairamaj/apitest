@@ -5,6 +5,8 @@
 		Unknown=-1,
 		Assert,
 		Extract,
-		Print
+		Print,
+		SetVariable,
+		SetVariableGroup
 	}
 }
