@@ -57,6 +57,10 @@
 
 		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left">
 			<Button Height="28" Width="90" FontWeight="Bold" Margin="10,0,0,0" 
+					Content="Popup" Command="{Binding PopResponseCommand}" HorizontalAlignment="Left"
+					VerticalContentAlignment="Center"
+					/>
+			<Button Height="28" Width="90" FontWeight="Bold" Margin="10,0,0,0" 
 					Content="Try Again" Command="{Binding SubmitRequestCommand}" HorizontalAlignment="Left"
 					VerticalContentAlignment="Center"
 					/>

@@ -112,6 +112,10 @@
     <Compile Include="Pipes\MessageListener.cs" />
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
+    <Compile Include="PopUp\ViewModels\ApiResponsePoupViewModel.cs" />
+    <Compile Include="PopUp\Views\ApiResponsePoupWindow.xaml.cs">
+      <DependentUpon>ApiResponsePoupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Report\ReportGenerator.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
@@ -311,6 +315,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Asserts\Views\AssertsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PopUp\Views\ApiResponsePoupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

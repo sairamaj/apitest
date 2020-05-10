@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using ApiManager.Model;
+using ApiManager.PopUp.ViewModels;
+using ApiManager.PopUp.Views;
 using ApiManager.Repository;
 using ApiManager.ScenarioEditing;
 using ApiManager.ScenarioEditing.CommandEditing.ViewModel;
@@ -81,6 +84,10 @@ namespace ApiManager
 		private void TestSmartEditor()
 		{
 			return;
+			//var vm = new ApiResponsePoupViewModel("http://localhost/restapi/foo/bar", File.ReadAllText(@"c:\temp\test.json"), File.ReadAllText(@"c:\temp\test.json"));
+			//var win = new ApiResponsePoupWindow { DataContext = vm };
+			//win.ShowDialog();
+			//System.Environment.Exit(-1);
 			//TestExtractWindow();
 			//System.Environment.Exit(-1);
 			//return;

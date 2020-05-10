@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.PopUp.ViewModels;
+using ApiManager.PopUp.Views;
 using ApiManager.Repository;
 using ApiManager.Views;
 using Newtonsoft.Json;
@@ -59,6 +61,16 @@ namespace ApiManager.ViewModels
 			   }
 		   });
 
+			this.PopResponseCommand = new DelegateCommand(() =>
+		   {
+			   var vm = new ApiResponsePoupViewModel(
+				   this.ApiInfo.Url,
+				   this.ApiInfo.Method,
+				   SafeJsonFormat(this.ApiInfo.Request.Body),
+				   SafeJsonFormat(this.ApiInfo.Response.Content));
+			   var win = new ApiResponsePoupWindow { DataContext = vm };
+			   win.Show();
+		   });
 			this.SubmitRequestCommand = new DelegateCommand(async () =>
 			{
 				try
@@ -84,6 +96,7 @@ namespace ApiManager.ViewModels
 		public ICommand ShowJwtTokenCommand { get; set; }
 		public ICommand ViewAsHTMLCommand { get; set; }
 		public ICommand SubmitRequestCommand { get; set; }
+		public ICommand PopResponseCommand { get; set; }
 		public ICommand OpenUrlCommand { get; set; }
 
 		public bool IsSuccess => this.ApiInfo.HttpCode >= 200 && this.ApiInfo.HttpCode <= 299;
@@ -145,6 +158,18 @@ namespace ApiManager.ViewModels
 		{
 			var request = new HttpRequestClient(this.ApiInfo);
 			return await request.GetResponseAsync().ConfigureAwait(false);
+		}
+
+		private string SafeJsonFormat(string value)
+		{
+			try
+			{
+				return JsonConvert.SerializeObject(JsonConvert.DeserializeObject(value), Formatting.Indented);
+			}
+			catch (Exception)
+			{
+				return value;
+			}
 		}
 	}
 }

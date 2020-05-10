@@ -1,0 +1,81 @@
+﻿<Window x:Class="ApiManager.PopUp.Views.ApiResponsePoupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.PopUp.Views"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+		xmlns:views="clr-namespace:Wpf.Util.Core.Views;assembly=Wpf.Util.Core"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="750" Width="1000">
+	<Window.Resources>
+		<Style x:Key="AvalonTextBoxStyles" TargetType="avalonedit:TextEditor">
+			<Setter Property="WordWrap"  Value="True" />
+			<Setter Property="BorderThickness"  Value="0" />
+			<Setter Property="FontSize"  Value="13" />
+			<Setter Property="FontFamily"  Value="Consolas" />
+			<Setter Property="SyntaxHighlighting"  Value="JavaScript" />
+			<Setter Property="ShowLineNumbers"  Value="True" />
+			<Setter Property="LineNumbersForeground"  Value="Magenta" />
+			<Setter Property="VerticalScrollBarVisibility"  Value="Auto" />
+			<Setter Property="HorizontalScrollBarVisibility"  Value="Auto" />
+		</Style>
+
+		<Style x:Key="GetMethodStyle">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Method}" Value="GET">
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="PostMethodStyle">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Method}" Value="POST">
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Method}" Value="PATCH">
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Method}" Value="PUT">
+					<Setter Property="Control.Visibility" Value="Hidden"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</Window.Resources>
+
+	<Grid>
+		<Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource GetMethodStyle}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="4"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
+                                Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestText" DataContext="{Binding}">
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding Request, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+
+			<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="2"
+                                Style="{StaticResource AvalonTextBoxStyles}" x:Name="ResponseText" DataContext="{Binding}">
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+
+		</Grid>
+		<Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource PostMethodStyle}"> 
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="2"
+                                Style="{StaticResource AvalonTextBoxStyles}" x:Name="Response2Text" DataContext="{Binding}">
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+		</Grid>
+	</Grid>
+</Window>
+
