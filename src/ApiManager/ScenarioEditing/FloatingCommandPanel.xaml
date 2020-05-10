@@ -9,9 +9,15 @@
 	<UserControl.Resources>
 		<ImageBrush x:Key="CommentImageBrush" ImageSource="../images/comment.png" />
 		<ImageBrush x:Key="DeleteImageBrush" ImageSource="../images/delete.png" />
+		<ImageBrush x:Key="EditButtonImageBrush" ImageSource="../images/edit.png" />
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 	</UserControl.Resources>
+	
 	<StackPanel Orientation="Horizontal" Margin="50,0,0,0">
+		<Button  Background="{StaticResource EditButtonImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
+							 Command="{Binding EditScenarioLineItemCommand}"
+							 ToolTip="Edit" 
+				 />
 		<Button  Background="{StaticResource DeleteImageBrush}" Width="18" Height="18" Margin="4,0,0,0" 
 							 Command="{Binding DeleteCommand}"
 							 ToolTip="Delete" 
@@ -20,6 +26,7 @@
 							 Command="{Binding CommentCommand}"
 							 ToolTip="Toggle Comment" 
 				 />
+		
 		<TextBlock Text="Use drag &amp; drop to move up and down" Foreground="DarkGoldenrod" 
 				   Margin="15,0,0,0" 
 				   VerticalAlignment="Center"

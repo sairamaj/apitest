@@ -25,6 +25,7 @@ namespace ApiManager.ScenarioEditing.Models
 			{
 				this._command = value;
 				Parse(value);
+				OnPropertyChanged(() => this.Command);
 			}
 		}
 
@@ -49,6 +50,8 @@ namespace ApiManager.ScenarioEditing.Models
 						return BangCommandType.Assert;
 					case "!extract":
 						return BangCommandType.Extract;
+					case "!print":
+						return BangCommandType.Print;
 					default:
 						return BangCommandType.Unknown;
 				}
@@ -60,7 +63,11 @@ namespace ApiManager.ScenarioEditing.Models
 			var parts = line.Split();
 			this.Name = parts.First();
 			this.Arg1 = parts.Length > 1 ? parts[1] : string.Empty;
-			this.Arg2 = parts.Length > 2 ? parts[2] : string.Empty;
+			this.Arg2 = parts.Length > 2 ? string.Join(" ", parts.Skip(2).ToArray()) : string.Empty;
+
+			OnPropertyChanged(() => this.Name);
+			OnPropertyChanged(() => this.Arg1);
+			OnPropertyChanged(() => this.Arg2);
 		}
 	}
 }

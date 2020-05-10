@@ -11,6 +11,8 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 			CommandScenarioItem commandItem) : base(win)
 		{
 			this.CommandItem = commandItem;
+			this.JsonPath = commandItem.Arg1;
+			this.VariableName = commandItem.Arg2;
 		}
 
 		public string JsonPath { get; set; }

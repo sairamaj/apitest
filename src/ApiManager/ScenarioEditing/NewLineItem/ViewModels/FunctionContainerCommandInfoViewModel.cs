@@ -9,7 +9,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public FunctionContainerCommandInfoViewModel(FunctionCommandInfo functionCommandInfo) : base(null, "functions","functions")
 		{
-			this.FunctionCommandInfos = functionCommandInfo.Functions.Select(b => new FunctionCommandInfoViewModel(b));
+			this.FunctionCommandInfos = functionCommandInfo.Functions
+				.OrderBy(b => b.Name )
+				.Select(b => new FunctionCommandInfoViewModel(b));
 			this.IsExpanded = true;
 		}
 

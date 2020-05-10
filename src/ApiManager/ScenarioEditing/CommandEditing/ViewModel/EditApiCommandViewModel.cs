@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -23,14 +24,15 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 		{
 			ApiItem = apiItem;
 			this._resourceManager = resourceManager;
-			this._selectedMethod = "Get";
+			this.SetMethod(apiItem.Method);
+			this.SelectedPayLoad = apiItem.PayloadFileName;
+			
 			this.NewResourceCommand = new DelegateCommand(()=> this.EditResource(null));
 			this.EditResourceCommand = new DelegateCommand(() =>
 			{
 				this.EditResource(Path.Combine(resourceManager.GetResourcePath(this.SelectedMethod), this.SelectedPayLoad));
 			});
 		}
-
 
 		public ApiScenarioItem ApiItem { get; }
 		public string[] Methods => new string[] { "Get", "Post", "Put", "Patch", "Delete" };
@@ -125,6 +127,20 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 				this.SelectedPayLoad = viewModel.Name;
 				OnPropertyChanged(() => this.SelectedPayLoad);
 			}
+		}
+
+		private void SetMethod(string method)
+		{
+			switch (method)
+			{
+				case "get": this._selectedMethod = "Get"; break;
+				case "post": this._selectedMethod = "Post"; break;
+				case "patch": this._selectedMethod = "Patch"; break;
+				case "put": this._selectedMethod = "Put"; break;
+				case "delete": this._selectedMethod = "Delete"; break;
+				default: this._selectedMethod = "Get";break;
+			}
+
 		}
 	}
 }

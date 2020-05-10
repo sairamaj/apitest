@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using ApiManager.ScenarioEditing.Models;
 using ApiManager.ViewModels;
@@ -16,7 +17,9 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 			CommandScenarioItem commandItem) : base(win)
 		{
 			this.SelectedSource = this.Sources.First();
-			this.StatusCode = 200;
+			this.StatusCode = string.IsNullOrEmpty(commandItem.Arg2) ? 200: Convert.ToInt32(commandItem.Arg2);
+			this.JsonPath = commandItem.Arg1;
+			this.JsonValue = commandItem.Arg2;
 			this.CommandItem = commandItem;
 		}
 

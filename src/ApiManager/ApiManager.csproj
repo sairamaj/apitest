@@ -142,6 +142,7 @@
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditApiCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditExtractCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditAssertCommandViewModel.cs" />
+    <Compile Include="ScenarioEditing\CommandEditing\ViewModel\EditPrintCommandViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\ViewModel\NewApiResourceViewModel.cs" />
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditApiCommandWindow.xaml.cs">
       <DependentUpon>EditApiCommandWindow.xaml</DependentUpon>
@@ -154,6 +155,9 @@
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\EditExtractCommandWindow.xaml.cs">
       <DependentUpon>EditExtractCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScenarioEditing\CommandEditing\Views\EditPrintCommandWindow.xaml.cs">
+      <DependentUpon>EditPrintCommandWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScenarioEditing\CommandEditing\Views\NewApiResourceWindow.xaml.cs">
       <DependentUpon>NewApiResourceWindow.xaml</DependentUpon>
@@ -347,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ScenarioEditing\CommandEditing\Views\EditExtractCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScenarioEditing\CommandEditing\Views\EditPrintCommandWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

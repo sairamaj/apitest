@@ -9,7 +9,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public BangContainerCommandInfoViewModel(BangCommandInfo bangCommandInfo) : base(null, "bang_commands","bang_commands")
 		{
-			this.BangCommandInfos = bangCommandInfo.BangCommands.Select(b => new BangCommandInfoViewModel(b));
+			this.BangCommandInfos = bangCommandInfo.BangCommands
+				.OrderBy(b => b.Name)
+				.Select(b => new BangCommandInfoViewModel(b));
 			this.IsExpanded = true;
 		}
 

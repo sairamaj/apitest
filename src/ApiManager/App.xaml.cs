@@ -83,12 +83,19 @@ namespace ApiManager
 
 		private void TestSmartEditor()
 		{
+			//var win = new EditPrintCommandWindow();
+			//var item = new CommandScenarioItem("!print hello");
+			//var vm = new EditPrintCommandViewModel(win, item);
+			//win.DataContext = vm;
+			//win.ShowDialog();
+			//MessageBox.Show(item.Command);
+			//System.Environment.Exit(-1);
 			return;
 			//var vm = new ApiResponsePoupViewModel("http://localhost/restapi/foo/bar", File.ReadAllText(@"c:\temp\test.json"), File.ReadAllText(@"c:\temp\test.json"));
 			//var win = new ApiResponsePoupWindow { DataContext = vm };
 			//win.ShowDialog();
 			//System.Environment.Exit(-1);
-			//TestExtractWindow();
+			//Tes,tExtractWindow();
 			//System.Environment.Exit(-1);
 			//return;
 			//TestAssertWindow();

@@ -4,6 +4,7 @@
 	{
 		Unknown=-1,
 		Assert,
-		Extract
+		Extract,
+		Print
 	}
 }

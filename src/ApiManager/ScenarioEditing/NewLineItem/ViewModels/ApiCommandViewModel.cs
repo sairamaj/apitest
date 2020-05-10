@@ -23,7 +23,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 				return;
 			}
 
-			this.ApiCommand.Routes.ToList().ForEach(r =>
+			this.ApiCommand.Routes
+				.OrderBy(r=> r.Name)
+				.ToList().ForEach(r =>
 			this.Children.Add(new ApiRouteInfoViewModel(this.ApiCommand, r)));
 		}
 	}

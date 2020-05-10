@@ -9,7 +9,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public DynamicVariableContainerInfoViewModel(DynamicVariableInfo dynamicVariableInfo) : base(null, "dynamic_variables", "dynamic_variables")
 		{
-			this.DynamicVariablesInfo = dynamicVariableInfo.DynamicVariables.Select(b => new DynamicVaribleInfoViewModel(b));
+			this.DynamicVariablesInfo = dynamicVariableInfo.DynamicVariables
+				.OrderBy(f => f.Name)
+				.Select(b => new DynamicVaribleInfoViewModel(b));
 			this.IsExpanded = true;
 		}
 

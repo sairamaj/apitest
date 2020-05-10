@@ -10,7 +10,9 @@ namespace ApiManager.ScenarioEditing.NewLineItem.ViewModels
 	{
 		public ApiInfoContainerViewModel(ApiCommandInfo apiCommandInfo) : base(null, "apis", "apis")
 		{
-			this.ApiInfoViewModels = apiCommandInfo.ApiCommands.Select(c => new ApiCommandViewModel(c));
+			this.ApiInfoViewModels = apiCommandInfo.ApiCommands
+				.OrderBy(c => c.Name)
+				.Select(c => new ApiCommandViewModel(c));
 			var list = new List<ApiRouteInfoViewModel>();
 			this.IsExpanded = true;
 		}

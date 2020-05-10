@@ -2,6 +2,7 @@
 {
 	internal enum ScenarioEditingAction
 	{
+		Edit,
 		MoveUp,
 		MoveDown,
 		Delete,

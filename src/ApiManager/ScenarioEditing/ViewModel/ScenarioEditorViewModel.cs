@@ -122,6 +122,12 @@ namespace ApiManager.ScenarioEditing.ViewModels
 					this.ScenarioLineItems.Remove(item);
 					this._isDirty = true;
 					break;
+				case ScenarioEditingAction.Edit:
+					if (EditCommand(item))
+					{
+						this._isDirty = true;
+					}
+					break;
 			}
 		}
 
@@ -151,6 +157,15 @@ namespace ApiManager.ScenarioEditing.ViewModels
 					win.DataContext = vm;
 					return win.ShowDialog().Value;
 				}
+
+				if (bangCommandScenarioItem.CommandType == BangCommandType.Print)
+				{
+					var win = new EditPrintCommandWindow();
+					var vm = new EditPrintCommandViewModel(win, bangCommandScenarioItem);
+					win.DataContext = vm;
+					win.ShowDialog();
+				}
+
 			}
 
 			return true;
