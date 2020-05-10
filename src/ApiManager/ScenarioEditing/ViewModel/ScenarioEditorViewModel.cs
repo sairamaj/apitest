@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,9 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			DynamicVariableInfo dynamicVariableInfo)
 		{
 			this.Scenario = scenario;
+			this.BangCommandInfo = bangCommandInfo;
+			this.ApiCommandInfo = apiCommandInfo;
+			FunctionCommandInfo = functionCommandInfo;
 			this.ScenarioLineItems = new SafeObservableCollection<ScenarioLineItemViewModel>();
 			this.Refresh();
 			this.SaveCommandFileCommand = new DelegateCommand(() =>
@@ -71,9 +75,9 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			if (this._isDirty)
 			{
 				var ret = MessageBox.Show(
-					"Do you want save before quiting", 
-					"Save", 
-					MessageBoxButton.YesNoCancel, 
+					"Do you want save before quiting",
+					"Save",
+					MessageBoxButton.YesNoCancel,
 					MessageBoxImage.Question);
 				if (ret == MessageBoxResult.Yes)
 				{
@@ -93,6 +97,9 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		public ICommand EditCommandFileCommand { get; }
 		public ICommand RefreshCommandCommand { get; }
 		public Scenario Scenario { get; }
+		public BangCommandInfo BangCommandInfo { get; }
+		public ApiCommandInfo ApiCommandInfo { get; }
+		public FunctionCommandInfo FunctionCommandInfo { get; }
 
 		private void Save(string fileName)
 		{
@@ -194,6 +201,15 @@ namespace ApiManager.ScenarioEditing.ViewModels
 				if (scenarioItem is ApiScenarioItem apiScenarioItem)
 				{
 					this.ScenarioLineItems.Add(new ScenarioApiCommandLineItemViewModel(apiScenarioItem, OnEditAction));
+					var commandNames = this.ApiCommandInfo.ApiCommands.SelectMany(api => api.Routes.Select(r =>
+					{
+						return r.IsDefault ? $"{api.Name}" : $"{api.Name}.{r.Name}";
+					}));
+
+					if (!scenarioItem.IsCommented)
+					{
+						apiScenarioItem.IsError = !commandNames.Contains(apiScenarioItem.ApiName);
+					}
 				}
 				else
 				{

@@ -90,6 +90,10 @@
 				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
 					<Setter Property="Control.Foreground" Value="Green" />
 				</DataTrigger>
+				<DataTrigger Binding="{Binding LineItem.IsError}" Value="True">
+					<Setter Property="Control.Foreground" Value="Red" />
+				</DataTrigger>
+				
 			</Style.Triggers>
 		</Style>
 

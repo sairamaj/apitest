@@ -29,6 +29,7 @@ namespace ApiManager.ScenarioEditing.Models
 		public ICommand DoneWithEditingCommand { get; }
 		public abstract string GetCommand();
 		public bool IsCommented { get; set; }
+		public bool IsError { get; set; }
 		public void ToggleComment()
 		{
 			this.IsCommented = !IsCommented;
