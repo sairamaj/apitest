@@ -190,7 +190,15 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			// todo: move to parser.
 			foreach (var line in lines)
 			{
-				this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(new ScenarioParser().Parse(line), OnEditAction));
+				var scenarioItem = new ScenarioParser().Parse(line);
+				if (scenarioItem is ApiScenarioItem apiScenarioItem)
+				{
+					this.ScenarioLineItems.Add(new ScenarioApiCommandLineItemViewModel(apiScenarioItem, OnEditAction));
+				}
+				else
+				{
+					this.ScenarioLineItems.Add(new ScenarioLineItemViewModel(scenarioItem, OnEditAction));
+				}
 			}
 		}
 	}

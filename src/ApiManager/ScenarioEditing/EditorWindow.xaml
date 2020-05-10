@@ -23,7 +23,7 @@
 			</Setter>
 			<Setter Property="HorizontalContentAlignment" Value="Center"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="Foreground" Value="Blue" />
+			<Setter Property="Foreground" Value="Magenta" />
 			<Setter Property="FontSize" Value="13" />
 			<Setter Property="FontWeight" Value="Bold" />
 			<Setter Property="Margin" Value="15,0,0,0" />
@@ -33,10 +33,13 @@
 				<Trigger Property="IsMouseOver" Value="true">
 					<Setter Property="Foreground" Value="Red" />
 				</Trigger>
-				<DataTrigger Binding="{Binding ApiInfo.JwtToken}" Value="">
-					<Setter Property="Visibility" Value="Hidden" />
+				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
+					<Setter Property="Control.Foreground" Value="Green" />
+					<Setter Property="Button.IsEnabled" Value="False" />
 				</DataTrigger>
 			</Style.Triggers>
+		
+			
 		</Style>
 
 		<DataTemplate x:Key="DragTemplate">
@@ -121,11 +124,21 @@
 		<Style x:Key="ApiMethodWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
 			<Setter Property="Control.Foreground" Value="OrangeRed" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
 		</Style>
 
 		<Style x:Key="ApiPayloadWordStyle">
 			<Setter Property="Control.FontStyle" Value="Italic" />
 			<Setter Property="Control.Foreground" Value="Magenta" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding LineItem.IsCommented}" Value="True">
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
 		</Style>
 
 		<Style x:Key="EditingModeStyle">
@@ -160,7 +173,6 @@
 				<Button Content="{Binding LineItem.PayloadFileName}" 
 							Margin="10,0,0,0"
 							FontStyle="Italic"
-							Foreground="Magenta"
 						    FontWeight="Normal"
 							Style="{StaticResource ApplicationLinkButtonNoUnderLine}" 
 							Command="{Binding EditPayloadFileCommand}"
