@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using ApiManager.ScenarioEditing.Models;
 using ApiManager.ViewModels;
 
@@ -15,7 +16,7 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 			this.VariableName = parts[0];
 			if (parts.Length > 1)
 			{
-				this.VariableValue = parts[1];
+				this.VariableValue = string.Join("=", parts.Skip(1).ToArray());
 			}
 		}
 
