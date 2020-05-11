@@ -17,13 +17,26 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 			CommandScenarioItem commandItem) : base(win)
 		{
 			this.SelectedSource = this.Sources.First();
-			this.StatusCode = string.IsNullOrEmpty(commandItem.Arg2) ? 200: Convert.ToInt32(commandItem.Arg2);
+			if (Int32.TryParse(commandItem.Arg2, out var code))
+			{
+				this.StatusCode = code;
+			}
+			if (commandItem.Arg1 == "status_code")
+			{
+				this.SelectedSource = StatusCodeDisplayName;
+			}
+			else if (!string.IsNullOrWhiteSpace(commandItem.Arg1))
+			{
+				this.SelectedSource = ResponseValueDisplayName;
+			}
+
+			this.StatusCode = string.IsNullOrEmpty(commandItem.Arg2) ? 200 : Convert.ToInt32(commandItem.Arg2);
 			this.JsonPath = commandItem.Arg1;
 			this.JsonValue = commandItem.Arg2;
 			this.CommandItem = commandItem;
 		}
 
-		public string[] Sources => new string[] { StatusCodeDisplayName, ResponseValueDisplayName };	// if you change this , change . xaml also
+		public string[] Sources => new string[] { StatusCodeDisplayName, ResponseValueDisplayName };    // if you change this , change . xaml also
 		public int StatusCode { get; set; }
 		public string JsonPath { get; set; }
 		public string JsonValue { get; set; }
@@ -59,7 +72,7 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 
 		protected override bool OnClosing()
 		{
-			if (this.SelectedSource == StatusCodeDisplayName )
+			if (this.SelectedSource == StatusCodeDisplayName)
 			{
 				if (this.StatusCode == 0)
 				{
@@ -76,6 +89,6 @@ namespace ApiManager.ScenarioEditing.CommandEditing.ViewModel
 			this.CommandItem.Command = this.Command;
 			return base.OnClosing();
 		}
-		
+
 	}
 }
