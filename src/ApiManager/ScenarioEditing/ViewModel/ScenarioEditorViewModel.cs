@@ -55,7 +55,6 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		   });
 
 			win.Closing += OnClosing;
-			this.ScenarioEditTitle = $"{scenario.Name} ({scenario.FileName})";
 			this.RootCommands = new List<CommandTreeViewModel>()
 			{
 				new ApiInfoContainerViewModel(apiCommandInfo),
@@ -72,7 +71,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 		private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (this._isDirty)
+			if (this.IsDirty)
 			{
 				var ret = MessageBox.Show(
 					"Do you want save before quiting",
@@ -91,7 +90,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		}
 
 		public IEnumerable<CommandTreeViewModel> RootCommands { get; }
-		public string ScenarioEditTitle { get; }
+		public string ScenarioEditTitle => this.IsDirty ? $"*{this.Scenario.Name} ({this.Scenario.FileName})" : $"{this.Scenario.Name} ({this.Scenario.FileName})";
 		public ObservableCollection<ScenarioLineItemViewModel> ScenarioLineItems { get; }
 		public ICommand SaveCommandFileCommand { get; }
 		public ICommand EditCommandFileCommand { get; }
@@ -100,6 +99,16 @@ namespace ApiManager.ScenarioEditing.ViewModels
 		public BangCommandInfo BangCommandInfo { get; }
 		public ApiCommandInfo ApiCommandInfo { get; }
 		public FunctionCommandInfo FunctionCommandInfo { get; }
+		public bool IsDirty
+		{
+			get => this._isDirty;
+			set
+			{
+				this._isDirty = value;
+				OnPropertyChanged(() => this.IsDirty);
+				OnPropertyChanged(() => this.ScenarioEditTitle);
+			}
+		}
 
 		private void Save(string fileName)
 		{
@@ -111,7 +120,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 			File.WriteAllText(fileName, builder.ToString());
 			MessageBox.Show($"{fileName} has been saved.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
-			this._isDirty = false;
+			this.IsDirty = false;
 		}
 
 		private void OnEditAction(ScenarioEditingAction action, ScenarioLineItemViewModel item)
@@ -120,12 +129,12 @@ namespace ApiManager.ScenarioEditing.ViewModels
 			{
 				case ScenarioEditingAction.Delete:
 					this.ScenarioLineItems.Remove(item);
-					this._isDirty = true;
+					this.IsDirty = true;
 					break;
 				case ScenarioEditingAction.Edit:
 					if (EditCommand(item))
 					{
-						this._isDirty = true;
+						this.IsDirty = true;
 					}
 					break;
 			}
@@ -191,12 +200,18 @@ namespace ApiManager.ScenarioEditing.ViewModels
 
 		private void OnScenarioDrop(object sender, NotifyCollectionChangedEventArgs e)
 		{
+			if (e.Action == NotifyCollectionChangedAction.Move)
+			{
+				this.IsDirty = true;
+				return;
+			}
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
 				if (e.NewItems.Count == 0)
 				{
 					return;
 				}
+				this.IsDirty = true;
 				if (e.NewItems[0] is ScenarioLineItemViewModel scenarioLineItemViewModel)
 				{
 					// Edit only if it is coming from dragging from the command palette.
@@ -215,7 +230,7 @@ namespace ApiManager.ScenarioEditing.ViewModels
 						{
 							scenarioLineItemViewModel.IsDraggedAsNewItem = false;
 							scenarioLineItemViewModel.AttachEditAction(this.OnEditAction);
-							this._isDirty = true;
+							this.IsDirty = true;
 						}
 					}
 				}

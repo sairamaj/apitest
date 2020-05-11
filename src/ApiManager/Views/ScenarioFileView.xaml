@@ -89,7 +89,7 @@
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 								<Separator />
-								<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCEditCommandFileCommandommandFileCommand}"/>
+								<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCommandFileCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>

@@ -190,7 +190,6 @@
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\FunctionContainerCommandInfoViewModel.cs" />
-    <Compile Include="ScenarioEditing\NewLineItem\ViewModels\EditorViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\ApiInfoContainerViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\ViewModels\BangContainerCommandInfoViewModel.cs" />
     <Compile Include="ScenarioEditing\NewLineItem\Views\CommandView.xaml.cs">

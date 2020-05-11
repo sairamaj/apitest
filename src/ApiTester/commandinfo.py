@@ -20,6 +20,7 @@ def getCommands():
     commands.append(CommandInfo("!setgroup", "set group variable"))
     commands.append(CommandInfo("!list", "lists all variables"))
     commands.append(CommandInfo("!print", "prints a message (ex: !print message here)"))
+    commands.append(CommandInfo("!return", "skips the following lines in scenario"))
     commands.append(CommandInfo("!convert_json_html", "converts json to html"))
     commands.append(CommandInfo("!waitforuserinput", "waits for user input"))
     return commands
