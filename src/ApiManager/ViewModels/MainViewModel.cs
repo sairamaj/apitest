@@ -82,7 +82,7 @@ namespace ApiManager.ViewModels
 			});
 
 
-			this.RefreshScenariosCommand = new DelegateCommand(() => { this.RefreshScenarios(true); });
+			this.RefreshScenariosCommand = new DelegateCommand(() => { this.RefreshScenarios(); });
 
 			this.Load();
 			try
@@ -305,20 +305,19 @@ namespace ApiManager.ViewModels
 			OnPropertyChanged(() => this.SelectedEnvironment);
 
 			this.VariableContainerViewModel.UpdateApiVariables(this.SelectedApiInfoViewModel?.ApiInfo);
-			this.RefreshScenarios(false);
+			this.RefreshScenarios();
 		}
 
-		private void RefreshScenarios(bool isRefresh)
+		private void RefreshScenarios()
 		{
 			if (this.SelectedApiInfoViewModel == null)
 			{
 				MessageBox.Show("Selected Api", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 
-			if (isRefresh)
-			{
-				this.SelectedApiInfoViewModel.ApiInfo.Scenarios = this._dataRepository.GetScenarios(this.SelectedApiInfoViewModel.ApiInfo);
-			}
+			var apiScenarios = this._dataRepository.GetScenarios(this.SelectedApiInfoViewModel.ApiInfo);
+			var sharedScenarios = this._resourceManager.GetScenarios();
+			this.SelectedApiInfoViewModel.ApiInfo.Scenarios = apiScenarios.Union(sharedScenarios).ToList();
 
 			var scenarioContainerViewModels = this.SelectedApiInfoViewModel.ApiInfo.Scenarios
 				.Where(s => s.IsContainer)

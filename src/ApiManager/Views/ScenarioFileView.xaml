@@ -78,8 +78,8 @@
 				
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
-						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding SmartEditorCommand}" VerticalAlignment="Center"/>
-						<TextBlock Text="{Binding Name}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+						<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding Name}" ToolTip="{Binding FileName}"  Margin="5,0,0,0" VerticalAlignment="Center"/>
 						<Button   Style="{StaticResource ScenarioTestStatusStyle}" 
 								  Width="12" Height="12" VerticalAlignment="Center" Margin="3,0,0,0" BorderThickness="0"/>
 						<StackPanel.ContextMenu>
@@ -89,7 +89,8 @@
 								<MenuItem Header="Copy" Command="{Binding Path=CopyCommand}"/>
 								<MenuItem Header="Delete" Command="{Binding Path=DeleteCommand}"/>
 								<Separator />
-								<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCommandFileCommand}"/>
+								<!--<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCommandFileCommand}"/>-->
+								<MenuItem Header="Smart Editor(Preview)" Command="{Binding Path=SmartEditorCommand}"/>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>
@@ -98,7 +99,7 @@
 				</HierarchicalDataTemplate>
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ScenarioContainerViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Name}" />
+						<TextBlock Text="{Binding Name}" ToolTip="{Binding FileName}"/>
 						<Button   Style="{StaticResource ScenarioTestStatusStyle}" 
 								  Width="12" Height="12" VerticalAlignment="Center" Margin="3,0,0,0" BorderThickness="0"/>
 
@@ -129,3 +130,5 @@
 		</TreeView>
 	</Grid>
 </UserControl>
+
+	

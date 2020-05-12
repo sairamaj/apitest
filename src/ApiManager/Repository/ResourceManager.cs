@@ -140,5 +140,40 @@ namespace ApiManager.Repository
 		{
 			return Path.Combine(this._settings.ResourcesPath, "Variables");
 		}
+
+		public IEnumerable<Scenario> GetScenarios()
+		{
+			return this.GetScenarios( Path.Combine(this._settings.ResourcesPath, "Scenarios"));
+		}
+
+		private IEnumerable<Scenario> GetScenarios(string path)
+		{
+			var scenarios = new List<Scenario>();
+			foreach (var subDir in Directory.GetDirectories(path)
+			  .Where(d => !Path.GetFileName(d).StartsWith("_", StringComparison.OrdinalIgnoreCase)))
+			{
+				var containerScenario = new Scenario(subDir, true);
+				AddScenarios(containerScenario, subDir);
+				scenarios.Add(containerScenario);
+			}
+
+			return scenarios;
+		}
+
+		private void AddScenarios(Scenario container, string path)
+		{
+			var scenarios = Directory.GetFiles(path, "*.txt")
+				.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
+			  .Select(f => new Scenario(f)).ToList();
+			scenarios.ToList().ForEach(s => container.AddScenario(s));
+
+			foreach (var subDir in Directory.GetDirectories(path))
+			{
+				var subContainer = new Scenario(subDir, true);
+				AddScenarios(subContainer, subDir);
+				container.AddScenario(subContainer);
+			}
+		}
+
 	}
 }

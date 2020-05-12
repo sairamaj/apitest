@@ -19,5 +19,6 @@ namespace ApiManager.Repository
 		string GetVariableGroupPath();
 		IEnumerable<VariableGroupData> GetVariableGroupData();
 		string SaveApiRequestPayload(string content, string name, string method);
+		IEnumerable<Scenario> GetScenarios();
 	}
 }
