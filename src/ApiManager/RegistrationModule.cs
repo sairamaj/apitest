@@ -23,6 +23,7 @@ namespace ApiManager
 			builder.RegisterType<ResourceManager>().As<IResourceManager>().SingleInstance();
 			builder.RegisterType<DataRepository>().As<IDataRepository>().SingleInstance();
 			builder.RegisterType<MessageListener>().As<IMessageListener>();
+			builder.RegisterType<ApiSpecRepository>().As<IApiSpecRepository>(); 
 			builder.RegisterType<ApiTestConsoleCommunicator>().As<IApiTestConsoleCommunicator>();
 		}
 	}

@@ -63,6 +63,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApiConfigEditing\ViewModels\ApiCommandViewModel.cs" />
+    <Compile Include="ApiConfigEditing\ViewModels\ApiRouteInfoViewModel.cs" />
+    <Compile Include="ApiConfigEditing\ViewModels\EditorViewModel.cs" />
+    <Compile Include="ApiConfigEditing\ViewModels\PathViewModel.cs" />
+    <Compile Include="ApiConfigEditing\Views\ApiCommandView.xaml.cs">
+      <DependentUpon>ApiCommandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApiConfigEditing\Views\ApiSpecView.xaml.cs">
+      <DependentUpon>ApiSpecView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApiConfigEditing\Views\EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Asserts\Model\AssertData.cs" />
     <Compile Include="Asserts\ViewModels\AssertContainerViewModel.cs" />
     <Compile Include="Asserts\ViewModels\AssertViewModel.cs" />
@@ -118,8 +131,10 @@
     </Compile>
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Report\ReportGenerator.cs" />
+    <Compile Include="Repository\ApiSpecRepository.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
     <Compile Include="Repository\CommandFormatter.cs" />
+    <Compile Include="Repository\IApiSpecRepository.cs" />
     <Compile Include="Repository\ICommandExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
@@ -230,6 +245,7 @@
       <DependentUpon>ScriptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="TempTest.cs" />
     <Compile Include="TraceLogger.cs" />
     <Compile Include="Utils\UiHelper.cs" />
     <Compile Include="Variables\Model\VariableGroupData.cs" />
@@ -321,6 +337,18 @@
     <Compile Include="Variables\Views\VariableView.xaml.cs">
       <DependentUpon>VariableView.xaml</DependentUpon>
     </Compile>
+    <Page Include="ApiConfigEditing\Views\ApiCommandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ApiConfigEditing\Views\ApiSpecView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ApiConfigEditing\Views\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Asserts\Views\AssertContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -661,6 +689,12 @@
       <Version>2.9.8</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi">
+      <Version>1.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi.Readers">
+      <Version>1.1.4</Version>
     </PackageReference>
     <PackageReference Include="NewtonSoft.JSON">
       <Version>12.0.3</Version>
