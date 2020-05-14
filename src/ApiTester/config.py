@@ -29,7 +29,8 @@ class Config:
                     path = self.config[item][route].get('path', None)
                     paths[route] = ApiInfo(item, route,  path,  baseUrl,
                         self.config[item][route].get('body', None), 
-                        self.config[item][route].get('headers', None))
+                        self.config[item][route].get('headers', None),
+                        self.config[item][route].get('plugin', None))
             apiInfos[item] = paths
         return apiInfos
 

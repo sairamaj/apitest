@@ -26,7 +26,7 @@ from http_request2 import HttpRequest2
 from http_requestdata import HttpRequestData
 from publish.publisher import Publisher
 from functionevaluator import FuncEvaluator
-
+from resource_provider import ResourceProvider
 
 class ExecutorRequest:
     def __init__(self, command, apiInfo, payLoad, method, parameterName=None, parameterValue=None):
@@ -63,6 +63,41 @@ class AccessTokenExecutor(ICommand):
             raise ValueError(
                 f"{type(executorRequest)} is not of ApiExecutorRequest")
         printInfo(f"executing: {executorRequest.apiInfo.baseUrl}")
+        print(f'__________ {executorRequest.apiInfo.plugin}__________________')
+
+        oauth = OAuth(executorRequest.apiInfo)
+        try:
+            if executorRequest.apiInfo.plugin == None:
+                self.oauth_execute(executorRequest)
+                response = oauth.getAccessToken()
+            else:
+                response = self.plugin_execute(executorRequest)
+            
+            self.property_bag.last_http_request = HttpRequest(oauth.response)
+            self.publisher.apiresult(
+                response, self.property_bag.session_name)
+            pprint(response)
+            self.property_bag.access_token = response["access_token"]
+        except Exception as e:
+            self.publisher.apiresult(
+                oauth.response, self.property_bag.session_name)
+            self.property_bag.last_http_request = HttpRequest(oauth.response)
+            raise
+
+
+    def plugin_execute(self, executorRequest):
+        script = executorRequest.apiInfo.plugin.get('name')
+        js_file = ResourceProvider(
+            self.property_bag.resource_path).js_filepath(script)
+
+        js = JsExecutor(js_file)
+        response = js.execute(executorRequest.apiInfo)
+        print('++++++++ plugin +++++++++++++++++')
+        pprint(response)
+        print('+++++++++++++++++++++++++')
+        return response
+
+    def oauth_execute(self, executorRequest):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
@@ -249,7 +284,7 @@ class ManagementCommandExecutor(ICommand):
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         if executorRequest.request == "bangcommands":
             self.publisher.managementInfo(self.property_bag.session_name,
-                                     "bangcommands", getCommandsInfo())
+                                          "bangcommands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
             self.publisher.managementInfo(self.property_bag.session_name,
                                           "apicommands", self.get_api_json(executorRequest.apis))
@@ -274,10 +309,11 @@ class ManagementCommandExecutor(ICommand):
                 route = {}
                 route["name"] = route_name
                 routes.append(route)
-                #routes.append(path)
+                # routes.append(path)
             command["routes"] = routes
             config.append(command)
         return config
+
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):

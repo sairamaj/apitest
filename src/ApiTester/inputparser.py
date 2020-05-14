@@ -111,7 +111,7 @@ class ApiCommandInputParser(InputParser):
             foundApiInfo.headers, property_bag.properties, property_bag.user_input)
 
         apiInfoWithData = ApiInfo(
-            foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
+            foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders, foundApiInfo.plugin)
         jsonData = ""
         if method in ['post','patch','put'] :
             if isFunc(filename):

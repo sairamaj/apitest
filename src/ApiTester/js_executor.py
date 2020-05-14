@@ -10,6 +10,12 @@ class JsExecutor:
         context['request'] = request
         jsFile.before_execute(context)
 
+    def execute(self, apiInfo):
+        print(f'executing:{apiInfo.baseUrl}')
+        _, jsFile = js2py.run_file(self.js_file)
+        context = {}
+        return jsFile.post(context)
+        
     def execute_postprocess(self, request, response, script_args):
         _, jsFile = js2py.run_file(self.js_file)
         context = {}

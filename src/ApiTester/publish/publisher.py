@@ -21,6 +21,7 @@ class Publisher:
             print(f'exception in log ignoring.{e}')
 
     def apiresult(self, response, sessionName, request_id=""):
+        self.debug_api(response)
         try:
             bodyString = response.request.body
 
@@ -157,7 +158,7 @@ class Publisher:
             print(f'exception in jsExecuteInfo. ignoring. {str(e)}')
 
     def debug_api(self, response):
-        pprint('_________________')
+        pprint('_____ debug_api_begin____________')
         pprint(response)
         if hasattr(response, '__dict__'):
             pprint(response.__dict__)
@@ -165,4 +166,4 @@ class Publisher:
         if hasattr(response, 'request'):
             if hasattr(response.request, '__dict__'):
                 pprint(response.request.__dict__)
-        pprint('_________________')
+        pprint('_______debug_api_end__________')

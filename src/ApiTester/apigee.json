@@ -11,7 +11,22 @@
             "headers": {
                 "Authorization": "Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0"
             }
+        },
+        "password_custom": {
+            "path": "",
+            "body": {
+                "grant_type": "password",
+                "username": "{{username}}",
+                "password": "{{password}}"
+            },
+            "headers": {
+                "Authorization": "Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0"
+            },
+            "plugin":{
+                "name" : "access.js"
+            }
         }
+
     },
     "apis": {
         "baseurl": "https://api.enterprise.apigee.com/v1/organizations/{{org_name}}",
