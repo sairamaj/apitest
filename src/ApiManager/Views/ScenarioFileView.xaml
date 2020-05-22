@@ -37,6 +37,15 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+
+		<Style x:Key="ResourcesMenuItem">
+			<Setter Property="Control.Visibility" Value="Visible" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ResourcesCount}" Value="0" >
+					<Setter Property="Control.Visibility" Value="Hidden" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -91,6 +100,17 @@
 								<Separator />
 								<!--<MenuItem Header="Open in Notepad" Command="{Binding Path=EditCommandFileCommand}"/>-->
 								<MenuItem Header="Smart Editor(Preview)" Command="{Binding Path=SmartEditorCommand}"/>
+								<MenuItem Header="Resources" 
+										  ItemsSource="{Binding Resources}" 
+										  DisplayMemberPath="Name"
+										  Style="{StaticResource ResourcesMenuItem}"
+										  >
+									<MenuItem.ItemContainerStyle>
+										<Style TargetType="{x:Type MenuItem}">
+											<Setter Property="Command" Value="{Binding ResourceCommand}" />
+										</Style>
+									</MenuItem.ItemContainerStyle>
+								</MenuItem>
 							</ContextMenu>
 						</StackPanel.ContextMenu>
 					</StackPanel>

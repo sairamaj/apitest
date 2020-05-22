@@ -198,6 +198,7 @@
     <Compile Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml.cs">
       <DependentUpon>CreateScenarioLineItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\ScenarioCommandParser.cs" />
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />
     <Compile Include="ScenarioEditing\ScenarioParser.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="ViewModels\ScenarioBaseViewModel.cs" />
     <Compile Include="ViewModels\ScenarioContainerViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioResourceViewModel.cs" />
     <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
     <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
