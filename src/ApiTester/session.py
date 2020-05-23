@@ -66,7 +66,7 @@ class Session:
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
                     if command == "!return":
-                        return  # stop the batch commands
+                        break  # stop the batch commands
                     final_command = transform(
                         {"command": command}, self.property_bag.properties, self.property_bag.user_input)
                     try:

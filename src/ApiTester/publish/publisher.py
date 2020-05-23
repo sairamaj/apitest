@@ -20,7 +20,7 @@ class Publisher:
         except Exception as e:
             print(f'exception in log ignoring.{e}')
 
-    def apiresult(self, response, sessionName, request_id=""):
+    def apiresult(self, response, sessionName, id):
         try:
             bodyString = response.request.body
 
@@ -29,7 +29,7 @@ class Publisher:
 
             data = "api|" + json.dumps({
                 "session": sessionName,
-                "requestid": request_id,
+                "id": id,
                 "url": response.request.url,
                 "method": response.request.method,
                 "httpcode": response.status_code,
@@ -48,7 +48,7 @@ class Publisher:
 
             output_path = self.properties.get('output', None)
             if output_path != None:
-                FilePublisher(output_path).api_data(data)
+                FilePublisher(output_path).api_data(data, id)
 
             pipeServer.send(data)
 
@@ -75,9 +75,10 @@ class Publisher:
         except Exception as e:
             print(f'exception in extractInfo. ignoring {e}.')
 
-    def assertInfo(self, sessionName, variable_name, expected, actual, success, message):
+    def assertInfo(self, sessionName, variable_name, expected, actual, success, message, id):
         data = {
             "session": sessionName,
+            "id" : id,
             "variable": variable_name,
             "expected": expected,
             "actual": actual,
@@ -90,7 +91,7 @@ class Publisher:
 
             output_path = self.properties.get('output', None)
             if output_path != None:
-                FilePublisher(output_path).assert_data(info)
+                FilePublisher(output_path).assert_data(info, id, success)
 
             pipeServer.send(info)
         except Exception as e:

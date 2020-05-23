@@ -66,15 +66,17 @@ class AccessTokenExecutor(ICommand):
         oauth = OAuth(executorRequest.apiInfo)
         try:
             response = oauth.getAccessToken()
-            self.property_bag.last_http_request = HttpRequest(oauth.response)
+            self.property_bag.last_http_request = HttpRequest(
+                oauth.response, executorRequest.apiInfo.id)
             self.publisher.apiresult(
-                oauth.response, self.property_bag.session_name)
+                oauth.response, self.property_bag.session_name, executorRequest.apiInfo.id)
             pprint(response)
             self.property_bag.access_token = response["access_token"]
         except Exception as e:
             self.publisher.apiresult(
-                oauth.response, self.property_bag.session_name)
-            self.property_bag.last_http_request = HttpRequest(oauth.response)
+                oauth.response, self.property_bag.session_name, executorRequest.apiInfo.id)
+            self.property_bag.last_http_request = HttpRequest(
+                oauth.response, executorRequest.apiInfo.id)
             raise
 
 
@@ -103,19 +105,22 @@ class ApiExecutor(ICommand):
             else:
                 raise ValueError(f"{executorRequest.method} not supported.")
 
-            self.property_bag.last_http_request = HttpRequest(api.response)
+            self.property_bag.last_http_request = HttpRequest(
+                api.response, executorRequest.apiInfo.id)
 
             self.publisher.apiresult(
-                api.response, self.property_bag.session_name)
+                api.response, self.property_bag.session_name, executorRequest.apiInfo.id)
             pprint(response)
         except ApiException as ae:
-            self.property_bag.last_http_request = HttpRequest(api.response)
+            self.property_bag.last_http_request = HttpRequest(
+                api.response, executorRequest.apiInfo.id)
             self.publisher.apiresult(
-                api.response, self.property_bag.session_name)
+                api.response, self.property_bag.session_name, executorRequest.apiInfo.id)
         except Exception as e:
-            self.property_bag.last_http_request = HttpRequest(api.response)
+            self.property_bag.last_http_request = HttpRequest(
+                api.response, executorRequest.apiInfo.id)
             self.publisher.apiresult(
-                api.response, self.property_bag.session_name)
+                api.response, self.property_bag.session_name, executorRequest.apiInfo.id)
             raise
         finally:
             pass
@@ -249,7 +254,7 @@ class ManagementCommandExecutor(ICommand):
                 f"{type(executorRequest)} is not of ManagementCommandExecutorRequest")
         if executorRequest.request == "bangcommands":
             self.publisher.managementInfo(self.property_bag.session_name,
-                                     "bangcommands", getCommandsInfo())
+                                          "bangcommands", getCommandsInfo())
         elif executorRequest.request == "apicommands":
             self.publisher.managementInfo(self.property_bag.session_name,
                                           "apicommands", self.get_api_json(executorRequest.apis))
@@ -274,10 +279,11 @@ class ManagementCommandExecutor(ICommand):
                 route = {}
                 route["name"] = route_name
                 routes.append(route)
-                #routes.append(path)
+                # routes.append(path)
             command["routes"] = routes
             config.append(command)
         return config
+
 
 class WaitForUserInputCommandExecutor(ICommand):
     def __init__(self, property_bag):
@@ -358,11 +364,11 @@ class AssertCommandExecutor(ICommand):
                 executorRequest.value), f"Did not match. expected:{executorRequest.value} actual:{actual}"
         except AssertionError as e:
             self.publisher.assertInfo(self.property_bag.session_name,
-                                      json_path, expected, actual, False, str(e))
+                                      json_path, expected, actual, False, str(e), self.property_bag.last_http_request.id)
             raise
 
         self.publisher.assertInfo(self.property_bag.session_name,
-                                  json_path, expected, actual, True, "success")
+                                  json_path, expected, actual, True, "success", self.property_bag.last_http_request.id)
 
 
 class AssertsJsRequestCommandExecutor(ICommand):

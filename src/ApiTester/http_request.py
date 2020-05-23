@@ -1,6 +1,7 @@
 class HttpRequest:
-    def __init__(self, apiResponse):
+    def __init__(self, apiResponse, id):
 
+        self.id = id
         if apiResponse == None:
             self.request = ""
             self.response = ""
