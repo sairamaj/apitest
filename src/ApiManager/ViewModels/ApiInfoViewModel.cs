@@ -99,6 +99,35 @@ namespace ApiManager.ViewModels
 		public ICommand PopResponseCommand { get; set; }
 		public ICommand OpenUrlCommand { get; set; }
 
+		public string RequestBody
+		{
+			get
+			{
+				if (this.ApiInfo.Request.Body == null)
+				{
+					return string.Empty;
+				}
+
+				return this.SafeJsonFormat(this.ApiInfo.Request.Body);
+			}
+			set
+			{
+				// require for avalon editor.
+			}
+		}
+
+		public string ResponseContent
+		{
+			get
+			{
+				return this.SafeJsonFormat(this.ApiInfo.Response.Content);
+			}
+			set
+			{
+				// require for avalon editor.
+			}
+		}
+
 		public bool IsSuccess => this.ApiInfo.HttpCode >= 200 && this.ApiInfo.HttpCode <= 299;
 
 		static string SerializeToken(String jwtToken)

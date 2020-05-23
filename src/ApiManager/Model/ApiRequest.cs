@@ -21,6 +21,8 @@ namespace ApiManager.Model
 		public Request Request { get; set; }
 		public Response Response { get; set; }
 
+		public string FriendlyName => $"{Method} {RelativeUrl} {HttpCode}";
+
 		public string RelativeUrl
 		{
 			get
