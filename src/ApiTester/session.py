@@ -79,5 +79,7 @@ class Session:
                         printError(str(ae))
         if self.property_bag.output != None:
             print('generating report')
-            results_file = os.path.join(self.property_bag.output, "results.xml")
+            batch_file_name = os.path.basename(fileName)
+            name = os.path.splitext(batch_file_name)[0]
+            results_file = os.path.join(self.property_bag.output, f"{name}_junit.xml")
             Reporter(self.property_bag.output).generate_junit(results_file)
