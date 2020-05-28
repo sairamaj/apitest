@@ -132,6 +132,7 @@
     <Compile Include="Repository\IResourceManager.cs" />
     <Compile Include="Resources\Model\ResourceData.cs" />
     <Compile Include="Resources\ViewModels\ResourceContainerViewModel.cs" />
+    <Compile Include="Resources\ViewModels\ResourceFolderViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Resources\ViewModels\ViewResourceViewModel.cs" />
     <Compile Include="Resources\Views\ResourceContainerView.xaml.cs">
@@ -570,6 +571,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Configuration\Resources\Post\create_developer.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\Resources\Patch\create_developer.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\Resources\Patch\sub_folder\test.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Configuration\Resources\Put\testput.json">

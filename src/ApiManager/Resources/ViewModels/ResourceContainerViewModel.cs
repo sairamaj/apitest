@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ApiManager.Repository;
+using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Resources.ViewModels
 {
@@ -8,9 +9,11 @@ namespace ApiManager.Resources.ViewModels
 	{
 		public ResourceContainerViewModel(IResourceManager resourceManager, string method)
 		{
-			this.Resources = resourceManager.GetResources(method).Select(a => new ResourceViewModel(a));
+			var resources = resourceManager.GetResources(method).ToList();
+			this.Resources = resources.Where(r => !r.IsContainer).Select(r => new ResourceViewModel(r));
+			this.Resources = this.Resources.Union(resources.Where(r => r.IsContainer).Select(r => new ResourceFolderViewModel(r)));
 		}
 
-		public IEnumerable<ResourceViewModel> Resources { get; set; }
+		public IEnumerable<TreeViewItemViewModel> Resources { get; set; }
 	}
 }

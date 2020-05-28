@@ -108,13 +108,12 @@ namespace ApiManager.Repository
 		public IEnumerable<ResourceData> GetResources(string method)
 		{
 			var path = Path.Combine(this._settings.ResourcesPath, method);
-			if (Directory.Exists(path))
-			{
-				return Directory.GetFiles(path)
-					.Select(f => new ResourceData(Path.GetFileNameWithoutExtension(f), f));
-			}
 
-			return new List<ResourceData>();
+			var rootResourcesData = Directory.GetFiles(path, "*.*")
+				.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
+			  .Select(f => new ResourceData(f)).ToList();
+
+			return rootResourcesData.Union(GetResourcesInternal(path));
 		}
 
 		public string SaveApiRequestPayload(string content, string name, string method)
@@ -160,6 +159,20 @@ namespace ApiManager.Repository
 			return scenarios;
 		}
 
+		private IEnumerable<ResourceData> GetResourcesInternal(string path)
+		{
+			var resourceData = new List<ResourceData>();
+			foreach (var subDir in Directory.GetDirectories(path)
+			  .Where(d => !Path.GetFileName(d).StartsWith("_", StringComparison.OrdinalIgnoreCase)))
+			{
+				var containerResource = new ResourceData(subDir, true);
+				AddResourceData(containerResource, subDir);
+				resourceData.Add(containerResource);
+			}
+
+			return resourceData;
+		}
+
 		private void AddScenarios(Scenario container, string path)
 		{
 			var scenarios = Directory.GetFiles(path, "*.txt")
@@ -172,6 +185,21 @@ namespace ApiManager.Repository
 				var subContainer = new Scenario(subDir, true);
 				AddScenarios(subContainer, subDir);
 				container.AddScenario(subContainer);
+			}
+		}
+
+		private void AddResourceData(ResourceData container, string path)
+		{
+			var resourcesData = Directory.GetFiles(path, "*.*")
+				.Where(s => !Path.GetFileName(s).StartsWith("_", StringComparison.OrdinalIgnoreCase))
+			  .Select(f => new ResourceData(f)).ToList();
+			resourcesData.ToList().ForEach(s => container.Add(s));
+
+			foreach (var subDir in Directory.GetDirectories(path))
+			{
+				var subContainer = new ResourceData(subDir, true);
+				AddResourceData(subContainer, subDir);
+				container.Add(subContainer);
 			}
 		}
 

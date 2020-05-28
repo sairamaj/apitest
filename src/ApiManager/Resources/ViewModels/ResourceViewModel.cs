@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Input;
 using ApiManager.Resources.Model;
 using ApiManager.Resources.Views;
-using ApiManager.ScenarioEditing.CommandEditing.Views;
 using ApiManager.Utils;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Resources.ViewModels
 {
-	class ResourceViewModel : CoreViewModel
+	class ResourceViewModel : TreeViewItemViewModel
 	{
-		public ResourceViewModel(ResourceData resourceData)
+		public ResourceViewModel(ResourceData resourceData):base(null, resourceData.Name, true)
 		{
 			ResourceData = resourceData;
 			Action showDetailsAction = () =>
@@ -28,7 +26,7 @@ namespace ApiManager.Resources.ViewModels
 			};
 
 			this.EditCommandFileCommand = new DelegateCommand(showDetailsAction);
-
+			this.IsExpanded = true;
 		}
 
 		public ResourceData ResourceData { get; }
