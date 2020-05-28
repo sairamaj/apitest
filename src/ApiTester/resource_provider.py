@@ -1,5 +1,5 @@
 import os
-
+import glob
 
 class ResourceProvider:
     def __init__(self, resources_path):
@@ -9,17 +9,25 @@ class ResourceProvider:
         self.variables_path = os.path.join(self.resources_path, 'variables')
 
     def js_filepath(self, name):
-        return os.path.join(self.scripts_path, name)
+        return self.find_resoure_file(self.scripts_path, name)
 
     def asserts_filepath(self, name):
-        return os.path.join(self.asserts_path, name)
+        return self.find_resoure_file(self.asserts_path, name)
 
     def variables_filepath(self, name):
-        return os.path.join(self.variables_path, name)
+        return self.find_resoure_file(self.variables_path, name)
 
     def api_filepath_for_http_verb(self, name, verb):
         http_path = os.path.join(self.resources_path, verb)
-        return os.path.join(http_path, name)
+        return self.find_resoure_file(http_path, name)
+
+    def find_resoure_file(self, path, name):
+        file_name = f"{path}/**/{name}"
+        print(file_name)
+        found = glob.glob(file_name, recursive=True)
+        if len(found) == 0:
+            raise ValueError(f"{name} not found in {path} or its subdirectories")
+        return found[0]
 
 if __name__ == '__main__':
-    print(ResourceProvider(r'c:\temp').js_filepath('validate.js'))
+    print(ResourceProvider(r'c:\temp').api_filepath_for_http_verb('patch.json', 'get'))
