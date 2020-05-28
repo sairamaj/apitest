@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using ApiManager.ApiConfigEditing.ViewModels;
 using ApiManager.ApiConfigEditing.Views;
@@ -11,11 +13,17 @@ namespace ApiManager.ViewModels
 {
 	class CommandInfoViewModel : TreeViewItemViewModel
 	{
-		public CommandInfoViewModel(ApiCommand apiCommand, IEnumerable<string> subCommands)
+		private readonly Action<ApiRoute> onApiRoute;
+
+		public CommandInfoViewModel(
+			ApiCommand apiCommand, 
+			IEnumerable<string> subCommands,
+			Action<ApiRoute> onApiRoute)
 			: base(null, apiCommand.Name, true)
 		{
 			ApiCommand = apiCommand;
 			this.SubCommands = subCommands;
+			this.onApiRoute = onApiRoute;
 			this.IsExpanded = true;
 			this.AddApiRouteCommand = new DelegateCommand(() =>
 			{
@@ -44,6 +52,17 @@ namespace ApiManager.ViewModels
 			{
 				return;
 			}
+
+			var list = this.ApiCommand.Routes.ToList();
+			var apiRoute = new ApiRoute
+			{
+				Name = vm.Name,
+				Path = vm.Path
+			};
+			list.Add(apiRoute);
+			this.ApiCommand.Routes = list;
+			this.Children.Add(new SubCommandInfoViewModel(vm.Name));
+			this.onApiRoute(apiRoute);
 		}
 
 	}
