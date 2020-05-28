@@ -19,7 +19,7 @@ namespace ApiManager.ViewModels
 	class ScenarioBaseViewModel : CommandTreeViewModel
 	{
 		protected Action<ScenarioAction, Scenario> _onEvent;
-
+		private IEnumerable<ScenarioResourceViewModel> _scenarioResources;
 		public ScenarioBaseViewModel(
 			TreeViewItemViewModel parent,
 			ApiInfo apiInfo,
@@ -42,6 +42,7 @@ namespace ApiManager.ViewModels
 				() => UiHelper.SafeAction(this.DeleteScenario, "Delete Scenario"));
 			this.SmartEditorCommand = new DelegateCommand(
 				async () => await this.ShowSmartEditor().ConfigureAwait(false));
+
 		}
 
 		public ScenarioTestStatus TestStatus { get; private set; }
@@ -51,6 +52,26 @@ namespace ApiManager.ViewModels
 		public ICommand RelvealInExplorerCommand { get; }
 		public ICommand DeleteCommand { get; }
 		public ICommand SmartEditorCommand { get; }
+		public IEnumerable<ScenarioResourceViewModel> Resources
+		{
+			get
+			{
+				if (this._scenarioResources == null)
+				{
+					this._scenarioResources = (new ScenarioCommandParser(this.Scenario.FileName)
+						.ApiScenarios
+						.Where(s =>
+						{
+							return new string[] { "post", "put", "patch" }.Contains(s.Method);
+						})
+						.Select(s => new ScenarioResourceViewModel(s))).ToList();
+				}
+
+				return this._scenarioResources;
+			}
+		}
+
+		public int ResourcesCount => this.Resources.Count();
 
 		public void UpdateStatus(ScenarioTestStatus status)
 		{

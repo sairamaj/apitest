@@ -126,8 +126,12 @@
     <Compile Include="Pipes\IMessageListener.cs" />
     <Compile Include="Pipes\PipeDataProcessor.cs" />
     <Compile Include="PopUp\ViewModels\ApiResponsePoupViewModel.cs" />
+    <Compile Include="PopUp\ViewModels\ScenarioTestPoupViewModel.cs" />
     <Compile Include="PopUp\Views\ApiResponsePoupWindow.xaml.cs">
       <DependentUpon>ApiResponsePoupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PopUp\Views\ScenarioTestPoupWindow.xaml.cs">
+      <DependentUpon>ScenarioTestPoupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Report\ReportGenerator.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="ScenarioEditing\NewLineItem\Views\CreateScenarioLineItemView.xaml.cs">
       <DependentUpon>CreateScenarioLineItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenarioEditing\ScenarioCommandParser.cs" />
     <Compile Include="ScenarioEditing\ScenarioEditingHelper.cs" />
     <Compile Include="ScenarioEditing\ScenarioItemDataHeaderTemplateSelector.cs" />
     <Compile Include="ScenarioEditing\ScenarioParser.cs" />
@@ -269,6 +274,7 @@
     <Compile Include="ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="ViewModels\ScenarioBaseViewModel.cs" />
     <Compile Include="ViewModels\ScenarioContainerViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioResourceViewModel.cs" />
     <Compile Include="ViewModels\SubCommandInfoViewModel.cs" />
     <Compile Include="ViewModels\CommandInfoViewModel.cs" />
     <Compile Include="ViewModels\ExtractVariableViewModel.cs" />
@@ -358,6 +364,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopUp\Views\ApiResponsePoupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PopUp\Views\ScenarioTestPoupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

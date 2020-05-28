@@ -66,7 +66,7 @@ class Session:
                 command = line.rstrip("\n")
                 if len(command) > 0 and command.startswith("#") == False:
                     if command == "!return":
-                        return  # stop the batch commands
+                        break  # stop the batch commands
                     final_command = transform(
                         {"command": command}, self.property_bag.properties, self.property_bag.user_input)
                     try:
@@ -79,5 +79,7 @@ class Session:
                         printError(str(ae))
         if self.property_bag.output != None:
             print('generating report')
-            results_file = os.path.join(self.property_bag.output, "results.xml")
+            batch_file_name = os.path.basename(fileName)
+            name = os.path.splitext(batch_file_name)[0]
+            results_file = os.path.join(self.property_bag.output, f"{name}_junit.xml")
             Reporter(self.property_bag.output).generate_junit(results_file)

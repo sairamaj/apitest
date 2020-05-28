@@ -337,6 +337,7 @@
 				<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
 					<Button Content="Clear" Command="{Binding ClearCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
 					<Button Content="Report" Command="{Binding GenerateReportCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
+					<Button Content="PopUp" Command="{Binding ScenarioResultsPopupCommand}" Width="60" Height="25" Margin="3,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ClearButtonStyle}"/>
 				</StackPanel>
 				<Grid Grid.Row="1" Grid.Column="0">
 					<ListView 
