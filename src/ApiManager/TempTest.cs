@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using ApiManager.ApiConfigEditing.ViewModels;
 using ApiManager.ApiConfigEditing.Views;
 using ApiManager.Model;
@@ -15,6 +16,17 @@ namespace ApiManager
 		{
 			this.repository = repository;
 			this.dataRepository = dataRepository;
+		}
+
+		public void AddRouteTest()
+		{
+			AddRouteWindow win = new AddRouteWindow();
+			var vm = new AddRouteWindowViewModel(win);
+			win.DataContext = vm;
+			win.ShowDialog();
+			MessageBox.Show(vm.Name);
+			MessageBox.Show(vm.Path);
+			System.Environment.Exit(-1);
 		}
 
 		public void TestConfigEditing()

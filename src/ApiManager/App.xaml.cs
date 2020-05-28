@@ -42,7 +42,10 @@ namespace ApiManager
 
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 				ServiceLocator.Initialize(serviceLocator);      // todo: need to revisit this (added to avoid passing locator to all ctors)
-				// new TempTest(serviceLocator.Resolve<IApiSpecRepository>(), serviceLocator.Resolve<IDataRepository>()).TestConfigEditing();
+																// new TempTest(serviceLocator.Resolve<IApiSpecRepository>(), serviceLocator.Resolve<IDataRepository>()).TestConfigEditing();
+				//new TempTest(serviceLocator.Resolve<IApiSpecRepository>(),
+				//	serviceLocator.Resolve<IDataRepository>()).
+				//	AddRouteTest();
 
 				var win = new MainWindow
 				{

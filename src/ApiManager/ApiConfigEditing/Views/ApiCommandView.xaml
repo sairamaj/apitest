@@ -20,7 +20,15 @@
 				<HierarchicalDataTemplate DataType="{x:Type viewModel:ApiRouteInfoViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" />
+
+						<StackPanel.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="MenuItemHere" Command="{Binding Path=AddApiRouteCommand}"/>
+							</ContextMenu>
+						</StackPanel.ContextMenu>
+
 					</StackPanel>
+
 				</HierarchicalDataTemplate>
 
 			</TreeView.Resources>

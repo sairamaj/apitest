@@ -1,0 +1,43 @@
+﻿<Window x:Class="ApiManager.ApiConfigEditing.Views.AddRouteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApiManager.ApiConfigEditing.Views"
+		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Add New Route" Height="250" Width="400">
+	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="80"/>
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<TextBlock Text="Name:" HorizontalAlignment="Right" 
+				   VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="25"
+				   FontWeight="Bold"/>
+		<TextBox Text="{Binding Name}" HorizontalAlignment="Left" Controls:TextBoxHelper.Watermark="Route name(ex: petbyid)(friendly name)"  
+				 VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" 
+				 Width="200" Height="25" Margin="3,0,0,0"/>
+		<TextBlock Text="Path:" HorizontalAlignment="Right" 
+				   VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Height="25"
+				   FontWeight="Bold"/>
+		<TextBox Text="{Binding Path}" HorizontalAlignment="Left" Controls:TextBoxHelper.Watermark="Api path(ex:/pet/{id})"  
+				 VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" 
+				 Width="200" Height="25" Margin="3,0,0,0"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" >
+			<Button Content="Ok" Width="80" Height="25" 
+					VerticalContentAlignment="Center" 
+					Command="{Binding OkCommand}" 
+					/>
+			<Button Content="Cancel" Width="80" Height="25" Margin="3,0,0,0" 
+					VerticalContentAlignment="Center"
+					Command="{Binding CancelCommand}"/>
+		</StackPanel>
+	</Grid>
+</Window>

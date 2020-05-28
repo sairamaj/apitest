@@ -63,10 +63,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApiConfigEditing\ViewModels\AddRouteWindowViewModel.cs" />
     <Compile Include="ApiConfigEditing\ViewModels\ApiCommandViewModel.cs" />
     <Compile Include="ApiConfigEditing\ViewModels\ApiRouteInfoViewModel.cs" />
     <Compile Include="ApiConfigEditing\ViewModels\EditorViewModel.cs" />
     <Compile Include="ApiConfigEditing\ViewModels\PathViewModel.cs" />
+    <Compile Include="ApiConfigEditing\Views\AddRouteWindow.xaml.cs">
+      <DependentUpon>AddRouteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ApiConfigEditing\Views\ApiCommandView.xaml.cs">
       <DependentUpon>ApiCommandView.xaml</DependentUpon>
     </Compile>
@@ -343,6 +347,10 @@
     <Compile Include="Variables\Views\VariableView.xaml.cs">
       <DependentUpon>VariableView.xaml</DependentUpon>
     </Compile>
+    <Page Include="ApiConfigEditing\Views\AddRouteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ApiConfigEditing\Views\ApiCommandView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

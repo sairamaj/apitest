@@ -59,6 +59,13 @@
 				<HierarchicalDataTemplate DataType="{x:Type viewmodels:CommandInfoViewModel}"  ItemsSource="{Binding Children}">
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" />
+
+						<StackPanel.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="Add Route" Command="{Binding Path=AddApiRouteCommand}"/>
+							</ContextMenu>
+						</StackPanel.ContextMenu>
+
 					</StackPanel>
 				</HierarchicalDataTemplate>
 				<HierarchicalDataTemplate DataType="{x:Type viewmodels:SubCommandInfoViewModel}"  ItemsSource="{Binding Children}">
