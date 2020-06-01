@@ -72,6 +72,10 @@
     <Compile Include="Asserts\Views\AssertsView.xaml.cs">
       <DependentUpon>AssertsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\ViewModels\NewItemWindowViewModel.cs" />
+    <Compile Include="Common\Views\NewItemWindow.xaml.cs">
+      <DependentUpon>NewItemWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Executor.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\ScenariosExtension.cs" />
@@ -136,6 +140,9 @@
     <Compile Include="Resources\ViewModels\ResourceFolderViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Resources\ViewModels\ViewResourceViewModel.cs" />
+    <Compile Include="Resources\Views\NewResourceWindow.xaml.cs">
+      <DependentUpon>NewResourceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Views\ResourceContainerView.xaml.cs">
       <DependentUpon>ResourceContainerView.xaml</DependentUpon>
     </Compile>
@@ -337,11 +344,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Views\NewItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PopUp\Views\ApiResponsePoupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopUp\Views\ScenarioTestPoupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Views\NewResourceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

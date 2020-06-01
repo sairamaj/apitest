@@ -6,8 +6,29 @@
              xmlns:local="clr-namespace:ApiManager.Resources.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../../images/refresh.png" />
+	</UserControl.Resources>
+	
 	<Grid>
-		<local:ResourceDataView DataContext="{Binding Resources}" />
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">
+		<Button  Background="{StaticResource RefreshButtonImageBrush}" 
+					 Width="20" Height="20" 
+					 Command="{Binding RefreshResourcesCommand}" 
+					 VerticalAlignment="Center"
+					 HorizontalAlignment="Right"
+					 DockPanel.Dock="Right"
+					 Margin="3,0,0,0"
+					 ToolTip="Refreshes"
+				/>
+		</StackPanel>
+
+		<local:ResourceDataView DataContext="{Binding Resources}" Grid.Row="1" Grid.Column="0"/>
 		<Grid.ContextMenu>
 			<ContextMenu>
 				<MenuItem Header="New File" Command="{Binding Path=NewFileCommand}"/>
