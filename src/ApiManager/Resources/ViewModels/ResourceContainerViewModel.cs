@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using ApiManager.Repository;
 using ApiManager.Resources.Model;
+using ApiManager.Resources.Views;
 using ApiManager.Utils;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
@@ -34,12 +36,18 @@ namespace ApiManager.Resources.ViewModels
 			});
 
 			this.RefreshResourcesCommand = new DelegateCommand(this.Refresh);
+			this.PopOutCommand = new DelegateCommand(() => {
+				var win = new ResourcePopOutWindow();
+				win.DataContext = this;
+				win.Show();
+			});
 		}
 
 		public ObservableCollection<TreeViewItemViewModel> Resources { get; set; }
 		public ICommand NewFileCommand { get; set; }
 		public ICommand NewFolderCommand { get; set; }
 		public ICommand RefreshResourcesCommand { get; set; }
+		public ICommand PopOutCommand { get; set; }
 
 		private void Refresh()
 		{

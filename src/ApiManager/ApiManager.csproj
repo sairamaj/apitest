@@ -150,6 +150,9 @@
     <Compile Include="Resources\Views\ResourceDataView.xaml.cs">
       <DependentUpon>ResourceDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Views\ResourcePopOutWindow.xaml.cs">
+      <DependentUpon>ResourcePopOutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Views\ViewResourceWindow.xaml.cs">
       <DependentUpon>ViewResourceWindow.xaml</DependentUpon>
     </Compile>
@@ -366,6 +369,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Views\ResourceDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Views\ResourcePopOutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -651,6 +658,7 @@
     <Resource Include="images\movedown.png" />
     <Resource Include="images\moveup.png" />
     <Resource Include="images\delete.png" />
+    <Resource Include="images\popout.png" />
     <Content Include="issues.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

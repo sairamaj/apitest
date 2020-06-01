@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
+		<ImageBrush x:Key="PopOutButtonImageBrush" ImageSource="../../images/popout.png" />
 		<ImageBrush x:Key="NewFileButtonImageBrush" ImageSource="../../images/newfile.png" />
 		<ImageBrush x:Key="NewFolderButtonImageBrush" ImageSource="../../images/newfolder.png" />
 		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../../images/refresh.png" />
@@ -19,6 +20,15 @@
 		</Grid.RowDefinitions>
 
 		<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">
+			<Button  Background="{StaticResource PopOutButtonImageBrush}" 
+					 Width="20" Height="20" 
+					 Command="{Binding PopOutCommand}" 
+					 VerticalAlignment="Center"
+					 DockPanel.Dock="Right"
+					 HorizontalAlignment="Right" Margin="5,0,0,0"
+					 ToolTip="Create new resource"
+					 />
+
 			<Button  Background="{StaticResource NewFileButtonImageBrush}" 
 					 Width="20" Height="20" 
 					 Command="{Binding NewFileCommand}" 
