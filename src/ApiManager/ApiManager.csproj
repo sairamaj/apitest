@@ -131,6 +131,7 @@
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
     <Compile Include="Resources\Model\ResourceData.cs" />
+    <Compile Include="Resources\ResourceEditingHelper.cs" />
     <Compile Include="Resources\ViewModels\ResourceContainerViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceFolderViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />

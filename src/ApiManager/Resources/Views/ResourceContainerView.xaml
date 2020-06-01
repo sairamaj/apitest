@@ -7,6 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid>
-    	<local:ResourceDataView DataContext="{Binding Resources}" />
+		<local:ResourceDataView DataContext="{Binding Resources}" />
+		<Grid.ContextMenu>
+			<ContextMenu>
+				<MenuItem Header="New File" Command="{Binding Path=NewFileCommand}"/>
+				<MenuItem Header="New Folder" Command="{Binding Path=NewFolderCommand}"/>
+			</ContextMenu>
+
+		</Grid.ContextMenu>
 	</Grid>
 </UserControl>

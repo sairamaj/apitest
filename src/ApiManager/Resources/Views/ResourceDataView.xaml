@@ -27,6 +27,7 @@
 					<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>
 					<TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
 				</StackPanel>
+				
 			</HierarchicalDataTemplate>
 
 			<HierarchicalDataTemplate DataType="{x:Type viewModel:ResourceFolderViewModel}"  ItemsSource="{Binding Children}">
@@ -34,7 +35,6 @@
 					<TextBlock Text="{Binding Name}" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
-			
 		</TreeView.Resources>
 	</TreeView>
 </UserControl>
