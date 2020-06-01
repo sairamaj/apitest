@@ -9,9 +9,9 @@ using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Resources.ViewModels
 {
-	class ResourceViewModel : TreeViewItemViewModel
+	class ResourceViewModel : ResourceTreeViewModel
 	{
-		public ResourceViewModel(ResourceData resourceData):base(null, resourceData.Name, true)
+		public ResourceViewModel(ResourceData resourceData) : base(resourceData)
 		{
 			ResourceData = resourceData;
 			Action showDetailsAction = () =>

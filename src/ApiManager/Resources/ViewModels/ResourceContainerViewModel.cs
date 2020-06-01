@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using ApiManager.Repository;
+using ApiManager.Resources.Model;
+using ApiManager.Utils;
 using Wpf.Util.Core;
 using Wpf.Util.Core.Command;
+using Wpf.Util.Core.Extensions;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Resources.ViewModels
@@ -25,19 +26,11 @@ namespace ApiManager.Resources.ViewModels
 			this.Refresh();
 			this.NewFileCommand = new DelegateCommand(() =>
 			{
-				var newResource = ResourceEditingHelper.CreateNewResource(this._method, resourceManager.GetResourcePath(method));
-				if (newResource != null)
-				{
-					this.Resources.Add(new ResourceViewModel(newResource));
-				}
+				AddNewResource(parentPath => ResourceEditingHelper.CreateNewResource(method, parentPath));
 			});
 			this.NewFolderCommand = new DelegateCommand(() =>
 			{
-				var newResource = ResourceEditingHelper.CreateNewResourceFolder(this._method, resourceManager.GetResourcePath(method));
-				if (newResource != null)
-				{
-					this.Resources.Add(new ResourceFolderViewModel(newResource));
-				}
+				AddNewResource(parentPath => ResourceEditingHelper.CreateNewResourceFolder(method, parentPath));
 			});
 
 			this.RefreshResourcesCommand = new DelegateCommand(this.Refresh);
@@ -57,8 +50,60 @@ namespace ApiManager.Resources.ViewModels
 				.ToList().ForEach(r1 => this.Resources.Add(r1));
 
 			resources
-				.Where(r => r.IsContainer).Select(r => new ResourceFolderViewModel(r))
+				.Where(r => r.IsContainer).Select(r => new ResourceFolderViewModel(this._method, r))
 				.ToList().ForEach(r1 => this.Resources.Add(r1));
+		}
+
+		private void AddToChild(ResourceTreeViewModel parent, ResourceData resource)
+		{
+			if (resource == null)
+			{
+				return;
+			}
+
+			ResourceTreeViewModel newItem;
+			if (resource.IsContainer)
+			{
+				newItem = new ResourceFolderViewModel(this._method, resource);
+			}
+			else
+			{
+				newItem = new ResourceViewModel(resource);
+			}
+
+			if (parent == null)
+			{
+				this.Resources.Add(newItem);
+			}
+			else
+			{
+				parent.IsExpanded = true;
+				parent.Children.Add(newItem);
+			}
+		}
+
+		private ResourceTreeViewModel GetSelectedResource()
+		{
+			var allResources = this.Resources.Flatten(c => c.Children.OfType<ResourceTreeViewModel>());
+			foreach (var resourceViewModel in allResources.OfType<ResourceTreeViewModel>())
+			{
+				if (resourceViewModel.IsSelected)
+				{
+					return resourceViewModel;
+				}
+			}
+
+			return null;
+		}
+
+		private void AddNewResource(Func<string, ResourceData> func)
+		{
+			UiHelper.SafeAction(() =>
+			{
+				var selectedResource = GetSelectedResource();
+				var parentPath = selectedResource == null ? this._resourceManager.GetResourcePath(this._method) : selectedResource.Resource.ContainerPath;
+				AddToChild(selectedResource, func(parentPath));
+			}, "Error");
 		}
 	}
 }

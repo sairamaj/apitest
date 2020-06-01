@@ -36,7 +36,7 @@ namespace ApiManager.Resources
 		public static ResourceData CreateNewResourceFolder(string method, string parentPath)
 		{
 			var win = new NewItemWindow();
-			var vm = new NewItemWindowViewModel(win, $"New folder", name =>
+			var vm = new NewItemWindowViewModel(win, $"New {method} resource folder", name =>
 			{
 				var newDirectory = $"{parentPath}{Path.DirectorySeparatorChar}{name}";
 				if (Directory.Exists(newDirectory))
