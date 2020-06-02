@@ -38,7 +38,7 @@ namespace ApiManager.Resources.ViewModels
 			this.RefreshResourcesCommand = new DelegateCommand(this.Refresh);
 			this.PopOutCommand = new DelegateCommand(() => {
 				var win = new ResourcePopOutWindow();
-				win.DataContext = this;
+				win.DataContext = new ResourcePopOutWindowViewModel(this);
 				win.Show();
 			});
 		}
@@ -48,18 +48,12 @@ namespace ApiManager.Resources.ViewModels
 		public ICommand NewFolderCommand { get; set; }
 		public ICommand RefreshResourcesCommand { get; set; }
 		public ICommand PopOutCommand { get; set; }
+		public ResourceTreeViewModel CurrentSelectedViewModel { get; private set; }
 
 		private void Refresh()
 		{
 			this.Resources.Clear();
-			var resources = this._resourceManager.GetResources(this._method).ToList();
-			resources
-				.Where(r => !r.IsContainer).Select(r => new ResourceViewModel(r))
-				.ToList().ForEach(r1 => this.Resources.Add(r1));
-
-			resources
-				.Where(r => r.IsContainer).Select(r => new ResourceFolderViewModel(this._method, r))
-				.ToList().ForEach(r1 => this.Resources.Add(r1));
+			this._resourceManager.GetResources(this._method).ToList().ForEach(r => AddToChild(null, r));
 		}
 
 		private void AddToChild(ResourceTreeViewModel parent, ResourceData resource)
@@ -72,11 +66,11 @@ namespace ApiManager.Resources.ViewModels
 			ResourceTreeViewModel newItem;
 			if (resource.IsContainer)
 			{
-				newItem = new ResourceFolderViewModel(this._method, resource);
+				newItem = new ResourceFolderViewModel(parent, this._method, resource);
 			}
 			else
 			{
-				newItem = new ResourceViewModel(resource);
+				newItem = new ResourceViewModel(parent, resource);
 			}
 
 			if (parent == null)
@@ -88,29 +82,40 @@ namespace ApiManager.Resources.ViewModels
 				parent.IsExpanded = true;
 				parent.Children.Add(newItem);
 			}
-		}
 
-		private ResourceTreeViewModel GetSelectedResource()
-		{
-			var allResources = this.Resources.Flatten(c => c.Children.OfType<ResourceTreeViewModel>());
-			foreach (var resourceViewModel in allResources.OfType<ResourceTreeViewModel>())
+			newItem.SelectionChanged += (s, e) =>
 			{
-				if (resourceViewModel.IsSelected)
+				if (e.IsSelected)
 				{
-					return resourceViewModel;
+					if (e.TreeViewItemViewModel is ResourceTreeViewModel resourceViewModel)
+					{
+						CurrentSelectedViewModel = e.TreeViewItemViewModel as ResourceTreeViewModel;
+					}
 				}
-			}
+			};
 
-			return null;
 		}
+
+		//private ResourceTreeViewModel GetSelectedResource()
+		//{
+		//	var allResources = this.Resources.Flatten(c => c.Children.OfType<ResourceTreeViewModel>());
+		//	foreach (var resourceViewModel in allResources.OfType<ResourceTreeViewModel>())
+		//	{
+		//		if (resourceViewModel.IsSelected)
+		//		{
+		//			return resourceViewModel;
+		//		}
+		//	}
+
+		//	return null;
+		//}
 
 		private void AddNewResource(Func<string, ResourceData> func)
 		{
 			UiHelper.SafeAction(() =>
 			{
-				var selectedResource = GetSelectedResource();
-				var parentPath = selectedResource == null ? this._resourceManager.GetResourcePath(this._method) : selectedResource.Resource.ContainerPath;
-				AddToChild(selectedResource, func(parentPath));
+				var parentPath = this.CurrentSelectedViewModel == null ? this._resourceManager.GetResourcePath(this._method) : CurrentSelectedViewModel.Resource.ContainerPath;
+				AddToChild(CurrentSelectedViewModel, func(parentPath));
 			}, "Error");
 		}
 	}

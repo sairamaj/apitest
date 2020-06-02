@@ -12,7 +12,7 @@
 			<ColumnDefinition Width="4"/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-		<local:ResourceContainerView Grid.Row="0" Grid.Column="0"/>
+		<local:ResourceContainerView Grid.Row="0" Grid.Column="0" DataContext="{Binding ResourceContainerViewModel}"/>
 		<GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 		<TextBlock Grid.Row="0" Grid.Column="2" Text="content here" />
 	</Grid>

@@ -12,7 +12,8 @@ namespace ApiManager.Resources.ViewModels
 	{
 		private readonly string _method;
 
-		public ResourceFolderViewModel(string method, ResourceData resourceData) : base(resourceData)
+		public ResourceFolderViewModel(ResourceTreeViewModel parent, string method, ResourceData resourceData)
+			: base(parent, resourceData)
 		{
 			this._method = method;
 			ResourceData = resourceData;
@@ -33,13 +34,8 @@ namespace ApiManager.Resources.ViewModels
 
 		protected override void LoadChildren()
 		{
-			this.ResourceData.Children
-				.Where(r => !r.IsContainer).ToList()
-				.ForEach(r1 => this.Children.Add(new ResourceViewModel(r1)));
 
-			this.ResourceData.Children
-				.Where(r => r.IsContainer).ToList()
-				.ForEach(r1 => this.Children.Add(new ResourceFolderViewModel(this._method, r1)));
+			this.ResourceData.Children.ToList().ForEach(r => AddChild(r));
 		}
 
 		private void AddChild(ResourceData resource)
@@ -48,14 +44,20 @@ namespace ApiManager.Resources.ViewModels
 				return;
 
 			this.IsExpanded = true;
+			ResourceTreeViewModel child;
 			if (resource.IsContainer)
 			{
-				this.Children.Add(new ResourceFolderViewModel(_method, resource));
+				child = new ResourceFolderViewModel(this, _method, resource);
 			}
 			else
 			{
-				this.Children.Add(new ResourceViewModel(resource));
+				child = new ResourceViewModel(this, resource);
 			}
+			this.Children.Add(child);
+			child.SelectionChanged += (s, e) =>
+			{
+				this.PropagateToParent(e);
+			};
 		}
 
 		public ICommand NewFileCommand { get; set; }

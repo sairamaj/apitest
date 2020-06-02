@@ -72,6 +72,7 @@
     <Compile Include="Asserts\Views\AssertsView.xaml.cs">
       <DependentUpon>AssertsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\TreeItemSelectionChangedEventArg.cs" />
     <Compile Include="Common\ViewModels\NewItemWindowViewModel.cs" />
     <Compile Include="Common\Views\NewItemWindow.xaml.cs">
       <DependentUpon>NewItemWindow.xaml</DependentUpon>
@@ -138,6 +139,7 @@
     <Compile Include="Resources\ResourceEditingHelper.cs" />
     <Compile Include="Resources\ViewModels\ResourceContainerViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceFolderViewModel.cs" />
+    <Compile Include="Resources\ViewModels\ResourcePopOutWindowViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceTreeViewModel.cs" />
     <Compile Include="Resources\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Resources\ViewModels\ViewResourceViewModel.cs" />
