@@ -11,6 +11,15 @@
 		<ImageBrush x:Key="NewFileButtonImageBrush" ImageSource="../../images/newfile.png" />
 		<ImageBrush x:Key="NewFolderButtonImageBrush" ImageSource="../../images/newfolder.png" />
 		<ImageBrush x:Key="RefreshButtonImageBrush" ImageSource="../../images/refresh.png" />
+
+		<Style x:Key="PopUpButtonStyle">
+			<Setter Property="Control.Visibility" Value="Visible" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsPopupWindow}" Value="True">
+					<Setter Property="Control.Visibility" Value="Hidden" />		
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
 	
 	<Grid>
@@ -26,7 +35,8 @@
 					 VerticalAlignment="Center"
 					 DockPanel.Dock="Right"
 					 HorizontalAlignment="Right" Margin="5,0,0,0"
-					 ToolTip="Create new resource"
+					 ToolTip="Popup in new window"
+					 Style="{StaticResource PopUpButtonStyle}"
 					 />
 
 			<Button  Background="{StaticResource NewFileButtonImageBrush}" 
@@ -60,11 +70,11 @@
 		</StackPanel>
 
 		<local:ResourceDataView DataContext="{Binding Resources}" Grid.Row="1" Grid.Column="0"/>
-		<Grid.ContextMenu>
+		<!--<Grid.ContextMenu>
 			<ContextMenu>
 				<MenuItem Header="New File" Command="{Binding Path=NewFileCommand}"/>
 				<MenuItem Header="New Folder" Command="{Binding Path=NewFolderCommand}"/>
 			</ContextMenu>
-		</Grid.ContextMenu>
+		</Grid.ContextMenu>-->
 	</Grid>
 </UserControl>

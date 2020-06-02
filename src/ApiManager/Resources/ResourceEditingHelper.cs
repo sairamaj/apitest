@@ -13,6 +13,11 @@ namespace ApiManager.Resources
 			var win = new NewItemWindow();
 			var vm = new NewItemWindowViewModel(win, $"New {method} item", name =>
 			{
+				if (Path.GetExtension(name).Length == 0)
+				{
+					name = $"{name}.json";
+				}
+
 				var newFileName = Path.Combine(parentPath, name);
 				if (File.Exists(newFileName))
 				{
@@ -29,6 +34,10 @@ namespace ApiManager.Resources
 			}
 
 			var fileName = Path.Combine(parentPath, vm.Name);
+			if (Path.GetExtension(fileName).Length == 0)
+			{
+				fileName = $"{fileName}.json";
+			}
 			File.WriteAllText(fileName, "{\r\n}");
 			return new ResourceData(Path.Combine(parentPath, fileName));
 		}

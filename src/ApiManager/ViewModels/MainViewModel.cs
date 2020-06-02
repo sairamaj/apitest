@@ -453,7 +453,6 @@ namespace ApiManager.ViewModels
 			this.PatchResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "patch");
 			this.PutResourceContainerViewModel = new ResourceContainerViewModel(this._resourceManager, "put");
 
-
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.OnApiConfigSelectionChange();
 		}

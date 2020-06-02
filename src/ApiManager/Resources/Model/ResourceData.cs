@@ -15,6 +15,16 @@ namespace ApiManager.Resources.Model
 			this.IsContainer = isContainer;
 		}
 
+		internal string GetData()
+		{
+			if (File.Exists(this.FileName))
+			{
+				return File.ReadAllText(this.FileName);
+			}
+
+			return string.Empty;
+		}
+
 		public string Name { get; }
 		public string FileWithExtension => Path.GetFileName(this.FileName); 
 		public string FileName { get; }

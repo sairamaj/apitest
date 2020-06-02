@@ -10,35 +10,6 @@
 		xmlns:views="clr-namespace:Wpf.Util.Core.Views;assembly=Wpf.Util.Core"
 		xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
 		Title="{Binding Title}" Height="450" Width="800">
-	<Window.Resources>
-		<Style x:Key="AvalonTextBoxStyles" TargetType="avalonedit:TextEditor">
-			<Setter Property="WordWrap"  Value="True" />
-			<Setter Property="BorderThickness"  Value="0" />
-			<Setter Property="FontSize"  Value="13" />
-			<Setter Property="FontFamily"  Value="Consolas" />
-			<Setter Property="SyntaxHighlighting"  Value="JavaScript" />
-			<Setter Property="ShowLineNumbers"  Value="True" />
-			<Setter Property="LineNumbersForeground"  Value="Magenta" />
-			<Setter Property="VerticalScrollBarVisibility"  Value="Auto" />
-			<Setter Property="HorizontalScrollBarVisibility"  Value="Auto" />
-		</Style>
 
-		<ImageBrush x:Key="SaveButtonImageBrush" ImageSource="../../images/save.png" />
-	</Window.Resources>
-	<DockPanel>
-		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20,0,0,0">
-			<Button  Background="{StaticResource SaveButtonImageBrush}" Width="25" Height="25" 
-					 Command="{Binding SaveCommand}" VerticalAlignment="Center"
-					 Margin="15,0,0,0"
-					 />
-		</StackPanel>
-		<Grid>
-			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
-                                Style="{StaticResource AvalonTextBoxStyles}" x:Name="TextEditor" DataContext="{Binding}">
-				<i:Interaction.Behaviors>
-					<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-				</i:Interaction.Behaviors>
-			</avalonedit:TextEditor>
-		</Grid>
-	</DockPanel>
+	<local:ResourceWithSaveView />
 </Window>
