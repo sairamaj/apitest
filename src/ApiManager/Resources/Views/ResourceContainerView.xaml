@@ -70,11 +70,5 @@
 		</StackPanel>
 
 		<local:ResourceDataView DataContext="{Binding Resources}" Grid.Row="1" Grid.Column="0"/>
-		<!--<Grid.ContextMenu>
-			<ContextMenu>
-				<MenuItem Header="New File" Command="{Binding Path=NewFileCommand}"/>
-				<MenuItem Header="New Folder" Command="{Binding Path=NewFolderCommand}"/>
-			</ContextMenu>
-		</Grid.ContextMenu>-->
 	</Grid>
 </UserControl>

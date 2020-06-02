@@ -26,6 +26,15 @@
 				<StackPanel Orientation="Horizontal">
 					<Button  Background="{StaticResource EditButtonImageBrush}" Width="12" Height="12" Command="{Binding EditCommandFileCommand}"/>
 					<TextBlock Text="{Binding Name}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+
+					<StackPanel.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="Open In File Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
+							<Separator />
+							<MenuItem Header="Copy" Command="{Binding Path=CopyFileCommand}"/>
+							<MenuItem Header="Delete" Command="{Binding Path=DeleteFileCommand}"/>
+						</ContextMenu>
+					</StackPanel.ContextMenu>
 				</StackPanel>
 				
 			</HierarchicalDataTemplate>
@@ -35,8 +44,11 @@
 					<TextBlock Text="{Binding Name}" />
 					<StackPanel.ContextMenu>
 						<ContextMenu>
+							<MenuItem Header="Open In File Explorer" Command="{Binding Path=RelvealInExplorerCommand}"/>
+							<Separator />
 							<MenuItem Header="New File" Command="{Binding Path=NewFileCommand}"/>
 							<MenuItem Header="New Folder" Command="{Binding Path=NewFolderCommand}"/>
+							<MenuItem Header="Delete" Command="{Binding Path=DeleteFolderCommand}"/>
 						</ContextMenu>
 					</StackPanel.ContextMenu>
 				</StackPanel>

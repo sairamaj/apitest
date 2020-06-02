@@ -9,13 +9,17 @@ namespace ApiManager.Resources.ViewModels
 {
 	class ResourceViewModel : ResourceTreeViewModel
 	{
-		public ResourceViewModel(ResourceTreeViewModel parent, ResourceData resourceData) : base(parent, resourceData)
+		public ResourceViewModel(
+			ResourceTreeViewModel parent,
+			ResourceData resourceData,
+			Action<ResourceAction, ResourceTreeViewModel> onAction)
+			: base(parent, resourceData)
 		{
 			ResourceData = resourceData;
 			Action showDetailsAction = () =>
 			{
 				UiHelper.SafeAction(() =>
-			   { 
+			   {
 				   var win = new ViewResourceWindow
 				   {
 					   DataContext = new ViewResourceViewModel(resourceData.FileName)
@@ -25,10 +29,20 @@ namespace ApiManager.Resources.ViewModels
 			};
 
 			this.EditCommandFileCommand = new DelegateCommand(showDetailsAction);
+			this.DeleteFileCommand = new DelegateCommand(() =>
+		   {
+			   onAction(ResourceAction.Delete, this);
+		   });
+			this.CopyFileCommand = new DelegateCommand(() =>
+		   {
+			   onAction(ResourceAction.Copy, this);
+		   });
 			this.IsExpanded = true;
 		}
 
 		public ResourceData ResourceData { get; }
 		public ICommand EditCommandFileCommand { get; }
+		public ICommand DeleteFileCommand { get; }
+		public ICommand CopyFileCommand { get; }
 	}
 }

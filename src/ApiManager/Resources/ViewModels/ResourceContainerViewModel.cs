@@ -16,6 +16,7 @@ namespace ApiManager.Resources.ViewModels
 {
 	class ResourceContainerViewModel : CoreViewModel
 	{
+		private bool _ispopupWindow;
 		private readonly IResourceManager _resourceManager;
 		private readonly string _method;
 		public event EventHandler<TreeItemSelectionChangedEventArg> SelectionChanged;
@@ -40,12 +41,10 @@ namespace ApiManager.Resources.ViewModels
 			this.PopOutCommand = new DelegateCommand(() =>
 			{
 				var win = new ResourcePopOutWindow();
-				win.DataContext = new ResourcePopOutWindowViewModel(this);
+				win.DataContext = new ResourcePopOutWindowViewModel($"{method} Resources", this);
 				this.IsPopupWindow = true;
-				OnPropertyChanged(() => this.IsPopupWindow);
-				win.ShowDialog();
-				this.IsPopupWindow = false;
-				OnPropertyChanged(() => this.IsPopupWindow);
+				win.Show();
+				win.Closed += (s, e) => { this.IsPopupWindow = false; };
 			});
 		}
 
@@ -55,8 +54,15 @@ namespace ApiManager.Resources.ViewModels
 		public ICommand RefreshResourcesCommand { get; set; }
 		public ICommand PopOutCommand { get; set; }
 		public ResourceTreeViewModel CurrentSelectedViewModel { get; set; }
-		public bool IsPopupWindow { get; set; }
-
+		public bool IsPopupWindow
+		{
+			get => _ispopupWindow;
+			set
+			{
+				this._ispopupWindow = value;
+				OnPropertyChanged(() => this.IsPopupWindow);
+			}
+		}
 		private void Refresh()
 		{
 			this.Resources.Clear();
@@ -73,11 +79,11 @@ namespace ApiManager.Resources.ViewModels
 			ResourceTreeViewModel newItem;
 			if (resource.IsContainer)
 			{
-				newItem = new ResourceFolderViewModel(parent, this._method, resource);
+				newItem = new ResourceFolderViewModel(parent, this._method, resource, (a,v) => DoAction(a,v));
 			}
 			else
 			{
-				newItem = new ResourceViewModel(parent, resource);
+				newItem = new ResourceViewModel(parent, resource, (a, v) => DoAction(a, v));
 			}
 
 			if (parent == null)
@@ -126,6 +132,25 @@ namespace ApiManager.Resources.ViewModels
 				var parentPath = this.CurrentSelectedViewModel == null ? this._resourceManager.GetResourcePath(this._method) : CurrentSelectedViewModel.Resource.ContainerPath;
 				AddToChild(CurrentSelectedViewModel, func(parentPath));
 			}, "Error");
+		}
+
+		private void DoAction(ResourceAction action, ResourceTreeViewModel viewModel)
+		{
+			if (action == ResourceAction.Delete)
+			{
+				if (ResourceEditingHelper.DeleteResource(viewModel.Resource))
+				{
+					this.Resources.Remove(viewModel);
+				}
+			}
+			else if (action == ResourceAction.Copy)
+			{
+				var newResource = ResourceEditingHelper.CopyResource(this._method, viewModel.Resource);
+				if(newResource != null )
+				{
+					AddToChild(null, newResource);
+				}
+			}
 		}
 	}
 }

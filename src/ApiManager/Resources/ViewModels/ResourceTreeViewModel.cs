@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Windows.Input;
 using ApiManager.Common;
 using ApiManager.Resources.Model;
+using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 
 namespace ApiManager.Resources.ViewModels
@@ -11,13 +14,19 @@ namespace ApiManager.Resources.ViewModels
 		public ResourceTreeViewModel(ResourceTreeViewModel parent, ResourceData resource) : base(parent, resource.Name, resource.FileName)
 		{
 			this.Resource = resource;
+			this.RelvealInExplorerCommand = new DelegateCommand(() =>
+		   {
+			   Process.Start(resource.ContainerPath);
+		   });
 		}
 
 		public ResourceData Resource { get; }
 
-		public override bool IsSelected {
+		public override bool IsSelected
+		{
 			get => base.IsSelected;
-			set  {
+			set
+			{
 				base.IsSelected = value;
 				if (SelectionChanged != null)
 				{
@@ -32,5 +41,7 @@ namespace ApiManager.Resources.ViewModels
 		{
 			this.SelectionChanged?.Invoke(this, eventArg);
 		}
+
+		public ICommand RelvealInExplorerCommand { get; }
 	}
 }

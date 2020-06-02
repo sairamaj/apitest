@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Resources.Model;
@@ -12,7 +13,11 @@ namespace ApiManager.Resources.ViewModels
 	{
 		private readonly string _method;
 
-		public ResourceFolderViewModel(ResourceTreeViewModel parent, string method, ResourceData resourceData)
+		public ResourceFolderViewModel(
+			ResourceTreeViewModel parent, 
+			string method, 
+			ResourceData resourceData,
+			Action<ResourceAction, ResourceTreeViewModel> onAction)
 			: base(parent, resourceData)
 		{
 			this._method = method;
@@ -28,6 +33,11 @@ namespace ApiManager.Resources.ViewModels
 			{
 				AddChild(ResourceEditingHelper.CreateNewResourceFolder(method, resourceData.ContainerPath));
 			});
+			this.DeleteFolderCommand = new DelegateCommand(() =>
+			{
+				onAction(ResourceAction.Delete, this);
+		   });
+
 		}
 
 		public ResourceData ResourceData { get; }
@@ -47,12 +57,13 @@ namespace ApiManager.Resources.ViewModels
 			ResourceTreeViewModel child;
 			if (resource.IsContainer)
 			{
-				child = new ResourceFolderViewModel(this, _method, resource);
+				child = new ResourceFolderViewModel(this, _method, resource, (a, v) => DoAction(a, v));
 			}
 			else
 			{
-				child = new ResourceViewModel(this, resource);
+				child = new ResourceViewModel(this, resource, (a, v) => DoAction(a, v));
 			}
+
 			this.Children.Add(child);
 			child.SelectionChanged += (s, e) =>
 			{
@@ -62,5 +73,25 @@ namespace ApiManager.Resources.ViewModels
 
 		public ICommand NewFileCommand { get; set; }
 		public ICommand NewFolderCommand { get; set; }
+		public ICommand DeleteFolderCommand { get; set; }
+
+		private void DoAction(ResourceAction action, ResourceTreeViewModel viewModel)
+		{
+			if (action == ResourceAction.Delete)
+			{
+				if (ResourceEditingHelper.DeleteResource(viewModel.Resource))
+				{
+					this.Children.Remove(viewModel);
+				}
+			}
+			else if (action == ResourceAction.Copy)
+			{
+				var newResource = ResourceEditingHelper.CopyResource(this._method, viewModel.Resource);
+				if (newResource != null)
+				{
+					AddChild(newResource);
+				}
+			}
+		}
 	}
 }
