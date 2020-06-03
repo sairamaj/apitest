@@ -6,9 +6,11 @@ class PropertyBag:
         self.properties = parameters
         self.access_token = ""
         self.session_name = "unknown"
+        self.readonly = False
         self.last_http_request = None
         self.resources_path = None
         self.user_input = True
+        self.resource_path = None
 
     def get(self, name):
         return self.properties.get(name, None)
@@ -39,6 +41,14 @@ class PropertyBag:
     @session_name.setter
     def session_name(self, value):
         self._session_name = value
+
+    @property
+    def readonly(self):
+        return self._readonly
+
+    @readonly.setter
+    def readonly(self, value):
+        self._readonly = value
 
     @property
     def last_http_request(self):
@@ -73,6 +83,7 @@ class PropertyBag:
         additional['session'] = self.session_name
         additional['resource_path'] = self.resource_path
         additional['user_input'] = self.user_input
+        additional['readonly'] = self.readonly
         return additional
 
             

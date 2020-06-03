@@ -38,6 +38,7 @@ def main():
     parser.add_argument("--log_level", help="Loglevel(DEBUG,INFO,ERROR)")
     parser.add_argument("--output", help="Output directory where results will be written")
     parser.add_argument("--resource_path", help="Resource Path")
+    parser.add_argument("--readonly", help="If set to set true will allow only GET operations")
     args, unknown = parser.parse_known_args()
 
     if args.config == None:
@@ -78,6 +79,8 @@ def main():
 
     sys.excepthook = my_except_hook
     property_bag = PropertyBag(dict(commandParameters,**variables))  
+    if args.readonly != None:
+        property_bag.readonly = args.readonly
     if args.session != "" :
         property_bag.session_name = args.session
     if args.resource_path != "":

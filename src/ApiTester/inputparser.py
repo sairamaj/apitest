@@ -91,6 +91,10 @@ class ApiCommandInputParser(InputParser):
                 f"{method} not supported, supported are {supportedVerbs}")
         apiInfos = apis.get(route, None)
 
+        if property_bag.readonly and method != 'get':
+            raise ValueError(
+                f"{method} not supported in readonly mode")
+
         if apiInfos == None:
             raise ValueError(f"{route} not found")
         else:

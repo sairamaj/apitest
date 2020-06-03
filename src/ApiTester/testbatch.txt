@@ -1,12 +1,14 @@
+!list
+!waitforuserinput
+apis post __get_last_response__
+!return
 accesstoken.password
 !assert status_code 200
 apis
 !assert status_code 200
 !assert [0] authentication
-!return
 __update_last_response json_path=[2] value=dummy__
 !waitforuserinput
-apis post __get_last_response__
 !extract [0] a_developer
 #!waitforuserinput
 !assert a_developer sai2@abc.com
