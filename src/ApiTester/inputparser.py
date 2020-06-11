@@ -8,7 +8,7 @@ from executorRequest import ApiExecutorRequest, SetExecutorRequest, ListExecutor
 from executorRequest import ManagementCommandExecutorRequest, WaitForUserInputExecutorRequest, ExtractVariableExecutorRequest
 from executorRequest import AssertExecutorRequest, ConvertJsonToHtmlExecutorRequest, JavaScriptExecutorRequest
 from executorRequest import AssertsExecutorWithJsRequest, HttpRequestExecutorRequest, FuncCommandExecutorRequest, \
-                     PrintCommandExecutorRequest, SetGroupExecutorRequest
+    PrintCommandExecutorRequest, SetGroupExecutorRequest
 from transform import transform
 from transform import transformString, transformValue
 from utils import readAllText, read_key_value_pairs, line_parser, line_to_dictionary, isFunc
@@ -25,8 +25,9 @@ def parseCommand(command, workingDirectory, apis, property_bag):
         '!httprequest': HttpRequestInputParser(workingDirectory),
         '!js': JavaScriptRequestInputParser(workingDirectory),
         '!list': ListCommandInputParser(workingDirectory),
-        "!print" : PrintCommandInputParser(workingDirectory),
+        "!print": PrintCommandInputParser(workingDirectory),
         '!set': SetCommandInputParser(workingDirectory),
+        '!setfromfile': SetFromFileCommandInputParser(workingDirectory),
         "!setgroup": SetGroupCommandInputParser(workingDirectory),
         '!help': HelpCommandInputParser(workingDirectory),
         '!management': ManagementCommandRequestInputParser(workingDirectory),
@@ -109,7 +110,7 @@ class ApiCommandInputParser(InputParser):
         path = transformString('path', foundApiInfo.path,
                                property_bag.properties, property_bag.user_input)
         baseUrl = transformString(
-            'baseurl', foundApiInfo.baseUrl, property_bag.properties, property_bag.user_input )
+            'baseurl', foundApiInfo.baseUrl, property_bag.properties, property_bag.user_input)
 
         transformedHeaders = transform(
             foundApiInfo.headers, property_bag.properties, property_bag.user_input)
@@ -117,18 +118,20 @@ class ApiCommandInputParser(InputParser):
         apiInfoWithData = ApiInfo(
             foundApiInfo.api, foundApiInfo.route, path, baseUrl, data, transformedHeaders)
         jsonData = ""
-        if method in ['post','patch','put'] :
+        if method in ['post', 'patch', 'put']:
             if isFunc(filename):
-                post_data = evaluate_func(filename, property_bag.last_http_request)
+                post_data = evaluate_func(
+                    filename, property_bag.last_http_request)
             else:
                 if len(filename) == 0:
                     raise Exception(f'{method} requires filename')
                 fileNameWithPath = ResourceProvider(
-                property_bag.resource_path).api_filepath_for_http_verb(filename, method)
+                    property_bag.resource_path).api_filepath_for_http_verb(filename, method)
                 post_data = readAllText(fileNameWithPath)
 
             tranform_items = {"temp": post_data}
-            tranformed_items = transform(tranform_items, property_bag.properties,property_bag.user_input)
+            tranformed_items = transform(
+                tranform_items, property_bag.properties, property_bag.user_input)
             jsonData = json.loads(tranformed_items["temp"])
             print(f"--------> {jsonData}")
             print(f"--------> {type(jsonData)}")
@@ -158,6 +161,33 @@ class SetCommandInputParser(InputParser):
 
         return SetExecutorRequest(name, value)
 
+
+class SetFromFileCommandInputParser(InputParser):
+    def __init__(self, workingDirectory):
+        self.workingDirectory = workingDirectory
+
+    def parseCommand(self, command, apis, property_bag):
+        args = line_parser(command)
+        # ex:
+        #   set param=value
+        print(len(args))
+        print(args)
+        if len(args) < 2:
+            raise ValueError("setfromfile require name=filename format")
+        if len(args[2]) == 0:
+            raise ValueError("setfromfile require name=filename format")
+        file_name = ResourceProvider(
+            property_bag.resource_path).variables_filepath(args[2])
+        name = args[1]
+        if os.path.exists(file_name) == False:
+            raise ValueError(f"{file_name} does not exists")
+        value = readAllText(file_name)
+
+        # go through transformation
+        value = transformValue(value, property_bag.properties)
+
+        return SetExecutorRequest(name, value)
+
 class SetGroupCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -172,13 +202,16 @@ class SetGroupCommandInputParser(InputParser):
 
         # go through transformation
 
-        file_name = ResourceProvider(property_bag.resource_path).variables_filepath(file_name)
+        file_name = ResourceProvider(
+            property_bag.resource_path).variables_filepath(file_name)
         if os.path.exists(file_name) == False:
             raise ValueError(f"{file_name} does not exists.")
 
-        key_value_pairs = read_key_value_pairs(file_name,'=')
-        key_value_pairs = transform(key_value_pairs, property_bag.properties, property_bag.user_input)
+        key_value_pairs = read_key_value_pairs(file_name, '=')
+        key_value_pairs = transform(
+            key_value_pairs, property_bag.properties, property_bag.user_input)
         return SetGroupExecutorRequest(key_value_pairs)
+
 
 class ListCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
@@ -206,7 +239,8 @@ class ManagementCommandRequestInputParser(InputParser):
             raise ValueError(
                 f"!management command requires requestName (ex: !management commands)")
         # check supported management commands
-        supportedMgmtCommands = ['bangcommands', 'apicommands', 'dynamicvariables',"functions"]
+        supportedMgmtCommands = ['bangcommands',
+                                 'apicommands', 'dynamicvariables', "functions"]
         mgmtRequest = parts[1]
         if mgmtRequest in supportedMgmtCommands:
             return ManagementCommandExecutorRequest(apis, mgmtRequest)
@@ -238,6 +272,7 @@ class ExtractVariableRequestInputParser(InputParser):
                 "!extract requires jsonPath and variable name ( ex !extract user.name userName)")
         return ExtractVariableExecutorRequest(parts[1], parts[2], 'response')
 
+
 class ExtractVariableFromRequestRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -247,7 +282,8 @@ class ExtractVariableFromRequestRequestInputParser(InputParser):
         if len(parts) < 3:
             raise ValueError(
                 "!extract requires jsonPath and variable name ( ex !extract_from_request user.name userName)")
-        return ExtractVariableExecutorRequest(parts[1].strip(), parts[2].strip(),'request')
+        return ExtractVariableExecutorRequest(parts[1].strip(), parts[2].strip(), 'request')
+
 
 class AssertRequestInputParser(InputParser):
     def __init__(self, workingDirectory):
@@ -338,6 +374,7 @@ class HttpRequestInputParser(InputParser):
 
         return HttpRequestExecutorRequest(request_file, request_id)
 
+
 class FuncCommandInputParser(InputParser):
     def __init__(self, workingDirectory):
         self.workingDirectory = workingDirectory
@@ -348,6 +385,7 @@ class FuncCommandInputParser(InputParser):
         func_name = next(iter(args))    # first key is name
         args.pop(func_name, None)       # remove this
         return FuncCommandExecutorRequest(func_name, args)
+
 
 class PrintCommandInputParser(InputParser):
     def __init__(self, workingDirectory):

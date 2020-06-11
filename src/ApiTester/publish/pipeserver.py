@@ -30,7 +30,7 @@ class PipeServer():
             rf'\\.\pipe\{self.name}',
             win32pipe.PIPE_ACCESS_OUTBOUND,
             win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_NOWAIT,
-            1, 65536, 65536,
+            1, 65536*4, 65536*4,
             0,
             None)
         except Exception as e:

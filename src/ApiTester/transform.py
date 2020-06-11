@@ -21,7 +21,9 @@ def getEmpty(varb):
 def updateVariables(inputs, getFunc):
     for k, v in inputs.items():
         if type(v) is str:
-            variables = re.findall(r"{{(.+?)}", v)
+            variables1 = re.findall(r"{{{(.+?)}}", v)
+            variables = re.findall(r"{{(.+?)}}", v)
+            variables.extend(variables1)
             variableValues = {}
             for variable in variables:
                 if variable.startswith('$'):
