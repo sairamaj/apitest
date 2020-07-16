@@ -200,6 +200,7 @@ namespace ApiManager.ViewModels
 					else if (selectedScenario is ScenarioContainerViewModel scenaroContainer)
 					{
 						scenaroContainer.UpdateStatus(ScenarioTestStatus.Running);
+						scenaroContainer.ExpandAll();
 						try
 						{
 							foreach (var scenarioviewModel
