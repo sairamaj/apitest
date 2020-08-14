@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ApiManager.Asserts.ViewModels;
 using ApiManager.Extensions;
 using ApiManager.Model;
+using ApiManager.NewRequest.ViewModel;
 using ApiManager.NewRequest.Views;
 using ApiManager.Pipes;
 using ApiManager.Repository;
@@ -59,7 +60,10 @@ namespace ApiManager.ViewModels
 			this.RefreshCommand = new DelegateCommand(this.Load);
 			this.NewRequestCommand = new DelegateCommand(() =>
 		   {
-			   new NewRequestWindow().ShowDialog();
+			   new NewRequestWindow()
+			   {
+				   DataContext = new NewRequestWindowViewModel(executor, dataRepository)
+			   }.ShowDialog();
 		   });
 			this.NewScenarioFileCommand = new DelegateCommand(() =>
 			{

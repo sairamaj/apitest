@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
@@ -38,5 +41,28 @@ namespace ApiManager.ViewModels
 		public string FileName { get; }
 		public ICommand EditCommandFileCommand { get; }
 		public ApiEnvironment Environment { get; }
+		public IDictionary<string, string> Variables
+		{
+			get
+			{
+				var variables = new Dictionary<string, string>();
+				if (!File.Exists(this.FileName))
+				{
+					return variables;
+				}
+
+				foreach (var line in File.ReadAllLines(this.FileName))
+				{
+					var parts = line.Split('=');
+					if (parts.Length > 1)
+					{
+						var key = parts.First();
+						variables[key] = line.Substring(key.Length + 1);
+					}
+				}
+
+				return variables;
+			}
+		}
 	}
 }

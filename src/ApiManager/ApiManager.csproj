@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="Executor.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\ScenariosExtension.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpRequestClient.cs" />
@@ -114,6 +115,9 @@
     <Compile Include="NewRequest\ViewModel\NewRequestWindowViewModel.cs" />
     <Compile Include="NewRequest\Views\NewRequestWindow.xaml.cs">
       <DependentUpon>NewRequestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRequest\Views\RequestResponseView.xaml.cs">
+      <DependentUpon>RequestResponseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pipes\FakeMessageListener.cs" />
     <Compile Include="Pipes\ApiTestConsoleCommunicator.cs" />
@@ -363,6 +367,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewRequest\Views\NewRequestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRequest\Views\RequestResponseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
