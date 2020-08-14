@@ -22,6 +22,17 @@
 			<Setter Property="VerticalScrollBarVisibility"  Value="Auto" />
 			<Setter Property="HorizontalScrollBarVisibility"  Value="Auto" />
 		</Style>
+
+		<Style x:Key="ApiStyle" >
+			<Setter Property="Control.Foreground" Value="Red" />
+			<Setter Property="Control.FontWeight" Value="Bold" />
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsSuccess}" Value="True" >
+					<Setter Property="Control.Foreground" Value="Green" />
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
 	</Window.Resources>
 
 	<Grid Margin="10">
@@ -29,16 +40,36 @@
 			<RowDefinition Height="50" />
 			<RowDefinition />
 			<RowDefinition Height="5" />
+			<RowDefinition Height="30"/>
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" >
-			<ComboBox ItemsSource="{Binding HttpMethods}" Width="60" Height="20" SelectedItem="{Binding SelectedMethod}" FontWeight="Bold"/>
-			<TextBox Width="800" Height="20" Margin="3,0,0,0"/>
-		</StackPanel>
+		<Grid Grid.Row="0" Grid.Column="0" >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="66" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="80" />
+			</Grid.ColumnDefinitions>
+			<ComboBox ItemsSource="{Binding HttpMethods}" Width="60" Height="20" SelectedItem="{Binding SelectedMethod}" 
+					  FontWeight="Bold"
+					  Grid.Row="0" Grid.Column="0"/>
+			<TextBox Text="{Binding Url}" Height="25" Margin="3,0,0,0"  FontWeight="Bold"
+					 Grid.Row="0" Grid.Column="1"/>
+			<Button Content="Submit" Command="{Binding SubmitCommand}" Width="80" Height="25" Margin="3,0,0,0" 
+					FontWeight="Bold"
+					Grid.Row="0" Grid.Column="2"
+					/>
+		</Grid>
 
-		<DockPanel Grid.Row="1" Grid.Column="0">
-			<Expander Header="Body" IsExpanded="True" DockPanel.Dock="Bottom">
+		<Grid Grid.Row="1" Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Expander Header="Headers" IsExpanded="False" Grid.Row="0" Grid.Column="0">
+				<TextBlock Text="Headers here" />
+			</Expander>
+			<Expander Header="Body" IsExpanded="True" Grid.Row="1" Grid.Column="0">
 				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
 					<i:Interaction.Behaviors>
@@ -46,19 +77,23 @@
 					</i:Interaction.Behaviors>
 				</avalonedit:TextEditor>
 			</Expander>
-			<Expander Header="Headers" IsExpanded="False" DockPanel.Dock="Top">
-				<TextBlock Text="Headers here" />
-			</Expander>
-		</DockPanel>
+		</Grid>
 
 		<GridSplitter Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
 
-		<DockPanel Grid.Row="3" Grid.Column="0">
+		<StackPanel Orientation="Horizontal" Style="{StaticResource ApiStyle}" Grid.Row="3" Grid.Column="0">
+			<TextBlock Text="{Binding ApiRequest.HttpCode}"/>
+			<TextBlock Text="(" />
+			<TextBlock Text="{Binding ApiRequest.StatusCode}" />
+			<TextBlock Text=")" />
+		</StackPanel>
+
+		<DockPanel Grid.Row="4" Grid.Column="0">
 			<Expander Header="Body" IsExpanded="True" DockPanel.Dock="Bottom">
 				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="ResponseView" DataContext="{Binding}">
 					<i:Interaction.Behaviors>
-						<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+						<views:AvalonEditBehaviour GiveMeTheText="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 					</i:Interaction.Behaviors>
 				</avalonedit:TextEditor>
 			</Expander>
