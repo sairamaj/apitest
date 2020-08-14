@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ApiManager.Asserts.ViewModels;
 using ApiManager.Extensions;
 using ApiManager.Model;
+using ApiManager.NewRequest.Views;
 using ApiManager.Pipes;
 using ApiManager.Repository;
 using ApiManager.Resources.ViewModels;
@@ -56,6 +57,10 @@ namespace ApiManager.ViewModels
 			this.OpenCommandPrompt = new DelegateCommand(async () => await this.OpenCommandPromptAsync());
 			this.ShowIssuesCommand = new DelegateCommand(this.ShowIssues);
 			this.RefreshCommand = new DelegateCommand(this.Load);
+			this.NewRequestCommand = new DelegateCommand(() =>
+		   {
+			   new NewRequestWindow().ShowDialog();
+		   });
 			this.NewScenarioFileCommand = new DelegateCommand(() =>
 			{
 				var selectedScenarioViewModel = this.GetSelectedScenario();
@@ -137,6 +142,7 @@ namespace ApiManager.ViewModels
 		public ICommand OpenCommandPrompt { get; set; }
 		public ICommand ShowIssuesCommand { get; set; }
 		public ICommand RefreshCommand { get; set; }
+		public ICommand NewRequestCommand { get; set; }
 		public ICommand NewScenarioFileCommand { get; set; }
 		public ICommand NewScenarioFolderCommand { get; set; }
 		public ICommand NewRootScenarioFolderCommand { get; set; }
@@ -185,7 +191,6 @@ namespace ApiManager.ViewModels
 				try
 				{
 					this.SubscribeApiInfo(apiCommunicator);
-
 					var selectedScenario = GetSelectedScenario();
 
 					if (this.IsClearBeforeRun)

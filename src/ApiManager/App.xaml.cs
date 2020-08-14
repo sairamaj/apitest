@@ -5,6 +5,8 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using ApiManager.Model;
+using ApiManager.NewRequest.ViewModel;
+using ApiManager.NewRequest.Views;
 using ApiManager.PopUp.ViewModels;
 using ApiManager.PopUp.Views;
 using ApiManager.Repository;
@@ -42,7 +44,8 @@ namespace ApiManager
 
 				var serviceLocator = ServiceLocatorFactory.Create(builder);
 				ServiceLocator.Initialize(serviceLocator);      // todo: need to revisit this (added to avoid passing locator to all ctors)
-				TestSmartEditor();
+																//TestSmartEditor();
+				NewRequestTesting();
 
 				var win = new MainWindow
 				{
@@ -81,6 +84,14 @@ namespace ApiManager
 			}
 		}
 
+		private void NewRequestTesting()
+		{
+			new NewRequestWindow()
+			{
+				DataContext = new NewRequestWindowViewModel()
+			}.ShowDialog();
+			System.Environment.Exit(-1);
+		}
 		private void TestSmartEditor()
 		{
 			return;

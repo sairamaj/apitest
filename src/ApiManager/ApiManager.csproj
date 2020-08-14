@@ -111,6 +111,10 @@
     <Compile Include="Model\TestData.cs" />
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="NewRequest\ViewModel\NewRequestWindowViewModel.cs" />
+    <Compile Include="NewRequest\Views\NewRequestWindow.xaml.cs">
+      <DependentUpon>NewRequestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pipes\FakeMessageListener.cs" />
     <Compile Include="Pipes\ApiTestConsoleCommunicator.cs" />
     <Compile Include="Pipes\IApiTestConsoleCommunicator.cs" />
@@ -355,6 +359,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Views\NewItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRequest\Views\NewRequestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
