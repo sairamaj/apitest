@@ -55,7 +55,7 @@ class HttpRequestData:
                     request_started = False
                 elif request_started == True:
                     self.request += line
-
+        self.request = self.request.rstrip('\n')
 if __name__ == "__main__":
     req_data = HttpRequestData(sys.argv[1])
     print(f"|{req_data.method}|")

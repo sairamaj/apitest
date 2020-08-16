@@ -15,6 +15,7 @@ from ui import printRoute, printPath, printInfo, waitForUserInput
 from jsonpath_ng.ext import parse
 from json2html import *
 from transform import getVariables
+from transform import getVariablesFromDict
 from utils import readAllText
 from commandinfo import getCommandsInfo
 from function_info import getFunctionsInfo
@@ -279,6 +280,11 @@ class ManagementCommandExecutor(ICommand):
                 route = {}
                 route["name"] = route_name
                 route["baseUrl"] = apiInfo.baseUrl
+                route["baseUrlVariables"] = getVariables(apiInfo.baseUrl)
+                route["headers"] = apiInfo.headers
+                route["headersVariables"] = getVariablesFromDict(apiInfo.headers)
+                route["body"] = apiInfo.body
+                route["bodyVariables"] = getVariablesFromDict(apiInfo.body)
                 routes.append(route)
                 # routes.append(path)
             command["routes"] = routes
@@ -460,7 +466,7 @@ class HttpRequestCommandExecutor(ICommand):
         except Exception as e:
             self.publisher.apiresult(response, self.property_bag.session_name,
                                      executorRequest.request_id)
-            self.property_bag.last_http_request = HttpRequest(response)
+            self.property_bag.last_http_request = HttpRequest(response,executorRequest.request_id)
 
 
 class FuncCommandExecutor(ICommand):

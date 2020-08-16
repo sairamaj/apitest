@@ -10,16 +10,24 @@ class HttpRequest2:
 
     def get(self):
         print('_________________')
-        print(self.body)
+        print(self.url)
+        print(self.headers)
+        print(f'|{self.body}|')
         print('_________________')
         if self.method == 'get':
             response = requests.get(self.url, headers=self.headers, verify=False)
         elif self.method == 'post':
+            print('posing...')
             response = requests.post(self.url, data=self.body, headers=self.headers, verify=False)
         elif self.method == 'patch':
             response = requests.patch(self.url, data=self.body, headers=self.headers, verify=False)
         else:
             raise ValueError(f"{self.method} not supported")
 
+        print('_________________')
+        print(response)
+        print(response.content)
+        print(response.headers)
+        print('_________________')
         return response
 

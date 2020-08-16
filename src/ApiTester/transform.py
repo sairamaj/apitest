@@ -81,6 +81,15 @@ def transformValue(value, argItems):
 def getVariables(data):
     return re.findall(r"{(\w+)}", data)
 
+def getVariablesFromDict(data):
+    variables = []
+    if data == None:
+        return variables
+    for k,v in data.items():
+        itemVariables = getVariables(v)
+        for variable  in itemVariables:
+            variables.append(variable)
+    return variables
 
 if __name__ == "__main__":
     data = """
