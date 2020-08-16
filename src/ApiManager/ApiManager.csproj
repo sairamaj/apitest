@@ -112,7 +112,11 @@
     <Compile Include="Model\TestData.cs" />
     <Compile Include="Model\ApiInfo.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="NewRequest\ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="NewRequest\ViewModel\NewRequestWindowViewModel.cs" />
+    <Compile Include="NewRequest\Views\AuthenticateWindow.xaml.cs">
+      <DependentUpon>AuthenticateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewRequest\Views\NewRequestWindow.xaml.cs">
       <DependentUpon>NewRequestWindow.xaml</DependentUpon>
     </Compile>
@@ -363,6 +367,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Views\NewItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRequest\Views\AuthenticateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

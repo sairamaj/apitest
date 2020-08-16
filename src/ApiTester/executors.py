@@ -278,6 +278,7 @@ class ManagementCommandExecutor(ICommand):
             for route_name, apiInfo in apiInfos.items():
                 route = {}
                 route["name"] = route_name
+                route["baseUrl"] = apiInfo.baseUrl
                 routes.append(route)
                 # routes.append(path)
             command["routes"] = routes

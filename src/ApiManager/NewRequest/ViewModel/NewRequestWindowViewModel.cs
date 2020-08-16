@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using ApiManager.Extensions;
 using ApiManager.Model;
+using ApiManager.NewRequest.Views;
 using ApiManager.Repository;
 using ApiManager.ViewModels;
 using Wpf.Util.Core;
@@ -37,6 +38,7 @@ namespace ApiManager.NewRequest.ViewModel
 			}
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
+			this.AuthenticateCommand = new DelegateCommand(async () => await this.Authenticate().ConfigureAwait(false));
 		}
 
 		public string[] HttpMethods => new string[] { "GET", "POST", "PUT", "PATCH", "DELETE" };
@@ -62,6 +64,7 @@ namespace ApiManager.NewRequest.ViewModel
 			}
 		}
 
+		public ICommand AuthenticateCommand { get; }
 		public ApiViewModel SelectedApiInfoViewModel
 		{
 			get
@@ -109,7 +112,7 @@ namespace ApiManager.NewRequest.ViewModel
 
 				var request = new HttpRequestClient(apiRequest);
 				this.ApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
-				this.Response = this.ApiRequest.Response.Content;
+				this.Response = this.ApiRequest?.Response?.Content;
 				OnPropertyChanged(() => this.Response);
 				OnPropertyChanged(() => this.ApiRequest);
 			}
@@ -128,5 +131,16 @@ namespace ApiManager.NewRequest.ViewModel
 			OnPropertyChanged(() => this.Url);
 		}
 
+		private async Task Authenticate()
+		{
+			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
+			var authentiationRoute = commands.ApiCommands.First().Routes.First();
+			var viewModel = new AuthenticationViewModel(commands.ApiCommands.First(), null);
+
+			new AuthenticateWindow()
+			{
+				DataContext = viewModel
+			}.ShowDialog();
+		}
 	}
 }
