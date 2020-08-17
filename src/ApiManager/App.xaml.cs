@@ -83,6 +83,12 @@ namespace ApiManager
 
 		private void NewRequestTesting(ICommandExecutor executor, IDataRepository dataRepository)
 		{
+			//var win = new TestHeaderWindow
+			//{
+			//	DataContext = new HeaderItemsViewModel()
+			//};
+			//win.ShowDialog();
+
 			new NewRequestWindow()
 			{
 				DataContext = new NewRequestWindowViewModel(executor, dataRepository)

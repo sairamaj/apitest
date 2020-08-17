@@ -18,11 +18,13 @@ namespace ApiManager.NewRequest.ViewModel
 			this.Route = api.Routes.First();
 			this.Url = $"{Route.BaseUrl}/{Route.Path}";
 			this.SubmitCommand = new DelegateCommand(async () => await this.Submit());
+			this.HeaderItems = new HeaderItemsViewModel(this.Route.Headers);
 		}
 
 		public ApiRoute Route { get; }
 		public string Url { get; set; }
 		public ApiCommand Api { get; }
+		public HeaderItemsViewModel HeaderItems { get; }
 		public ICommand SubmitCommand { get; }
 		public string Response { get; set; }
 		public ApiRequest ApiRequest { get; set; }
@@ -35,7 +37,7 @@ namespace ApiManager.NewRequest.ViewModel
 				var apiRequest = new ApiRequest();
 				apiRequest.Method = "post";
 				apiRequest.Request = new Request();
-				apiRequest.Request.Headers = this.Route.Headers;
+				apiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
 				apiRequest.Request.Body = "grant_type=password&username=sairamaj%40hotmail.com&password=ssSS1234~~~";
 				apiRequest.Url = this.Url;
 
@@ -51,6 +53,5 @@ namespace ApiManager.NewRequest.ViewModel
 				OnPropertyChanged(() => this.Response);
 			}
 		}
-
 	}
 }

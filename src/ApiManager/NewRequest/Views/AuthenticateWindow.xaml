@@ -61,7 +61,7 @@
 
 		</Grid>
 		<Expander Header="Request Headers" IsExpanded="False" Grid.Row="1" Grid.Column="0">
-			<TextBlock Text="Headers here" />
+			<local:HeadersEditView  Grid.Row="1" Grid.Column="0" DataContext="{Binding HeaderItems}"/>
 		</Expander>
 		<Expander Grid.Row="2" Grid.Column="0"  Header="Request Body" IsExpanded="True" >
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
