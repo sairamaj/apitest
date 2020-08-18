@@ -15,15 +15,20 @@ namespace ApiManager.NewRequest.ViewModel
 		public AuthenticationViewModel(ApiCommand api, ApiEnvironment environment)
 		{
 			this.Api = api;
+			this.Environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this.Route = api.Routes.First();
 			this.Url = $"{Route.BaseUrl}/{Route.Path}";
 			this.SubmitCommand = new DelegateCommand(async () => await this.Submit());
 			this.HeaderItems = new HeaderItemsViewModel(this.Route.Headers);
+			this.ApiRequest = new ApiRequest();
+			this.ApiRequest.Request = new Request();
+			this.ApiRequest.Request.Body = this.GetBody();
 		}
 
 		public ApiRoute Route { get; }
 		public string Url { get; set; }
 		public ApiCommand Api { get; }
+		public ApiEnvironment Environment { get; }
 		public HeaderItemsViewModel HeaderItems { get; }
 		public ICommand SubmitCommand { get; }
 		public string Response { get; set; }
@@ -34,11 +39,9 @@ namespace ApiManager.NewRequest.ViewModel
 			try
 			{
 
-				var apiRequest = new ApiRequest();
+				var apiRequest = this.ApiRequest;
 				apiRequest.Method = "post";
-				apiRequest.Request = new Request();
 				apiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
-				apiRequest.Request.Body = "grant_type=password&username=sairamaj%40hotmail.com&password=ssSS1234~~~";
 				apiRequest.Url = this.Url;
 
 				var request = new HttpRequestClient(apiRequest);
@@ -52,6 +55,32 @@ namespace ApiManager.NewRequest.ViewModel
 				this.Response = e.ToString();
 				OnPropertyChanged(() => this.Response);
 			}
+		}
+
+		private string GetBody()
+		{
+			if (this.Route.Body == null)
+			{
+				return string.Empty;
+			}
+
+			var body = string.Empty;
+			var envVariables = this.Environment.Variables;
+			foreach (var kv in this.Route.Body) 
+			{
+				var val = kv.Value;
+				if (val.StartsWith("{{") && val.EndsWith("}}"))
+				{
+					var variableName = kv.Value.Replace("{", string.Empty).Replace("}", string.Empty);
+					if (envVariables.ContainsKey(variableName))
+					{
+						val = envVariables[variableName];
+					}
+				}
+				body += $"{kv.Key}={val}&";
+			}
+
+			return body.Trim('&');
 		}
 	}
 }

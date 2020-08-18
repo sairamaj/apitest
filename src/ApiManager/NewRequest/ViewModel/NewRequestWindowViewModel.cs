@@ -135,7 +135,7 @@ namespace ApiManager.NewRequest.ViewModel
 		{
 			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
 			var authentiationRoute = commands.ApiCommands.First().Routes.First();
-			var viewModel = new AuthenticationViewModel(commands.ApiCommands.First(), null);
+			var viewModel = new AuthenticationViewModel(commands.ApiCommands.First(), this.SelectedEnvironment.Environment);
 
 			new AuthenticateWindow()
 			{

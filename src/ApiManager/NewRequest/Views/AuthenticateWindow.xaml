@@ -67,7 +67,7 @@
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
 				<i:Interaction.Behaviors>
-					<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding ApiRequest.Request.Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 				</i:Interaction.Behaviors>
 			</avalonedit:TextEditor>
 		</Expander>
