@@ -32,7 +32,7 @@ class OAuth:
         print(f"pos: {pos}")
         if pos < 0 :
             return val
-        inputVal = val[pos+len("base64"):]
+        inputVal = val[pos+len("base64"):].strip()
         print(type(inputVal))
         encodedBytes = base64.b64encode(inputVal.encode("utf-8"))
         encodedStr = str(encodedBytes, "utf-8")
