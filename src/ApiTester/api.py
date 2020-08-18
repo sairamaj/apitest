@@ -16,7 +16,7 @@ class Api:
         headers = dict(headers, **self.apiInfo.headers)
         url = self.apiInfo.baseUrl + self.apiInfo.path
         response = requests.get(
-            url, headers=headers, verify=False)
+            url, headers=headers, verify=False, data=json.dumps({}, indent=4))
         self.response = response
         respone_json = ""
         if len(response.content) > 0 :
