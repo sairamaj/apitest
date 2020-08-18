@@ -25,5 +25,10 @@ namespace ApiManager.NewRequest.ViewModel
 
 		public ObservableCollection<NameValueViewModel> Items { get; set; }
 		public ICommand GetCommand { get; }
+
+		public void Add(string name, string value)
+		{
+			this.Items.Add(new NameValueViewModel(name, value));
+		}
 	}
 }

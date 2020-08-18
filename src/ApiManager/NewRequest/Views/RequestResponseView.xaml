@@ -8,7 +8,7 @@
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 			 xmlns:views="clr-namespace:Wpf.Util.Core.Views;assembly=Wpf.Util.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1200">
 	<UserControl.Resources>
 		<Style x:Key="AvalonTextBoxStyles" TargetType="avalonedit:TextEditor">
 			<Setter Property="WordWrap"  Value="True" />
@@ -37,10 +37,11 @@
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50" />
-			<RowDefinition Height="50" />
+			<RowDefinition />
+			<RowDefinition />
 			<RowDefinition />
 			<RowDefinition Height="5" />
-			<RowDefinition Height="30"/>
+			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
@@ -52,7 +53,7 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="66" />
 				<ColumnDefinition />
-				<ColumnDefinition Width="80" />
+				<ColumnDefinition Width="120" />
 				<ColumnDefinition Width="80" />
 			</Grid.ColumnDefinitions>
 			<ComboBox ItemsSource="{Binding HttpMethods}" Width="60" Height="20" SelectedItem="{Binding SelectedMethod}" 
@@ -60,23 +61,24 @@
 					  Grid.Row="0" Grid.Column="0"/>
 			<TextBox Text="{Binding Url}" Height="25" Margin="3,0,0,0"  FontWeight="Bold"
 					 Grid.Row="0" Grid.Column="1"/>
-			<ComboBox ItemsSource="{Binding Apis}" Width="60" Height="20" SelectedItem="{Binding SelectedApi}" 
+			<ComboBox ItemsSource="{Binding Apis}" Height="20" SelectedItem="{Binding SelectedApi}" 
 					  FontWeight="Bold"
-					  Grid.Row="0" Grid.Column="2"/>
+					  Grid.Row="0" Grid.Column="2" Margin="3,0,0,0"/>
 			<Button Content="Submit" Command="{Binding SubmitCommand}" Width="80" Height="25" Margin="3,0,0,0" 
 					FontWeight="Bold"
 					Grid.Row="0" Grid.Column="3"
 					/>
 		</Grid>
 
-		<Grid Grid.Row="2" Grid.Column="0">
+		<Expander Grid.Row="2" Grid.Column="0" Header="Request Headers" IsExpanded="True">
+			<local:HeadersEditView  DataContext="{Binding HeaderItems}"/>
+		</Expander>
+
+		<Grid Grid.Row="3" Grid.Column="0">
 			<Grid.RowDefinitions>
 				<RowDefinition />
 				<RowDefinition />
 			</Grid.RowDefinitions>
-			<Expander Header="Headers" IsExpanded="False" Grid.Row="0" Grid.Column="0">
-				<TextBlock Text="Headers here" />
-			</Expander>
 			<Expander Header="Body" IsExpanded="True" Grid.Row="1" Grid.Column="0">
 				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
@@ -87,16 +89,19 @@
 			</Expander>
 		</Grid>
 
-		<GridSplitter Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
+		<GridSplitter Grid.Row="4" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
 
-		<StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
+		<StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
 			<TextBlock Text="{Binding ApiRequest.HttpCode}"/>
 			<TextBlock Text="(" />
 			<TextBlock Text="{Binding ApiRequest.StatusCode}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 
-		<DockPanel Grid.Row="5" Grid.Column="0">
+		<Expander Grid.Row="6" Grid.Column="0" Header="Response Headers" IsExpanded="False" >
+			<local:HeadersEditView  DataContext="{Binding ResponseHeaderItems}"/>
+		</Expander>
+		<DockPanel Grid.Row="7" Grid.Column="0">
 			<Expander Header="Body" IsExpanded="True" DockPanel.Dock="Bottom">
 				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="ResponseView" DataContext="{Binding}">
@@ -105,7 +110,6 @@
 					</i:Interaction.Behaviors>
 				</avalonedit:TextEditor>
 			</Expander>
-			<Expander Header="Headers" IsExpanded="False" />
 		</DockPanel>
 
 

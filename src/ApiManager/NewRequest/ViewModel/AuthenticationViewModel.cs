@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ApiManager.Model;
+using Newtonsoft.Json;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
 using ApiEnvironment = ApiManager.Model.Environment;
@@ -33,28 +35,43 @@ namespace ApiManager.NewRequest.ViewModel
 		public ICommand SubmitCommand { get; }
 		public string Response { get; set; }
 		public ApiRequest ApiRequest { get; set; }
+		public bool IsSuccess { get; set; }
+		public string AccessToken { get; set; }
 
 		private async Task Submit()
 		{
 			try
 			{
 
-				var apiRequest = this.ApiRequest;
-				apiRequest.Method = "post";
-				apiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
-				apiRequest.Url = this.Url;
+				this.ApiRequest.Method = "post";
+				this.ApiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
+				this.ApiRequest.Url = this.Url;
 
-				var request = new HttpRequestClient(apiRequest);
+				var request = new HttpRequestClient(this.ApiRequest);
 				this.ApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
 				this.Response = this.ApiRequest?.Response?.Content;
+				
+				this.IsSuccess = this.ApiRequest.HttpCode == (int)HttpStatusCode.OK;
+				if (this.IsSuccess)
+				{
+					this.AccessToken = ExtractAccessToken(this.ApiRequest.Response.Content);
+				}
+
 				OnPropertyChanged(() => this.Response);
 				OnPropertyChanged(() => this.ApiRequest);
+				OnPropertyChanged(() => this.IsSuccess);
+
 			}
 			catch (Exception e)
 			{
 				this.Response = e.ToString();
 				OnPropertyChanged(() => this.Response);
 			}
+		}
+
+		private string ExtractAccessToken(string response)
+		{
+			return JsonConvert.DeserializeObject<JwtToken>(response).Access_Token;
 		}
 
 		private string GetBody()

@@ -278,6 +278,8 @@ class ManagementCommandExecutor(ICommand):
             routes = []
             for route_name, apiInfo in apiInfos.items():
                 route = {}
+                route["apiname"] = name
+                route["path"] = apiInfo.path
                 route["name"] = route_name
                 route["baseUrl"] = apiInfo.baseUrl
                 route["baseUrlVariables"] = getVariables(apiInfo.baseUrl)

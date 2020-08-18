@@ -607,7 +607,7 @@
     <None Include="Configuration\Apis\Apigee\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="Configuration\Apis\Apigee\environments\gmail_account.var">
+    <Content Include="Configuration\Apis\Apigee\environments\x.var">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Configuration\Apis\Apigee\scenarios\_posts\create_developer.json">
