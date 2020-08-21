@@ -1,6 +1,6 @@
 {
 	"accesstoken": {
-		"baseurl": "https://login.apigee.com/oauth/token",
+		"baseurl": "https://{{host}}/oauth/token",
 		"password": {
 			"path": "",
 			"body": {

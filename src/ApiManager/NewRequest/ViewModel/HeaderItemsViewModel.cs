@@ -11,11 +11,12 @@ namespace ApiManager.NewRequest.ViewModel
 {
 	class HeaderItemsViewModel : CoreViewModel
 	{
-		public HeaderItemsViewModel(IDictionary<string,string> items)
+		public HeaderItemsViewModel(IDictionary<string, string> items)
 		{
 			this.Items = new SafeObservableCollection<NameValueViewModel>();
 			items.ToList().ForEach(kv => this.Items.Add(new NameValueViewModel(kv.Key, kv.Value)));
-			this.GetCommand = new DelegateCommand(() => {
+			this.GetCommand = new DelegateCommand(() =>
+			{
 				foreach (var item in this.Items)
 				{
 					MessageBox.Show($"{item.Name}-{item.Value}");
@@ -28,6 +29,11 @@ namespace ApiManager.NewRequest.ViewModel
 
 		public void Add(string name, string value)
 		{
+			var found = this.Items.FirstOrDefault(n => n.Name == name);
+			if (found != null)
+			{
+				this.Items.Remove(found);
+			}
 			this.Items.Add(new NameValueViewModel(name, value));
 		}
 	}

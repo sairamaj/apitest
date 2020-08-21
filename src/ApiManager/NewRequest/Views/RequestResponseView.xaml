@@ -34,9 +34,9 @@
 
 	</UserControl.Resources>
 
-	<Grid Margin="10">
+	<Grid Margin="5">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="50" />
+			<RowDefinition Height="30" />
 			<RowDefinition />
 			<RowDefinition />
 			<RowDefinition />
@@ -46,7 +46,7 @@
 		</Grid.RowDefinitions>
 
 		<Button Grid.Row="0" Grid.Column="0" Content="Authenticate" Command="{Binding AuthenticateCommand}" 
-				Width="110" Height="25"
+				Width="110" Height="30"
 				FontWeight="Bold"
 				HorizontalAlignment="Right" Margin="0,0,2,0"/>
 		<Grid Grid.Row="1" Grid.Column="0" >

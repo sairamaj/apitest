@@ -19,7 +19,7 @@ namespace ApiManager.NewRequest.ViewModel
 			this.Api = api;
 			this.Environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this.Route = api.Routes.First();
-			this.Url = $"{Route.BaseUrl}/{Route.Path}";
+			this.Url = Evaluator.Evaluate($"{Route.BaseUrl}/{Route.Path}", environment.Variables);
 			this.SubmitCommand = new DelegateCommand(async () => await this.Submit());
 
 			var translatedHeaders = new Dictionary<string, string>();
@@ -49,19 +49,24 @@ namespace ApiManager.NewRequest.ViewModel
 		{
 			try
 			{
+				var newApiRequest = new ApiRequest();
+				newApiRequest.Method = "post";
+				newApiRequest.Request = this.ApiRequest.Request;
+				newApiRequest.Request.Url = this.Url;
+				newApiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
+				newApiRequest.Url = this.Url;
 
-				this.ApiRequest.Method = "post";
-				this.ApiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
-				this.ApiRequest.Url = this.Url;
-
-				var request = new HttpRequestClient(this.ApiRequest);
-				this.ApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
-				this.Response = this.ApiRequest?.Response?.Content;
-				
-				this.IsSuccess = this.ApiRequest.HttpCode == (int)HttpStatusCode.OK;
-				if (this.IsSuccess)
+				var request = new HttpRequestClient(newApiRequest);
+				newApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
+				if (newApiRequest != null)
 				{
-					this.AccessToken = ExtractAccessToken(this.ApiRequest.Response.Content);
+					this.Response = newApiRequest.Response?.Content;
+					this.IsSuccess = newApiRequest.HttpCode == (int)HttpStatusCode.OK;
+					if (this.IsSuccess)
+					{
+						this.AccessToken = ExtractAccessToken(newApiRequest.Response.Content);
+					}
+					this.ApiRequest = newApiRequest;
 				}
 
 				OnPropertyChanged(() => this.Response);
@@ -92,15 +97,7 @@ namespace ApiManager.NewRequest.ViewModel
 			var envVariables = this.Environment.Variables;
 			foreach (var kv in this.Route.Body) 
 			{
-				var val = kv.Value;
-				if (val.StartsWith("{{") && val.EndsWith("}}"))
-				{
-					var variableName = kv.Value.Replace("{", string.Empty).Replace("}", string.Empty);
-					if (envVariables.ContainsKey(variableName))
-					{
-						val = envVariables[variableName];
-					}
-				}
+				var val = Evaluator.Evaluate(kv.Value, envVariables);
 				body += $"{kv.Key}={val}&";
 			}
 
