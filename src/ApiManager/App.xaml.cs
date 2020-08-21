@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using ApiManager.Model;
+using ApiManager.NewRequest;
 using ApiManager.NewRequest.ViewModel;
 using ApiManager.NewRequest.Views;
 using ApiManager.Repository;

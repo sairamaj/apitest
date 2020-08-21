@@ -21,7 +21,14 @@ namespace ApiManager.NewRequest.ViewModel
 			this.Route = api.Routes.First();
 			this.Url = $"{Route.BaseUrl}/{Route.Path}";
 			this.SubmitCommand = new DelegateCommand(async () => await this.Submit());
-			this.HeaderItems = new HeaderItemsViewModel(this.Route.Headers);
+
+			var translatedHeaders = new Dictionary<string, string>();
+			foreach (var header in this.Route.Headers)
+			{
+				translatedHeaders[header.Key] = Evaluator.TranslateHeaderItem(header.Value,
+					environment.Variables);
+			}
+			this.HeaderItems = new HeaderItemsViewModel(translatedHeaders);
 			this.ApiRequest = new ApiRequest();
 			this.ApiRequest.Request = new Request();
 			this.ApiRequest.Request.Body = this.GetBody();

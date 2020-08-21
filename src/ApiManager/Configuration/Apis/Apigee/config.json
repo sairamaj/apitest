@@ -10,6 +10,7 @@
 			},
 			"headers": {
 				"Authorization": "Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0",
+				"dummy" :  "Basic base64 {{username}}:{{password}}",
 				"Content-Type": "application/x-www-form-urlencoded"
 			}
 		}
@@ -25,7 +26,7 @@
 		"_": {
 			"path": "/developers"
 		},
-		"foo": {
+		"foo": {																									
 			"path": "/developers"
 		},
 		"bar": {

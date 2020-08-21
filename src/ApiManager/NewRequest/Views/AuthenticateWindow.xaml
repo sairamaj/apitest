@@ -60,7 +60,7 @@
 					/>
 
 		</Grid>
-		<Expander Header="Request Headers" IsExpanded="False" Grid.Row="1" Grid.Column="0">
+		<Expander Header="Request Headers" IsExpanded="True" Grid.Row="1" Grid.Column="0">
 			<local:HeadersEditView  Grid.Row="1" Grid.Column="0" DataContext="{Binding HeaderItems}"/>
 		</Expander>
 		<Expander Grid.Row="2" Grid.Column="0"  Header="Request Body" IsExpanded="True" >
