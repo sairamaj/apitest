@@ -22,12 +22,17 @@ namespace ApiManager.NewRequest.ViewModel
 		private EnvironmentViewModel _selectedEnvironment;
 		private readonly ICommandExecutor _executor;
 		private IDataRepository _dataRepository;
+		private readonly ICacheManager _cacheManager;
 		private string _selectedApi;
-		public NewRequestWindowViewModel(ICommandExecutor executor, IDataRepository dataRepository)
+		public NewRequestWindowViewModel(
+			ICommandExecutor executor,
+			IDataRepository dataRepository,
+			ICacheManager cacheManager
+			)
 		{
 			this._executor = executor ?? throw new ArgumentNullException(nameof(executor));
 			_dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
-
+			this._cacheManager = cacheManager ?? throw new ArgumentNullException(nameof(cacheManager));
 			this.SelectedMethod = HttpMethods.First();
 			//this.Url = "https://api.enterprise.apigee.com/v1/organizations/sairamaj-eval/apis";
 			this.SubmitCommand = new DelegateCommand(async () => await Submit().ConfigureAwait(false));
@@ -40,9 +45,8 @@ namespace ApiManager.NewRequest.ViewModel
 
 			this.SelectedApiInfoViewModel = this.ApiInfoViewModels.FirstOrDefault();
 			this.AuthenticateCommand = new DelegateCommand(async () => await this.Authenticate().ConfigureAwait(false));
-			//
-			this.HeaderItems = new HeaderItemsViewModel(new Dictionary<string, string> {
-			});
+
+			AddHeaders();
 		}
 
 		public string[] HttpMethods => new string[] { "GET", "POST", "PUT", "PATCH", "DELETE" };
@@ -64,7 +68,7 @@ namespace ApiManager.NewRequest.ViewModel
 		public ObservableCollection<ApiViewModel> ApiInfoViewModels { get; set; }
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public string[] Apis { get; private set; }
-		public HeaderItemsViewModel HeaderItems { get; }
+		public HeaderItemsViewModel HeaderItems { get; private set; }
 		public bool IsSuccess { get; set; }
 
 		public EnvironmentViewModel SelectedEnvironment
@@ -105,11 +109,25 @@ namespace ApiManager.NewRequest.ViewModel
 				.Select(v => new EnvironmentViewModel(this.SelectedApiInfoViewModel.ApiInfo, v, this._dataRepository));
 			OnPropertyChanged(() => this.Environments);
 			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
-			this.Routes = commands.ApiCommands.SelectMany(c => c.Routes.Select(r=> r));
+			this.Routes = commands.ApiCommands.SelectMany(c => c.Routes.Select(r => r));
 			this.Apis = commands.ApiCommands.SelectMany(c => c.Routes.Select(r => r.FullName)).ToArray();
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
 			OnPropertyChanged(() => this.SelectedEnvironment);
 			OnPropertyChanged(() => this.Apis);
+		}
+
+		private void AddHeaders()
+		{
+			var initialHeaders = new Dictionary<string, string>
+			{
+			};
+			var cachedAccessToken = this._cacheManager.Get("AccessToken");
+			if (cachedAccessToken != null)
+			{
+				initialHeaders["Authorization"] = $"Bearer {cachedAccessToken}";
+			}
+
+			this.HeaderItems = new HeaderItemsViewModel(initialHeaders);
 		}
 
 		private async Task Submit()
@@ -161,7 +179,11 @@ namespace ApiManager.NewRequest.ViewModel
 		private async Task Authenticate()
 		{
 			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
-			var viewModel = new AuthenticationViewModel(commands.ApiCommands.First(), this.SelectedEnvironment.Environment);
+			var viewModel = new AuthenticationViewModel(
+				this._cacheManager,
+				commands.ApiCommands.First(), 
+				this.SelectedEnvironment.Environment
+				);
 
 			new AuthenticateWindow()
 			{
@@ -172,4 +194,3 @@ namespace ApiManager.NewRequest.ViewModel
 		}
 	}
 }
- 

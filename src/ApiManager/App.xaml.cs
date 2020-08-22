@@ -52,7 +52,8 @@ namespace ApiManager
 					serviceLocator.Resolve<IDataRepository>(),
 					serviceLocator.Resolve<ISettings>(),
 					serviceLocator.Resolve<IResourceManager>(),
-					serviceLocator)
+					serviceLocator,
+					serviceLocator.Resolve<ICacheManager>())
 				};
 				RunWithSingleInstance(() => win.ShowDialog());
 			}
@@ -82,7 +83,8 @@ namespace ApiManager
 			}
 		}
 
-		private void NewRequestTesting(ICommandExecutor executor, IDataRepository dataRepository)
+		private void NewRequestTesting(ICommandExecutor executor, IDataRepository dataRepository,
+			ICacheManager cacheManager)
 		{
 			//var win = new TestHeaderWindow
 			//{
@@ -92,7 +94,7 @@ namespace ApiManager
 
 			new NewRequestWindow()
 			{
-				DataContext = new NewRequestWindowViewModel(executor, dataRepository)
+				DataContext = new NewRequestWindowViewModel(executor, dataRepository, cacheManager)
 			}.ShowDialog();
 			System.Environment.Exit(-1);
 		}

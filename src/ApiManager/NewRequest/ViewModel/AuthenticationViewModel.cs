@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ApiManager.Model;
+using ApiManager.Repository;
 using Newtonsoft.Json;
 using Wpf.Util.Core.Command;
 using Wpf.Util.Core.ViewModels;
@@ -14,8 +15,11 @@ namespace ApiManager.NewRequest.ViewModel
 {
 	internal class AuthenticationViewModel : CoreViewModel
 	{
-		public AuthenticationViewModel(ApiCommand api, ApiEnvironment environment)
+		private readonly ICacheManager _cacheManager;
+
+		public AuthenticationViewModel(ICacheManager cacheManager, ApiCommand api, ApiEnvironment environment)
 		{
+			this._cacheManager = cacheManager ?? throw new ArgumentNullException(nameof(cacheManager));
 			this.Api = api;
 			this.Environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this.Route = api.Routes.First();
@@ -65,6 +69,10 @@ namespace ApiManager.NewRequest.ViewModel
 					if (this.IsSuccess)
 					{
 						this.AccessToken = ExtractAccessToken(newApiRequest.Response.Content);
+						if (!string.IsNullOrEmpty(this.AccessToken))
+						{
+							this._cacheManager.Add("AccessToken", this.AccessToken);
+						}
 					}
 					this.ApiRequest = newApiRequest;
 				}
@@ -95,7 +103,7 @@ namespace ApiManager.NewRequest.ViewModel
 
 			var body = string.Empty;
 			var envVariables = this.Environment.Variables;
-			foreach (var kv in this.Route.Body) 
+			foreach (var kv in this.Route.Body)
 			{
 				var val = Evaluator.Evaluate(kv.Value, envVariables);
 				body += $"{kv.Key}={val}&";

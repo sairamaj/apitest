@@ -37,20 +37,22 @@ namespace ApiManager.ViewModels
 		private EnvironmentViewModel _selectedEnvironment;
 		private IResourceManager _resourceManager;
 		private IServiceLocator _serviceLocator;
+		private readonly ICacheManager _cacheManager;
 
 		public MainViewModel(
 			ICommandExecutor executor,
 			IDataRepository dataRepository,
 			ISettings settings,
 			IResourceManager resourceManager,
-			IServiceLocator serviceLocator)
+			IServiceLocator serviceLocator,
+			ICacheManager cacheManager)
 		{
 			this._apiExecutor = executor ?? throw new ArgumentNullException(nameof(executor));
 			this._dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
 			this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
 			this._resourceManager = resourceManager ?? throw new ArgumentNullException(nameof(resourceManager));
 			this._serviceLocator = serviceLocator ?? throw new ArgumentNullException(nameof(serviceLocator));
-
+			this._cacheManager = cacheManager ?? throw new ArgumentNullException(nameof(cacheManager));
 			this.ApiInfoViewModels = new SafeObservableCollection<ApiViewModel>();
 			this.RunCommand = new DelegateCommand(async () => await this.RunAsync());
 			this.GenerateScriptCommand = new DelegateCommand(() => this.GenerateScript());
@@ -62,7 +64,7 @@ namespace ApiManager.ViewModels
 		   {
 			   new NewRequestWindow()
 			   {
-				   DataContext = new NewRequestWindowViewModel(executor, dataRepository)
+				   DataContext = new NewRequestWindowViewModel(executor, dataRepository, this._cacheManager)
 			   }.ShowDialog();
 		   });
 			this.NewScenarioFileCommand = new DelegateCommand(() =>

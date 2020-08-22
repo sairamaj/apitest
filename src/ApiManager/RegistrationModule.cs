@@ -24,6 +24,7 @@ namespace ApiManager
 			builder.RegisterType<DataRepository>().As<IDataRepository>().SingleInstance();
 			builder.RegisterType<MessageListener>().As<IMessageListener>();
 			builder.RegisterType<ApiTestConsoleCommunicator>().As<IApiTestConsoleCommunicator>();
+			builder.RegisterType<CacheManager>().As<ICacheManager>();
 		}
 	}
 }

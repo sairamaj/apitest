@@ -44,6 +44,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -147,8 +148,10 @@
     </Compile>
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Report\ReportGenerator.cs" />
+    <Compile Include="Repository\CacheManager.cs" />
     <Compile Include="Repository\CommandExecutor.cs" />
     <Compile Include="Repository\CommandFormatter.cs" />
+    <Compile Include="Repository\ICacheManager.cs" />
     <Compile Include="Repository\ICommandExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
