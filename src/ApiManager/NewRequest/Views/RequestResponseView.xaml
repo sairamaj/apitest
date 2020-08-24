@@ -37,10 +37,11 @@
 	<Grid Margin="5">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
-			<RowDefinition />
+			<RowDefinition Height="40"/>
 			<RowDefinition />
 			<RowDefinition />
 			<RowDefinition Height="5" />
+			<RowDefinition Height="20" />
 			<RowDefinition />
 			<RowDefinition />
 		</Grid.RowDefinitions>
@@ -56,7 +57,7 @@
 				<ColumnDefinition Width="120" />
 				<ColumnDefinition Width="80" />
 			</Grid.ColumnDefinitions>
-			<ComboBox ItemsSource="{Binding HttpMethods}" Width="60" Height="20" SelectedItem="{Binding SelectedMethod}" 
+			<ComboBox ItemsSource="{Binding HttpMethods}" Width="90" Height="20" SelectedItem="{Binding SelectedMethod}" 
 					  FontWeight="Bold"
 					  Grid.Row="0" Grid.Column="0"/>
 			<TextBox Text="{Binding Url}" Height="25" Margin="3,0,0,0"  FontWeight="Bold"
@@ -74,20 +75,14 @@
 			<local:HeadersEditView  DataContext="{Binding HeaderItems}"/>
 		</Expander>
 
-		<Grid Grid.Row="3" Grid.Column="0">
-			<Grid.RowDefinitions>
-				<RowDefinition />
-				<RowDefinition />
-			</Grid.RowDefinitions>
-			<Expander Header="Body" IsExpanded="True" Grid.Row="1" Grid.Column="0">
-				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
+		<Expander Header="Request Body" IsExpanded="True" Grid.Row="3" Grid.Column="0">
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
-					<i:Interaction.Behaviors>
-						<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-					</i:Interaction.Behaviors>
-				</avalonedit:TextEditor>
-			</Expander>
-		</Grid>
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+		</Expander>
 
 		<GridSplitter Grid.Row="4" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
 
@@ -98,7 +93,7 @@
 			<TextBlock Text=")" />
 		</StackPanel>
 
-		<Expander Grid.Row="6" Grid.Column="0" Header="Response Headers" IsExpanded="False" >
+		<Expander Grid.Row="6" Grid.Column="0" Header="Response Headers" IsExpanded="True" >
 			<local:HeadersEditView  DataContext="{Binding ResponseHeaderItems}"/>
 		</Expander>
 		<DockPanel Grid.Row="7" Grid.Column="0">
@@ -114,5 +109,5 @@
 
 
 	</Grid>
-	
+
 </UserControl>

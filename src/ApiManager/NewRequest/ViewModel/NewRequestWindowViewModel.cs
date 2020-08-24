@@ -69,6 +69,8 @@ namespace ApiManager.NewRequest.ViewModel
 		public IEnumerable<EnvironmentViewModel> Environments { get; set; }
 		public string[] Apis { get; private set; }
 		public HeaderItemsViewModel HeaderItems { get; private set; }
+		public HeaderItemsViewModel ResponseHeaderItems { get; private set; }
+		
 		public bool IsSuccess { get; set; }
 
 		public EnvironmentViewModel SelectedEnvironment
@@ -110,10 +112,15 @@ namespace ApiManager.NewRequest.ViewModel
 			OnPropertyChanged(() => this.Environments);
 			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
 			this.Routes = commands.ApiCommands.SelectMany(c => c.Routes.Select(r => r));
-			this.Apis = commands.ApiCommands.SelectMany(c => c.Routes.Select(r => r.FullName)).ToArray();
+			this.Apis = commands.ApiCommands.SelectMany(c => 
+			c.Routes.Where(r => r.ApiName != "accesstoken")
+			.Select(r => r.FullName)).ToArray();
 			this.SelectedEnvironment = this.Environments.FirstOrDefault();
+			this.SelectedApi = this.Apis.FirstOrDefault();
+
 			OnPropertyChanged(() => this.SelectedEnvironment);
 			OnPropertyChanged(() => this.Apis);
+			OnPropertyChanged(() => this.SelectedApi);
 		}
 
 		private void AddHeaders()
@@ -126,6 +133,8 @@ namespace ApiManager.NewRequest.ViewModel
 			{
 				initialHeaders["Authorization"] = $"Bearer {cachedAccessToken}";
 			}
+
+			initialHeaders["Content-Type"] = "application/json";
 
 			this.HeaderItems = new HeaderItemsViewModel(initialHeaders);
 		}
@@ -143,12 +152,18 @@ namespace ApiManager.NewRequest.ViewModel
 
 				var request = new HttpRequestClient(apiRequest);
 				this.ApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
-				this.Response = this.ApiRequest?.Response?.Content;
-				this.IsSuccess = this.ApiRequest?.HttpCode <= 299 ? true : false;
-
+				if (this.ApiRequest != null)
+				{
+					this.Response = this.ApiRequest?.Response?.Content;
+					this.IsSuccess = this.ApiRequest?.HttpCode <= 299 ? true : false;
+					this.ResponseHeaderItems = new HeaderItemsViewModel(this.ApiRequest.Response.Headers);
+				}
+				
 				OnPropertyChanged(() => this.Response);
 				OnPropertyChanged(() => this.ApiRequest);
 				OnPropertyChanged(() => this.IsSuccess);
+				OnPropertyChanged(() => this.ResponseHeaderItems);
+				
 			}
 			catch (Exception e)
 			{
@@ -166,13 +181,7 @@ namespace ApiManager.NewRequest.ViewModel
 			}
 
 			var variables = this.SelectedEnvironment.Variables;
-			var url = route.FullUrl;
-			foreach (var variable in this.SelectedEnvironment.Variables)
-			{
-				var replaceVariable = "{{" + $"{variable.Key}" + "}}";
-				url = url.Replace(replaceVariable, variable.Value);
-			}
-			this.Url = url;
+			this.Url = Evaluator.Evaluate(route.FullUrl, variables);
 			OnPropertyChanged(() => this.Url);
 		}
 
@@ -181,7 +190,7 @@ namespace ApiManager.NewRequest.ViewModel
 			var commands = await this._dataRepository.GetCommands(this.SelectedApiInfoViewModel.ApiInfo).ConfigureAwait(true);
 			var viewModel = new AuthenticationViewModel(
 				this._cacheManager,
-				commands.ApiCommands.First(), 
+				commands.ApiCommands.First(),
 				this.SelectedEnvironment.Environment
 				);
 

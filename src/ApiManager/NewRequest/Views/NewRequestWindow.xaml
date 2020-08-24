@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ApiManager.NewRequest.Views" xmlns:views="clr-namespace:ApiManager.Views"
 		mc:Ignorable="d"
-        Title="Test a request" Height="850" Width="800">
+        Title="Test a request" Height="850" Width="1200">
 
 	<Grid>
 		<Grid.ColumnDefinitions>

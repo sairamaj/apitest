@@ -14,7 +14,7 @@ namespace ApiManager.Model
 		public string Description { get; set; }
 		public string Path { get; set; }
 		public string BaseUrl { get; set; }
-		public string FullUrl => $"{this.BaseUrl}/{this.Path}";
+		public string FullUrl => $"{this.BaseUrl}{this.Path}";
 		public string[] BaseUrlVariables { get; set; }
 		public IDictionary<string, string> Headers { get; set; }
 		public string[] HeadersVariables { get; set; }
