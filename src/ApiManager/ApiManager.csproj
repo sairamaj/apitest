@@ -132,6 +132,9 @@
     <Compile Include="NewRequest\Views\TestHeaderWindow.xaml.cs">
       <DependentUpon>TestHeaderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewRequest\Views\VariableEditView.xaml.cs">
+      <DependentUpon>VariableEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pipes\FakeMessageListener.cs" />
     <Compile Include="Pipes\ApiTestConsoleCommunicator.cs" />
     <Compile Include="Pipes\IApiTestConsoleCommunicator.cs" />
@@ -398,6 +401,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NewRequest\Views\TestHeaderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRequest\Views\VariableEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

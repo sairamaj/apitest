@@ -63,7 +63,17 @@
 		<Expander Header="Request Headers" IsExpanded="True" Grid.Row="1" Grid.Column="0">
 			<local:HeadersEditView  Grid.Row="1" Grid.Column="0" DataContext="{Binding HeaderItems}"/>
 		</Expander>
-		<Expander Grid.Row="2" Grid.Column="0"  Header="Request Body" IsExpanded="True" >
+		<Expander Grid.Row="2" Grid.Column="0" IsExpanded="True" >
+			<Expander.Header>
+				<StackPanel Orientation="Horizontal">
+					<Border Height="5" Width="5"/>
+					<TextBlock>Request Body</TextBlock>
+					<TextBlock Text="Variables:" Margin="50,0,0,0" />
+					<Expander  Width="200" Margin="5,0,0,0">
+						<local:VariableEditView/>
+					</Expander>
+				</StackPanel>
+			</Expander.Header>
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
 				<i:Interaction.Behaviors>

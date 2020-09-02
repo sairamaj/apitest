@@ -48,6 +48,13 @@ namespace ApiManager.NewRequest.ViewModel
 		public ApiRequest ApiRequest { get; set; }
 		public bool IsSuccess { get; set; }
 		public string AccessToken { get; set; }
+		public string[] RequestBodyVariables
+		{
+			get
+			{
+				return new string[] { "one", "two", "three", "four" };
+			}
+		}
 
 		private async Task Submit()
 		{
