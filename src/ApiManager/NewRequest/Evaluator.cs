@@ -50,7 +50,7 @@ namespace ApiManager.NewRequest
 			return output;
 		}
 
-		static IEnumerable<string> GetVariables(string input)
+		public static IEnumerable<string> GetVariables(string input)
 		{
 			var regex = new Regex(@"(?<variable>{{\w+)}}");
 			var variables = new List<string>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Repository;
@@ -36,6 +37,21 @@ namespace ApiManager.NewRequest.ViewModel
 			this.ApiRequest = new ApiRequest();
 			this.ApiRequest.Request = new Request();
 			this.ApiRequest.Request.Body = this.GetBody();
+
+			this.OriginalApiRequest = new ApiRequest();
+			this.OriginalApiRequest.Request = new Request();
+			this.OriginalApiRequest.Request.Body = this.GetBody();
+
+			this.RequestVariables = new VariableEditViewModel(Evaluator.GetVariables(this.OriginalApiRequest.Request.Body).ToDictionary(v => v, v => string.Empty), (name, value)=>
+			{
+				if (ApiRequest.Request == null)
+				{
+					return;
+				}
+
+				ApiRequest.Request.Body = Evaluator.Evaluate(OriginalApiRequest.Request.Body, this.RequestVariables.VariableWithValues);
+				OnPropertyChanged(() => this.ApiRequest);
+			});
 		}
 
 		public ApiRoute Route { get; }
@@ -46,16 +62,12 @@ namespace ApiManager.NewRequest.ViewModel
 		public ICommand SubmitCommand { get; }
 		public string Response { get; set; }
 		public ApiRequest ApiRequest { get; set; }
+		public ApiRequest OriginalApiRequest { get; set; }
 		public bool IsSuccess { get; set; }
 		public string AccessToken { get; set; }
-		public string[] RequestBodyVariables
-		{
-			get
-			{
-				return new string[] { "one", "two", "three", "four" };
-			}
-		}
 
+		public VariableEditViewModel RequestVariables { get; }
+		
 		private async Task Submit()
 		{
 			try

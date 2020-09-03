@@ -67,10 +67,10 @@
 			<Expander.Header>
 				<StackPanel Orientation="Horizontal">
 					<Border Height="5" Width="5"/>
-					<TextBlock>Request Body</TextBlock>
-					<TextBlock Text="Variables:" Margin="50,0,0,0" />
+					<TextBlock Text="Request Body" VerticalAlignment="Center" Foreground="Purple" FontWeight="Bold"/>
+					<TextBlock Text="Variables:" Margin="50,0,0,0" Foreground="Purple" VerticalAlignment="Center" FontWeight="Bold"/>
 					<Expander  Width="200" Margin="5,0,0,0">
-						<local:VariableEditView/>
+						<local:VariableEditView DataContext="{Binding RequestVariables}"/>
 					</Expander>
 				</StackPanel>
 			</Expander.Header>

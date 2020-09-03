@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ApiManager.NewRequest.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<ListBox ItemsSource="{Binding RequestBodyVariables}">
+	<ListBox ItemsSource="{Binding Variables}">
 
 		<ListBox.ItemTemplate>
 			<DataTemplate>
@@ -15,8 +15,8 @@
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="100" />
 					</Grid.ColumnDefinitions>
-					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding}" />
-					<TextBox Grid.Row="0" Grid.Column="1" />
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name}" />
+					<TextBox  Grid.Row="0" Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
 				</Grid>
 			</DataTemplate>
 		</ListBox.ItemTemplate>

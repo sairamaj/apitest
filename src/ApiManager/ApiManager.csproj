@@ -117,6 +117,8 @@
     <Compile Include="NewRequest\ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="NewRequest\ViewModel\HeaderItemsViewModel.cs" />
     <Compile Include="NewRequest\ViewModel\NewRequestWindowViewModel.cs" />
+    <Compile Include="NewRequest\ViewModel\VariableEditViewModel.cs" />
+    <Compile Include="NewRequest\ViewModel\VariableNameValueViewModel.cs" />
     <Compile Include="NewRequest\Views\AuthenticateWindow.xaml.cs">
       <DependentUpon>AuthenticateWindow.xaml</DependentUpon>
     </Compile>
