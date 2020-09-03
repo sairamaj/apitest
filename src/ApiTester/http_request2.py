@@ -15,7 +15,7 @@ class HttpRequest2:
         print(f'|{self.body}|')
         print('_________________')
         if self.method == 'get':
-            response = requests.get(self.url, headers=self.headers, verify=False)
+            response = requests.get(self.url, headers=self.headers, verify=False,data=json.dumps({}, indent=4))
         elif self.method == 'post':
             print('posing...')
             response = requests.post(self.url, data=self.body, headers=self.headers, verify=False)

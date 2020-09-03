@@ -38,12 +38,11 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30" />
 			<RowDefinition Height="40"/>
-			<RowDefinition />
-			<RowDefinition />
-			<RowDefinition Height="5" />
-			<RowDefinition Height="20" />
-			<RowDefinition />
-			<RowDefinition />
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<Button Grid.Row="0" Grid.Column="0" Content="Authenticate" Command="{Binding AuthenticateCommand}" 
@@ -79,33 +78,30 @@
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="RequestView" DataContext="{Binding}">
 				<i:Interaction.Behaviors>
-					<views:AvalonEditBehaviour GiveMeTheText="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding RequestContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 				</i:Interaction.Behaviors>
 			</avalonedit:TextEditor>
 		</Expander>
 
-		<GridSplitter Grid.Row="4" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
 
-		<StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
+		<StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
 			<TextBlock Text="{Binding ApiRequest.HttpCode}"/>
 			<TextBlock Text="(" />
 			<TextBlock Text="{Binding ApiRequest.StatusCode}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 
-		<Expander Grid.Row="6" Grid.Column="0" Header="Response Headers" IsExpanded="True" >
+		<Expander Grid.Row="5" Grid.Column="0" Header="Response Headers" IsExpanded="True" >
 			<local:HeadersEditView  DataContext="{Binding ResponseHeaderItems}"/>
 		</Expander>
-		<DockPanel Grid.Row="7" Grid.Column="0">
-			<Expander Header="Body" IsExpanded="True" DockPanel.Dock="Bottom">
-				<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
+		<Expander Header="Body" IsExpanded="True" Grid.Row="6" Grid.Column="0">
+			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="ResponseView" DataContext="{Binding}">
-					<i:Interaction.Behaviors>
-						<views:AvalonEditBehaviour GiveMeTheText="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-					</i:Interaction.Behaviors>
-				</avalonedit:TextEditor>
-			</Expander>
-		</DockPanel>
+				<i:Interaction.Behaviors>
+					<views:AvalonEditBehaviour GiveMeTheText="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				</i:Interaction.Behaviors>
+			</avalonedit:TextEditor>
+		</Expander>
 
 
 	</Grid>

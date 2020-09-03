@@ -39,8 +39,7 @@
 			<RowDefinition Height="50" />
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="4" />
-			<RowDefinition Height="50" />
+			<RowDefinition Height="20" />
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
@@ -82,17 +81,15 @@
 			</avalonedit:TextEditor>
 		</Expander>
 
-		<GridSplitter Grid.Row="3" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="Green"/>
-
-		<StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
+		<StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Style="{StaticResource ApiStyle}" >
 			<TextBlock Text="{Binding ApiRequest.HttpCode}"/>
 			<TextBlock Text="(" />
 			<TextBlock Text="{Binding ApiRequest.StatusCode}" />
 			<TextBlock Text=")" />
 		</StackPanel>
 
-		<Expander Grid.Row="5" Grid.Column="0"  Header="Response Headers" IsExpanded="False" />
-		<Expander Grid.Row="6" Grid.Column="0" Header="Response Content" IsExpanded="True">
+		<Expander Grid.Row="4" Grid.Column="0"  Header="Response Headers" IsExpanded="False" />
+		<Expander Grid.Row="5" Grid.Column="0" Header="Response Content" IsExpanded="True">
 			<avalonedit:TextEditor  Grid.Row="0" Grid.Column="0"
                                 Style="{StaticResource AvalonTextBoxStyles}" x:Name="ResponseView" DataContext="{Binding}">
 				<i:Interaction.Behaviors>

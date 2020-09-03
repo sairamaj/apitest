@@ -70,7 +70,9 @@ namespace ApiManager.NewRequest.ViewModel
 		public string[] Apis { get; private set; }
 		public HeaderItemsViewModel HeaderItems { get; private set; }
 		public HeaderItemsViewModel ResponseHeaderItems { get; private set; }
-		
+		public string RequestContent { get; set; }
+
+
 		public bool IsSuccess { get; set; }
 
 		public EnvironmentViewModel SelectedEnvironment
@@ -149,6 +151,7 @@ namespace ApiManager.NewRequest.ViewModel
 				apiRequest.Request = new Request();
 				apiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
 				apiRequest.Url = this.Url;
+				apiRequest.Request.Body = RequestContent;
 
 				var request = new HttpRequestClient(apiRequest);
 				this.ApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
