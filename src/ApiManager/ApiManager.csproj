@@ -160,9 +160,11 @@
     <Compile Include="Repository\ICommandExecutor.cs" />
     <Compile Include="Repository\DataRepository.cs" />
     <Compile Include="Repository\IDataRepository.cs" />
+    <Compile Include="Repository\ISavedSettings.cs" />
     <Compile Include="Repository\ISettings.cs" />
     <Compile Include="Repository\ResourceManager.cs" />
     <Compile Include="Repository\IResourceManager.cs" />
+    <Compile Include="Repository\SavedSettings.cs" />
     <Compile Include="Resources\Model\ResourceData.cs" />
     <Compile Include="Resources\ResourceAction.cs" />
     <Compile Include="Resources\ResourceEditingHelper.cs" />

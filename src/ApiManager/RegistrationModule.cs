@@ -25,6 +25,7 @@ namespace ApiManager
 			builder.RegisterType<MessageListener>().As<IMessageListener>();
 			builder.RegisterType<ApiTestConsoleCommunicator>().As<IApiTestConsoleCommunicator>();
 			builder.RegisterType<CacheManager>().As<ICacheManager>();
+			builder.RegisterType<SavedSettings>().As<ISavedSettings>();
 		}
 	}
 }

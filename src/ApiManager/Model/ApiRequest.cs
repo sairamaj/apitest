@@ -60,6 +60,11 @@ namespace ApiManager.Model
 
 		private string ExtractJwtCode()
 		{
+			if (this.Response == null)
+			{
+				return string.Empty;
+			}
+
 			var accessToken = string.Empty;
 			// Look in response first
 			if (!string.IsNullOrWhiteSpace(this.Response.Content))

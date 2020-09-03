@@ -34,10 +34,17 @@ namespace ApiManager.NewRequest.ViewModel
 					environment.Variables);
 			}
 			this.HeaderItems = new HeaderItemsViewModel(translatedHeaders);
-			this.ApiRequest = new ApiRequest();
-			this.ApiRequest.Request = new Request();
-			this.ApiRequest.Request.Body = this.GetBody();
-
+			var savedApiRequest = ServiceLocator.Locator.Resolve<ISavedSettings>().Get<ApiRequest>("newrequest_authentication");
+			if (savedApiRequest != null)
+			{
+				this.ApiRequest = savedApiRequest;
+			}
+			else
+			{
+				this.ApiRequest = new ApiRequest();
+				this.ApiRequest.Request = new Request();
+				this.ApiRequest.Request.Body = this.GetBody();
+			}
 			this.OriginalApiRequest = new ApiRequest();
 			this.OriginalApiRequest.Request = new Request();
 			this.OriginalApiRequest.Request.Body = this.GetBody();
@@ -70,14 +77,16 @@ namespace ApiManager.NewRequest.ViewModel
 		
 		private async Task Submit()
 		{
+			var newApiRequest = new ApiRequest();
 			try
 			{
-				var newApiRequest = new ApiRequest();
 				newApiRequest.Method = "post";
 				newApiRequest.Request = this.ApiRequest.Request;
 				newApiRequest.Request.Url = this.Url;
 				newApiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
 				newApiRequest.Url = this.Url;
+
+				ServiceLocator.Locator.Resolve<ISavedSettings>().Add<ApiRequest>("newrequest_authentication", newApiRequest);
 
 				var request = new HttpRequestClient(newApiRequest);
 				newApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
