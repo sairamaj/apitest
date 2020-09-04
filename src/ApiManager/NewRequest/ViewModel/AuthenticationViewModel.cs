@@ -47,9 +47,10 @@ namespace ApiManager.NewRequest.ViewModel
 			}
 			this.OriginalApiRequest = new ApiRequest();
 			this.OriginalApiRequest.Request = new Request();
-			this.OriginalApiRequest.Request.Body = this.GetBody();
+			this.OriginalApiRequest.Request.Body = this.Route.RequestBodyAsString;
 
-			this.RequestVariables = new VariableEditViewModel(Evaluator.GetVariables(this.OriginalApiRequest.Request.Body).ToDictionary(v => v, v => string.Empty), (name, value)=>
+			this.RequestVariables = new VariableEditViewModel(Evaluator.GetVariables(
+				this.Route.RequestBodyAsString).ToDictionary(v => v, v => string.Empty), (name, value)=>
 			{
 				if (ApiRequest.Request == null)
 				{

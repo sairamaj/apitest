@@ -33,5 +33,24 @@ namespace ApiManager.Model
 				return $"{this.ApiName}.{this.Name}";
 			}
 		}
+
+		public string RequestBodyAsString
+		{
+			get
+			{
+				if (this.Body == null)
+				{
+					return string.Empty;
+				}
+
+				var bodyString = string.Empty;
+				foreach (var kv in this.Body)
+				{
+					bodyString += $"{kv.Key}={kv.Value}&";
+				}
+
+				return bodyString.Trim('&');
+			}
+		}
 	}
 }
