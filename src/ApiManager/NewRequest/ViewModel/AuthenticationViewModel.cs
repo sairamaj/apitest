@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using ApiManager.Model;
 using ApiManager.Repository;
@@ -34,7 +33,7 @@ namespace ApiManager.NewRequest.ViewModel
 					environment.Variables);
 			}
 			this.HeaderItems = new HeaderItemsViewModel(translatedHeaders);
-			var savedApiRequest = ServiceLocator.Locator.Resolve<ISavedSettings>().Get<ApiRequest>("newrequest_authentication");
+			var savedApiRequest = ServiceLocator.Locator.Resolve<ISavedSettings>().Get<ApiRequest>(this.SettingsKey);
 			if (savedApiRequest != null)
 			{
 				this.ApiRequest = savedApiRequest;
@@ -87,7 +86,7 @@ namespace ApiManager.NewRequest.ViewModel
 				newApiRequest.Request.Headers = this.HeaderItems.Items.ToDictionary(vm => vm.Name, vm => vm.Value);
 				newApiRequest.Url = this.Url;
 
-				ServiceLocator.Locator.Resolve<ISavedSettings>().Add<ApiRequest>("newrequest_authentication", newApiRequest);
+				ServiceLocator.Locator.Resolve<ISavedSettings>().Add<ApiRequest>(this.SettingsKey, newApiRequest);
 
 				var request = new HttpRequestClient(newApiRequest);
 				newApiRequest = await request.GetResponseAsync().ConfigureAwait(false);
@@ -118,6 +117,7 @@ namespace ApiManager.NewRequest.ViewModel
 			}
 		}
 
+		private string SettingsKey => $"authenticationviewmodel_newrequest_{this.Environment?.Name}";
 		private string ExtractAccessToken(string response)
 		{
 			return JsonConvert.DeserializeObject<JwtToken>(response).Access_Token;

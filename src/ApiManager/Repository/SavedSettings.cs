@@ -25,7 +25,7 @@ namespace ApiManager.Repository
 
 		public T Get<T>(string key)
 		{
-			var file = Path.Combine(this._path, key);
+			var file = Path.Combine(this._path, $"{key}.json");
 			if (!File.Exists(file))
 			{
 				return default(T);

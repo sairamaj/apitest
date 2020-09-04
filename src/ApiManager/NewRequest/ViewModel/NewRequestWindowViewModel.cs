@@ -202,7 +202,10 @@ namespace ApiManager.NewRequest.ViewModel
 				DataContext = viewModel
 			}.ShowDialog();
 
-			this.HeaderItems.Add("Authorization", $"Bearer {viewModel.AccessToken}");
+			if (!string.IsNullOrWhiteSpace(viewModel.AccessToken))
+			{
+				this.HeaderItems.Add("Authorization", $"Bearer {viewModel.AccessToken}");
+			}
 		}
 	}
 }
